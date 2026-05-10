@@ -1457,6 +1457,10 @@ fn pdf_flate_encode_bytes_native(
 }
 
 ///|
+/// Encode borrowed bytes as a zlib-wrapped Flate stream.
+///
+/// `level` must be in the zlib range `0..9`; invalid levels raise
+/// `InvalidFlateData`. On non-native targets this uses the pure MoonBit encoder.
 #cfg(not(target="native"))
 pub fn pdf_flate_encode_view_with_level(
   data : BytesView,
@@ -1466,6 +1470,11 @@ pub fn pdf_flate_encode_view_with_level(
 }
 
 ///|
+/// Encode borrowed bytes as a zlib-wrapped Flate stream.
+///
+/// `level` must be in the zlib range `0..9`; invalid levels raise
+/// `InvalidFlateData`. On the native target this tries the zlib FFI first and
+/// falls back to the pure MoonBit encoder if the native call fails.
 #cfg(target="native")
 #coverage.skip
 pub fn pdf_flate_encode_view_with_level(
@@ -1476,12 +1485,19 @@ pub fn pdf_flate_encode_view_with_level(
 }
 
 ///|
+/// Encode borrowed bytes with the default compression level.
+///
+/// This non-native implementation uses the pure MoonBit encoder.
 #cfg(not(target="native"))
 pub fn pdf_flate_encode_view(data : BytesView) -> PdfBytes {
   pdf_flate_encode_view_pure(data)
 }
 
 ///|
+/// Encode borrowed bytes with the default compression level.
+///
+/// On the native target this tries zlib at level `6` and falls back to the pure
+/// MoonBit encoder if the native call fails.
 #cfg(target="native")
 #coverage.skip
 pub fn pdf_flate_encode_view(data : BytesView) -> PdfBytes {
@@ -1493,6 +1509,11 @@ pub fn pdf_flate_encode_view(data : BytesView) -> PdfBytes {
 }
 
 ///|
+/// Encode owned bytes as a zlib-wrapped Flate stream.
+///
+/// `level` must be in the zlib range `0..9`; invalid levels raise
+/// `InvalidFlateData`. This non-native implementation uses the pure MoonBit
+/// encoder.
 #cfg(not(target="native"))
 pub fn pdf_flate_encode_with_level(
   data : PdfBytes,
@@ -1502,6 +1523,11 @@ pub fn pdf_flate_encode_with_level(
 }
 
 ///|
+/// Encode owned bytes as a zlib-wrapped Flate stream.
+///
+/// `level` must be in the zlib range `0..9`; invalid levels raise
+/// `InvalidFlateData`. On the native target this uses zlib FFI with a pure
+/// MoonBit fallback.
 #cfg(target="native")
 #coverage.skip
 pub fn pdf_flate_encode_with_level(
@@ -1512,12 +1538,19 @@ pub fn pdf_flate_encode_with_level(
 }
 
 ///|
+/// Encode owned bytes with the default compression level.
+///
+/// This non-native implementation uses the pure MoonBit encoder.
 #cfg(not(target="native"))
 pub fn pdf_flate_encode(data : PdfBytes) -> PdfBytes {
   pdf_flate_encode_view_pure(data)
 }
 
 ///|
+/// Encode owned bytes with the default compression level.
+///
+/// On the native target this tries zlib at level `6` and falls back to the pure
+/// MoonBit encoder if the native call fails.
 #cfg(target="native")
 #coverage.skip
 pub fn pdf_flate_encode(data : PdfBytes) -> PdfBytes {
@@ -1566,12 +1599,22 @@ fn pdf_flate_decode_bytes_native(data : PdfBytes) -> PdfBytes raise PdfError {
 }
 
 ///|
+/// Decode a zlib-wrapped Flate stream from a borrowed byte view.
+///
+/// Empty input decodes to empty output. Malformed headers, unsupported preset
+/// dictionaries, invalid Deflate data, and Adler-32 mismatches raise
+/// `InvalidFlateData`.
 #cfg(not(target="native"))
 pub fn pdf_flate_decode_view(data : BytesView) -> PdfBytes raise PdfError {
   pdf_flate_decode_view_pure(data)
 }
 
 ///|
+/// Decode a zlib-wrapped Flate stream from a borrowed byte view.
+///
+/// On the native target this tries zlib FFI first and falls back to the pure
+/// MoonBit decoder if the native call fails. Invalid compressed data raises
+/// `InvalidFlateData`.
 #cfg(target="native")
 #coverage.skip
 pub fn pdf_flate_decode_view(data : BytesView) -> PdfBytes raise PdfError {
@@ -1593,12 +1636,19 @@ pub fn pdf_flate_decode_view(data : BytesView) -> PdfBytes raise PdfError {
 }
 
 ///|
+/// Decode a zlib-wrapped Flate stream from owned bytes.
+///
+/// Empty input decodes to empty output. Malformed compressed data raises
+/// `InvalidFlateData`.
 #cfg(not(target="native"))
 pub fn pdf_flate_decode(data : PdfBytes) -> PdfBytes raise PdfError {
   pdf_flate_decode_view_pure(data)
 }
 
 ///|
+/// Decode a zlib-wrapped Flate stream from owned bytes.
+///
+/// On the native target this uses zlib FFI with a pure MoonBit fallback.
 #cfg(target="native")
 #coverage.skip
 pub fn pdf_flate_decode(data : PdfBytes) -> PdfBytes raise PdfError {
