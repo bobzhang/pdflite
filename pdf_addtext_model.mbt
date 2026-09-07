@@ -8,3 +8,12 @@ pub(all) enum PdfAddTextFontSource {
   PdfAddTextPreMadeFontPack(PdfFontPack)
   PdfAddTextExistingNamedFont
 }
+
+///|
+pub extend PdfAddTextFontSource with Debug::{to_repr}
+
+///|
+pub extend PdfAddTextFontSource with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAddTextFontSource with ToJson::{to_json}

@@ -7,6 +7,15 @@ pub(all) enum PdfUASubformat {
 }
 
 ///|
+pub extend PdfUASubformat with Debug::{to_repr}
+
+///|
+pub extend PdfUASubformat with Eq::{not_equal, equal}
+
+///|
+pub extend PdfUASubformat with ToJson::{to_json}
+
+///|
 /// Parse CamlPDF's PDF/UA subformat spelling.
 pub fn pdf_ua_subformat_of_string(
   text : String,

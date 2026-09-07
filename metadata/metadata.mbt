@@ -6,3 +6,12 @@ pub(all) enum PdfMetadataEncoding {
   PdfMetadataUTF8
   PdfMetadataStripped
 }
+
+///|
+pub extend PdfMetadataEncoding with Debug::{to_repr}
+
+///|
+pub extend PdfMetadataEncoding with Eq::{not_equal, equal}
+
+///|
+pub extend PdfMetadataEncoding with ToJson::{to_json}

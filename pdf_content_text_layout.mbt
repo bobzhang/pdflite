@@ -12,6 +12,15 @@ pub(all) struct PdfContentTextLayout {
 }
 
 ///|
+pub extend PdfContentTextLayout with Debug::{to_repr}
+
+///|
+pub extend PdfContentTextLayout with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentTextLayout with ToJson::{to_json}
+
+///|
 /// Geometry emitted for one glyph by cpdfcontent-style text placement.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentTextGlyphPlacement {
@@ -26,12 +35,30 @@ pub(all) struct PdfContentTextGlyphPlacement {
 }
 
 ///|
+pub extend PdfContentTextGlyphPlacement with Debug::{to_repr}
+
+///|
+pub extend PdfContentTextGlyphPlacement with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentTextGlyphPlacement with ToJson::{to_json}
+
+///|
 /// Result of placing one raw PDF text string with cpdfcontent text semantics.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentTextLayoutResult {
   glyphs : Array[PdfContentTextGlyphPlacement]
   text_matrix : @geometry.TransformMatrix
 }
+
+///|
+pub extend PdfContentTextLayoutResult with Debug::{to_repr}
+
+///|
+pub extend PdfContentTextLayoutResult with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentTextLayoutResult with ToJson::{to_json}
 
 ///|
 fn pdf_content_text_divisor(font : PdfFont) -> Double {
@@ -45,7 +72,7 @@ fn pdf_content_text_divisor(font : PdfFont) -> Double {
 fn pdf_content_text_render_matrix(
   layout : PdfContentTextLayout,
 ) -> @geometry.TransformMatrix {
-  let parameters : @geometry.TransformMatrix = {
+  let parameters = @geometry.TransformMatrix::{
     a: layout.font_size * layout.horizontal_scaling,
     b: 0.0,
     c: 0.0,
@@ -123,7 +150,7 @@ pub fn PdfFont::content_text_layout_of_bytes(
   let descent = extra_metrics.1 / divisor
   let vertical = self.content_is_vertical()
   let charcodes = self.content_charcodes_of_bytes(text)
-  let glyphs : Array[PdfContentTextGlyphPlacement] = Array::new(
+  let glyphs : Array[PdfContentTextGlyphPlacement] = Array(
     capacity=charcodes.length(),
   )
   let mut text_matrix = layout.text_matrix
@@ -197,7 +224,7 @@ pub fn PdfFont::content_text_layout_of_tj_array(
   elements : ArrayView[@syntax.PdfObject],
   layout : PdfContentTextLayout,
 ) -> PdfContentTextLayoutResult {
-  let glyphs : Array[PdfContentTextGlyphPlacement] = Array::new(
+  let glyphs : Array[PdfContentTextGlyphPlacement] = Array(
     capacity=elements.length(),
   )
   let vertical = self.content_is_vertical()

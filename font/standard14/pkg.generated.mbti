@@ -44,9 +44,13 @@ pub(all) enum PdfStandardFont {
 } derive(Eq, ToJson, @debug.Debug)
 pub fn PdfStandardFont::afm_data(Self) -> @afm.PdfAfmData
 pub fn PdfStandardFont::baseline_adjustment(Self) -> Int
+pub fn PdfStandardFont::equal(Self, Self) -> Bool
 pub fn PdfStandardFont::flags(Self) -> Int
 pub fn PdfStandardFont::name(Self) -> String
+pub fn PdfStandardFont::not_equal(Self, Self) -> Bool
 pub fn PdfStandardFont::stemv(Self) -> Int
+pub fn PdfStandardFont::to_json(Self) -> Json
+pub fn PdfStandardFont::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 pub using @afm {type PdfAfmData}
@@ -54,4 +58,3 @@ pub using @afm {type PdfAfmData}
 pub type PdfBytes = Bytes
 
 // Traits
-

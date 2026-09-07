@@ -98,7 +98,7 @@ fn pdf_image_content_ops(
   width : Int32,
   height : Int32,
 ) -> Array[@content.PdfContentOp] {
-  let output : Array[@content.PdfContentOp] = Array::new(
+  let output : Array[@content.PdfContentOp] = Array(
     capacity=if structinfo { 4 } else { 2 },
   )
   if structinfo {
@@ -144,7 +144,7 @@ fn PdfDocument::pdf_image_add_image_page(
     image,
   )
   let image_number = self.add_object(image)
-  let page : @page.PdfPage = {
+  let page = @page.PdfPage::{
     content: [
       pdf_content_stream_of_ops(
         pdf_image_content_ops(structinfo, width, height),

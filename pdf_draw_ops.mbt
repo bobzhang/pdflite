@@ -61,3 +61,12 @@ pub(all) enum PdfDrawOp {
   PdfDrawEndEltInfo(String)
   PdfDrawAutoTag(Bool)
 }
+
+///|
+pub extend PdfDrawOp with Debug::{to_repr}
+
+///|
+pub extend PdfDrawOp with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawOp with ToJson::{to_json}

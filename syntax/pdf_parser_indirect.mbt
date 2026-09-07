@@ -8,6 +8,15 @@ pub(all) struct PdfParsedIndirectObject {
 }
 
 ///|
+pub extend PdfParsedIndirectObject with Debug::{to_repr}
+
+///|
+pub extend PdfParsedIndirectObject with Eq::{not_equal, equal}
+
+///|
+pub extend PdfParsedIndirectObject with ToJson::{to_json}
+
+///|
 fn pdf_parse_indirect_object_at(
   lexemes : ArrayView[PdfLexeme],
   index : Int32,
@@ -109,7 +118,7 @@ pub fn pdf_parse_indirect_object_from_view(
 pub fn pdf_parse_indirect_objects(
   lexemes : ArrayView[PdfLexeme],
 ) -> Array[PdfParsedIndirectObject] raise @core.PdfError {
-  let objects : Array[PdfParsedIndirectObject] = Array::new(
+  let objects : Array[PdfParsedIndirectObject] = Array(
     capacity=(lexemes.length() + 3) / 4,
   )
   let mut current = 0
@@ -129,7 +138,7 @@ pub fn pdf_parse_indirect_objects(
 pub fn pdf_parse_indirect_object_segments(
   lexemes : ArrayView[PdfLexeme],
 ) -> (Array[PdfParsedIndirectObject], PdfParsedIndirectObject?) raise @core.PdfError {
-  let objects : Array[PdfParsedIndirectObject] = Array::new(
+  let objects : Array[PdfParsedIndirectObject] = Array(
     capacity=(lexemes.length() + 3) / 4,
   )
   let mut prefix : PdfParsedIndirectObject? = None

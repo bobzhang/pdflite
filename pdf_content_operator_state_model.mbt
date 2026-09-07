@@ -33,6 +33,15 @@ pub(all) struct PdfContentOperatorFrame {
 }
 
 ///|
+pub extend PdfContentOperatorFrame with Debug::{to_repr}
+
+///|
+pub extend PdfContentOperatorFrame with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentOperatorFrame with ToJson::{to_json}
+
+///|
 /// Mutable interpreter state for cpdfcontent-style content stream analysis.
 /// It tracks graphics state, text state, marked-content context, Type 3 font
 /// metrics, and the saved graphics-state stack.
@@ -69,12 +78,30 @@ pub(all) struct PdfContentOperatorState {
 }
 
 ///|
+pub extend PdfContentOperatorState with Debug::{to_repr}
+
+///|
+pub extend PdfContentOperatorState with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentOperatorState with ToJson::{to_json}
+
+///|
 /// Result of applying a text-related content operator.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentOperatorTextResult {
   state : PdfContentOperatorState
   entries : Array[PdfContentJsonEntry]
 }
+
+///|
+pub extend PdfContentOperatorTextResult with Debug::{to_repr}
+
+///|
+pub extend PdfContentOperatorTextResult with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentOperatorTextResult with ToJson::{to_json}
 
 ///|
 /// Result of applying an operator that can emit resource or graphics-state
@@ -86,6 +113,15 @@ pub(all) struct PdfContentOperatorResourceResult {
 }
 
 ///|
+pub extend PdfContentOperatorResourceResult with Debug::{to_repr}
+
+///|
+pub extend PdfContentOperatorResourceResult with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentOperatorResourceResult with ToJson::{to_json}
+
+///|
 /// Active marked-content scope captured from `BMC`, `BDC`, `MP`, and `DP`
 /// operators.
 #derive(Debug, Eq, ToJson)
@@ -93,6 +129,15 @@ pub(all) struct PdfContentMarkedContent {
   tag : String
   properties : @syntax.PdfObject?
 }
+
+///|
+pub extend PdfContentMarkedContent with Debug::{to_repr}
+
+///|
+pub extend PdfContentMarkedContent with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentMarkedContent with ToJson::{to_json}
 
 ///|
 fn pdf_content_extgstate_name(text : String) -> @core.PdfName {
@@ -258,6 +303,15 @@ pub(all) struct PdfContentType3D0 {
 }
 
 ///|
+pub extend PdfContentType3D0 with Debug::{to_repr}
+
+///|
+pub extend PdfContentType3D0 with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentType3D0 with ToJson::{to_json}
+
+///|
 /// Type 3 font `d1` width and bounding-box declaration captured from a
 /// character procedure.
 #derive(Debug, Eq, ToJson)
@@ -269,6 +323,15 @@ pub(all) struct PdfContentType3D1 {
   urx : Double
   ury : Double
 }
+
+///|
+pub extend PdfContentType3D1 with Debug::{to_repr}
+
+///|
+pub extend PdfContentType3D1 with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentType3D1 with ToJson::{to_json}
 
 ///|
 /// Return cpdfcontent's initial operator state for a page boundary.

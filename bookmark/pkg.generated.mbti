@@ -20,12 +20,20 @@ pub(all) struct PdfBookmark {
   colour : PdfBookmarkColour
   flags : Int
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfBookmark::equal(Self, Self) -> Bool
+pub fn PdfBookmark::not_equal(Self, Self) -> Bool
+pub fn PdfBookmark::to_json(Self) -> Json
+pub fn PdfBookmark::to_repr(Self) -> @debug.Repr
 
 pub(all) struct PdfBookmarkColour {
   red : Double
   green : Double
   blue : Double
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfBookmarkColour::equal(Self, Self) -> Bool
+pub fn PdfBookmarkColour::not_equal(Self, Self) -> Bool
+pub fn PdfBookmarkColour::to_json(Self) -> Json
+pub fn PdfBookmarkColour::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

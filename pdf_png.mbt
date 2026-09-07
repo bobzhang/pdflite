@@ -22,6 +22,15 @@ pub(all) struct PdfPNG {
 }
 
 ///|
+pub extend PdfPNG with Debug::{to_repr}
+
+///|
+pub extend PdfPNG with Eq::{not_equal, equal}
+
+///|
+pub extend PdfPNG with ToJson::{to_json}
+
+///|
 fn pdf_png_u32_to_int(
   value : UInt32,
   context : String,

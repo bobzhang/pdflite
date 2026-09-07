@@ -46,10 +46,10 @@ fn PdfDocument::pdf_squeeze_duplicate_object_changes(
   self : PdfDocument,
 ) -> Array[(Int32, Int32)] raise @core.PdfError {
   let entries = self.parsed_object_entries()
-  let unique : Array[PdfSqueezeDuplicateCandidate] = Array::new(
+  let unique : Array[PdfSqueezeDuplicateCandidate] = Array(
     capacity=entries.length(),
   )
-  let changes : Array[(Int32, Int32)] = Array::new(capacity=entries.length())
+  let changes : Array[(Int32, Int32)] = Array(capacity=entries.length())
   for entry in entries {
     let (number, _, object) = entry
     let candidate = pdf_squeeze_duplicate_candidate(number, object)

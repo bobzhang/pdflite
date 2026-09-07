@@ -11,3 +11,12 @@ pub(all) struct PdfRectangle {
   max_x : Double
   max_y : Double
 }
+
+///|
+pub extend PdfRectangle with Debug::{to_repr}
+
+///|
+pub extend PdfRectangle with Eq::{not_equal, equal}
+
+///|
+pub extend PdfRectangle with ToJson::{to_json}

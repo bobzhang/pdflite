@@ -22,3 +22,12 @@ pub(all) struct PdfUnicodeDataEntry {
   lowercase_mapping : String
   titlecase_mapping : String
 }
+
+///|
+pub extend PdfUnicodeDataEntry with Debug::{to_repr}
+
+///|
+pub extend PdfUnicodeDataEntry with Eq::{not_equal, equal}
+
+///|
+pub extend PdfUnicodeDataEntry with ToJson::{to_json}

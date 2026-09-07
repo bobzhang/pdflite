@@ -12,6 +12,15 @@ pub(all) enum PdfWriteMode {
 }
 
 ///|
+pub extend PdfWriteMode with Debug::{to_repr}
+
+///|
+pub extend PdfWriteMode with Eq::{not_equal, equal}
+
+///|
+pub extend PdfWriteMode with ToJson::{to_json}
+
+///|
 /// Encryption options for `pdf_write_document_options`.
 ///
 /// Passwords are stored as owned PDF bytes so callers can pass borrowed
@@ -23,6 +32,15 @@ pub(all) struct PdfWriteEncryption {
   owner_password : PdfBytes
   denied_permissions : Array[PdfPermission]
 }
+
+///|
+pub extend PdfWriteEncryption with Debug::{to_repr}
+
+///|
+pub extend PdfWriteEncryption with Eq::{not_equal, equal}
+
+///|
+pub extend PdfWriteEncryption with ToJson::{to_json}
 
 ///|
 /// Build owned encryption options for the writer options API.

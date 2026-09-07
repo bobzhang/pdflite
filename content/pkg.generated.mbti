@@ -96,6 +96,10 @@ pub(all) enum PdfContentOp {
   Op_EX
   Op_Unknown(Bytes)
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfContentOp::equal(Self, Self) -> Bool
+pub fn PdfContentOp::not_equal(Self, Self) -> Bool
+pub fn PdfContentOp::to_json(Self) -> Json
+pub fn PdfContentOp::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 pub type PdfBytes = Bytes
@@ -109,4 +113,3 @@ pub using @syntax {type PdfObject}
 pub using @geometry {type TransformMatrix}
 
 // Traits
-

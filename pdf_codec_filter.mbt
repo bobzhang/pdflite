@@ -68,6 +68,15 @@ pub(all) enum PdfStreamEncoding {
 }
 
 ///|
+pub extend PdfStreamEncoding with Debug::{to_repr}
+
+///|
+pub extend PdfStreamEncoding with Eq::{not_equal, equal}
+
+///|
+pub extend PdfStreamEncoding with ToJson::{to_json}
+
+///|
 /// PNG/TIFF predictor requested when encoding stream data.
 ///
 /// Predictor values correspond to PDF `/Predictor` numbers.
@@ -81,6 +90,15 @@ pub(all) enum PdfStreamPredictor {
   PdfStreamPredictorPNGPaeth
   PdfStreamPredictorPNGOptimum
 }
+
+///|
+pub extend PdfStreamPredictor with Debug::{to_repr}
+
+///|
+pub extend PdfStreamPredictor with Eq::{not_equal, equal}
+
+///|
+pub extend PdfStreamPredictor with ToJson::{to_json}
 
 ///|
 /// Return the PDF filter name for this stream encoding.

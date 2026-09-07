@@ -119,6 +119,10 @@ pub(all) enum PdfLexeme {
   StopLexing
   LexNone
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfLexeme::equal(Self, Self) -> Bool
+pub fn PdfLexeme::not_equal(Self, Self) -> Bool
+pub fn PdfLexeme::to_json(Self) -> Json
+pub fn PdfLexeme::to_repr(Self) -> @debug.Repr
 
 pub(all) enum PdfObject {
   PdfNull
@@ -135,12 +139,16 @@ pub(all) enum PdfObject {
 pub fn PdfObject::add_dict_entry(Self, @core.PdfName, Self) -> Self raise @core.PdfError
 pub fn PdfObject::deep_copy(Self) -> Self
 pub fn PdfObject::dictionary_view(Self) -> ArrayView[(@core.PdfName, Self)]?
+pub fn PdfObject::equal(Self, Self) -> Bool
 pub fn PdfObject::find_indirect(Self, @core.PdfName) -> Int? raise @core.PdfError
 pub fn PdfObject::get_stream(Self) -> Unit raise @core.PdfError
 pub fn PdfObject::lookup_immediate(Self, @core.PdfName) -> Self?
+pub fn PdfObject::not_equal(Self, Self) -> Bool
 pub fn PdfObject::remove_dict_entry(Self, @core.PdfName) -> Self raise @core.PdfError
 pub fn PdfObject::replace_dict_entry(Self, @core.PdfName, Self) -> Self raise @core.PdfError
 pub fn PdfObject::stream_bytes(Self) -> Bytes raise @core.PdfError
+pub fn PdfObject::to_json(Self) -> Json
+pub fn PdfObject::to_repr(Self) -> @debug.Repr
 pub fn PdfObject::unique_key(Self, String) -> @core.PdfName raise @core.PdfError
 
 pub(all) struct PdfParsedIndirectObject {
@@ -148,17 +156,29 @@ pub(all) struct PdfParsedIndirectObject {
   generation : Int
   object : PdfObject
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfParsedIndirectObject::equal(Self, Self) -> Bool
+pub fn PdfParsedIndirectObject::not_equal(Self, Self) -> Bool
+pub fn PdfParsedIndirectObject::to_json(Self) -> Json
+pub fn PdfParsedIndirectObject::to_repr(Self) -> @debug.Repr
 
 pub(all) struct PdfStream {
   mut dictionary : PdfObject
   mut data : PdfStreamData
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfStream::equal(Self, Self) -> Bool
+pub fn PdfStream::not_equal(Self, Self) -> Bool
+pub fn PdfStream::to_json(Self) -> Json
+pub fn PdfStream::to_repr(Self) -> @debug.Repr
 
 pub(all) enum PdfStreamData {
   StreamGot(Bytes)
   StreamToGet(ToGet)
 } derive(Eq, ToJson, @debug.Debug)
 pub fn PdfStreamData::deep_copy(Self) -> Self
+pub fn PdfStreamData::equal(Self, Self) -> Bool
+pub fn PdfStreamData::not_equal(Self, Self) -> Bool
+pub fn PdfStreamData::to_json(Self) -> Json
+pub fn PdfStreamData::to_repr(Self) -> @debug.Repr
 
 pub(all) enum PdfStreamDataCrypt {
   PdfStreamDataNoCrypt
@@ -168,7 +188,11 @@ pub(all) enum PdfStreamDataCrypt {
 } derive(Eq, ToJson, @debug.Debug)
 pub fn PdfStreamDataCrypt::decrypt(Self, BytesView) -> Bytes raise @core.PdfError
 pub fn PdfStreamDataCrypt::deep_copy(Self) -> Self
+pub fn PdfStreamDataCrypt::equal(Self, Self) -> Bool
 pub fn PdfStreamDataCrypt::is_identity(Self) -> Bool
+pub fn PdfStreamDataCrypt::not_equal(Self, Self) -> Bool
+pub fn PdfStreamDataCrypt::to_json(Self) -> Json
+pub fn PdfStreamDataCrypt::to_repr(Self) -> @debug.Repr
 
 pub(all) struct ToGet {
   input : @core.ByteCursor
@@ -177,11 +201,14 @@ pub(all) struct ToGet {
   crypt : PdfStreamDataCrypt
 } derive(Eq, ToJson, @debug.Debug)
 pub fn ToGet::crypt(Self) -> PdfStreamDataCrypt
+pub fn ToGet::equal(Self, Self) -> Bool
 pub fn ToGet::input(Self) -> @core.ByteCursor
 pub fn ToGet::length(Self) -> Int
+pub fn ToGet::not_equal(Self, Self) -> Bool
 pub fn ToGet::position(Self) -> Int
+pub fn ToGet::to_json(Self) -> Json
+pub fn ToGet::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 
 // Traits
-

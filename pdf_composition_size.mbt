@@ -9,7 +9,7 @@ fn PdfDocument::pdf_composition_object_size(
 ///|
 fn pdf_composition_unique_numbers(numbers : ArrayView[Int32]) -> Array[Int32] {
   let seen : @hashmap.HashMap[Int32, Bool] = HashMap([])
-  let output : Array[Int32] = Array::new(capacity=numbers.length())
+  let output : Array[Int32] = Array(capacity=numbers.length())
   for number in numbers {
     if !seen.contains(number) {
       seen[number] = true

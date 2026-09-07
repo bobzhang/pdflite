@@ -76,6 +76,10 @@ pub(all) enum PdfAesV3RandomField {
   PdfAesV3OwnerKeySalt
   PdfAesV3PermissionsPadding
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfAesV3RandomField::equal(Self, Self) -> Bool
+pub fn PdfAesV3RandomField::not_equal(Self, Self) -> Bool
+pub fn PdfAesV3RandomField::to_json(Self) -> Json
+pub fn PdfAesV3RandomField::to_repr(Self) -> @debug.Repr
 
 pub(all) enum PdfEncryptionMethod {
   PdfEncryption40Bit
@@ -85,6 +89,10 @@ pub(all) enum PdfEncryptionMethod {
   PdfEncryptionAES256ISO(Bool)
   PdfEncryptionAlreadyEncrypted
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfEncryptionMethod::equal(Self, Self) -> Bool
+pub fn PdfEncryptionMethod::not_equal(Self, Self) -> Bool
+pub fn PdfEncryptionMethod::to_json(Self) -> Json
+pub fn PdfEncryptionMethod::to_repr(Self) -> @debug.Repr
 
 pub(all) struct PdfEncryptionValues {
   crypt_type : @core.PdfCryptType
@@ -97,6 +105,9 @@ pub(all) struct PdfEncryptionValues {
   user_encryption_key : Bytes?
   owner_encryption_key : Bytes?
 } derive(Eq, @debug.Debug)
+pub fn PdfEncryptionValues::equal(Self, Self) -> Bool
+pub fn PdfEncryptionValues::not_equal(Self, Self) -> Bool
+pub fn PdfEncryptionValues::to_repr(Self) -> @debug.Repr
 
 pub(all) enum PdfPermission {
   PdfNoEdit
@@ -108,12 +119,18 @@ pub(all) enum PdfPermission {
   PdfNoAssemble
   PdfNoHqPrint
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfPermission::equal(Self, Self) -> Bool
+pub fn PdfPermission::not_equal(Self, Self) -> Bool
+pub fn PdfPermission::to_json(Self) -> Json
+pub fn PdfPermission::to_repr(Self) -> @debug.Repr
 
 pub(all) struct PdfSavedEncryption {
   values : PdfEncryptionValues
 } derive(Eq, @debug.Debug)
+pub fn PdfSavedEncryption::equal(Self, Self) -> Bool
+pub fn PdfSavedEncryption::not_equal(Self, Self) -> Bool
+pub fn PdfSavedEncryption::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 
 // Traits
-

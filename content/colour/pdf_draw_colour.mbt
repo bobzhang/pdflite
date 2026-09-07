@@ -11,6 +11,15 @@ pub(all) enum PdfDrawColour {
 }
 
 ///|
+pub extend PdfDrawColour with Debug::{to_repr}
+
+///|
+pub extend PdfDrawColour with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawColour with ToJson::{to_json}
+
+///|
 /// Convert a cpdf content colour into the draw colour variant.
 pub fn PdfContentColour::to_draw_colour(
   self : PdfContentColour,

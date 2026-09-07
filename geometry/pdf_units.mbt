@@ -12,6 +12,15 @@ pub(all) enum PdfUnit {
 }
 
 ///|
+pub extend PdfUnit with Debug::{to_repr}
+
+///|
+pub extend PdfUnit with Eq::{not_equal, equal}
+
+///|
+pub extend PdfUnit with ToJson::{to_json}
+
+///|
 /// Converts a value from `unit` to PDF points.
 pub fn unit_points(value : Double, unit : PdfUnit) -> Double {
   match unit {

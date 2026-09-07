@@ -7,6 +7,15 @@ pub(all) struct Point2 {
 }
 
 ///|
+pub extend Point2 with Debug::{to_repr}
+
+///|
+pub extend Point2 with Eq::{not_equal, equal}
+
+///|
+pub extend Point2 with ToJson::{to_json}
+
+///|
 /// A high-level affine transform operation.
 ///
 /// Operation lists preserve CamlPDF's transform model; they can be rendered for
@@ -19,6 +28,15 @@ pub(all) enum TransformOp {
   ShearX(Point2, Double)
   ShearY(Point2, Double)
 }
+
+///|
+pub extend TransformOp with Debug::{to_repr}
+
+///|
+pub extend TransformOp with Eq::{not_equal, equal}
+
+///|
+pub extend TransformOp with ToJson::{to_json}
 
 ///|
 /// A PDF affine transform matrix.
@@ -37,6 +55,15 @@ pub(all) struct TransformMatrix {
 }
 
 ///|
+pub extend TransformMatrix with Debug::{to_repr}
+
+///|
+pub extend TransformMatrix with Eq::{not_equal, equal}
+
+///|
+pub extend TransformMatrix with ToJson::{to_json}
+
+///|
 /// The decomposed components of an affine transform matrix.
 ///
 /// Values are expressed as scale, aspect ratio, rotation, shear, and
@@ -50,3 +77,12 @@ pub(all) struct TransformDecomposition {
   translate_x : Double
   translate_y : Double
 }
+
+///|
+pub extend TransformDecomposition with Debug::{to_repr}
+
+///|
+pub extend TransformDecomposition with Eq::{not_equal, equal}
+
+///|
+pub extend TransformDecomposition with ToJson::{to_json}

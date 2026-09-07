@@ -18,6 +18,15 @@ pub(all) enum PdfPermission {
 }
 
 ///|
+pub extend PdfPermission with Debug::{to_repr}
+
+///|
+pub extend PdfPermission with Eq::{not_equal, equal}
+
+///|
+pub extend PdfPermission with ToJson::{to_json}
+
+///|
 fn pdf_permission_denied(
   permissions : ArrayView[PdfPermission],
   target : PdfPermission,

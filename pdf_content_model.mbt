@@ -8,11 +8,26 @@ enum PdfContentLexeme {
 }
 
 ///|
+pub extend PdfContentLexeme with Debug::{to_repr}
+
+///|
+pub extend PdfContentLexeme with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentLexeme with ToJson::{to_json}
+
+///|
 #derive(Debug, Eq)
 enum PdfContentInlineTextFilter {
   PdfContentInlineAsciiHex
   PdfContentInlineAscii85
 }
+
+///|
+pub extend PdfContentInlineTextFilter with Debug::{to_repr}
+
+///|
+pub extend PdfContentInlineTextFilter with Eq::{not_equal, equal}
 
 ///|
 type PdfContentColourSpaceComponents = (@syntax.PdfObject) -> Int32 raise @core.PdfError

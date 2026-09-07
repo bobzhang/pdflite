@@ -38,6 +38,10 @@ pub(all) struct PdfPageLabel {
   start_page : Int
   start_value : Int
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfPageLabel::equal(Self, Self) -> Bool
+pub fn PdfPageLabel::not_equal(Self, Self) -> Bool
+pub fn PdfPageLabel::to_json(Self) -> Json
+pub fn PdfPageLabel::to_repr(Self) -> @debug.Repr
 
 pub(all) enum PdfPageLabelStyle {
   PageLabelDecimalArabic
@@ -48,6 +52,10 @@ pub(all) enum PdfPageLabelStyle {
   PageLabelNoLabelPrefixOnly
 } derive(Eq, ToJson, @debug.Debug)
 pub fn PdfPageLabelStyle::debug_name(Self) -> String
+pub fn PdfPageLabelStyle::equal(Self, Self) -> Bool
+pub fn PdfPageLabelStyle::not_equal(Self, Self) -> Bool
+pub fn PdfPageLabelStyle::to_json(Self) -> Json
+pub fn PdfPageLabelStyle::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 pub type PdfBytes = Bytes

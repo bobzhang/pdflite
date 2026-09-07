@@ -18,12 +18,20 @@ pub(all) struct PdfWriteEncryption {
   owner_password : Bytes
   denied_permissions : Array[@crypt_core.PdfPermission]
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfWriteEncryption::equal(Self, Self) -> Bool
+pub fn PdfWriteEncryption::not_equal(Self, Self) -> Bool
+pub fn PdfWriteEncryption::to_json(Self) -> Json
+pub fn PdfWriteEncryption::to_repr(Self) -> @debug.Repr
 
 pub(all) enum PdfWriteMode {
   PdfWriteClassic
   PdfWriteXRefStream
   PdfWriteCompressedXRefStream
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfWriteMode::equal(Self, Self) -> Bool
+pub fn PdfWriteMode::not_equal(Self, Self) -> Bool
+pub fn PdfWriteMode::to_json(Self) -> Json
+pub fn PdfWriteMode::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 pub type PdfBytes = Bytes

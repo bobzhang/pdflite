@@ -19,12 +19,30 @@ pub(all) enum PdfTypeElement {
 }
 
 ///|
+pub extend PdfTypeElement with Debug::{to_repr}
+
+///|
+pub extend PdfTypeElement with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTypeElement with ToJson::{to_json}
+
+///|
 /// Pages and per-page structure tags produced by the cpdftype typesetter.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfTypeTypesetResult {
   pages : Array[@page.PdfPage]
   tags : Array[Array[(String, Int32)]]
 }
+
+///|
+pub extend PdfTypeTypesetResult with Debug::{to_repr}
+
+///|
+pub extend PdfTypeTypesetResult with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTypeTypesetResult with ToJson::{to_json}
 
 ///|
 priv struct PdfTypeTypesetState {

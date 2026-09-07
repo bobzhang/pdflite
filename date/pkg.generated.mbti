@@ -36,6 +36,10 @@ pub(all) struct PdfDate {
   hour_offset : Int
   minute_offset : Int
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfDate::equal(Self, Self) -> Bool
+pub fn PdfDate::not_equal(Self, Self) -> Bool
+pub fn PdfDate::to_json(Self) -> Json
+pub fn PdfDate::to_repr(Self) -> @debug.Repr
 
 pub(all) struct PdfStrftimeTime {
   tm_sec : Int
@@ -48,6 +52,10 @@ pub(all) struct PdfStrftimeTime {
   tm_yday : Int
   tm_isdst : Bool
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfStrftimeTime::equal(Self, Self) -> Bool
+pub fn PdfStrftimeTime::not_equal(Self, Self) -> Bool
+pub fn PdfStrftimeTime::to_json(Self) -> Json
+pub fn PdfStrftimeTime::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

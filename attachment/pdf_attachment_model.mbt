@@ -12,3 +12,12 @@ pub(all) struct PdfAttachment {
   description : String?
   relationship : String?
 }
+
+///|
+pub extend PdfAttachment with Debug::{to_repr}
+
+///|
+pub extend PdfAttachment with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAttachment with ToJson::{to_json}

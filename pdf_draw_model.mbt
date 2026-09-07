@@ -8,6 +8,15 @@ pub(all) enum PdfDrawJustification {
 }
 
 ///|
+pub extend PdfDrawJustification with Debug::{to_repr}
+
+///|
+pub extend PdfDrawJustification with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawJustification with ToJson::{to_json}
+
+///|
 /// External graphics-state resource allocated while rendering draw operations.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfDrawExtGStateResource {
@@ -17,6 +26,15 @@ pub(all) struct PdfDrawExtGStateResource {
 }
 
 ///|
+pub extend PdfDrawExtGStateResource with Debug::{to_repr}
+
+///|
+pub extend PdfDrawExtGStateResource with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawExtGStateResource with ToJson::{to_json}
+
+///|
 /// XObject resource tracked while rendering draw operations.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfDrawXObjectResource {
@@ -24,6 +42,15 @@ pub(all) struct PdfDrawXObjectResource {
   resource_name : @core.PdfName
   object_number : Int32
 }
+
+///|
+pub extend PdfDrawXObjectResource with Debug::{to_repr}
+
+///|
+pub extend PdfDrawXObjectResource with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawXObjectResource with ToJson::{to_json}
 
 ///|
 /// Font resource tracked while rendering draw operations.
@@ -36,12 +63,30 @@ pub(all) struct PdfDrawFontResource {
 }
 
 ///|
+pub extend PdfDrawFontResource with Debug::{to_repr}
+
+///|
+pub extend PdfDrawFontResource with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawFontResource with ToJson::{to_json}
+
+///|
 /// Current font-pack binding used by draw rendering state.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfDrawFontPackState {
   identifier : String
   fontpack : PdfFontPack
 }
+
+///|
+pub extend PdfDrawFontPackState with Debug::{to_repr}
+
+///|
+pub extend PdfDrawFontPackState with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawFontPackState with ToJson::{to_json}
 
 ///|
 /// Tagged-PDF structure-tree event emitted while rendering draw operations.
@@ -56,12 +101,30 @@ pub(all) enum PdfDrawStructureData {
 }
 
 ///|
+pub extend PdfDrawStructureData with Debug::{to_repr}
+
+///|
+pub extend PdfDrawStructureData with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawStructureData with ToJson::{to_json}
+
+///|
 /// Page-local context used to render `PdfDrawSpecialText`.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfDrawSpecialTextContext {
   time : @date.PdfStrftimeTime
   replacement_values : @addtext.PdfAddTextReplacementValues
 }
+
+///|
+pub extend PdfDrawSpecialTextContext with Debug::{to_repr}
+
+///|
+pub extend PdfDrawSpecialTextContext with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawSpecialTextContext with ToJson::{to_json}
 
 ///|
 /// Resource allocation state for rendering cpdf draw operations.
@@ -87,6 +150,15 @@ pub(all) struct PdfDrawRenderState {
   structure_data : Array[PdfDrawStructureData]
   page_names : Array[@core.PdfName]
 }
+
+///|
+pub extend PdfDrawRenderState with Debug::{to_repr}
+
+///|
+pub extend PdfDrawRenderState with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawRenderState with ToJson::{to_json}
 
 ///|
 /// Build a fresh draw render state with default resource caches.

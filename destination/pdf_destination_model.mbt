@@ -10,6 +10,15 @@ pub(all) enum PdfTargetPage {
 }
 
 ///|
+pub extend PdfTargetPage with Debug::{to_repr}
+
+///|
+pub extend PdfTargetPage with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTargetPage with ToJson::{to_json}
+
+///|
 /// A normalized PDF destination.
 ///
 /// The variants cover action dictionaries, named/string destinations, null
@@ -29,3 +38,12 @@ pub(all) enum PdfDestination {
   DestFitBH(PdfTargetPage, Double?)
   DestFitBV(PdfTargetPage, Double?)
 }
+
+///|
+pub extend PdfDestination with Debug::{to_repr}
+
+///|
+pub extend PdfDestination with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDestination with ToJson::{to_json}

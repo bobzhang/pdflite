@@ -19,6 +19,15 @@ pub(all) struct PdfOcgUsage {
 }
 
 ///|
+pub extend PdfOcgUsage with Debug::{to_repr}
+
+///|
+pub extend PdfOcgUsage with Eq::{not_equal, equal}
+
+///|
+pub extend PdfOcgUsage with ToJson::{to_json}
+
+///|
 /// One PDF optional content group dictionary.
 ///
 /// The group's indirect object number is stored outside this record in
@@ -31,6 +40,15 @@ pub(all) struct PdfOcg {
 }
 
 ///|
+pub extend PdfOcg with Debug::{to_repr}
+
+///|
+pub extend PdfOcg with Eq::{not_equal, equal}
+
+///|
+pub extend PdfOcg with ToJson::{to_json}
+
+///|
 /// Default visibility state for optional content groups in a configuration.
 #derive(Debug, Eq, ToJson)
 pub(all) enum PdfOcgState {
@@ -38,6 +56,15 @@ pub(all) enum PdfOcgState {
   OcgOff
   OcgUnchanged
 }
+
+///|
+pub extend PdfOcgState with Debug::{to_repr}
+
+///|
+pub extend PdfOcgState with Eq::{not_equal, equal}
+
+///|
+pub extend PdfOcgState with ToJson::{to_json}
 
 ///|
 /// Policy for whether the layer list is shown on all pages or only visible pages.
@@ -48,6 +75,15 @@ pub(all) enum PdfOcgListMode {
 }
 
 ///|
+pub extend PdfOcgListMode with Debug::{to_repr}
+
+///|
+pub extend PdfOcgListMode with Eq::{not_equal, equal}
+
+///|
+pub extend PdfOcgListMode with ToJson::{to_json}
+
+///|
 /// Event context used by optional-content usage application dictionaries.
 #derive(Debug, Eq, ToJson)
 pub(all) enum PdfOcgEvent {
@@ -55,6 +91,15 @@ pub(all) enum PdfOcgEvent {
   OcgPrint
   OcgExport
 }
+
+///|
+pub extend PdfOcgEvent with Debug::{to_repr}
+
+///|
+pub extend PdfOcgEvent with Eq::{not_equal, equal}
+
+///|
+pub extend PdfOcgEvent with ToJson::{to_json}
 
 ///|
 /// Optional-content usage application dictionary.
@@ -67,6 +112,15 @@ pub(all) struct PdfOcgAppDict {
   ocgs : Array[Int32]
   category : Array[PdfName]
 }
+
+///|
+pub extend PdfOcgAppDict with Debug::{to_repr}
+
+///|
+pub extend PdfOcgAppDict with Eq::{not_equal, equal}
+
+///|
+pub extend PdfOcgAppDict with ToJson::{to_json}
 
 ///|
 /// Optional-content configuration dictionary.
@@ -90,6 +144,15 @@ pub(all) struct PdfOcgConfig {
 }
 
 ///|
+pub extend PdfOcgConfig with Debug::{to_repr}
+
+///|
+pub extend PdfOcgConfig with Eq::{not_equal, equal}
+
+///|
+pub extend PdfOcgConfig with ToJson::{to_json}
+
+///|
 /// Complete catalog optional-content properties.
 ///
 /// `ocgs` pairs each group's existing indirect object number with the parsed
@@ -101,6 +164,15 @@ pub(all) struct PdfOptionalContent {
   default_config : PdfOcgConfig
   configs : Array[PdfOcgConfig]
 }
+
+///|
+pub extend PdfOptionalContent with Debug::{to_repr}
+
+///|
+pub extend PdfOptionalContent with Eq::{not_equal, equal}
+
+///|
+pub extend PdfOptionalContent with ToJson::{to_json}
 
 ///|
 fn pdf_ocg_default_view_name() -> PdfName {

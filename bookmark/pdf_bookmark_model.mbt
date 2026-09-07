@@ -10,6 +10,15 @@ pub(all) struct PdfBookmarkColour {
 }
 
 ///|
+pub extend PdfBookmarkColour with Debug::{to_repr}
+
+///|
+pub extend PdfBookmarkColour with Eq::{not_equal, equal}
+
+///|
+pub extend PdfBookmarkColour with ToJson::{to_json}
+
+///|
 /// One bookmark in the flattened outline representation.
 ///
 /// Bookmarks are ordered in preorder. `level` is zero-based nesting depth,
@@ -24,6 +33,15 @@ pub(all) struct PdfBookmark {
   colour : PdfBookmarkColour
   flags : Int32
 }
+
+///|
+pub extend PdfBookmark with Debug::{to_repr}
+
+///|
+pub extend PdfBookmark with Eq::{not_equal, equal}
+
+///|
+pub extend PdfBookmark with ToJson::{to_json}
 
 ///|
 /// Default black bookmark colour.

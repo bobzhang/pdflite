@@ -20,7 +20,10 @@ pub(all) struct PdfCompositionEntry {
   bytes : Int
   percent : Double
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PdfCompositionEntry::equal(Self, Self) -> Bool
+pub fn PdfCompositionEntry::not_equal(Self, Self) -> Bool
 pub fn PdfCompositionEntry::to_json(Self) -> Json
+pub fn PdfCompositionEntry::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

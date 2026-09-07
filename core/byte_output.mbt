@@ -12,6 +12,15 @@ pub struct ByteOutput {
 }
 
 ///|
+pub extend ByteOutput with Debug::{to_repr}
+
+///|
+pub extend ByteOutput with Eq::{not_equal, equal}
+
+///|
+pub extend ByteOutput with ToJson::{to_json}
+
+///|
 /// Creates an empty output buffer.
 ///
 /// `initial_size` preallocates zero-filled capacity but does not count as

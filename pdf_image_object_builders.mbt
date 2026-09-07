@@ -9,6 +9,15 @@ pub(all) enum PdfPixelLayout {
 }
 
 ///|
+pub extend PdfPixelLayout with Debug::{to_repr}
+
+///|
+pub extend PdfPixelLayout with Eq::{not_equal, equal}
+
+///|
+pub extend PdfPixelLayout with ToJson::{to_json}
+
+///|
 /// Extracted PDF image data.
 ///
 /// JPEG, JPEG2000, and JBIG2 variants keep their encoded bytes and optional
@@ -23,12 +32,30 @@ pub(all) enum PdfImage {
 }
 
 ///|
+pub extend PdfImage with Debug::{to_repr}
+
+///|
+pub extend PdfImage with Eq::{not_equal, equal}
+
+///|
+pub extend PdfImage with ToJson::{to_json}
+
+///|
 /// One file that cpdf-style image extraction would write.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfExtractedImageFile {
   path : String
   data : @core.PdfBytes
 }
+
+///|
+pub extend PdfExtractedImageFile with Debug::{to_repr}
+
+///|
+pub extend PdfExtractedImageFile with Eq::{not_equal, equal}
+
+///|
+pub extend PdfExtractedImageFile with ToJson::{to_json}
 
 ///|
 /// Build a PDF image XObject for JPEG data.
@@ -313,7 +340,7 @@ pub fn pdf_image_object_of_jbig2_data(
     (pdf_image_width_key(), PdfInteger(width)),
     (pdf_image_height_key(), PdfInteger(height)),
   ]
-  let extra : Array[(Int32, @syntax.PdfObject)] = Array::new(
+  let extra : Array[(Int32, @syntax.PdfObject)] = Array(
     capacity=match global {
       Some(_) => 1
       None => 0

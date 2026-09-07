@@ -8,5 +8,14 @@ pub(all) enum PdfContentColour {
 }
 
 ///|
+pub extend PdfContentColour with Debug::{to_repr}
+
+///|
+pub extend PdfContentColour with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentColour with ToJson::{to_json}
+
+///|
 /// The default black content colour.
 pub let pdf_content_black : PdfContentColour = PdfContentGrey(0.0)

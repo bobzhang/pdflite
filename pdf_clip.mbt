@@ -9,12 +9,30 @@ pub(all) enum PdfClipOperation {
 }
 
 ///|
+pub extend PdfClipOperation with Debug::{to_repr}
+
+///|
+pub extend PdfClipOperation with Eq::{not_equal, equal}
+
+///|
+pub extend PdfClipOperation with ToJson::{to_json}
+
+///|
 /// A vertex in a cpdf/GPC polygon contour.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfClipVertex {
   x : Double
   y : Double
 }
+
+///|
+pub extend PdfClipVertex with Debug::{to_repr}
+
+///|
+pub extend PdfClipVertex with Eq::{not_equal, equal}
+
+///|
+pub extend PdfClipVertex with ToJson::{to_json}
 
 ///|
 /// One contour in a cpdf/GPC polygon.
@@ -28,11 +46,29 @@ pub(all) struct PdfClipContour {
 }
 
 ///|
+pub extend PdfClipContour with Debug::{to_repr}
+
+///|
+pub extend PdfClipContour with Eq::{not_equal, equal}
+
+///|
+pub extend PdfClipContour with ToJson::{to_json}
+
+///|
 /// A cpdf/GPC polygon represented as an ordered list of contours.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfClipPolygon {
   contours : Array[PdfClipContour]
 }
+
+///|
+pub extend PdfClipPolygon with Debug::{to_repr}
+
+///|
+pub extend PdfClipPolygon with Eq::{not_equal, equal}
+
+///|
+pub extend PdfClipPolygon with ToJson::{to_json}
 
 ///|
 /// Build a cpdf/GPC polygon vertex.

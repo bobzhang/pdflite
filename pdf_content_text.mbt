@@ -7,6 +7,15 @@ pub(all) struct PdfContentTextFontCacheEntry {
 }
 
 ///|
+pub extend PdfContentTextFontCacheEntry with Debug::{to_repr}
+
+///|
+pub extend PdfContentTextFontCacheEntry with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentTextFontCacheEntry with ToJson::{to_json}
+
+///|
 /// Text state tracked by cpdfcontent before glyph layout is emitted.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentTextState {
@@ -26,12 +35,30 @@ pub(all) struct PdfContentTextState {
 }
 
 ///|
+pub extend PdfContentTextState with Debug::{to_repr}
+
+///|
+pub extend PdfContentTextState with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentTextState with ToJson::{to_json}
+
+///|
 /// Result of applying a text operator to the current text state.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentTextOpResult {
   text_state : PdfContentTextState
   glyphs : Array[PdfContentTextGlyphPlacement]
 }
+
+///|
+pub extend PdfContentTextOpResult with Debug::{to_repr}
+
+///|
+pub extend PdfContentTextOpResult with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentTextOpResult with ToJson::{to_json}
 
 ///|
 fn pdf_content_initial_text_font() -> PdfFont {
@@ -79,7 +106,7 @@ fn pdf_content_text_font_cache_with(
   name : String,
   font : PdfFont,
 ) -> Array[PdfContentTextFontCacheEntry] {
-  let output : Array[PdfContentTextFontCacheEntry] = Array::new(
+  let output : Array[PdfContentTextFontCacheEntry] = Array(
     capacity=cache.length() + 1,
   )
   let mut found = false

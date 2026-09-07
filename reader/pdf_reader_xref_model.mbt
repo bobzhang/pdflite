@@ -13,6 +13,12 @@ pub(all) struct PdfClassicXRefEntry {
 }
 
 ///|
+pub extend PdfClassicXRefEntry with Debug::{to_repr}
+
+///|
+pub extend PdfClassicXRefEntry with Eq::{not_equal, equal}
+
+///|
 /// Parsed xref section and associated trailer.
 pub(all) struct PdfXRefSection {
   entries : Array[PdfClassicXRefEntry]

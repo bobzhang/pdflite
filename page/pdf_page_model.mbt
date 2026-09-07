@@ -9,6 +9,15 @@ pub(all) enum PdfPageRotation {
 }
 
 ///|
+pub extend PdfPageRotation with Debug::{to_repr}
+
+///|
+pub extend PdfPageRotation with Eq::{not_equal, equal}
+
+///|
+pub extend PdfPageRotation with ToJson::{to_json}
+
+///|
 /// In-memory page description used by page-tree read and write helpers.
 ///
 /// `content` stores stream objects or indirect stream references. `mediabox`,
@@ -22,6 +31,15 @@ pub(all) struct PdfPage {
   rotate : PdfPageRotation
   rest : PdfObject
 }
+
+///|
+pub extend PdfPage with Debug::{to_repr}
+
+///|
+pub extend PdfPage with Eq::{not_equal, equal}
+
+///|
+pub extend PdfPage with ToJson::{to_json}
 
 ///|
 /// Convert a normalized page rotation to the integer stored in `/Rotate`.
