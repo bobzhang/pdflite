@@ -160,7 +160,7 @@ fn pdf_text_cmap_end_marker(line : BytesView, start : Int32) -> (Int32, Int32)? 
 
 ///|
 fn pdf_text_cmap_section_line_views(line : BytesView) -> Array[BytesView] {
-  let views : Array[BytesView] = Array(capacity=line.length())
+  let views : Array[BytesView] = Array::new(capacity=line.length())
   let mut start = 0
   while start < line.length() {
     match pdf_text_cmap_end_marker(line, start) {
@@ -222,7 +222,7 @@ fn pdf_text_cmap_line_without_comment(line : BytesView) -> @core.PdfBytes {
 
 ///|
 fn pdf_text_parse_cmap_hex_groups(line : BytesView) -> Array[@core.PdfBytes]? {
-  let groups : Array[@core.PdfBytes] = Array(capacity=line.length() / 2)
+  let groups : Array[@core.PdfBytes] = Array::new(capacity=line.length() / 2)
   let mut index = 0
   while index < line.length() {
     index = pdf_text_skip_cmap_whitespace(line, index)

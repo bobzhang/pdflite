@@ -29,7 +29,7 @@ fn pdf_flate_output_with_header(
   header : ArrayView[Byte],
   body_capacity_hint : Int32,
 ) -> Array[Byte] {
-  let output : Array[Byte] = Array(
+  let output : Array[Byte] = Array::new(
     capacity=header.length() + body_capacity_hint,
   )
   for byte in header {

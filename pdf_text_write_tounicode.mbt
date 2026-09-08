@@ -123,7 +123,7 @@ fn pdf_text_tounicode_bytes(
     pdf_text_ascii_length(" beginbfrange\n") +
     pdf_text_ascii_length(pdf_text_tounicode_postamble())
   let mut charcode = 33
-  let charcode_texts : Array[String] = Array(capacity=sorted.length())
+  let charcode_texts : Array[String] = Array::new(capacity=sorted.length())
   for entry in sorted {
     let charcode_text = pdf_text_hex_int_min2(charcode)
     length += pdf_text_tounicode_bfrange_length(charcode_text, entry.1)

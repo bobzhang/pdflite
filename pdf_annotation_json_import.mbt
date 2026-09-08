@@ -29,10 +29,10 @@ fn pdf_annotation_json_import_data(
     _ => raise SoftError("Bad Annotations JSON file")
   }
   let max_object_number = Ref::{ val: 0, }
-  let extras : Array[(Int32, @syntax.PdfObject)] = Array(
+  let extras : Array[(Int32, @syntax.PdfObject)] = Array::new(
     capacity=entries.length(),
   )
-  let annotations : Array[PdfAnnotationJsonImportRow] = Array(
+  let annotations : Array[PdfAnnotationJsonImportRow] = Array::new(
     capacity=entries.length(),
   )
   for entry in entries {
@@ -76,7 +76,7 @@ fn PdfDocument::pdf_annotation_json_import_renumbered(
     self.copy()
   } else {
     let object_numbers = self.object_numbers()
-    let changes : Array[(Int32, Int32)] = Array(
+    let changes : Array[(Int32, Int32)] = Array::new(
       capacity=object_numbers.length(),
     )
     for index, number in object_numbers {
@@ -185,7 +185,7 @@ fn PdfDocument::pdf_annotation_json_import_rows_for_page(
   rows : ArrayView[PdfAnnotationJsonImportRow],
   page_number : Int32,
 ) -> Array[@syntax.PdfObject] raise @core.PdfError {
-  let imported : Array[@syntax.PdfObject] = Array(capacity=rows.length())
+  let imported : Array[@syntax.PdfObject] = Array::new(capacity=rows.length())
   for row in rows {
     if row.page_number == page_number {
       self.add_object_given_number(
@@ -211,7 +211,7 @@ fn PdfDocument::pdf_annotation_json_import_pages(
   } else {
     let page_reference_numbers = self.page_reference_numbers()
     let pages = self.pages_of_pagetree()
-    let rewritten : Array[@page.PdfPage] = Array(capacity=pages.length())
+    let rewritten : Array[@page.PdfPage] = Array::new(capacity=pages.length())
     for index, page in pages {
       let page_number = index + 1
       let imported = self.pdf_annotation_json_import_rows_for_page(
@@ -310,7 +310,7 @@ pub fn PdfDocument::remove_annotations(
     "remove_annotations",
   )
   let selected_pages = @core.pdf_number_set(page_numbers)
-  let rewritten : Array[@page.PdfPage] = Array(capacity=pages.length())
+  let rewritten : Array[@page.PdfPage] = Array::new(capacity=pages.length())
   for index, page in pages {
     let page_number = index + 1
     if selected_pages.contains(page_number) {

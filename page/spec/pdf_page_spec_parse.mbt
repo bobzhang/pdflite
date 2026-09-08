@@ -8,7 +8,7 @@ fn PdfPageSpecContext::parse_tokens(
   }
   let comma_count = pdf_pagespec_count_commas(tokens)
   if comma_count > 0 {
-    let parts : Array[Array[Int32]] = Array(capacity=comma_count + 1)
+    let parts : Array[Array[Int32]] = Array::new(capacity=comma_count + 1)
     for part in pdf_pagespec_split_commas(tokens, self, comma_count) {
       parts.push(self.parse_tokens(part))
     }
@@ -83,7 +83,7 @@ fn PdfPageSpecContext::filter_valid_pages(
   self : PdfPageSpecContext,
   pages : ArrayView[Int32],
 ) -> Array[Int32] {
-  let output : Array[Int32] = Array(capacity=pages.length())
+  let output : Array[Int32] = Array::new(capacity=pages.length())
   for page in pages {
     if page > 0 && page <= self.end_page {
       output.push(page)

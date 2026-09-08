@@ -31,7 +31,9 @@ fn pdf_flate_push_code_length_token(
 fn pdf_flate_code_length_tokens(
   lengths : ArrayView[Int32],
 ) -> Array[PdfFlateCodeLengthToken] {
-  let tokens : Array[PdfFlateCodeLengthToken] = Array(capacity=lengths.length())
+  let tokens : Array[PdfFlateCodeLengthToken] = Array::new(
+    capacity=lengths.length(),
+  )
   let mut index = 0
   while index < lengths.length() {
     let value = lengths[index]
@@ -226,7 +228,7 @@ fn pdf_flate_push_dynamic_match_block(
   )
   let literal_count = pdf_flate_trim_length_count(literal_lengths, 257)
   let distance_count = pdf_flate_trim_length_count(distance_lengths, 1)
-  let header_lengths : Array[Int32] = Array(
+  let header_lengths : Array[Int32] = Array::new(
     capacity=literal_count + distance_count,
   )
   for length in literal_lengths[:literal_count] {

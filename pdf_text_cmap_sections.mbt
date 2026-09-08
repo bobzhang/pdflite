@@ -93,7 +93,7 @@ fn pdf_text_push_cmap_codespace_entries(
 ///|
 fn pdf_text_parse_cmap_cid_sections(data : BytesView) -> Array[(Int32, Int32)]? {
   let cursor = @core.byte_cursor_of_view(data)
-  let entries : Array[(Int32, Int32)] = Array(capacity=data.length() / 4)
+  let entries : Array[(Int32, Int32)] = Array::new(capacity=data.length() / 4)
   let mut section = PdfTextCMapNone
   for raw_line in cursor.read_line_views() {
     let uncommented = pdf_text_cmap_line_without_comment(raw_line)
@@ -141,7 +141,7 @@ fn pdf_text_parse_cmap_notdef_sections(
   data : BytesView,
 ) -> Array[(Int32, Int32)]? {
   let cursor = @core.byte_cursor_of_view(data)
-  let entries : Array[(Int32, Int32)] = Array(capacity=data.length() / 4)
+  let entries : Array[(Int32, Int32)] = Array::new(capacity=data.length() / 4)
   let mut section = PdfTextCMapNone
   for raw_line in cursor.read_line_views() {
     let uncommented = pdf_text_cmap_line_without_comment(raw_line)
@@ -190,7 +190,7 @@ fn pdf_text_parse_cmap_codespace_sections(
   data : BytesView,
 ) -> Array[PdfCMapCodeSpace]? {
   let cursor = @core.byte_cursor_of_view(data)
-  let entries : Array[PdfCMapCodeSpace] = Array(capacity=data.length() / 4)
+  let entries : Array[PdfCMapCodeSpace] = Array::new(capacity=data.length() / 4)
   let mut section = PdfTextCMapNone
   for raw_line in cursor.read_line_views() {
     let uncommented = pdf_text_cmap_line_without_comment(raw_line)

@@ -17,7 +17,7 @@ fn pdf_text_compose_tounicode_entries(
   current : ArrayView[(Int32, @core.PdfBytes)],
   inherited : ArrayView[(Int32, @core.PdfBytes)],
 ) -> Array[(Int32, @core.PdfBytes)] {
-  let output : Array[(Int32, @core.PdfBytes)] = Array(
+  let output : Array[(Int32, @core.PdfBytes)] = Array::new(
     capacity=current.length() + inherited.length(),
   )
   let seen : @hashmap.HashMap[Int32, Bool] = HashMap([])
@@ -39,7 +39,7 @@ fn pdf_text_compose_cid_entries(
   current : ArrayView[(Int32, Int32)],
   inherited : ArrayView[(Int32, Int32)],
 ) -> Array[(Int32, Int32)] {
-  let output : Array[(Int32, Int32)] = Array(
+  let output : Array[(Int32, Int32)] = Array::new(
     capacity=current.length() + inherited.length(),
   )
   let seen : @hashmap.HashMap[Int32, Bool] = HashMap([])
@@ -61,7 +61,7 @@ fn pdf_text_compose_codespaces(
   current : ArrayView[PdfCMapCodeSpace],
   inherited : ArrayView[PdfCMapCodeSpace],
 ) -> Array[PdfCMapCodeSpace] {
-  let output : Array[PdfCMapCodeSpace] = Array(
+  let output : Array[PdfCMapCodeSpace] = Array::new(
     capacity=current.length() + inherited.length(),
   )
   for entry in current {

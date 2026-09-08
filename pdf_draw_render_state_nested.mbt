@@ -2,7 +2,7 @@
 fn pdf_draw_copy_xobject_resources(
   resources : ArrayView[PdfDrawXObjectResource],
 ) -> Array[PdfDrawXObjectResource] {
-  let output : Array[PdfDrawXObjectResource] = Array(
+  let output : Array[PdfDrawXObjectResource] = Array::new(
     capacity=resources.length(),
   )
   for entry in resources {
@@ -15,7 +15,7 @@ fn pdf_draw_copy_xobject_resources(
 fn pdf_draw_copy_font_resources(
   resources : ArrayView[PdfDrawFontResource],
 ) -> Array[PdfDrawFontResource] {
-  let output : Array[PdfDrawFontResource] = Array(capacity=resources.length())
+  let output : Array[PdfDrawFontResource] = Array::new(capacity=resources.length())
   for entry in resources {
     output.push(entry)
   }
@@ -26,7 +26,7 @@ fn pdf_draw_copy_font_resources(
 fn pdf_draw_copy_fontpacks(
   fontpacks : ArrayView[PdfDrawFontPackState],
 ) -> Array[PdfDrawFontPackState] {
-  let output : Array[PdfDrawFontPackState] = Array(capacity=fontpacks.length())
+  let output : Array[PdfDrawFontPackState] = Array::new(capacity=fontpacks.length())
   for entry in fontpacks {
     output.push(entry)
   }
@@ -37,7 +37,7 @@ fn pdf_draw_copy_fontpacks(
 fn pdf_draw_copy_page_names(
   names : ArrayView[@core.PdfName],
 ) -> Array[@core.PdfName] {
-  let output : Array[@core.PdfName] = Array(capacity=names.length())
+  let output : Array[@core.PdfName] = Array::new(capacity=names.length())
   for name in names {
     output.push(name)
   }

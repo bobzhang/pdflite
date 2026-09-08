@@ -41,7 +41,7 @@ fn pdf_addtext_replace_all_lazy(
     text
   } else {
     let text_bytes = @utf8.encode(text)
-    let replacements : Array[(Int32, Int32, @core.PdfBytes)] = Array(
+    let replacements : Array[(Int32, Int32, @core.PdfBytes)] = Array::new(
       capacity=text_bytes.length() / search_bytes.length(),
     )
     let mut index = 0
@@ -119,7 +119,7 @@ fn pdf_addtext_decode_lossy_view(bytes : BytesView) -> String {
 /// `split_at_newline` helper.
 pub fn pdf_addtext_split_at_newline(text : String) -> Array[String] {
   let bytes = @utf8.encode(text)
-  let lines : Array[String] = Array(capacity=bytes.length())
+  let lines : Array[String] = Array::new(capacity=bytes.length())
   let mut line_start = 0
   let mut index = 0
   while index < bytes.length() {

@@ -225,7 +225,7 @@ fn pdf_flate_match_tokens(
   data : BytesView,
   max_probes : Int32,
 ) -> Array[PdfFlateToken] {
-  let tokens : Array[PdfFlateToken] = Array(capacity=data.length())
+  let tokens : Array[PdfFlateToken] = Array::new(capacity=data.length())
   let last_by_prefix : Array[Int32] = Array::make(65536, -1)
   let previous_by_position : Array[Int32] = Array::make(data.length(), -1)
   let mut index = 0

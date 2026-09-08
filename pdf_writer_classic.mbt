@@ -48,7 +48,7 @@ fn pdf_writer_int_array_contains(
 ///|
 fn pdf_writer_changed_object_numbers(document : PdfDocument) -> Array[Int32] {
   let log = document.event_log()
-  let numbers : Array[Int32] = Array(capacity=log.length() + 1)
+  let numbers : Array[Int32] = Array::new(capacity=log.length() + 1)
   numbers.push(0)
   let seen : @hashmap.HashMap[Int32, Bool] = HashMap([])
   seen[0] = true
@@ -69,7 +69,9 @@ fn pdf_writer_write_document_objects_for_numbers(
   document : PdfDocument,
   numbers : ArrayView[Int32],
 ) -> Array[(Int32, Int32, Int32)] raise @core.PdfError {
-  let xrefs : Array[(Int32, Int32, Int32)] = Array(capacity=numbers.length())
+  let xrefs : Array[(Int32, Int32, Int32)] = Array::new(
+    capacity=numbers.length(),
+  )
   for number in numbers {
     if number > 0 {
       match document.objects.get_entry(number) {
@@ -198,7 +200,7 @@ pub fn pdf_write_document_incremental_update(
   document : PdfDocument,
 ) -> @core.PdfBytes raise @core.PdfError {
   let previous_xref = @reader.pdf_read_startxref_position(original)
-  let output : Array[Byte] = Array(capacity=original.length() + 1)
+  let output : Array[Byte] = Array::new(capacity=original.length() + 1)
   for byte in original {
     output.push(byte)
   }
