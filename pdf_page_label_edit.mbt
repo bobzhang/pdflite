@@ -26,10 +26,10 @@ pub fn pdf_page_label_add_label(
   label : @label.PdfPageLabel,
   range_end_page : Int32,
 ) -> Array[@label.PdfPageLabel] {
-  let before_or_during_or_equal : Array[@label.PdfPageLabel] = Array::new(
+  let before_or_during_or_equal : Array[@label.PdfPageLabel] = Array(
     capacity=labels.length(),
   )
-  let after : Array[@label.PdfPageLabel] = Array::new(capacity=labels.length())
+  let after : Array[@label.PdfPageLabel] = Array(capacity=labels.length())
   for existing in labels {
     if existing.start_page <= range_end_page {
       before_or_during_or_equal.push(existing)
@@ -37,7 +37,7 @@ pub fn pdf_page_label_add_label(
       after.push(existing)
     }
   }
-  let before_or_during : Array[@label.PdfPageLabel] = Array::new(
+  let before_or_during : Array[@label.PdfPageLabel] = Array(
     capacity=before_or_during_or_equal.length(),
   )
   for existing in before_or_during_or_equal {
@@ -45,7 +45,7 @@ pub fn pdf_page_label_add_label(
       before_or_during.push(existing)
     }
   }
-  let before : Array[@label.PdfPageLabel] = Array::new(
+  let before : Array[@label.PdfPageLabel] = Array(
     capacity=before_or_during.length() + 1,
   )
   for existing in before_or_during {
@@ -74,7 +74,7 @@ pub fn pdf_page_label_add_label(
 fn pdf_page_label_range_extents(
   page_numbers : ArrayView[Int32],
 ) -> Array[(Int32, Int32)] {
-  let ranges : Array[(Int32, Int32)] = Array::new(
+  let ranges : Array[(Int32, Int32)] = Array(
     capacity=page_numbers.length(),
   )
   if page_numbers.length() > 0 {
@@ -110,7 +110,7 @@ fn pdf_page_label_has_page_one(labels : ArrayView[@label.PdfPageLabel]) -> Bool 
 fn pdf_page_label_start_additions(
   ranges : ArrayView[(Int32, Int32)],
 ) -> Array[Int32] {
-  let additions : Array[Int32] = Array::new(capacity=ranges.length())
+  let additions : Array[Int32] = Array(capacity=ranges.length())
   let mut so_far = 0
   for range in ranges {
     let (start_page, end_page) = range
@@ -124,7 +124,7 @@ fn pdf_page_label_start_additions(
 fn pdf_page_label_with_basic_if_needed(
   labels : ArrayView[@label.PdfPageLabel],
 ) -> Array[@label.PdfPageLabel] {
-  let output : Array[@label.PdfPageLabel] = Array::new(
+  let output : Array[@label.PdfPageLabel] = Array(
     capacity=labels.length() + 1,
   )
   if !pdf_page_label_has_page_one(labels) {

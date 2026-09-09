@@ -40,7 +40,7 @@ fn pdf_addtext_fontpack_text_ops(
   text : String,
 ) -> Array[@content.PdfContentOp] raise @core.PdfError {
   let codepoints = pdf_codepoints_of_utf8(@utf8.encode(text))
-  let triples : Array[(Int32, Int32, PdfFont)] = Array::new(
+  let triples : Array[(Int32, Int32, PdfFont)] = Array(
     capacity=codepoints.length(),
   )
   for codepoint in codepoints {
@@ -49,7 +49,7 @@ fn pdf_addtext_fontpack_text_ops(
       None => ()
     }
   }
-  let ops : Array[@content.PdfContentOp] = Array::new(
+  let ops : Array[@content.PdfContentOp] = Array(
     capacity=triples.length() * 2,
   )
   for run in pdf_fontpack_collate_runs(triples) {

@@ -34,7 +34,7 @@ pub fn PdfDocument::images_json(
 ) -> Json raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(page_numbers, pages.length(), "images")
-  let entries : Array[PdfImageListEntry] = Array::new(
+  let entries : Array[PdfImageListEntry] = Array(
     capacity=page_numbers.length(),
   )
   let form_numbers : @hashmap.HashMap[Int32, Bool] = HashMap([])

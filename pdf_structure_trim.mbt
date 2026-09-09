@@ -68,7 +68,7 @@ fn PdfDocument::pdf_structure_filter_k_items_in_set(
   items : ArrayView[@syntax.PdfObject],
   deleted_pages : @core.PdfNumberSet,
 ) -> Array[@syntax.PdfObject]? {
-  let output : Array[@syntax.PdfObject] = Array::new(capacity=items.length())
+  let output : Array[@syntax.PdfObject] = Array(capacity=items.length())
   let mut changed = false
   for item in items {
     if self.pdf_structure_k_item_survives_in_set(item, deleted_pages) {
@@ -126,7 +126,7 @@ fn PdfDocument::pdf_structure_trim_deleted_pages(
     while changed {
       changed = false
       let object_numbers = self.object_numbers()
-      let deletions : Array[Int32] = Array::new(
+      let deletions : Array[Int32] = Array(
         capacity=object_numbers.length(),
       )
       let deletion_seen = @core.pdf_number_set([])
@@ -145,7 +145,7 @@ fn PdfDocument::pdf_structure_trim_deleted_pages(
         }
       }
       let object_numbers = self.object_numbers()
-      let replacements : Array[(Int32, @syntax.PdfObject)] = Array::new(
+      let replacements : Array[(Int32, @syntax.PdfObject)] = Array(
         capacity=object_numbers.length(),
       )
       for object_number in object_numbers {

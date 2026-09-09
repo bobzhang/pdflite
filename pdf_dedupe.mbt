@@ -38,7 +38,7 @@ fn PdfDocument::pdf_duplicate_stream_changes(
     Array[PdfDuplicateStreamCandidate],
   ] = HashMap([])
   let object_numbers = self.object_numbers()
-  let changes : Array[(Int32, Int32)] = Array::new(
+  let changes : Array[(Int32, Int32)] = Array(
     capacity=object_numbers.length(),
   )
   for number in object_numbers {
@@ -49,7 +49,7 @@ fn PdfDocument::pdf_duplicate_stream_changes(
         let unique_streams = match unique_streams_by_length.get(length) {
           Some(streams) => streams
           None => {
-            let streams : Array[PdfDuplicateStreamCandidate] = Array::new(
+            let streams : Array[PdfDuplicateStreamCandidate] = Array(
               capacity=1,
             )
             unique_streams_by_length[length] = streams

@@ -139,7 +139,7 @@ pub fn pdf_count_whitespace_tokens(view : BytesView) -> Int32 {
 ///
 /// The returned token views borrow from the input view.
 pub fn pdf_split_whitespace_tokens(view : BytesView) -> Array[BytesView] {
-  let tokens : Array[BytesView] = Array::new(
+  let tokens : Array[BytesView] = Array(
     capacity=pdf_count_whitespace_tokens(view),
   )
   let mut index = 0

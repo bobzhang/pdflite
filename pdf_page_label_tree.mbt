@@ -47,7 +47,7 @@ fn PdfDocument::pdf_page_label_raw_entries(
     tree,
   )
   let kids_object = self.lookup_direct(pdf_tree_kids_key(), tree)
-  let output : Array[(@syntax.PdfObject, @syntax.PdfObject)] = Array::new(
+  let output : Array[(@syntax.PdfObject, @syntax.PdfObject)] = Array(
     capacity=match direct {
       Some(PdfArray(items)) => items.length() / 2
       _ =>
@@ -105,7 +105,7 @@ fn PdfDocument::pdf_page_label_of_range(
 
 ///|
 fn pdf_page_label_object(label : @label.PdfPageLabel) -> @syntax.PdfObject {
-  let entries : Array[(@core.PdfName, @syntax.PdfObject)] = Array::new(
+  let entries : Array[(@core.PdfName, @syntax.PdfObject)] = Array(
     capacity=3,
   )
   match pdf_page_label_style_object(label.label_style) {
@@ -145,7 +145,7 @@ pub fn PdfDocument::read_page_labels(
   match self.lookup_direct(pdf_page_label_page_labels_key(), root) {
     Some(label_tree) => {
       let raw_entries = self.pdf_page_label_raw_entries(label_tree)
-      let output : Array[@label.PdfPageLabel] = Array::new(
+      let output : Array[@label.PdfPageLabel] = Array(
         capacity=raw_entries.length(),
       )
       for entry in raw_entries {
@@ -218,7 +218,7 @@ pub fn PdfDocument::write_page_labels(
   } else {
     let root = self.pdf_page_label_catalog()
     let pdf = self.copy()
-    let entries : Array[(Int32, @syntax.PdfObject)] = Array::new(
+    let entries : Array[(Int32, @syntax.PdfObject)] = Array(
       capacity=labels.length(),
     )
     for label in labels {

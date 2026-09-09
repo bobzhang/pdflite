@@ -69,7 +69,7 @@ pub fn pdf_xref_stream_entries(
   if w0 < 0 || w1 < 0 || w2 < 0 || w0 + w1 + w2 <= 0 {
     raise XRefEntryExpected
   }
-  let entries : Array[PdfClassicXRefEntry] = Array::new(
+  let entries : Array[PdfClassicXRefEntry] = Array(
     capacity=pdf_xref_stream_entry_capacity(index_pairs),
   )
   let mut position = 0

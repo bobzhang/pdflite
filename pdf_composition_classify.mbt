@@ -45,7 +45,7 @@ fn PdfDocument::pdf_composition_piece_info(
   marked : @hashmap.HashMap[Int32, Bool],
 ) -> Array[Int32] {
   let entries = self.parsed_object_entries()
-  let output : Array[Int32] = Array::new(capacity=entries.length())
+  let output : Array[Int32] = Array(capacity=entries.length())
   for entry in entries {
     match self.lookup_direct(pdf_composition_piece_info(), entry.2) {
       Some(piece_info) =>
@@ -63,7 +63,7 @@ fn PdfDocument::pdf_composition_images(
   number : Int32,
   object : @syntax.PdfObject,
 ) -> Array[Int32] {
-  let output : Array[Int32] = Array::new(capacity=1)
+  let output : Array[Int32] = Array(capacity=1)
   if !marked.contains(number) {
     match self.lookup_direct(pdf_composition_subtype(), object) {
       Some(PdfNameObject(name)) if name == pdf_composition_image() =>
@@ -81,7 +81,7 @@ fn PdfDocument::pdf_composition_fonts(
   number : Int32,
   object : @syntax.PdfObject,
 ) -> Array[Int32] {
-  let output : Array[Int32] = Array::new(capacity=1)
+  let output : Array[Int32] = Array(capacity=1)
   if !marked.contains(number) {
     match self.lookup_direct(pdf_composition_type(), object) {
       Some(PdfNameObject(name)) if name == pdf_composition_font() =>
@@ -122,7 +122,7 @@ fn PdfDocument::pdf_composition_content_streams(
   number : Int32,
   object : @syntax.PdfObject,
 ) -> Array[Int32] {
-  let output : Array[Int32] = Array::new(capacity=1)
+  let output : Array[Int32] = Array(capacity=1)
   if !marked.contains(number) {
     match self.lookup_direct(pdf_composition_type(), object) {
       Some(PdfNameObject(name)) if name == pdf_composition_page() =>
@@ -153,9 +153,9 @@ fn PdfDocument::pdf_composition_find_objects(
 ) -> (Array[Int32], Array[Int32], Array[Int32], Array[Int32], Array[Int32]) raise @core.PdfError {
   let marked : @hashmap.HashMap[Int32, Bool] = HashMap([])
   let entries = self.parsed_object_entries()
-  let images : Array[Int32] = Array::new(capacity=entries.length())
-  let fonts : Array[Int32] = Array::new(capacity=entries.length())
-  let content_streams : Array[Int32] = Array::new(capacity=entries.length())
+  let images : Array[Int32] = Array(capacity=entries.length())
+  let fonts : Array[Int32] = Array(capacity=entries.length())
+  let content_streams : Array[Int32] = Array(capacity=entries.length())
   for entry in entries {
     if !marked.contains(entry.0) {
       images.append(self.pdf_composition_images(marked, entry.0, entry.2))

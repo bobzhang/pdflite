@@ -121,7 +121,7 @@ fn pdf_afm_section_lines(
   start_marker : String,
   end_marker : String,
 ) -> Array[BytesView] {
-  let output : Array[BytesView] = Array::new(capacity=lines.length())
+  let output : Array[BytesView] = Array(capacity=lines.length())
   let mut collecting = false
   let mut done = false
   for line in lines {
@@ -205,7 +205,7 @@ fn pdf_afm_kern(
 /// `PdfError::NumberExpected` for malformed metric sections.
 pub fn pdf_read_afm(data : BytesView) -> PdfAfmData raise PdfError {
   let lines = @core.byte_cursor_of_view(data).read_line_views()
-  let headers : Array[(PdfBytes, PdfBytes)] = Array::new(
+  let headers : Array[(PdfBytes, PdfBytes)] = Array(
     capacity=lines.length(),
   )
   for line in lines {
@@ -220,7 +220,7 @@ pub fn pdf_read_afm(data : BytesView) -> PdfAfmData raise PdfError {
   let metric_lines = pdf_afm_section_lines(
     lines, "StartCharMetrics", "EndCharMetrics",
   )
-  let raw_metrics : Array[(PdfBytes, Int32, Int32)] = Array::new(
+  let raw_metrics : Array[(PdfBytes, Int32, Int32)] = Array(
     capacity=metric_lines.length(),
   )
   for line in metric_lines {
@@ -228,10 +228,10 @@ pub fn pdf_read_afm(data : BytesView) -> PdfAfmData raise PdfError {
       raw_metrics.push(pdf_afm_char_metric(line))
     }
   }
-  let char_metrics : Array[(Int32, Int32)] = Array::new(
+  let char_metrics : Array[(Int32, Int32)] = Array(
     capacity=raw_metrics.length(),
   )
-  let char_name_widths : Array[(PdfBytes, Int32)] = Array::new(
+  let char_name_widths : Array[(PdfBytes, Int32)] = Array(
     capacity=raw_metrics.length(),
   )
   for metric in raw_metrics {
@@ -244,7 +244,7 @@ pub fn pdf_read_afm(data : BytesView) -> PdfAfmData raise PdfError {
   let kern_lines = pdf_afm_section_lines(
     lines, "StartKernPairs", "EndKernPairs",
   )
-  let kerns : Array[(Int32, Int32, Int32)] = Array::new(
+  let kerns : Array[(Int32, Int32, Int32)] = Array(
     capacity=kern_lines.length(),
   )
   for line in kern_lines {

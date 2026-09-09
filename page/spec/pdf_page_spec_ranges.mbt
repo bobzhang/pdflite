@@ -1,6 +1,6 @@
 ///|
 fn pdf_pagespec_range(start : Int32, finish : Int32) -> Array[Int32] {
-  let output : Array[Int32] = Array::new(
+  let output : Array[Int32] = Array(
     capacity=if start <= finish {
       finish - start + 1
     } else {
@@ -42,7 +42,7 @@ fn pdf_pagespec_invert_range(
         selected_pages[selected] = true
       }
     }
-    let output : Array[Int32] = Array::new(capacity=end_page)
+    let output : Array[Int32] = Array(capacity=end_page)
     for page in 1..<=end_page {
       if !selected_pages[page] {
         output.push(page)
@@ -74,7 +74,7 @@ fn pdf_pagespec_sum_lengths(parts : ArrayView[Array[Int32]]) -> Int32 {
 
 ///|
 fn pdf_pagespec_flatten(parts : ArrayView[Array[Int32]]) -> Array[Int32] {
-  let output : Array[Int32] = Array::new(
+  let output : Array[Int32] = Array(
     capacity=pdf_pagespec_sum_lengths(parts),
   )
   for part in parts {
@@ -108,7 +108,7 @@ fn pdf_pagespec_duplicate_range(
   count : Int32,
   range : ArrayView[Int32],
 ) -> Array[Int32] {
-  let output : Array[Int32] = Array::new(capacity=count * range.length())
+  let output : Array[Int32] = Array(capacity=count * range.length())
   for page in range {
     for _ in 0..<count {
       output.push(page)
@@ -119,7 +119,7 @@ fn pdf_pagespec_duplicate_range(
 
 ///|
 fn pdf_pagespec_filter_odd(range : ArrayView[Int32]) -> Array[Int32] {
-  let output : Array[Int32] = Array::new(capacity=range.length())
+  let output : Array[Int32] = Array(capacity=range.length())
   for page in range {
     if page % 2 != 0 {
       output.push(page)
@@ -130,7 +130,7 @@ fn pdf_pagespec_filter_odd(range : ArrayView[Int32]) -> Array[Int32] {
 
 ///|
 fn pdf_pagespec_filter_even(range : ArrayView[Int32]) -> Array[Int32] {
-  let output : Array[Int32] = Array::new(capacity=range.length())
+  let output : Array[Int32] = Array(capacity=range.length())
   for page in range {
     if page % 2 == 0 {
       output.push(page)
@@ -167,10 +167,10 @@ fn pdf_pagespec_split_commas(
   context : PdfPageSpecContext,
   comma_count : Int32,
 ) -> Array[Array[PdfPageSpecToken]] raise PdfError {
-  let parts : Array[Array[PdfPageSpecToken]] = Array::new(
+  let parts : Array[Array[PdfPageSpecToken]] = Array(
     capacity=comma_count + 1,
   )
-  let mut current : Array[PdfPageSpecToken] = Array::new(
+  let mut current : Array[PdfPageSpecToken] = Array(
     capacity=tokens.length(),
   )
   for token in tokens {
@@ -179,7 +179,7 @@ fn pdf_pagespec_split_commas(
         context.bad()
       }
       parts.push(current)
-      current = Array::new(capacity=tokens.length())
+      current = Array(capacity=tokens.length())
     } else {
       current.push(token)
     }
