@@ -18,9 +18,7 @@ fn PdfDocument::pdf_tree_build_name_tree_range(
   is_root : Bool,
 ) -> @syntax.PdfObject {
   if stop - start <= 10 {
-    let items : Array[@syntax.PdfObject] = Array(
-      capacity=(stop - start) * 2,
-    )
+    let items : Array[@syntax.PdfObject] = Array(capacity=(stop - start) * 2)
     for i in start..<stop {
       items.push(PdfString(entries[i].0))
       items.push(entries[i].1)
@@ -119,9 +117,7 @@ fn PdfDocument::pdf_tree_build_number_tree_range(
   is_root : Bool,
 ) -> @syntax.PdfObject {
   if stop - start <= 10 {
-    let items : Array[@syntax.PdfObject] = Array(
-      capacity=(stop - start) * 2,
-    )
+    let items : Array[@syntax.PdfObject] = Array(capacity=(stop - start) * 2)
     for i in start..<stop {
       items.push(PdfInteger(entries[i].0))
       items.push(entries[i].1)

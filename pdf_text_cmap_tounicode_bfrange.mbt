@@ -2,9 +2,7 @@
 fn pdf_text_tounicode_bfrange_inline_entries(
   line : BytesView,
 ) -> Array[(Int32, @core.PdfBytes)]? {
-  let entries : Array[(Int32, @core.PdfBytes)] = Array(
-    capacity=line.length(),
-  )
+  let entries : Array[(Int32, @core.PdfBytes)] = Array(capacity=line.length())
   let mut index = 0
   while index < line.length() {
     match pdf_text_parse_cmap_hex_group_at(line, index) {

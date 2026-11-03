@@ -49,9 +49,7 @@ fn pdf_addtext_fontpack_text_ops(
       None => ()
     }
   }
-  let ops : Array[@content.PdfContentOp] = Array(
-    capacity=triples.length() * 2,
-  )
+  let ops : Array[@content.PdfContentOp] = Array(capacity=triples.length() * 2)
   for run in pdf_fontpack_collate_runs(triples) {
     guard run.length() > 0 else { continue }
     let font_index = run[0].1

@@ -39,9 +39,7 @@ fn pdf_page_shift_select_page_indexed_offsets(
   page_numbers : ArrayView[Int32],
   offsets : ArrayView[(Double, Double)],
 ) -> Array[(Double, Double)] {
-  let selected : Array[(Double, Double)] = Array(
-    capacity=page_numbers.length(),
-  )
+  let selected : Array[(Double, Double)] = Array(capacity=page_numbers.length())
   for page_number in page_numbers {
     selected.push(offsets[page_number - 1])
   }

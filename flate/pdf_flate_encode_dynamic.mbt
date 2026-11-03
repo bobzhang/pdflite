@@ -31,9 +31,7 @@ fn pdf_flate_push_code_length_token(
 fn pdf_flate_code_length_tokens(
   lengths : ArrayView[Int32],
 ) -> Array[PdfFlateCodeLengthToken] {
-  let tokens : Array[PdfFlateCodeLengthToken] = Array(
-    capacity=lengths.length(),
-  )
+  let tokens : Array[PdfFlateCodeLengthToken] = Array(capacity=lengths.length())
   let mut index = 0
   while index < lengths.length() {
     let value = lengths[index]

@@ -69,9 +69,7 @@ fn pdf_writer_write_document_objects_for_numbers(
   document : PdfDocument,
   numbers : ArrayView[Int32],
 ) -> Array[(Int32, Int32, Int32)] raise @core.PdfError {
-  let xrefs : Array[(Int32, Int32, Int32)] = Array(
-    capacity=numbers.length(),
-  )
+  let xrefs : Array[(Int32, Int32, Int32)] = Array(capacity=numbers.length())
   for number in numbers {
     if number > 0 {
       match document.objects.get_entry(number) {

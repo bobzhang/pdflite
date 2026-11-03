@@ -105,9 +105,7 @@ fn PdfDocument::pdf_page_label_of_range(
 
 ///|
 fn pdf_page_label_object(label : @label.PdfPageLabel) -> @syntax.PdfObject {
-  let entries : Array[(@core.PdfName, @syntax.PdfObject)] = Array(
-    capacity=3,
-  )
+  let entries : Array[(@core.PdfName, @syntax.PdfObject)] = Array(capacity=3)
   match pdf_page_label_style_object(label.label_style) {
     Some(style) => entries.push((pdf_page_label_style_key(), style))
     None => ()

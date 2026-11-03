@@ -23,9 +23,7 @@ fn pdf_page_nullify_references(
   match object {
     PdfIndirect(number) if deleted_pages.contains(number) => PdfNull
     PdfArray(items) => {
-      let output : Array[@syntax.PdfObject] = Array(
-        capacity=items.length(),
-      )
+      let output : Array[@syntax.PdfObject] = Array(capacity=items.length())
       for item in items {
         output.push(pdf_page_nullify_references(item, deleted_pages))
       }

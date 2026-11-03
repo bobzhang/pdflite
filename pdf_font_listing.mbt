@@ -23,9 +23,7 @@ fn PdfDocument::pdf_font_list_fonts_dictionary(
   prefix : String,
   fonts : ArrayView[(@core.PdfName, @syntax.PdfObject)],
 ) -> Array[@font.PdfFontListEntry] raise @core.PdfError {
-  let output : Array[@font.PdfFontListEntry] = Array(
-    capacity=fonts.length(),
-  )
+  let output : Array[@font.PdfFontListEntry] = Array(capacity=fonts.length())
   for entry in fonts {
     output.push(
       self.pdf_font_list_entry(
@@ -46,9 +44,7 @@ fn PdfDocument::pdf_font_list_xobjects(
   xobjects : ArrayView[(@core.PdfName, @syntax.PdfObject)],
   seen : Array[Int32],
 ) -> Array[@font.PdfFontListEntry] raise @core.PdfError {
-  let output : Array[@font.PdfFontListEntry] = Array(
-    capacity=xobjects.length(),
-  )
+  let output : Array[@font.PdfFontListEntry] = Array(capacity=xobjects.length())
   for entry in xobjects {
     match entry.1 {
       PdfIndirect(number) =>

@@ -126,9 +126,7 @@ fn PdfDocument::pdf_structure_trim_deleted_pages(
     while changed {
       changed = false
       let object_numbers = self.object_numbers()
-      let deletions : Array[Int32] = Array(
-        capacity=object_numbers.length(),
-      )
+      let deletions : Array[Int32] = Array(capacity=object_numbers.length())
       let deletion_seen = @core.pdf_number_set([])
       for object_number in object_numbers {
         if self.pdf_structure_object_has_deleted_page_in_set(

@@ -205,9 +205,7 @@ fn pdf_afm_kern(
 /// `PdfError::NumberExpected` for malformed metric sections.
 pub fn pdf_read_afm(data : BytesView) -> PdfAfmData raise PdfError {
   let lines = @core.byte_cursor_of_view(data).read_line_views()
-  let headers : Array[(PdfBytes, PdfBytes)] = Array(
-    capacity=lines.length(),
-  )
+  let headers : Array[(PdfBytes, PdfBytes)] = Array(capacity=lines.length())
   for line in lines {
     if pdf_afm_line_starts_with_ascii(line, "C ") {
       break
@@ -244,9 +242,7 @@ pub fn pdf_read_afm(data : BytesView) -> PdfAfmData raise PdfError {
   let kern_lines = pdf_afm_section_lines(
     lines, "StartKernPairs", "EndKernPairs",
   )
-  let kerns : Array[(Int32, Int32, Int32)] = Array(
-    capacity=kern_lines.length(),
-  )
+  let kerns : Array[(Int32, Int32, Int32)] = Array(capacity=kern_lines.length())
   for line in kern_lines {
     if pdf_afm_trim_line_end(line).length() >= 5 {
       match pdf_afm_kern(line, raw_metrics) {

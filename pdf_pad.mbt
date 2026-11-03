@@ -145,9 +145,7 @@ fn pdf_pad_change_table(
 
 ///|
 fn pdf_pad_page_number_range(count : Int32) -> Array[Int32] {
-  let output : Array[Int32] = Array(
-    capacity=if count > 0 { count } else { 0 },
-  )
+  let output : Array[Int32] = Array(capacity=if count > 0 { count } else { 0 })
   for page_number in 1..<=count {
     output.push(page_number)
   }

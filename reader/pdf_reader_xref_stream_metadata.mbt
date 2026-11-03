@@ -77,9 +77,7 @@ pub fn pdf_xref_stream_index_pairs(
       if values.length() % 2 != 0 {
         raise XRefEntryExpected
       }
-      let pairs : Array[(Int32, Int32)] = Array(
-        capacity=values.length() / 2,
-      )
+      let pairs : Array[(Int32, Int32)] = Array(capacity=values.length() / 2)
       for pair_index in 0..<(values.length() / 2) {
         let i = pair_index * 2
         let start = values[i]

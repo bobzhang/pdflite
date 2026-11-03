@@ -104,9 +104,7 @@ fn pdf_writer_xref_stream_data_for_numbers(
 fn pdf_writer_xref_stream_index_pairs(
   entry_numbers : ArrayView[Int32],
 ) -> Array[(Int32, Int32)] {
-  let pairs : Array[(Int32, Int32)] = Array(
-    capacity=entry_numbers.length(),
-  )
+  let pairs : Array[(Int32, Int32)] = Array(capacity=entry_numbers.length())
   let mut run_start = -1
   let mut run_length = 0
   for number in entry_numbers {
@@ -131,9 +129,7 @@ fn pdf_writer_xref_stream_index_pairs(
 fn pdf_writer_xref_stream_index_object(
   pairs : ArrayView[(Int32, Int32)],
 ) -> @syntax.PdfObject {
-  let values : Array[@syntax.PdfObject] = Array(
-    capacity=pairs.length() * 2,
-  )
+  let values : Array[@syntax.PdfObject] = Array(capacity=pairs.length() * 2)
   for pair in pairs {
     let (start, length) = pair
     values.push(PdfInteger(start))

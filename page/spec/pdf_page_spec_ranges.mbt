@@ -74,9 +74,7 @@ fn pdf_pagespec_sum_lengths(parts : ArrayView[Array[Int32]]) -> Int32 {
 
 ///|
 fn pdf_pagespec_flatten(parts : ArrayView[Array[Int32]]) -> Array[Int32] {
-  let output : Array[Int32] = Array(
-    capacity=pdf_pagespec_sum_lengths(parts),
-  )
+  let output : Array[Int32] = Array(capacity=pdf_pagespec_sum_lengths(parts))
   for part in parts {
     for page in part {
       output.push(page)
@@ -167,12 +165,8 @@ fn pdf_pagespec_split_commas(
   context : PdfPageSpecContext,
   comma_count : Int32,
 ) -> Array[Array[PdfPageSpecToken]] raise PdfError {
-  let parts : Array[Array[PdfPageSpecToken]] = Array(
-    capacity=comma_count + 1,
-  )
-  let mut current : Array[PdfPageSpecToken] = Array(
-    capacity=tokens.length(),
-  )
+  let parts : Array[Array[PdfPageSpecToken]] = Array(capacity=comma_count + 1)
+  let mut current : Array[PdfPageSpecToken] = Array(capacity=tokens.length())
   for token in tokens {
     if token is PageSpecComma {
       if current.length() == 0 {

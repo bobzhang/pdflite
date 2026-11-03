@@ -192,9 +192,7 @@ fn PdfDrawRenderState::justify_paragraph_line(
   remaining : Double,
 ) -> Array[@content.PdfContentOp] {
   ignore(self)
-  let output : Array[@content.PdfContentOp] = Array(
-    capacity=ops.length() + 2,
-  )
+  let output : Array[@content.PdfContentOp] = Array(capacity=ops.length() + 2)
   match justification {
     PdfDrawLeft => {
       if first_line {
@@ -238,9 +236,7 @@ fn PdfDrawRenderState::format_paragraph(
   let (space_ops, space_width) = self.text_ops_and_width_with_cache(
     " ", width_cache,
   )
-  let output : Array[@content.PdfContentOp] = Array(
-    capacity=words.length() * 2,
-  )
+  let output : Array[@content.PdfContentOp] = Array(capacity=words.length() * 2)
   let mut line_ops : Array[@content.PdfContentOp] = Array(
     capacity=words.length() * 2,
   )

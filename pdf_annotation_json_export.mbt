@@ -194,9 +194,7 @@ pub fn PdfDocument::annotations_json(
   let extra_roots : Array[@syntax.PdfObject] = Array(
     capacity=page_numbers.length(),
   )
-  let annotation_numbers : Array[Int32] = Array(
-    capacity=page_numbers.length(),
-  )
+  let annotation_numbers : Array[Int32] = Array(capacity=page_numbers.length())
   for index, page in pages {
     let page_number = index + 1
     if selected_pages.contains(page_number) {

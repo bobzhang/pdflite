@@ -74,9 +74,7 @@ pub fn pdf_page_label_add_label(
 fn pdf_page_label_range_extents(
   page_numbers : ArrayView[Int32],
 ) -> Array[(Int32, Int32)] {
-  let ranges : Array[(Int32, Int32)] = Array(
-    capacity=page_numbers.length(),
-  )
+  let ranges : Array[(Int32, Int32)] = Array(capacity=page_numbers.length())
   if page_numbers.length() > 0 {
     let mut start = page_numbers[0]
     let mut previous = page_numbers[0]
@@ -124,9 +122,7 @@ fn pdf_page_label_start_additions(
 fn pdf_page_label_with_basic_if_needed(
   labels : ArrayView[@label.PdfPageLabel],
 ) -> Array[@label.PdfPageLabel] {
-  let output : Array[@label.PdfPageLabel] = Array(
-    capacity=labels.length() + 1,
-  )
+  let output : Array[@label.PdfPageLabel] = Array(capacity=labels.length() + 1)
   if !pdf_page_label_has_page_one(labels) {
     output.push(@label.pdf_page_label_basic)
   }

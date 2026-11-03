@@ -36,9 +36,7 @@ fn pdf_page_renumber_object_with_map(
   match object {
     PdfIndirect(number) => PdfIndirect(changes.changed_reference(number))
     PdfArray(items) => {
-      let output : Array[@syntax.PdfObject] = Array(
-        capacity=items.length(),
-      )
+      let output : Array[@syntax.PdfObject] = Array(capacity=items.length())
       for item in items {
         output.push(pdf_page_renumber_object_with_map(item, changes))
       }
@@ -111,9 +109,7 @@ fn pdf_page_reference_changes(
   if old_numbers.length() != new_numbers.length() {
     raise PageTreeExpected
   }
-  let changes : Array[(Int32, Int32)] = Array(
-    capacity=old_numbers.length(),
-  )
+  let changes : Array[(Int32, Int32)] = Array(capacity=old_numbers.length())
   for i in 0..<old_numbers.length() {
     changes.push((old_numbers[i], new_numbers[i]))
   }

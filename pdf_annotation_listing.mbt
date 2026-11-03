@@ -76,9 +76,7 @@ pub fn PdfDocument::get_annotations(
   encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
 ) -> Array[(Int32, @core.PdfBytes)] raise @core.PdfError {
   let pages = self.pages_of_pagetree()
-  let output : Array[(Int32, @core.PdfBytes)] = Array(
-    capacity=pages.length(),
-  )
+  let output : Array[(Int32, @core.PdfBytes)] = Array(capacity=pages.length())
   for index, page in pages {
     match self.lookup_direct(pdf_annotation_annots_key(), page.rest) {
       Some(PdfArray(annotations)) =>

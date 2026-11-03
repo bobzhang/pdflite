@@ -250,9 +250,7 @@ pub fn PdfDocument::annotations_of_page(
 ) -> Array[@annotation.PdfAnnotation] raise @core.PdfError {
   match self.lookup_direct(pdf_annotation_annots_key(), page.rest) {
     Some(PdfArray(annotations)) => {
-      let popup_parents : Array[Int32] = Array(
-        capacity=annotations.length(),
-      )
+      let popup_parents : Array[Int32] = Array(capacity=annotations.length())
       for annotation in annotations {
         match self.pdf_annotation_popup_parent(annotation) {
           Some(parent) => popup_parents.push(parent)

@@ -115,9 +115,7 @@ pub fn pdf_renumber_parent_trees(
     let mut next_key = 0
     for document in documents {
       let entries = document.pdf_structure_root_parent_tree_entries()
-      let changes : Array[(Int32, Int32)] = Array(
-        capacity=entries.length(),
-      )
+      let changes : Array[(Int32, Int32)] = Array(capacity=entries.length())
       for entry in entries {
         let (old_key, _) = entry
         changes.push((old_key, next_key))
