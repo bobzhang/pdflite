@@ -4,16 +4,17 @@ package "bobzhang/pdflite/font/standard14"
 import {
   "bobzhang/pdflite/font/afm",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
 pub fn pdf_standard14_afm_data(PdfStandardFont) -> @afm.PdfAfmData
 
-pub fn pdf_standard14_kern(@afm.PdfAfmData, Int, Int) -> Int
+pub fn pdf_standard14_kern(@afm.PdfAfmData, Int32, Int32) -> Int32
 
-pub fn pdf_standard14_width_of_charcode(@afm.PdfAfmData, Int) -> Int
+pub fn pdf_standard14_width_of_charcode(@afm.PdfAfmData, Int32) -> Int32
 
-pub fn pdf_standard14_width_of_glyphname(@afm.PdfAfmData, BytesView) -> Int
+pub fn pdf_standard14_width_of_glyphname(@afm.PdfAfmData, BytesView) -> Int32
 
 pub fn pdf_standard_font_of_name(String) -> PdfStandardFont?
 
@@ -26,6 +27,7 @@ pub fn pdf_string_of_standard_font(PdfStandardFont) -> String
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) enum PdfStandardFont {
   PdfTimesRoman
   PdfTimesBold
@@ -41,15 +43,15 @@ pub(all) enum PdfStandardFont {
   PdfCourierBoldOblique
   PdfSymbol
   PdfZapfDingbats
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfStandardFont::afm_data(Self) -> @afm.PdfAfmData
-pub fn PdfStandardFont::baseline_adjustment(Self) -> Int
+pub fn PdfStandardFont::baseline_adjustment(Self) -> Int32
 pub fn PdfStandardFont::equal(Self, Self) -> Bool
-pub fn PdfStandardFont::flags(Self) -> Int
+pub fn PdfStandardFont::flags(Self) -> Int32
 pub fn PdfStandardFont::name(Self) -> String
 pub fn PdfStandardFont::not_equal(Self, Self) -> Bool
-pub fn PdfStandardFont::stemv(Self) -> Int
-pub fn PdfStandardFont::to_json(Self) -> Json
+pub fn PdfStandardFont::stemv(Self) -> Int32
+pub fn PdfStandardFont::to_json(Self) -> @json.Json
 pub fn PdfStandardFont::to_repr(Self) -> @debug.Repr
 
 // Type aliases

@@ -3,6 +3,7 @@ package "bobzhang/pdflite/attachment"
 
 import {
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -10,16 +11,17 @@ import {
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfAttachment {
   name : String
-  pagenumber : Int
+  pagenumber : Int32
   data : Bytes?
   description : String?
   relationship : String?
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfAttachment::equal(Self, Self) -> Bool
 pub fn PdfAttachment::not_equal(Self, Self) -> Bool
-pub fn PdfAttachment::to_json(Self) -> Json
+pub fn PdfAttachment::to_json(Self) -> @json.Json
 pub fn PdfAttachment::to_repr(Self) -> @debug.Repr
 
 // Type aliases

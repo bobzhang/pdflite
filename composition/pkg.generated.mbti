@@ -3,26 +3,28 @@ package "bobzhang/pdflite/composition"
 
 import {
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
 pub fn pdf_composition_bytes_with_newline(BytesView) -> Bytes
 
-pub fn pdf_composition_entry(String, Int, Int) -> PdfCompositionEntry
+pub fn pdf_composition_entry(String, Int32, Int32) -> PdfCompositionEntry
 
 pub fn pdf_composition_text_of_entries(ArrayView[PdfCompositionEntry]) -> Bytes
 
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfCompositionEntry {
   label : String
-  bytes : Int
+  bytes : Int32
   percent : Double
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfCompositionEntry::equal(Self, Self) -> Bool
 pub fn PdfCompositionEntry::not_equal(Self, Self) -> Bool
-pub fn PdfCompositionEntry::to_json(Self) -> Json
+pub fn PdfCompositionEntry::to_json(Self) -> @json.Json
 pub fn PdfCompositionEntry::to_repr(Self) -> @debug.Repr
 
 // Type aliases

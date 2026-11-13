@@ -4,6 +4,7 @@ package "bobzhang/pdflite/crypt_core"
 import {
   "bobzhang/pdflite/core",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -19,9 +20,9 @@ pub fn pdf_aes_ecb_encrypt(BytesView, BytesView) -> Bytes raise @core.PdfError
 
 pub fn pdf_aes_encrypt_block(BytesView, BytesView) -> Bytes raise @core.PdfError
 
-pub fn pdf_aesv2_decrypt_object_data(Int, Int, BytesView, Int, BytesView) -> Bytes raise @core.PdfError
+pub fn pdf_aesv2_decrypt_object_data(Int32, Int32, BytesView, Int32, BytesView) -> Bytes raise @core.PdfError
 
-pub fn pdf_aesv2_encrypt_object_data(Int, Int, BytesView, Int, BytesView, BytesView) -> Bytes raise @core.PdfError
+pub fn pdf_aesv2_encrypt_object_data(Int32, Int32, BytesView, Int32, BytesView, BytesView) -> Bytes raise @core.PdfError
 
 pub fn pdf_aesv3_decrypt_object_data(BytesView, BytesView) -> Bytes raise @core.PdfError
 
@@ -29,33 +30,33 @@ pub fn pdf_aesv3_encrypt_object_data(BytesView, BytesView, BytesView) -> Bytes r
 
 pub fn pdf_arc4_crypt(BytesView, BytesView) -> Bytes raise @core.PdfError
 
-pub fn pdf_arc4_crypt_object(Int, Int, BytesView, Int, BytesView) -> Bytes raise @core.PdfError
+pub fn pdf_arc4_crypt_object(Int32, Int32, BytesView, Int32, BytesView) -> Bytes raise @core.PdfError
 
-pub fn pdf_authenticate_owner_password(Bool, BytesView, Int, BytesView, BytesView, Int, BytesView, Int) -> Bool raise @core.PdfError
+pub fn pdf_authenticate_owner_password(Bool, BytesView, Int32, BytesView, BytesView, Int32, BytesView, Int32) -> Bool raise @core.PdfError
 
-pub fn pdf_authenticate_user_password(Bool, BytesView, Int, BytesView, BytesView, Int, BytesView, Int) -> Bool raise @core.PdfError
+pub fn pdf_authenticate_user_password(Bool, BytesView, Int32, BytesView, BytesView, Int32, BytesView, Int32) -> Bool raise @core.PdfError
 
-pub fn pdf_bytes_prefix_equal(BytesView, BytesView, Int) -> Bool
+pub fn pdf_bytes_prefix_equal(BytesView, BytesView, Int32) -> Bool
 
-pub fn pdf_crypt_low_byte(Int, Int) -> Byte
+pub fn pdf_crypt_low_byte(Int32, Int32) -> Byte
 
-pub fn pdf_encryption_file_key(Bool, BytesView, Int, BytesView, Int, BytesView, Int) -> Bytes
+pub fn pdf_encryption_file_key(Bool, BytesView, Int32, BytesView, Int32, BytesView, Int32) -> Bytes
 
-pub fn pdf_encryption_object_key(@core.PdfCryptType, Int, Int, BytesView, Int) -> Bytes
+pub fn pdf_encryption_object_key(@core.PdfCryptType, Int32, Int32, BytesView, Int32) -> Bytes
 
-pub fn pdf_make_owner_password_entry(Int, BytesView, BytesView, Int) -> Bytes raise @core.PdfError
+pub fn pdf_make_owner_password_entry(Int32, BytesView, BytesView, Int32) -> Bytes raise @core.PdfError
 
-pub fn pdf_make_user_password_entry(Bool, BytesView, Int, BytesView, Int, BytesView, Int) -> Bytes raise @core.PdfError
+pub fn pdf_make_user_password_entry(Bool, BytesView, Int32, BytesView, Int32, BytesView, Int32) -> Bytes raise @core.PdfError
 
 pub fn pdf_md5_digest(BytesView) -> Bytes
 
-pub fn pdf_p_of_permissions(ArrayView[PdfPermission]) -> Int
+pub fn pdf_p_of_permissions(ArrayView[PdfPermission]) -> Int32
 
 pub fn pdf_pad_password(BytesView) -> Bytes
 
 pub fn pdf_password_padding() -> Bytes
 
-pub fn pdf_permissions_of_p(Int) -> Array[PdfPermission]
+pub fn pdf_permissions_of_p(Int32) -> Array[PdfPermission]
 
 pub fn pdf_sha256_digest(BytesView) -> Bytes
 
@@ -63,11 +64,12 @@ pub fn pdf_sha384_digest(BytesView) -> Bytes
 
 pub fn pdf_sha512_digest(BytesView) -> Bytes
 
-pub fn pdf_user_password_from_owner_password(Int, BytesView, BytesView, Int) -> Bytes raise @core.PdfError
+pub fn pdf_user_password_from_owner_password(Int32, BytesView, BytesView, Int32) -> Bytes raise @core.PdfError
 
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) enum PdfAesV3RandomField {
   PdfAesV3FileKey
   PdfAesV3UserValidationSalt
@@ -75,12 +77,13 @@ pub(all) enum PdfAesV3RandomField {
   PdfAesV3OwnerValidationSalt
   PdfAesV3OwnerKeySalt
   PdfAesV3PermissionsPadding
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfAesV3RandomField::equal(Self, Self) -> Bool
 pub fn PdfAesV3RandomField::not_equal(Self, Self) -> Bool
-pub fn PdfAesV3RandomField::to_json(Self) -> Json
+pub fn PdfAesV3RandomField::to_json(Self) -> @json.Json
 pub fn PdfAesV3RandomField::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) enum PdfEncryptionMethod {
   PdfEncryption40Bit
   PdfEncryption128Bit
@@ -88,27 +91,29 @@ pub(all) enum PdfEncryptionMethod {
   PdfEncryptionAES256(Bool)
   PdfEncryptionAES256ISO(Bool)
   PdfEncryptionAlreadyEncrypted
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfEncryptionMethod::equal(Self, Self) -> Bool
 pub fn PdfEncryptionMethod::not_equal(Self, Self) -> Bool
-pub fn PdfEncryptionMethod::to_json(Self) -> Json
+pub fn PdfEncryptionMethod::to_json(Self) -> @json.Json
 pub fn PdfEncryptionMethod::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct PdfEncryptionValues {
   crypt_type : @core.PdfCryptType
   user_entry : Bytes
   owner_entry : Bytes
-  permissions : Int
+  permissions : Int32
   file_id : Bytes
   encrypt_metadata : Bool
   permissions_entry : Bytes?
   user_encryption_key : Bytes?
   owner_encryption_key : Bytes?
-} derive(Eq, @debug.Debug)
+}
 pub fn PdfEncryptionValues::equal(Self, Self) -> Bool
 pub fn PdfEncryptionValues::not_equal(Self, Self) -> Bool
 pub fn PdfEncryptionValues::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) enum PdfPermission {
   PdfNoEdit
   PdfNoPrint
@@ -118,15 +123,16 @@ pub(all) enum PdfPermission {
   PdfNoExtract
   PdfNoAssemble
   PdfNoHqPrint
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfPermission::equal(Self, Self) -> Bool
 pub fn PdfPermission::not_equal(Self, Self) -> Bool
-pub fn PdfPermission::to_json(Self) -> Json
+pub fn PdfPermission::to_json(Self) -> @json.Json
 pub fn PdfPermission::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug)
 pub(all) struct PdfSavedEncryption {
   values : PdfEncryptionValues
-} derive(Eq, @debug.Debug)
+}
 pub fn PdfSavedEncryption::equal(Self, Self) -> Bool
 pub fn PdfSavedEncryption::not_equal(Self, Self) -> Bool
 pub fn PdfSavedEncryption::to_repr(Self) -> @debug.Repr

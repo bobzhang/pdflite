@@ -4,6 +4,7 @@ package "bobzhang/pdflite/font"
 import {
   "bobzhang/pdflite/syntax",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -11,41 +12,44 @@ import {
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfFontListEntry {
-  page : Int
+  page : Int32
   name : String
   subtype : String
   basefont : String
   encoding : String
   font : @syntax.PdfObject
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfFontListEntry::equal(Self, Self) -> Bool
 pub fn PdfFontListEntry::not_equal(Self, Self) -> Bool
-pub fn PdfFontListEntry::to_json(Self) -> Json
+pub fn PdfFontListEntry::to_json(Self) -> @json.Json
 pub fn PdfFontListEntry::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfFontTableEntry {
-  code : Int
+  code : Int32
   unicode : String
   utf8 : String
   unicode_name : String
   glyphnames : String
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfFontTableEntry::equal(Self, Self) -> Bool
 pub fn PdfFontTableEntry::not_equal(Self, Self) -> Bool
-pub fn PdfFontTableEntry::to_json(Self) -> Json
+pub fn PdfFontTableEntry::to_json(Self) -> @json.Json
 pub fn PdfFontTableEntry::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfMissingFontEntry {
-  page : Int
+  page : Int32
   name : String
   subtype : String
   basefont : String
   encoding : String
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfMissingFontEntry::equal(Self, Self) -> Bool
 pub fn PdfMissingFontEntry::not_equal(Self, Self) -> Bool
-pub fn PdfMissingFontEntry::to_json(Self) -> Json
+pub fn PdfMissingFontEntry::to_json(Self) -> @json.Json
 pub fn PdfMissingFontEntry::to_repr(Self) -> @debug.Repr
 
 // Type aliases

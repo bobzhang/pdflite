@@ -6,6 +6,7 @@ import {
   "bobzhang/pdflite/geometry",
   "bobzhang/pdflite/syntax",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -20,10 +21,11 @@ pub fn pdf_content_parse_known_section(ArrayView[@syntax.PdfObject], BytesView) 
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) enum PdfContentOp {
   Op_w(Double)
-  Op_J(Int)
-  Op_j(Int)
+  Op_J(Int32)
+  Op_j(Int32)
   Op_M(Double)
   Op_d(Array[Double], Double)
   Op_ri(@core.PdfName)
@@ -57,7 +59,7 @@ pub(all) enum PdfContentOp {
   Op_Tz(Double)
   Op_TL(Double)
   Op_Tf(@core.PdfName, Double)
-  Op_Tr(Int)
+  Op_Tr(Int32)
   Op_Ts(Double)
   Op_Td(Double, Double)
   Op_TD(Double, Double)
@@ -95,10 +97,10 @@ pub(all) enum PdfContentOp {
   Op_BX
   Op_EX
   Op_Unknown(Bytes)
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfContentOp::equal(Self, Self) -> Bool
 pub fn PdfContentOp::not_equal(Self, Self) -> Bool
-pub fn PdfContentOp::to_json(Self) -> Json
+pub fn PdfContentOp::to_json(Self) -> @json.Json
 pub fn PdfContentOp::to_repr(Self) -> @debug.Repr
 
 // Type aliases
