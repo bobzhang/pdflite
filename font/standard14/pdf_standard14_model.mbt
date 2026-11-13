@@ -22,6 +22,15 @@ pub(all) enum PdfStandardFont {
 }
 
 ///|
+pub extend PdfStandardFont with Debug::{to_repr}
+
+///|
+pub extend PdfStandardFont with Eq::{not_equal, equal}
+
+///|
+pub extend PdfStandardFont with ToJson::{to_json}
+
+///|
 /// Return the canonical standard-font name without the leading PDF slash.
 pub fn PdfStandardFont::name(self : PdfStandardFont) -> String {
   match self {

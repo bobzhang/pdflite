@@ -2,9 +2,7 @@
 fn pdf_text_tounicode_bfrange_inline_entries(
   line : BytesView,
 ) -> Array[(Int32, @core.PdfBytes)]? {
-  let entries : Array[(Int32, @core.PdfBytes)] = Array::new(
-    capacity=line.length(),
-  )
+  let entries : Array[(Int32, @core.PdfBytes)] = Array(capacity=line.length())
   let mut index = 0
   while index < line.length() {
     match pdf_text_parse_cmap_hex_group_at(line, index) {
@@ -100,7 +98,7 @@ fn pdf_text_tounicode_bfrange_array_entries(
   guard first <= last && unicodes.length() == last - first + 1 else {
     return None
   }
-  let entries : Array[(Int32, @core.PdfBytes)] = Array::new(
+  let entries : Array[(Int32, @core.PdfBytes)] = Array(
     capacity=unicodes.length(),
   )
   for index in 0..<unicodes.length() {
@@ -209,7 +207,7 @@ fn pdf_text_append_tounicode_bfrange_entry(
           match (pdf_text_bytes_to_int(source), pdf_text_bytes_to_int(stop)) {
             (Some(first), Some(last)) if first <= last => {
               let value_start = pdf_text_skip_cmap_whitespace(line, after_stop)
-              let pending : PdfTextCMapBFRangeArray = {
+              let pending = PdfTextCMapBFRangeArray::{
                 first,
                 last,
                 unicodes: [],
@@ -231,7 +229,7 @@ fn pdf_text_append_tounicode_bfrange_entry(
               } else {
                 match pdf_text_parse_cmap_hex_group_at(line, value_start) {
                   Some((unicode, after_unicode)) => {
-                    let line_entries : Array[(Int32, @core.PdfBytes)] = Array::new(
+                    let line_entries : Array[(Int32, @core.PdfBytes)] = Array(
                       capacity=last - first + 1,
                     )
                     for code in first..<=last {

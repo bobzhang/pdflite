@@ -11,6 +11,15 @@ pub(all) enum PdfCryptType {
 }
 
 ///|
+pub extend PdfCryptType with Debug::{to_repr}
+
+///|
+pub extend PdfCryptType with Eq::{not_equal, equal}
+
+///|
+pub extend PdfCryptType with ToJson::{to_json}
+
+///|
 /// Error variants raised by pdflite parsing, writing, filtering, text, and
 /// encryption APIs.
 ///
@@ -132,3 +141,12 @@ pub(all) suberror PdfError {
   PageLabelStyleExpected(String)
   EndOfInput
 }
+
+///|
+pub extend PdfError with Debug::{to_repr}
+
+///|
+pub extend PdfError with Eq::{not_equal, equal}
+
+///|
+pub extend PdfError with ToJson::{to_json}

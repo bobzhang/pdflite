@@ -19,6 +19,15 @@ pub(all) enum PdfPosition {
 }
 
 ///|
+pub extend PdfPosition with Debug::{to_repr}
+
+///|
+pub extend PdfPosition with Eq::{not_equal, equal}
+
+///|
+pub extend PdfPosition with ToJson::{to_json}
+
+///|
 /// Absolute placement calculated from a position keyword and page bounds.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfCalculatedPosition {
@@ -26,6 +35,15 @@ pub(all) struct PdfCalculatedPosition {
   y : Double
   rotation : Double
 }
+
+///|
+pub extend PdfCalculatedPosition with Debug::{to_repr}
+
+///|
+pub extend PdfCalculatedPosition with Eq::{not_equal, equal}
+
+///|
+pub extend PdfCalculatedPosition with ToJson::{to_json}
 
 ///|
 fn pdf_position_distance(ignore_distance : Bool, distance : Double) -> Double {

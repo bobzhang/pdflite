@@ -13,3 +13,9 @@ pub(all) struct ObjectStreamReference {
   object_stream_number : Int32
   index : Int32
 }
+
+///|
+pub extend ObjectStreamReference with Debug::{to_repr}
+
+///|
+pub extend ObjectStreamReference with Eq::{not_equal, equal}

@@ -64,6 +64,15 @@ pub(all) struct PdfTristimulusPoint {
 }
 
 ///|
+pub extend PdfTristimulusPoint with Debug::{to_repr}
+
+///|
+pub extend PdfTristimulusPoint with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTristimulusPoint with ToJson::{to_json}
+
+///|
 /// Parsed representation of the PDF colour spaces supported by this package.
 ///
 /// Device spaces represent the PDF built-ins. Calibrated and ICC-based spaces
@@ -101,6 +110,15 @@ pub(all) enum PdfColourSpace {
     @syntax.PdfObject,
   )
 }
+
+///|
+pub extend PdfColourSpace with Debug::{to_repr}
+
+///|
+pub extend PdfColourSpace with Eq::{not_equal, equal}
+
+///|
+pub extend PdfColourSpace with ToJson::{to_json}
 
 ///|
 /// Return a diagnostic name for a colour space.

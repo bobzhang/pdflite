@@ -1,6 +1,5 @@
 import {
   "bobzhang/pdflite/core",
-  "illusory0x0/rijndael/rijndael",
   "moonbitlang/x/crypto",
 }
 

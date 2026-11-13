@@ -132,3 +132,12 @@ struct PdfBookmarkNode {
   children : Array[PdfBookmarkNode]
   is_open : Bool
 }
+
+///|
+pub extend PdfBookmarkNode with Debug::{to_repr}
+
+///|
+pub extend PdfBookmarkNode with Eq::{not_equal, equal}
+
+///|
+pub extend PdfBookmarkNode with ToJson::{to_json}

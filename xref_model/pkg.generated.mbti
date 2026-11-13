@@ -10,12 +10,15 @@ import {
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug)
 pub(all) struct ObjectStreamReference {
-  object_stream_number : Int
-  index : Int
-} derive(Eq, @debug.Debug)
+  object_stream_number : Int32
+  index : Int32
+}
+pub fn ObjectStreamReference::equal(Self, Self) -> Bool
+pub fn ObjectStreamReference::not_equal(Self, Self) -> Bool
+pub fn ObjectStreamReference::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 
 // Traits
-

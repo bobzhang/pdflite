@@ -25,3 +25,12 @@ pub(all) enum PdfLexeme {
   StopLexing
   LexNone
 }
+
+///|
+pub extend PdfLexeme with Debug::{to_repr}
+
+///|
+pub extend PdfLexeme with Eq::{not_equal, equal}
+
+///|
+pub extend PdfLexeme with ToJson::{to_json}

@@ -9,6 +9,15 @@ pub(all) struct PdfVersion {
 }
 
 ///|
+pub extend PdfVersion with Debug::{to_repr}
+
+///|
+pub extend PdfVersion with Eq::{not_equal, equal}
+
+///|
+pub extend PdfVersion with ToJson::{to_json}
+
+///|
 /// Fallback version used when a PDF header cannot be found.
 pub let pdf_default_version : PdfVersion = { major: 2, minor: 0, }
 

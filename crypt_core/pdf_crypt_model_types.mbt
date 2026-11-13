@@ -15,6 +15,15 @@ pub(all) enum PdfEncryptionMethod {
 }
 
 ///|
+pub extend PdfEncryptionMethod with Debug::{to_repr}
+
+///|
+pub extend PdfEncryptionMethod with Eq::{not_equal, equal}
+
+///|
+pub extend PdfEncryptionMethod with ToJson::{to_json}
+
+///|
 /// Random material requested while constructing PDF 2.0 AESV3 encryption data.
 ///
 /// Provider callbacks receive this field tag and a byte length, allowing tests
@@ -29,3 +38,12 @@ pub(all) enum PdfAesV3RandomField {
   PdfAesV3OwnerKeySalt
   PdfAesV3PermissionsPadding
 }
+
+///|
+pub extend PdfAesV3RandomField with Debug::{to_repr}
+
+///|
+pub extend PdfAesV3RandomField with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAesV3RandomField with ToJson::{to_json}

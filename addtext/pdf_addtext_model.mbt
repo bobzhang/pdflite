@@ -11,12 +11,30 @@ pub(all) struct PdfAddTextUrl {
 }
 
 ///|
+pub extend PdfAddTextUrl with Debug::{to_repr}
+
+///|
+pub extend PdfAddTextUrl with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAddTextUrl with ToJson::{to_json}
+
+///|
 /// One add-text line after stripping `%URL[text|url]` markup.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfAddTextUrlLine {
   text : String
   urls : Array[PdfAddTextUrl]
 }
+
+///|
+pub extend PdfAddTextUrlLine with Debug::{to_repr}
+
+///|
+pub extend PdfAddTextUrlLine with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAddTextUrlLine with ToJson::{to_json}
 
 ///|
 /// Transformed geometry for one add-text URL annotation.
@@ -28,6 +46,15 @@ pub(all) struct PdfAddTextUrlAnnotationGeometry {
   p3 : Point2
   rectangle : PdfRectangle
 }
+
+///|
+pub extend PdfAddTextUrlAnnotationGeometry with Debug::{to_repr}
+
+///|
+pub extend PdfAddTextUrlAnnotationGeometry with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAddTextUrlAnnotationGeometry with ToJson::{to_json}
 
 ///|
 /// Resolved placement values for one cpdf add-text line.
@@ -43,6 +70,15 @@ pub(all) struct PdfAddTextLinePlacement {
 }
 
 ///|
+pub extend PdfAddTextLinePlacement with Debug::{to_repr}
+
+///|
+pub extend PdfAddTextLinePlacement with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAddTextLinePlacement with ToJson::{to_json}
+
+///|
 /// Width measurements for one cpdf add-text line and its expanded paragraph.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfAddTextLineWidths {
@@ -50,6 +86,15 @@ pub(all) struct PdfAddTextLineWidths {
   widths : Array[Double]
   longest_width : Double
 }
+
+///|
+pub extend PdfAddTextLineWidths with Debug::{to_repr}
+
+///|
+pub extend PdfAddTextLineWidths with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAddTextLineWidths with ToJson::{to_json}
 
 ///|
 /// One cpdf add-text line after replacement expansion, URL stripping, width
@@ -66,6 +111,15 @@ pub(all) struct PdfAddTextPreparedLine {
 }
 
 ///|
+pub extend PdfAddTextPreparedLine with Debug::{to_repr}
+
+///|
+pub extend PdfAddTextPreparedLine with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAddTextPreparedLine with ToJson::{to_json}
+
+///|
 /// Page resources prepared for one cpdf add-text line.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfAddTextResourceSetup {
@@ -75,6 +129,15 @@ pub(all) struct PdfAddTextResourceSetup {
   unique_fontnames : Array[PdfName]
   extgstate_name : PdfName?
 }
+
+///|
+pub extend PdfAddTextResourceSetup with Debug::{to_repr}
+
+///|
+pub extend PdfAddTextResourceSetup with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAddTextResourceSetup with ToJson::{to_json}
 
 ///|
 /// Values used to build cpdf add-text replacement callbacks.
@@ -89,3 +152,12 @@ pub(all) struct PdfAddTextReplacementValues {
   bates_pad : Int32?
   bookmarks : Array[String]
 }
+
+///|
+pub extend PdfAddTextReplacementValues with Debug::{to_repr}
+
+///|
+pub extend PdfAddTextReplacementValues with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAddTextReplacementValues with ToJson::{to_json}

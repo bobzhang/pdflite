@@ -6,16 +6,18 @@ import {
   "bobzhang/pdflite/geometry",
   "bobzhang/pdflite/syntax",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
 pub fn pdf_annotation_make(PdfAnnotationSubtype, contents? : Bytes?, border? : PdfAnnotationBorder, rectangle? : @geometry.PdfRectangle, colour? : PdfAnnotationColour?, subject? : Bytes?) -> PdfAnnotation
 
-pub fn pdf_annotation_make_border(Double, vertical_radius? : Double, horizontal_radius? : Double, style? : PdfAnnotationStyle, dash_array? : ArrayView[Int]) -> PdfAnnotationBorder
+pub fn pdf_annotation_make_border(Double, vertical_radius? : Double, horizontal_radius? : Double, style? : PdfAnnotationStyle, dash_array? : ArrayView[Int32]) -> PdfAnnotationBorder
 
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfAnnotation {
   subtype : PdfAnnotationSubtype
   contents : Bytes?
@@ -24,22 +26,37 @@ pub(all) struct PdfAnnotation {
   border : PdfAnnotationBorder
   colour : PdfAnnotationColour?
   rest : @syntax.PdfObject
-} derive(Eq, ToJson, @debug.Debug)
+}
+pub fn PdfAnnotation::equal(Self, Self) -> Bool
+pub fn PdfAnnotation::not_equal(Self, Self) -> Bool
+pub fn PdfAnnotation::to_json(Self) -> @json.Json
+pub fn PdfAnnotation::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfAnnotationBorder {
   width : Double
   vertical_radius : Double
   horizontal_radius : Double
   style : PdfAnnotationStyle
-  dash_array : Array[Int]
-} derive(Eq, ToJson, @debug.Debug)
+  dash_array : Array[Int32]
+}
+pub fn PdfAnnotationBorder::equal(Self, Self) -> Bool
+pub fn PdfAnnotationBorder::not_equal(Self, Self) -> Bool
+pub fn PdfAnnotationBorder::to_json(Self) -> @json.Json
+pub fn PdfAnnotationBorder::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfAnnotationColour {
-  red : Int
-  green : Int
-  blue : Int
-} derive(Eq, ToJson, @debug.Debug)
+  red : Int32
+  green : Int32
+  blue : Int32
+}
+pub fn PdfAnnotationColour::equal(Self, Self) -> Bool
+pub fn PdfAnnotationColour::not_equal(Self, Self) -> Bool
+pub fn PdfAnnotationColour::to_json(Self) -> @json.Json
+pub fn PdfAnnotationColour::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) enum PdfAnnotationStyle {
   AnnotationNoStyle
   AnnotationSolid
@@ -47,8 +64,13 @@ pub(all) enum PdfAnnotationStyle {
   AnnotationBeveled
   AnnotationInset
   AnnotationUnderlineStyle
-} derive(Eq, ToJson, @debug.Debug)
+}
+pub fn PdfAnnotationStyle::equal(Self, Self) -> Bool
+pub fn PdfAnnotationStyle::not_equal(Self, Self) -> Bool
+pub fn PdfAnnotationStyle::to_json(Self) -> @json.Json
+pub fn PdfAnnotationStyle::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) enum PdfAnnotationSubtype {
   AnnotationText
   AnnotationLink
@@ -76,7 +98,11 @@ pub(all) enum PdfAnnotationSubtype {
   AnnotationWatermark
   AnnotationThreeDee
   AnnotationUnknown(@core.PdfName)
-} derive(Eq, ToJson, @debug.Debug)
+}
+pub fn PdfAnnotationSubtype::equal(Self, Self) -> Bool
+pub fn PdfAnnotationSubtype::not_equal(Self, Self) -> Bool
+pub fn PdfAnnotationSubtype::to_json(Self) -> @json.Json
+pub fn PdfAnnotationSubtype::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 pub type PdfBytes = Bytes

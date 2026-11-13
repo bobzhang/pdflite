@@ -11,6 +11,15 @@ pub struct BitWriter {
 }
 
 ///|
+pub extend BitWriter with Debug::{to_repr}
+
+///|
+pub extend BitWriter with Eq::{not_equal, equal}
+
+///|
+pub extend BitWriter with ToJson::{to_json}
+
+///|
 /// Creates an empty bit writer.
 pub fn bit_writer_new() -> BitWriter {
   { current_byte: 0, bit_index: 0, bytes: [], }

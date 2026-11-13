@@ -11,6 +11,15 @@ pub(all) struct PaperSize {
 }
 
 ///|
+pub extend PaperSize with Debug::{to_repr}
+
+///|
+pub extend PaperSize with Eq::{not_equal, equal}
+
+///|
+pub extend PaperSize with ToJson::{to_json}
+
+///|
 /// Creates a paper size from a unit, width, and height.
 pub fn paper_size_make(
   unit : PdfUnit,

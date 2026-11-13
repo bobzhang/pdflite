@@ -124,6 +124,15 @@ pub(all) struct PdfInterpolationFunction {
 }
 
 ///|
+pub extend PdfInterpolationFunction with Debug::{to_repr}
+
+///|
+pub extend PdfInterpolationFunction with Eq::{not_equal, equal}
+
+///|
+pub extend PdfInterpolationFunction with ToJson::{to_json}
+
+///|
 /// PDF function type 0, sampled from a packed sample table.
 ///
 /// `size` gives the sample count for each input dimension. `encode` maps
@@ -141,6 +150,15 @@ pub(all) struct PdfSampledFunction {
 }
 
 ///|
+pub extend PdfSampledFunction with Debug::{to_repr}
+
+///|
+pub extend PdfSampledFunction with Eq::{not_equal, equal}
+
+///|
+pub extend PdfSampledFunction with ToJson::{to_json}
+
+///|
 /// PDF function type 3, stitching several child functions over one input.
 ///
 /// `bounds` partitions the parent domain, and `stitch_encode` maps each chosen
@@ -151,6 +169,15 @@ pub(all) struct PdfStitchingFunction {
   bounds : Array[Double]
   stitch_encode : Array[Double]
 }
+
+///|
+pub extend PdfStitchingFunction with Debug::{to_repr}
+
+///|
+pub extend PdfStitchingFunction with Eq::{not_equal, equal}
+
+///|
+pub extend PdfStitchingFunction with ToJson::{to_json}
 
 ///|
 /// Operation in a PDF type 4 PostScript calculator function.
@@ -206,6 +233,15 @@ pub(all) enum PdfCalculatorOp {
 }
 
 ///|
+pub extend PdfCalculatorOp with Debug::{to_repr}
+
+///|
+pub extend PdfCalculatorOp with Eq::{not_equal, equal}
+
+///|
+pub extend PdfCalculatorOp with ToJson::{to_json}
+
+///|
 /// PDF function type 4, represented as parsed calculator operations.
 ///
 /// Evaluation starts with the function inputs on the stack and returns the
@@ -216,6 +252,15 @@ pub(all) struct PdfCalculatorFunction {
 }
 
 ///|
+pub extend PdfCalculatorFunction with Debug::{to_repr}
+
+///|
+pub extend PdfCalculatorFunction with Eq::{not_equal, equal}
+
+///|
+pub extend PdfCalculatorFunction with ToJson::{to_json}
+
+///|
 /// Discriminated PDF function body for supported `/FunctionType` values.
 #derive(Debug, Eq, ToJson)
 pub(all) enum PdfFunctionKind {
@@ -224,6 +269,15 @@ pub(all) enum PdfFunctionKind {
   PdfFunctionStitching(PdfStitchingFunction)
   PdfFunctionCalculator(PdfCalculatorFunction)
 }
+
+///|
+pub extend PdfFunctionKind with Debug::{to_repr}
+
+///|
+pub extend PdfFunctionKind with Eq::{not_equal, equal}
+
+///|
+pub extend PdfFunctionKind with ToJson::{to_json}
 
 ///|
 /// Parsed PDF function with common domain and optional output range.
@@ -237,3 +291,12 @@ pub(all) struct PdfFunction {
   domain : Array[Double]
   range : Array[Double]?
 }
+
+///|
+pub extend PdfFunction with Debug::{to_repr}
+
+///|
+pub extend PdfFunction with Eq::{not_equal, equal}
+
+///|
+pub extend PdfFunction with ToJson::{to_json}

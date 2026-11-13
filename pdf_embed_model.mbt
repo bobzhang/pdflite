@@ -10,3 +10,12 @@ pub(all) enum PdfEmbedFontSource {
   PdfEmbedInfo(@core.PdfBytes, String, PdfEncoding)
   PdfEmbedExistingNamedFont
 }
+
+///|
+pub extend PdfEmbedFontSource with Debug::{to_repr}
+
+///|
+pub extend PdfEmbedFontSource with Eq::{not_equal, equal}
+
+///|
+pub extend PdfEmbedFontSource with ToJson::{to_json}

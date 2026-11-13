@@ -14,6 +14,15 @@ pub(all) enum PdfPageLabelStyle {
 }
 
 ///|
+pub extend PdfPageLabelStyle with Debug::{to_repr}
+
+///|
+pub extend PdfPageLabelStyle with Eq::{not_equal, equal}
+
+///|
+pub extend PdfPageLabelStyle with ToJson::{to_json}
+
+///|
 /// One page-label range.
 ///
 /// `start_page` is 1-based. `start_value` is the numeric value shown on that
@@ -25,6 +34,15 @@ pub(all) struct PdfPageLabel {
   start_page : Int32
   start_value : Int32
 }
+
+///|
+pub extend PdfPageLabel with Debug::{to_repr}
+
+///|
+pub extend PdfPageLabel with Eq::{not_equal, equal}
+
+///|
+pub extend PdfPageLabel with ToJson::{to_json}
 
 ///|
 /// Return a stable debug name for a page-label style.
@@ -121,14 +139,14 @@ pub fn pdf_page_label_complete(
   if labels.length() == 0 {
     [pdf_page_label_basic]
   } else if labels[0].start_page > 1 {
-    let output : Array[PdfPageLabel] = Array::new(capacity=labels.length() + 1)
+    let output : Array[PdfPageLabel] = Array(capacity=labels.length() + 1)
     output.push(pdf_page_label_basic)
     for label in labels {
       output.push(label)
     }
     output
   } else {
-    let output : Array[PdfPageLabel] = Array::new(capacity=labels.length())
+    let output : Array[PdfPageLabel] = Array(capacity=labels.length())
     for label in labels {
       output.push(label)
     }

@@ -14,6 +14,15 @@ pub(all) struct ToGet {
 }
 
 ///|
+pub extend ToGet with Debug::{to_repr}
+
+///|
+pub extend ToGet with Eq::{not_equal, equal}
+
+///|
+pub extend ToGet with ToJson::{to_json}
+
+///|
 /// Storage state for a PDF stream body.
 ///
 /// `StreamGot` stores already materialized bytes. `StreamToGet` stores a
@@ -24,6 +33,15 @@ pub(all) enum PdfStreamData {
   StreamGot(@core.PdfBytes)
   StreamToGet(ToGet)
 }
+
+///|
+pub extend PdfStreamData with Debug::{to_repr}
+
+///|
+pub extend PdfStreamData with Eq::{not_equal, equal}
+
+///|
+pub extend PdfStreamData with ToJson::{to_json}
 
 ///|
 /// Decryption metadata associated with deferred stream data.
@@ -40,6 +58,15 @@ pub(all) enum PdfStreamDataCrypt {
 }
 
 ///|
+pub extend PdfStreamDataCrypt with Debug::{to_repr}
+
+///|
+pub extend PdfStreamDataCrypt with Eq::{not_equal, equal}
+
+///|
+pub extend PdfStreamDataCrypt with ToJson::{to_json}
+
+///|
 /// A PDF stream object: dictionary metadata plus stream bytes.
 ///
 /// The dictionary and data fields are mutable because helpers such as
@@ -50,6 +77,15 @@ pub(all) struct PdfStream {
   mut dictionary : PdfObject
   mut data : PdfStreamData
 }
+
+///|
+pub extend PdfStream with Debug::{to_repr}
+
+///|
+pub extend PdfStream with Eq::{not_equal, equal}
+
+///|
+pub extend PdfStream with ToJson::{to_json}
 
 ///|
 /// The core in-memory representation of a parsed PDF object.
@@ -70,3 +106,12 @@ pub(all) enum PdfObject {
   PdfStreamObject(PdfStream)
   PdfIndirect(Int32)
 }
+
+///|
+pub extend PdfObject with Debug::{to_repr}
+
+///|
+pub extend PdfObject with Eq::{not_equal, equal}
+
+///|
+pub extend PdfObject with ToJson::{to_json}

@@ -4,6 +4,7 @@ package "bobzhang/pdflite/page/label"
 import {
   "bobzhang/pdflite/core",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -13,32 +14,38 @@ pub fn pdf_page_label_complete(ArrayView[PdfPageLabel]) -> Array[PdfPageLabel]
 
 pub fn pdf_page_label_lowercase(Bytes) -> Bytes
 
-pub fn pdf_page_label_number_bytes(Int, PdfPageLabelStyle) -> Bytes
+pub fn pdf_page_label_number_bytes(Int32, PdfPageLabelStyle) -> Bytes
 
-pub fn pdf_page_label_of_page_number(Int, ArrayView[PdfPageLabel]) -> PdfPageLabel?
+pub fn pdf_page_label_of_page_number(Int32, ArrayView[PdfPageLabel]) -> PdfPageLabel?
 
-pub fn pdf_page_label_of_single(Int, PdfPageLabel) -> PdfPageLabel
+pub fn pdf_page_label_of_single(Int32, PdfPageLabel) -> PdfPageLabel
 
-pub fn pdf_page_label_roman_upper(Int) -> Bytes
+pub fn pdf_page_label_roman_upper(Int32) -> Bytes
 
 pub fn pdf_page_label_style_of_string(String) -> PdfPageLabelStyle raise @core.PdfError
 
-pub fn pdf_page_label_text_of_page_number(Int, ArrayView[PdfPageLabel]) -> Bytes?
+pub fn pdf_page_label_text_of_page_number(Int32, ArrayView[PdfPageLabel]) -> Bytes?
 
-pub fn pdf_page_label_text_of_single(Int, PdfPageLabel) -> Bytes
+pub fn pdf_page_label_text_of_single(Int32, PdfPageLabel) -> Bytes
 
 pub fn pdf_string_of_page_label(PdfPageLabel) -> Bytes
 
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfPageLabel {
   label_style : PdfPageLabelStyle
   label_prefix : Bytes?
-  start_page : Int
-  start_value : Int
-} derive(Eq, ToJson, @debug.Debug)
+  start_page : Int32
+  start_value : Int32
+}
+pub fn PdfPageLabel::equal(Self, Self) -> Bool
+pub fn PdfPageLabel::not_equal(Self, Self) -> Bool
+pub fn PdfPageLabel::to_json(Self) -> @json.Json
+pub fn PdfPageLabel::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) enum PdfPageLabelStyle {
   PageLabelDecimalArabic
   PageLabelUppercaseRoman
@@ -46,8 +53,12 @@ pub(all) enum PdfPageLabelStyle {
   PageLabelUppercaseLetters
   PageLabelLowercaseLetters
   PageLabelNoLabelPrefixOnly
-} derive(Eq, ToJson, @debug.Debug)
+}
 pub fn PdfPageLabelStyle::debug_name(Self) -> String
+pub fn PdfPageLabelStyle::equal(Self, Self) -> Bool
+pub fn PdfPageLabelStyle::not_equal(Self, Self) -> Bool
+pub fn PdfPageLabelStyle::to_json(Self) -> @json.Json
+pub fn PdfPageLabelStyle::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 pub type PdfBytes = Bytes

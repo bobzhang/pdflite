@@ -83,6 +83,15 @@ pub(all) enum PdfContentOp {
 }
 
 ///|
+pub extend PdfContentOp with Debug::{to_repr}
+
+///|
+pub extend PdfContentOp with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentOp with ToJson::{to_json}
+
+///|
 fn pdf_content_ascii(text : String) -> PdfBytes {
   @ascii.encode(text)
 }
@@ -125,7 +134,7 @@ pub fn pdf_content_end_artifact() -> PdfContentOp {
 pub fn pdf_content_add_artifacts(
   ops : ArrayView[PdfContentOp],
 ) -> Array[PdfContentOp] {
-  let output : Array[PdfContentOp] = Array::new(capacity=ops.length() + 2)
+  let output : Array[PdfContentOp] = Array(capacity=ops.length() + 2)
   let mut in_content = false
   let mut in_artifact = false
   for op in ops {

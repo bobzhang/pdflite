@@ -3,6 +3,7 @@ package "bobzhang/pdflite/portfolio"
 
 import {
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -11,12 +12,17 @@ pub fn pdf_portfolio_entry(String, BytesView, relationship? : String?, descripti
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfPortfolioEntry {
   filename : String
   data : Bytes
   relationship : String?
   description : String?
-} derive(Eq, ToJson, @debug.Debug)
+}
+pub fn PdfPortfolioEntry::equal(Self, Self) -> Bool
+pub fn PdfPortfolioEntry::not_equal(Self, Self) -> Bool
+pub fn PdfPortfolioEntry::to_json(Self) -> @json.Json
+pub fn PdfPortfolioEntry::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 pub type PdfBytes = Bytes

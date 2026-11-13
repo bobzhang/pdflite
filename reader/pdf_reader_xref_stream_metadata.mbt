@@ -41,7 +41,7 @@ pub fn pdf_xref_stream_int_array(
 ) -> Array[Int32]? raise @core.PdfError {
   match dictionary.lookup_immediate(key) {
     Some(PdfArray(values)) => {
-      let output : Array[Int32] = Array::new(capacity=values.length())
+      let output : Array[Int32] = Array(capacity=values.length())
       for value in values {
         match value {
           PdfInteger(number) => output.push(number)
@@ -77,9 +77,7 @@ pub fn pdf_xref_stream_index_pairs(
       if values.length() % 2 != 0 {
         raise XRefEntryExpected
       }
-      let pairs : Array[(Int32, Int32)] = Array::new(
-        capacity=values.length() / 2,
-      )
+      let pairs : Array[(Int32, Int32)] = Array(capacity=values.length() / 2)
       for pair_index in 0..<(values.length() / 2) {
         let i = pair_index * 2
         let start = values[i]

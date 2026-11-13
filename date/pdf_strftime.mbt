@@ -17,6 +17,15 @@ pub(all) struct PdfStrftimeTime {
 }
 
 ///|
+pub extend PdfStrftimeTime with Debug::{to_repr}
+
+///|
+pub extend PdfStrftimeTime with Eq::{not_equal, equal}
+
+///|
+pub extend PdfStrftimeTime with ToJson::{to_json}
+
+///|
 /// Source-spelled cpdf dummy strftime time value.
 pub let pdf_dummy : PdfStrftimeTime = {
   tm_sec: 0,

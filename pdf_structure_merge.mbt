@@ -3,7 +3,7 @@ fn PdfDocument::pdf_structure_merged_parent_tree_entries(
   self : PdfDocument,
   structure_tree_roots : ArrayView[@syntax.PdfObject],
 ) -> Array[(Int32, @syntax.PdfObject)] {
-  let entries : Array[(Int32, @syntax.PdfObject)] = Array::new(
+  let entries : Array[(Int32, @syntax.PdfObject)] = Array(
     capacity=structure_tree_roots.length(),
   )
   for root in structure_tree_roots {

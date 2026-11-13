@@ -12,6 +12,15 @@ pub(all) struct PdfPortfolioEntry {
 }
 
 ///|
+pub extend PdfPortfolioEntry with Debug::{to_repr}
+
+///|
+pub extend PdfPortfolioEntry with Eq::{not_equal, equal}
+
+///|
+pub extend PdfPortfolioEntry with ToJson::{to_json}
+
+///|
 /// Construct a portfolio entry, copying the supplied data view.
 pub fn pdf_portfolio_entry(
   filename : String,

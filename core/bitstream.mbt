@@ -14,6 +14,15 @@ pub struct BitStream {
 }
 
 ///|
+pub extend BitStream with Debug::{to_repr}
+
+///|
+pub extend BitStream with Eq::{not_equal, equal}
+
+///|
+pub extend BitStream with ToJson::{to_json}
+
+///|
 /// A restorable snapshot of a `BitStream` position.
 ///
 /// The snapshot captures both the underlying byte cursor position and the
@@ -26,6 +35,15 @@ pub struct BitStreamPosition {
   bit_mask : Int32
   bits_read : Int32
 }
+
+///|
+pub extend BitStreamPosition with Debug::{to_repr}
+
+///|
+pub extend BitStreamPosition with Eq::{not_equal, equal}
+
+///|
+pub extend BitStreamPosition with ToJson::{to_json}
 
 ///|
 /// Creates a bit stream that reads from an existing byte cursor.

@@ -9,6 +9,15 @@ pub(all) struct PdfTrueTypeTableRecord {
 }
 
 ///|
+pub extend PdfTrueTypeTableRecord with Debug::{to_repr}
+
+///|
+pub extend PdfTrueTypeTableRecord with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTrueTypeTableRecord with ToJson::{to_json}
+
+///|
 /// Core metrics extracted from TrueType `head`, `hhea`, `hmtx`, and `maxp`.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfTrueTypeMetrics {
@@ -25,6 +34,15 @@ pub(all) struct PdfTrueTypeMetrics {
 }
 
 ///|
+pub extend PdfTrueTypeMetrics with Debug::{to_repr}
+
+///|
+pub extend PdfTrueTypeMetrics with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTrueTypeMetrics with ToJson::{to_json}
+
+///|
 /// Font descriptor metrics derived from TrueType tables.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfTrueTypeDescriptorMetrics {
@@ -39,12 +57,30 @@ pub(all) struct PdfTrueTypeDescriptorMetrics {
 }
 
 ///|
+pub extend PdfTrueTypeDescriptorMetrics with Debug::{to_repr}
+
+///|
+pub extend PdfTrueTypeDescriptorMetrics with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTrueTypeDescriptorMetrics with ToJson::{to_json}
+
+///|
 /// Mapping from a Unicode codepoint to a TrueType glyph index.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfTrueTypeCMapGlyph {
   codepoint : Int32
   glyph_index : Int32
 }
+
+///|
+pub extend PdfTrueTypeCMapGlyph with Debug::{to_repr}
+
+///|
+pub extend PdfTrueTypeCMapGlyph with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTrueTypeCMapGlyph with ToJson::{to_json}
 
 ///|
 /// Byte range for one glyph inside the TrueType `glyf` table.
@@ -56,6 +92,15 @@ pub(all) struct PdfTrueTypeGlyphByteRange {
 }
 
 ///|
+pub extend PdfTrueTypeGlyphByteRange with Debug::{to_repr}
+
+///|
+pub extend PdfTrueTypeGlyphByteRange with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTrueTypeGlyphByteRange with ToJson::{to_json}
+
+///|
 /// Result of splitting a TrueType Unicode subset into cpdf's main and higher
 /// subset groups.
 #derive(Debug, Eq, ToJson)
@@ -65,12 +110,27 @@ pub(all) struct PdfTrueTypeSubsetPartition {
 }
 
 ///|
+pub extend PdfTrueTypeSubsetPartition with Debug::{to_repr}
+
+///|
+pub extend PdfTrueTypeSubsetPartition with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTrueTypeSubsetPartition with ToJson::{to_json}
+
+///|
 /// Rebuilt subset-table bytes and their unpadded logical length.
 #derive(Debug, Eq)
 pub(all) struct PdfTrueTypeSubsetTable {
   length : Int32
   bytes : Bytes
 }
+
+///|
+pub extend PdfTrueTypeSubsetTable with Debug::{to_repr}
+
+///|
+pub extend PdfTrueTypeSubsetTable with Eq::{not_equal, equal}
 
 ///|
 /// One subset record returned by cpdf-style TrueType parsing.
@@ -96,3 +156,9 @@ pub(all) struct PdfTrueTypeParsedSubset {
   subset : Array[Int32]
   tounicode : Array[(Int32, Bytes)]?
 }
+
+///|
+pub extend PdfTrueTypeParsedSubset with Debug::{to_repr}
+
+///|
+pub extend PdfTrueTypeParsedSubset with Eq::{not_equal, equal}

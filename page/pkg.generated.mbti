@@ -6,6 +6,7 @@ import {
   "bobzhang/pdflite/geometry",
   "bobzhang/pdflite/syntax",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
@@ -13,29 +14,39 @@ pub fn pdf_page_blank(@geometry.PaperSize) -> PdfPage
 
 pub fn pdf_page_custom(@syntax.PdfObject) -> PdfPage
 
-pub fn pdf_page_int_of_rotation(PdfPageRotation) -> Int
+pub fn pdf_page_int_of_rotation(PdfPageRotation) -> Int32
 
 pub fn pdf_page_rectangle_of_paper(@geometry.PaperSize) -> @syntax.PdfObject
 
-pub fn pdf_page_rotation_of_int(Int) -> PdfPageRotation raise @core.PdfError
+pub fn pdf_page_rotation_of_int(Int32) -> PdfPageRotation raise @core.PdfError
 
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfPage {
   content : Array[@syntax.PdfObject]
   mediabox : @syntax.PdfObject
   resources : @syntax.PdfObject
   rotate : PdfPageRotation
   rest : @syntax.PdfObject
-} derive(Eq, ToJson, @debug.Debug)
+}
+pub fn PdfPage::equal(Self, Self) -> Bool
+pub fn PdfPage::not_equal(Self, Self) -> Bool
+pub fn PdfPage::to_json(Self) -> @json.Json
+pub fn PdfPage::to_repr(Self) -> @debug.Repr
 
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) enum PdfPageRotation {
   Rotate0
   Rotate90
   Rotate180
   Rotate270
-} derive(Eq, ToJson, @debug.Debug)
+}
+pub fn PdfPageRotation::equal(Self, Self) -> Bool
+pub fn PdfPageRotation::not_equal(Self, Self) -> Bool
+pub fn PdfPageRotation::to_json(Self) -> @json.Json
+pub fn PdfPageRotation::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 pub using @geometry {type PaperSize}
@@ -45,4 +56,3 @@ pub using @core {type PdfError}
 pub using @syntax {type PdfObject}
 
 // Traits
-

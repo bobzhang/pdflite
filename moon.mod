@@ -3,9 +3,8 @@ name = "bobzhang/pdflite"
 version = "0.1.39"
 
 import {
-  "moonbitlang/async@0.19.4",
-  "moonbitlang/x@0.4.43",
-  "illusory0x0/rijndael@0.1.0",
+  "moonbitlang/async@0.22.4",
+  "moonbitlang/x@0.5.5",
 }
 
 readme = "README.mbt.md"

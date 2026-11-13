@@ -8,6 +8,15 @@
 pub(all) struct PdfName(Bytes)
 
 ///|
+pub extend PdfName with Debug::{to_repr}
+
+///|
+pub extend PdfName with Eq::{not_equal, equal}
+
+///|
+pub extend PdfName with ToJson::{to_json}
+
+///|
 /// Wraps owned bytes as a PDF name without copying.
 ///
 /// The bytes are expected to be the name payload without the leading slash.

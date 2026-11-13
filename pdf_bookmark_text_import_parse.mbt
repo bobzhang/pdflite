@@ -5,7 +5,7 @@ fn PdfDocument::pdf_bookmark_import_parse_line(
   line_number : Int32,
 ) -> @bookmark.PdfBookmark? raise @core.PdfError {
   let line = pdf_bookmark_import_trim_line_end(line)
-  let index : Ref[Int32] = { val: 0, }
+  let index = Ref::{ val: 0, }
   pdf_bookmark_import_skip_whitespace(line, index)
   if index.val == line.length() {
     None

@@ -21,6 +21,15 @@ pub struct ByteCursor {
 }
 
 ///|
+pub extend ByteCursor with Debug::{to_repr}
+
+///|
+pub extend ByteCursor with Eq::{not_equal, equal}
+
+///|
+pub extend ByteCursor with ToJson::{to_json}
+
+///|
 /// Creates a cursor over owned PDF bytes.
 ///
 /// The cursor borrows the byte storage through a view and does not copy it.

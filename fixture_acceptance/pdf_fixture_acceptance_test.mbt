@@ -1178,7 +1178,7 @@ fn fixture_acceptance_assert_trailer_keyword_reconstructs_for_test(
   }
   guard strict is Err(@core.PdfError::XRefEntryExpected) else {
     match strict {
-      Err(error) => fail(error.to_json().stringify())
+      Err(error) => fail(Json(error).stringify())
       Ok(_) =>
         fail("expected malformed trailer keyword to require reconstruction")
     }
@@ -1591,7 +1591,7 @@ fn fixture_acceptance_assert_xref_stream_root_entry_reconstructs_for_test(
   }
   guard strict is Err(@core.PdfError::RootExpected) else {
     match strict {
-      Err(error) => fail(error.to_json().stringify())
+      Err(error) => fail(Json(error).stringify())
       Ok(_) =>
         fail("expected malformed xref stream root to require reconstruction")
     }
@@ -1620,7 +1620,7 @@ fn fixture_acceptance_assert_object_stream_count_reconstructs_for_test(
   }
   guard strict is Err(@core.PdfError::XRefEntryExpected) else {
     match strict {
-      Err(error) => fail(error.to_json().stringify())
+      Err(error) => fail(Json(error).stringify())
       Ok(_) =>
         fail("expected malformed object stream count to require reconstruction")
     }
@@ -1649,7 +1649,7 @@ fn fixture_acceptance_assert_object_stream_first_reconstructs_for_test(
   }
   guard strict is Err(@core.PdfError::XRefEntryExpected) else {
     match strict {
-      Err(error) => fail(error.to_json().stringify())
+      Err(error) => fail(Json(error).stringify())
       Ok(_) =>
         fail("expected malformed object stream first to require reconstruction")
     }
@@ -1693,7 +1693,7 @@ fn fixture_acceptance_assert_object_stream_filter_reconstructs_for_test(
   }
   guard strict is Err(@core.PdfError::FilterNotSupported(_)) else {
     match strict {
-      Err(error) => fail(error.to_json().stringify())
+      Err(error) => fail(Json(error).stringify())
       Ok(_) =>
         fail(
           "expected malformed object stream filter to require reconstruction",
@@ -1724,7 +1724,7 @@ fn fixture_acceptance_assert_object_stream_decodeparms_reconstructs_for_test(
   }
   guard strict is Err(@core.PdfError::PredictorExpected) else {
     match strict {
-      Err(error) => fail(error.to_json().stringify())
+      Err(error) => fail(Json(error).stringify())
       Ok(_) =>
         fail(
           "expected malformed object stream DecodeParms to require reconstruction",
@@ -1755,7 +1755,7 @@ fn fixture_acceptance_assert_object_stream_decodeparms_predictor_reconstructs_fo
   }
   guard strict is Err(@core.PdfError::PredictorNotSupported(predictor)) else {
     match strict {
-      Err(error) => fail(error.to_json().stringify())
+      Err(error) => fail(Json(error).stringify())
       Ok(_) =>
         fail(
           "expected unsupported object stream DecodeParms predictor to require reconstruction",
@@ -1787,7 +1787,7 @@ fn fixture_acceptance_assert_object_stream_marker_reconstructs_for_test(
   }
   guard strict is Err(@core.PdfError::ParseStreamExpected) else {
     match strict {
-      Err(error) => fail(error.to_json().stringify())
+      Err(error) => fail(Json(error).stringify())
       Ok(_) =>
         fail(
           "expected malformed object stream marker to require reconstruction",
@@ -1832,7 +1832,7 @@ fn fixture_acceptance_assert_object_stream_endobj_reconstructs_for_test(
   }
   guard strict is Err(@core.PdfError::ParseEndObjectExpected) else {
     match strict {
-      Err(error) => fail(error.to_json().stringify())
+      Err(error) => fail(Json(error).stringify())
       Ok(_) =>
         fail(
           "expected malformed object stream endobj to require reconstruction",

@@ -15,6 +15,15 @@ pub(all) struct PdfFontListEntry {
 }
 
 ///|
+pub extend PdfFontListEntry with Debug::{to_repr}
+
+///|
+pub extend PdfFontListEntry with Eq::{not_equal, equal}
+
+///|
+pub extend PdfFontListEntry with ToJson::{to_json}
+
+///|
 /// One cpdf-style missing-font report entry.
 ///
 /// `encoding == "Built-in"` records cpdf's fallback when a missing font does
@@ -29,6 +38,15 @@ pub(all) struct PdfMissingFontEntry {
 }
 
 ///|
+pub extend PdfMissingFontEntry with Debug::{to_repr}
+
+///|
+pub extend PdfMissingFontEntry with Eq::{not_equal, equal}
+
+///|
+pub extend PdfMissingFontEntry with ToJson::{to_json}
+
+///|
 /// One row from cpdf's font encoding table.
 ///
 /// `unicode_name` is empty when this port has no Unicode character-name table
@@ -41,3 +59,12 @@ pub(all) struct PdfFontTableEntry {
   unicode_name : String
   glyphnames : String
 }
+
+///|
+pub extend PdfFontTableEntry with Debug::{to_repr}
+
+///|
+pub extend PdfFontTableEntry with Eq::{not_equal, equal}
+
+///|
+pub extend PdfFontTableEntry with ToJson::{to_json}

@@ -83,7 +83,7 @@ fn pdf_content_clipping_path_content_json(
   Json::array(
     [
       for path in paths => {
-        let drawn : @shape.PdfDrawnPath = {
+        let drawn = @shape.PdfDrawnPath::{
           stroked: false,
           filled: false,
           path,

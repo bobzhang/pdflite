@@ -20,6 +20,15 @@ pub(all) enum PdfTocFontSource {
 }
 
 ///|
+pub extend PdfTocFontSource with Debug::{to_repr}
+
+///|
+pub extend PdfTocFontSource with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTocFontSource with ToJson::{to_json}
+
+///|
 /// Add a table of contents using an already prepared font pack.
 ///
 /// This composes the non-structure-tree cpdftoc path: read existing bookmarks

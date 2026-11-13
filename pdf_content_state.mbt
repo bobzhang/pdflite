@@ -8,12 +8,30 @@ pub(all) enum PdfContentColourValues {
 }
 
 ///|
+pub extend PdfContentColourValues with Debug::{to_repr}
+
+///|
+pub extend PdfContentColourValues with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentColourValues with ToJson::{to_json}
+
+///|
 /// Dash pattern carried by cpdfcontent's path drawing state.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentDashPattern {
   array : Array[Double]
   phase : Double
 }
+
+///|
+pub extend PdfContentDashPattern with Debug::{to_repr}
+
+///|
+pub extend PdfContentDashPattern with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentDashPattern with ToJson::{to_json}
 
 ///|
 /// Path drawing state exported by cpdfcontent's JSON view.
@@ -32,11 +50,29 @@ pub(all) struct PdfContentPathState {
 }
 
 ///|
+pub extend PdfContentPathState with Debug::{to_repr}
+
+///|
+pub extend PdfContentPathState with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentPathState with ToJson::{to_json}
+
+///|
 /// Clipping-only state exported for inline images, images, and shadings.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentClippingState {
   clipping_path : Array[@shape.PdfPath]
 }
+
+///|
+pub extend PdfContentClippingState with Debug::{to_repr}
+
+///|
+pub extend PdfContentClippingState with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentClippingState with ToJson::{to_json}
 
 ///|
 /// Text state fields exported alongside glyph content objects.
@@ -50,6 +86,15 @@ pub(all) struct PdfContentGlyphState {
 }
 
 ///|
+pub extend PdfContentGlyphState with Debug::{to_repr}
+
+///|
+pub extend PdfContentGlyphState with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentGlyphState with ToJson::{to_json}
+
+///|
 /// Content objects emitted by cpdfcontent's JSON exporter.
 #derive(Debug, Eq, ToJson)
 pub(all) enum PdfContentObject {
@@ -61,6 +106,15 @@ pub(all) enum PdfContentObject {
 }
 
 ///|
+pub extend PdfContentObject with Debug::{to_repr}
+
+///|
+pub extend PdfContentObject with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentObject with ToJson::{to_json}
+
+///|
 /// Content state variant carried by one cpdfcontent JSON entry.
 #derive(Debug, Eq, ToJson)
 pub(all) enum PdfContentState {
@@ -68,6 +122,15 @@ pub(all) enum PdfContentState {
   PdfContentStatePath(PdfContentPathState)
   PdfContentStateClipping(PdfContentClippingState)
 }
+
+///|
+pub extend PdfContentState with Debug::{to_repr}
+
+///|
+pub extend PdfContentState with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentState with ToJson::{to_json}
 
 ///|
 /// Eight-point cpdfcontent bounding box quad.
@@ -84,6 +147,15 @@ pub(all) struct PdfContentBoundingBox {
 }
 
 ///|
+pub extend PdfContentBoundingBox with Debug::{to_repr}
+
+///|
+pub extend PdfContentBoundingBox with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentBoundingBox with ToJson::{to_json}
+
+///|
 /// One item in cpdfcontent's JSON content list.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentJsonEntry {
@@ -91,3 +163,12 @@ pub(all) struct PdfContentJsonEntry {
   state : PdfContentState
   bounding_box : PdfContentBoundingBox
 }
+
+///|
+pub extend PdfContentJsonEntry with Debug::{to_repr}
+
+///|
+pub extend PdfContentJsonEntry with Eq::{not_equal, equal}
+
+///|
+pub extend PdfContentJsonEntry with ToJson::{to_json}

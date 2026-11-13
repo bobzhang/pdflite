@@ -9,6 +9,12 @@ pub(all) struct PdfCompositionEntry {
 }
 
 ///|
+pub extend PdfCompositionEntry with Debug::{to_repr}
+
+///|
+pub extend PdfCompositionEntry with Eq::{not_equal, equal}
+
+///|
 /// Build a composition row and compute its percentage of the full file size.
 pub fn pdf_composition_entry(
   label : String,

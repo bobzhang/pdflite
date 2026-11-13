@@ -16,6 +16,15 @@ pub(all) struct PdfDrawControlFrame {
 }
 
 ///|
+pub extend PdfDrawControlFrame with Debug::{to_repr}
+
+///|
+pub extend PdfDrawControlFrame with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawControlFrame with ToJson::{to_json}
+
+///|
 /// Stateful builder for cpdf draw-control operations.
 ///
 /// This ports the frame-stack behavior from `cpdfdrawcontrol.ml`: ordinary
@@ -34,6 +43,15 @@ pub struct PdfDrawControl {
   mut role_map : String
   mut auto_artifacts : Bool
 }
+
+///|
+pub extend PdfDrawControl with Debug::{to_repr}
+
+///|
+pub extend PdfDrawControl with Eq::{not_equal, equal}
+
+///|
+pub extend PdfDrawControl with ToJson::{to_json}
 
 ///|
 fn pdf_draw_control_default_bbox() -> @geometry.PdfCoordRectangle {
@@ -117,7 +135,7 @@ pub fn PdfDrawControl::add_op(
 ///|
 fn pdf_draw_control_split_on_spaces(text : String) -> Array[String] {
   let bytes = @utf8.encode(text)
-  let parts : Array[String] = Array::new(capacity=bytes.length())
+  let parts : Array[String] = Array(capacity=bytes.length())
   let mut start = 0
   for index in 0..<bytes.length() {
     if bytes[index].to_int() == 32 {
@@ -135,9 +153,9 @@ fn pdf_draw_control_read_floats(
   message : String,
 ) -> Array[Double] raise @core.PdfError {
   let parts = pdf_draw_control_split_on_spaces(text)
-  let output : Array[Double] = Array::new(capacity=parts.length())
+  let output : Array[Double] = Array(capacity=parts.length())
   for part in parts {
-    let parsed : Result[Double, Error] = try @strconv.from_str(part) catch {
+    let parsed : Result[Double, Error] = try @string.parse_double(part) catch {
       err => Err(err)
     } noraise {
       value => Ok(value)

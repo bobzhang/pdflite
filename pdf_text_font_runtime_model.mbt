@@ -9,6 +9,15 @@ pub(all) struct PdfEncodingDifference {
 }
 
 ///|
+pub extend PdfEncodingDifference with Debug::{to_repr}
+
+///|
+pub extend PdfEncodingDifference with Eq::{not_equal, equal}
+
+///|
+pub extend PdfEncodingDifference with ToJson::{to_json}
+
+///|
 /// Simple-font character encoding.
 ///
 /// `PdfCustomEncoding` layers `/Differences` over a base encoding.
@@ -26,6 +35,15 @@ pub(all) enum PdfEncoding {
 }
 
 ///|
+pub extend PdfEncoding with Debug::{to_repr}
+
+///|
+pub extend PdfEncoding with Eq::{not_equal, equal}
+
+///|
+pub extend PdfEncoding with ToJson::{to_json}
+
+///|
 /// Parsed font model used by text extraction and font writing.
 #derive(Debug, Eq, ToJson)
 pub(all) enum PdfFont {
@@ -33,6 +51,15 @@ pub(all) enum PdfFont {
   PdfFontSimple(PdfSimpleFont)
   PdfFontCIDKeyed(PdfCIDKeyedFont)
 }
+
+///|
+pub extend PdfFont with Debug::{to_repr}
+
+///|
+pub extend PdfFont with Eq::{not_equal, equal}
+
+///|
+pub extend PdfFont with ToJson::{to_json}
 
 ///|
 /// Text extractor bound to a parsed font.
@@ -45,6 +72,15 @@ pub(all) struct PdfTextExtractor {
 }
 
 ///|
+pub extend PdfTextExtractor with Debug::{to_repr}
+
+///|
+pub extend PdfTextExtractor with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTextExtractor with ToJson::{to_json}
+
+///|
 /// Extracted glyph result for one character code.
 ///
 /// `glyphname` is the resolved PDF glyph name and `codepoints` is the Unicode
@@ -54,3 +90,12 @@ pub(all) struct PdfTextGlyph {
   glyphname : @core.PdfName
   codepoints : Array[Int32]
 }
+
+///|
+pub extend PdfTextGlyph with Debug::{to_repr}
+
+///|
+pub extend PdfTextGlyph with Eq::{not_equal, equal}
+
+///|
+pub extend PdfTextGlyph with ToJson::{to_json}

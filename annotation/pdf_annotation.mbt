@@ -11,6 +11,15 @@ pub(all) enum PdfAnnotationStyle {
 }
 
 ///|
+pub extend PdfAnnotationStyle with Debug::{to_repr}
+
+///|
+pub extend PdfAnnotationStyle with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAnnotationStyle with ToJson::{to_json}
+
+///|
 /// Parsed annotation border information.
 ///
 /// `vertical_radius` and `horizontal_radius` come from the legacy `/Border`
@@ -26,6 +35,15 @@ pub(all) struct PdfAnnotationBorder {
 }
 
 ///|
+pub extend PdfAnnotationBorder with Debug::{to_repr}
+
+///|
+pub extend PdfAnnotationBorder with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAnnotationBorder with ToJson::{to_json}
+
+///|
 /// RGB annotation colour from the `/C` entry.
 ///
 /// Components are stored as integer channel values after parsing PDF numbers.
@@ -35,6 +53,15 @@ pub(all) struct PdfAnnotationColour {
   green : Int32
   blue : Int32
 }
+
+///|
+pub extend PdfAnnotationColour with Debug::{to_repr}
+
+///|
+pub extend PdfAnnotationColour with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAnnotationColour with ToJson::{to_json}
 
 ///|
 /// Supported annotation subtype.
@@ -72,6 +99,15 @@ pub(all) enum PdfAnnotationSubtype {
 }
 
 ///|
+pub extend PdfAnnotationSubtype with Debug::{to_repr}
+
+///|
+pub extend PdfAnnotationSubtype with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAnnotationSubtype with ToJson::{to_json}
+
+///|
 /// Parsed PDF annotation dictionary.
 ///
 /// `contents` and `subject` are raw PDF string bytes. `rectangle` is required
@@ -87,6 +123,15 @@ pub(all) struct PdfAnnotation {
   colour : PdfAnnotationColour?
   rest : PdfObject
 }
+
+///|
+pub extend PdfAnnotation with Debug::{to_repr}
+
+///|
+pub extend PdfAnnotation with Eq::{not_equal, equal}
+
+///|
+pub extend PdfAnnotation with ToJson::{to_json}
 
 ///|
 fn pdf_annotation_default_border() -> PdfAnnotationBorder {

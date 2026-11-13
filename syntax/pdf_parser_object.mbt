@@ -101,7 +101,7 @@ fn pdf_parse_array_at(
   lexemes : ArrayView[PdfLexeme],
   index : Int32,
 ) -> (PdfObject, Int32) raise @core.PdfError {
-  let values : Array[PdfObject] = Array::new(
+  let values : Array[PdfObject] = Array(
     capacity=pdf_parse_array_capacity(lexemes, index),
   )
   let mut current = index
@@ -151,7 +151,7 @@ fn pdf_parse_dictionary_at(
   lexemes : ArrayView[PdfLexeme],
   index : Int32,
 ) -> (PdfObject, Int32) raise @core.PdfError {
-  let entries : Array[(@core.PdfName, PdfObject)] = Array::new(
+  let entries : Array[(@core.PdfName, PdfObject)] = Array(
     capacity=pdf_parse_dictionary_capacity(lexemes, index),
   )
   let mut current = index

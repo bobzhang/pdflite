@@ -10,6 +10,15 @@ pub(all) struct PdfStandardFontData {
 }
 
 ///|
+pub extend PdfStandardFontData with Debug::{to_repr}
+
+///|
+pub extend PdfStandardFontData with Eq::{not_equal, equal}
+
+///|
+pub extend PdfStandardFontData with ToJson::{to_json}
+
+///|
 /// Return a compact debug label for this standard font data.
 pub fn PdfStandardFontData::debug_name(self : PdfStandardFontData) -> String {
   "StandardFont " + self.font.name()
@@ -26,6 +35,15 @@ pub(all) enum PdfFontFile {
   PdfFontFile2(Int32)
   PdfFontFile3(Int32)
 }
+
+///|
+pub extend PdfFontFile with Debug::{to_repr}
+
+///|
+pub extend PdfFontFile with Eq::{not_equal, equal}
+
+///|
+pub extend PdfFontFile with ToJson::{to_json}
 
 ///|
 /// Parsed PDF font descriptor metrics and optional embedded font metadata.
@@ -51,6 +69,15 @@ pub(all) struct PdfFontDescriptor {
 }
 
 ///|
+pub extend PdfFontDescriptor with Debug::{to_repr}
+
+///|
+pub extend PdfFontDescriptor with Eq::{not_equal, equal}
+
+///|
+pub extend PdfFontDescriptor with ToJson::{to_json}
+
+///|
 /// Type 3 font glyph-program data.
 ///
 /// `charprocs` keeps glyph names paired with their drawing streams and
@@ -65,6 +92,15 @@ pub(all) struct PdfType3Glyphs {
 }
 
 ///|
+pub extend PdfType3Glyphs with Debug::{to_repr}
+
+///|
+pub extend PdfType3Glyphs with Eq::{not_equal, equal}
+
+///|
+pub extend PdfType3Glyphs with ToJson::{to_json}
+
+///|
 /// Simple-font subtype recognized by the PDF text layer.
 ///
 /// Type 1, MMType1, Type 3, and TrueType fonts all use one-byte character
@@ -76,6 +112,15 @@ pub(all) enum PdfSimpleFontType {
   PdfType3(PdfType3Glyphs)
   PdfTrueType
 }
+
+///|
+pub extend PdfSimpleFontType with Debug::{to_repr}
+
+///|
+pub extend PdfSimpleFontType with Eq::{not_equal, equal}
+
+///|
+pub extend PdfSimpleFontType with ToJson::{to_json}
 
 ///|
 /// Parsed simple-font dictionary.
@@ -95,6 +140,15 @@ pub(all) struct PdfSimpleFont {
 }
 
 ///|
+pub extend PdfSimpleFont with Debug::{to_repr}
+
+///|
+pub extend PdfSimpleFont with Eq::{not_equal, equal}
+
+///|
+pub extend PdfSimpleFont with ToJson::{to_json}
+
+///|
 /// CID-system identity from a CIDFont or CMap dictionary.
 ///
 /// `registry` and `ordering` are stored as PDF bytes because PDF strings are
@@ -107,6 +161,15 @@ pub(all) struct PdfCIDSystemInfo {
 }
 
 ///|
+pub extend PdfCIDSystemInfo with Debug::{to_repr}
+
+///|
+pub extend PdfCIDSystemInfo with Eq::{not_equal, equal}
+
+///|
+pub extend PdfCIDSystemInfo with ToJson::{to_json}
+
+///|
 /// Vertical metrics for a CID in a composite font.
 ///
 /// The fields correspond to the PDF `/W2` tuple: vertical width and horizontal
@@ -117,6 +180,15 @@ pub(all) struct PdfCIDVerticalWidth {
   vx : Double
   vy : Double
 }
+
+///|
+pub extend PdfCIDVerticalWidth with Debug::{to_repr}
+
+///|
+pub extend PdfCIDVerticalWidth with Eq::{not_equal, equal}
+
+///|
+pub extend PdfCIDVerticalWidth with ToJson::{to_json}
 
 ///|
 /// Parsed descendant CIDFont data for a Type 0 composite font.
@@ -135,6 +207,15 @@ pub(all) struct PdfCompositeCIDFont {
 }
 
 ///|
+pub extend PdfCompositeCIDFont with Debug::{to_repr}
+
+///|
+pub extend PdfCompositeCIDFont with Eq::{not_equal, equal}
+
+///|
+pub extend PdfCompositeCIDFont with ToJson::{to_json}
+
+///|
 /// CMap source used by a Type 0 font.
 ///
 /// A CMap may be predefined by name, referenced as an external stream object,
@@ -147,6 +228,15 @@ pub(all) enum PdfCMapEncoding {
 }
 
 ///|
+pub extend PdfCMapEncoding with Debug::{to_repr}
+
+///|
+pub extend PdfCMapEncoding with Eq::{not_equal, equal}
+
+///|
+pub extend PdfCMapEncoding with ToJson::{to_json}
+
+///|
 /// One parsed CMap code-space range.
 ///
 /// `length` is the character-code byte length, and `first`/`last` are the
@@ -157,6 +247,15 @@ pub(all) struct PdfCMapCodeSpace {
   first : Int32
   last : Int32
 }
+
+///|
+pub extend PdfCMapCodeSpace with Debug::{to_repr}
+
+///|
+pub extend PdfCMapCodeSpace with Eq::{not_equal, equal}
+
+///|
+pub extend PdfCMapCodeSpace with ToJson::{to_json}
 
 ///|
 /// Parsed CMap or ToUnicode stream data.
@@ -179,6 +278,15 @@ pub(all) struct PdfParsedCMap {
 }
 
 ///|
+pub extend PdfParsedCMap with Debug::{to_repr}
+
+///|
+pub extend PdfParsedCMap with Eq::{not_equal, equal}
+
+///|
+pub extend PdfParsedCMap with ToJson::{to_json}
+
+///|
 /// Parsed Type 0 font with descendant CIDFont and CMap encoding.
 #derive(Debug, Eq, ToJson)
 pub(all) struct PdfCIDKeyedFont {
@@ -186,6 +294,15 @@ pub(all) struct PdfCIDKeyedFont {
   composite : PdfCompositeCIDFont
   encoding : PdfCMapEncoding
 }
+
+///|
+pub extend PdfCIDKeyedFont with Debug::{to_repr}
+
+///|
+pub extend PdfCIDKeyedFont with Eq::{not_equal, equal}
+
+///|
+pub extend PdfCIDKeyedFont with ToJson::{to_json}
 
 ///|
 /// Return a compact debug label containing the Type 0 base font name.

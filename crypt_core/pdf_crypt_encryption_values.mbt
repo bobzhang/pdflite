@@ -24,6 +24,12 @@ pub(all) struct PdfEncryptionValues {
 }
 
 ///|
+pub extend PdfEncryptionValues with Debug::{to_repr}
+
+///|
+pub extend PdfEncryptionValues with Eq::{not_equal, equal}
+
+///|
 /// Saved encryption state retained on a decrypted document.
 ///
 /// Recrypt helpers use this to put a previously encrypted document back into
@@ -32,3 +38,9 @@ pub(all) struct PdfEncryptionValues {
 pub(all) struct PdfSavedEncryption {
   values : PdfEncryptionValues
 }
+
+///|
+pub extend PdfSavedEncryption with Debug::{to_repr}
+
+///|
+pub extend PdfSavedEncryption with Eq::{not_equal, equal}

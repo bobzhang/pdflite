@@ -4,10 +4,11 @@ package "bobzhang/pdflite/font/afm"
 import {
   "bobzhang/pdflite/core",
   "moonbitlang/core/debug",
+  "moonbitlang/core/json",
 }
 
 // Values
-pub fn pdf_afm_parse_int(BytesView) -> Int raise @core.PdfError
+pub fn pdf_afm_parse_int(BytesView) -> Int32 raise @core.PdfError
 
 pub fn pdf_afm_view_equals(BytesView, BytesView) -> Bool
 
@@ -16,12 +17,17 @@ pub fn pdf_read_afm(BytesView) -> PdfAfmData raise @core.PdfError
 // Errors
 
 // Types and methods
+#derive(Eq, @debug.Debug, @json.ToJson)
 pub(all) struct PdfAfmData {
   headers : Array[(Bytes, Bytes)]
-  char_metrics : Array[(Int, Int)]
-  kerns : Array[(Int, Int, Int)]
-  char_name_widths : Array[(Bytes, Int)]
-} derive(Eq, ToJson, @debug.Debug)
+  char_metrics : Array[(Int32, Int32)]
+  kerns : Array[(Int32, Int32, Int32)]
+  char_name_widths : Array[(Bytes, Int32)]
+}
+pub fn PdfAfmData::equal(Self, Self) -> Bool
+pub fn PdfAfmData::not_equal(Self, Self) -> Bool
+pub fn PdfAfmData::to_json(Self) -> @json.Json
+pub fn PdfAfmData::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 pub type PdfBytes = Bytes

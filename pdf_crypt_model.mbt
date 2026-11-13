@@ -11,6 +11,12 @@ pub(all) struct PdfDecryptionResult {
 }
 
 ///|
+pub extend PdfDecryptionResult with Debug::{to_repr}
+
+///|
+pub extend PdfDecryptionResult with Eq::{not_equal, equal}
+
+///|
 fn pdf_crypt_name(text : String) -> @core.PdfName {
   @core.pdf_name_of_bytes(@ascii.encode(text))
 }
