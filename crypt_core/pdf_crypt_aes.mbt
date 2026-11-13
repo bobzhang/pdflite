@@ -1,46 +1,35 @@
 ///|
-fn pdf_crypto_fixed_array(data : BytesView) -> FixedArray[Byte] {
-  let output = FixedArray::make(data.length(), b'\x00')
-  for index, byte in data {
-    output[index] = byte
-  }
-  output
-}
-
-///|
 fn pdf_aes_valid_key_length(length : Int32) -> Bool {
   length == 16 || length == 24 || length == 32
 }
 
 ///|
+/// Validate the key length, mapping an invalid key onto the PDF error
+/// type. The official `x/crypto` AES routines raise a shared
+/// `CryptoError` for both key and data length problems, so the length
+/// checks happen here before delegating.
 fn pdf_aes_check_key(key : BytesView) -> Unit raise @core.PdfError {
   guard pdf_aes_valid_key_length(key.length()) else { raise CryptoKeyExpected }
 }
 
 ///|
-fn pdf_aes_block(data : BytesView) -> FixedArray[Byte] raise @core.PdfError {
+fn pdf_aes_block_length(data : BytesView) -> Unit raise @core.PdfError {
   guard data.length() == 16 else {
     raise InvalidCryptoDataLength(data.length())
   }
-  pdf_crypto_fixed_array(data)
 }
 
 ///|
-fn pdf_aes_encrypt_key(
-  key : BytesView,
-) -> FixedArray[Byte] raise @core.PdfError {
-  pdf_aes_check_key(key)
-  let fixed_key = pdf_crypto_fixed_array(key)
-  @rijndael.camlpdf_caml_aes_cook_encrypt_key(fixed_key, 0, fixed_key.length())
-}
-
-///|
-fn pdf_aes_decrypt_key(
-  key : BytesView,
-) -> FixedArray[Byte] raise @core.PdfError {
-  pdf_aes_check_key(key)
-  let fixed_key = pdf_crypto_fixed_array(key)
-  @rijndael.camlpdf_caml_aes_cook_decrypt_key(fixed_key, 0, fixed_key.length())
+/// Map the official AES error onto the PDF error type defensively. The
+/// caller has already checked key and block lengths, so any remaining
+/// `CryptoError` is treated as a data-length failure.
+fn pdf_aes_map_crypto_error(
+  action : () -> Bytes raise @crypto.CryptoError,
+  actual : Int32,
+) -> @core.PdfBytes raise @core.PdfError {
+  action() catch {
+    _ => raise InvalidCryptoDataLength(actual)
+  }
 }
 
 ///|
@@ -49,25 +38,26 @@ pub fn pdf_aes_encrypt_block(
   key : BytesView,
   block : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
-  let cooked_key = pdf_aes_encrypt_key(key)
-  let src = pdf_aes_block(block)
-  let dst = FixedArray::make(16, b'\x00')
-  @rijndael.camlpdf_caml_aes_encrypt(cooked_key, 0, src, 0, dst, 0)
-  Bytes::from_array(dst)
+  pdf_aes_check_key(key)
+  pdf_aes_block_length(block)
+  pdf_aes_map_crypto_error(
+    () => @crypto.aes_ecb_encrypt(key, block),
+    block.length(),
+  )
 }
 
 ///|
 /// Decrypt one 16-byte AES block with a 128-, 192-, or 256-bit key.
-#warnings("-unused_value")
 pub fn pdf_aes_decrypt_block(
   key : BytesView,
   block : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
-  let cooked_key = pdf_aes_decrypt_key(key)
-  let src = pdf_aes_block(block)
-  let dst = FixedArray::make(16, b'\x00')
-  @rijndael.camlpdf_caml_aes_decrypt(cooked_key, 0, src, 0, dst, 0)
-  Bytes::from_array(dst)
+  pdf_aes_check_key(key)
+  pdf_aes_block_length(block)
+  pdf_aes_map_crypto_error(
+    () => @crypto.aes_ecb_decrypt(key, block),
+    block.length(),
+  )
 }
 
 ///|
@@ -94,30 +84,15 @@ pub fn pdf_aes_cbc_decrypt(
   data : BytesView,
   remove_padding~ : Bool = true,
 ) -> @core.PdfBytes raise @core.PdfError {
-  guard data.length() > 16 else { return Bytes::new(0) }
+  guard data.length() > 16 else { return b"" }
   guard data.length() % 16 == 0 else {
     raise InvalidCryptoDataLength(data.length())
   }
-  let cooked_key = pdf_aes_decrypt_key(key)
-  let output = Array::make(data.length() - 16, b'\x00')
-  let mut previous_ciphertext = pdf_aes_block(data[:16])
-  let mut position = 16
-  let mut output_position = 0
-  while position < data.length() {
-    let ciphertext = pdf_aes_block(data[position:position + 16])
-    let plaintext = FixedArray::make(16, b'\x00')
-    @rijndael.camlpdf_caml_aes_decrypt(
-      cooked_key, 0, ciphertext, 0, plaintext, 0,
-    )
-    for index in 0..<16 {
-      output[output_position + index] = (plaintext[index].to_int() ^
-      previous_ciphertext[index].to_int()).to_byte()
-    }
-    previous_ciphertext = ciphertext
-    position += 16
-    output_position += 16
-  }
-  let decrypted = Bytes::from_array(output)
+  pdf_aes_check_key(key)
+  let decrypted = pdf_aes_map_crypto_error(
+    () => @crypto.aes_cbc_decrypt(key, data[:16], data[16:]),
+    data.length() - 16,
+  )
   if remove_padding {
     pdf_aes_remove_padding(decrypted)
   } else {
@@ -135,47 +110,24 @@ pub fn pdf_aes_cbc_encrypt_with_iv(
   iv : BytesView,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
-  let cooked_key = pdf_aes_encrypt_key(key)
-  let mut previous_ciphertext = pdf_aes_block(iv)
-  let full_blocks = data.length() / 16
+  pdf_aes_check_key(key)
+  pdf_aes_block_length(iv)
   let overflow = data.length() % 16
-  let output = Array::make((full_blocks + 2) * 16, b'\x00')
-  for index in 0..<16 {
-    output[index] = previous_ciphertext[index]
-  }
-  let mut output_position = 16
-  for block_index in 0..<full_blocks {
-    let block_start = block_index * 16
-    let plaintext = FixedArray::make(16, b'\x00')
-    for index in 0..<16 {
-      plaintext[index] = (data[block_start + index].to_int() ^
-      previous_ciphertext[index].to_int()).to_byte()
-    }
-    let ciphertext = FixedArray::make(16, b'\x00')
-    @rijndael.camlpdf_caml_aes_encrypt(
-      cooked_key, 0, plaintext, 0, ciphertext, 0,
-    )
-    for index in 0..<16 {
-      output[output_position + index] = ciphertext[index]
-    }
-    output_position += 16
-    previous_ciphertext = ciphertext
-  }
   let padding = 16 - overflow
-  let final_start = full_blocks * 16
-  let plaintext = FixedArray::make(16, b'\x00')
-  for index in 0..<16 {
-    let value = if index < overflow {
-      data[final_start + index]
-    } else {
-      padding.to_byte()
-    }
-    plaintext[index] = (value.to_int() ^ previous_ciphertext[index].to_int()).to_byte()
+  let padded : Array[Byte] = data.to_array()
+  for _ in 0..<padding {
+    padded.push(padding.to_byte())
   }
-  let ciphertext = FixedArray::make(16, b'\x00')
-  @rijndael.camlpdf_caml_aes_encrypt(cooked_key, 0, plaintext, 0, ciphertext, 0)
+  let encrypted = pdf_aes_map_crypto_error(
+    () => @crypto.aes_cbc_encrypt(key, iv, Bytes::from_array(padded)),
+    data.length() + padding,
+  )
+  let output = Array::make(16 + encrypted.length(), b'\x00')
   for index in 0..<16 {
-    output[output_position + index] = ciphertext[index]
+    output[index] = iv[index]
+  }
+  for index in 0..<encrypted.length() {
+    output[16 + index] = encrypted[index]
   }
   Bytes::from_array(output)
 }
@@ -190,25 +142,15 @@ pub fn pdf_aes_ecb_decrypt(
   data : BytesView,
   remove_padding~ : Bool = true,
 ) -> @core.PdfBytes raise @core.PdfError {
-  guard data.length() > 0 else { return Bytes::new(0) }
+  guard data.length() > 0 else { return b"" }
   guard data.length() % 16 == 0 else {
     raise InvalidCryptoDataLength(data.length())
   }
-  let cooked_key = pdf_aes_decrypt_key(key)
-  let output = Array::make(data.length(), b'\x00')
-  let mut position = 0
-  while position < data.length() {
-    let ciphertext = pdf_aes_block(data[position:position + 16])
-    let plaintext = FixedArray::make(16, b'\x00')
-    @rijndael.camlpdf_caml_aes_decrypt(
-      cooked_key, 0, ciphertext, 0, plaintext, 0,
-    )
-    for index in 0..<16 {
-      output[position + index] = plaintext[index]
-    }
-    position += 16
-  }
-  let decrypted = Bytes::from_array(output)
+  pdf_aes_check_key(key)
+  let decrypted = pdf_aes_map_crypto_error(
+    () => @crypto.aes_ecb_decrypt(key, data),
+    data.length(),
+  )
   if remove_padding {
     pdf_aes_remove_padding(decrypted)
   } else {
@@ -220,7 +162,6 @@ pub fn pdf_aes_ecb_decrypt(
 /// Encrypt AES-ECB data without adding padding.
 ///
 /// The input length must be a non-zero multiple of 16 unless it is empty.
-#warnings("-unused_value")
 pub fn pdf_aes_ecb_encrypt(
   key : BytesView,
   data : BytesView,
@@ -228,20 +169,10 @@ pub fn pdf_aes_ecb_encrypt(
   guard data.length() % 16 == 0 else {
     raise InvalidCryptoDataLength(data.length())
   }
-  guard data.length() > 0 else { return Bytes::new(0) }
-  let cooked_key = pdf_aes_encrypt_key(key)
-  let output = Array::make(data.length(), b'\x00')
-  let mut position = 0
-  while position < data.length() {
-    let plaintext = pdf_aes_block(data[position:position + 16])
-    let ciphertext = FixedArray::make(16, b'\x00')
-    @rijndael.camlpdf_caml_aes_encrypt(
-      cooked_key, 0, plaintext, 0, ciphertext, 0,
-    )
-    for index in 0..<16 {
-      output[position + index] = ciphertext[index]
-    }
-    position += 16
-  }
-  Bytes::from_array(output)
+  guard data.length() > 0 else { return b"" }
+  pdf_aes_check_key(key)
+  pdf_aes_map_crypto_error(
+    () => @crypto.aes_ecb_encrypt(key, data),
+    data.length(),
+  )
 }

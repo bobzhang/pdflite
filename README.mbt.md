@@ -1,3 +1,5 @@
+> **Deprecated:** Use [`moonbitlang/pdflite`](https://mooncakes.io/docs/moonbitlang/pdflite), the maintained module. Update the dependency and `bobzhang/pdflite` import paths to `moonbitlang/pdflite`; review API changes when upgrading. This fork retains compatibility fixes for existing users.
+
 # pdflite
 
 `bobzhang/pdflite` is a byte-oriented PDF toolkit for MoonBit. The root

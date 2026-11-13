@@ -132,6 +132,14 @@ test "pdf_aes_encrypt_block matches AES known vectors" {
     0x8e, 0xa2, 0xb7, 0xca, 0x51, 0x67, 0x45, 0xbf, 0xea, 0xfc, 0x49, 0x90, 0x4b,
     0x49, 0x60, 0x89,
   ])
+  // AES-192 completes coverage of all supported key sizes.
+  let key192 = key256[:24]
+  let cipher192 = crypt_bytes_for_test([
+    0xdd, 0xa9, 0x7c, 0xa4, 0x86, 0x4c, 0xdf, 0xe0, 0x6e, 0xaf, 0x70, 0xa0, 0xec,
+    0x0d, 0x71, 0x91,
+  ])
+  @test.assert_eq(try! pdf_aes_encrypt_block(key192, plaintext), cipher192)
+  @test.assert_eq(try! pdf_aes_decrypt_block(key192, cipher192), plaintext)
   @test.assert_eq(try! pdf_aes_encrypt_block(key128, plaintext), cipher128)
   @test.assert_eq(try! pdf_aes_decrypt_block(key128, cipher128), plaintext)
   @test.assert_eq(try! pdf_aes_encrypt_block(key256, plaintext), cipher256)
