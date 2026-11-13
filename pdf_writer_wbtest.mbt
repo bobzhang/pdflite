@@ -1,5 +1,5 @@
 ///|
-fn writer_wb_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn writer_wb_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -18,7 +18,7 @@ test "pdf_writer_changed_object_numbers deduplicates changed event log" {
 
 ///|
 test "pdf_writer_int_array_contains handles present and missing values" {
-  let values : Array[Int] = [0, 2, 4]
+  let values : Array[Int32] = [0, 2, 4]
   @test.assert_eq(pdf_writer_int_array_contains(values, 2), true)
   @test.assert_eq(pdf_writer_int_array_contains(values, 3), false)
 }
@@ -26,8 +26,8 @@ test "pdf_writer_int_array_contains handles present and missing values" {
 ///|
 test "pdf_writer_push_classic_xref_subsection scans sorted xrefs in order" {
   let output : Array[Byte] = []
-  let xrefs : Array[(Int, Int, Int)] = [(2, 33, 1), (4, 44, 2)]
-  let xref_index : Ref[Int] = { val: 0 }
+  let xrefs : Array[(Int32, Int32, Int32)] = [(2, 33, 1), (4, 44, 2)]
+  let xref_index : Ref[Int32] = { val: 0, }
   pdf_writer_push_classic_xref_subsection(output, xrefs, 0, 3, xref_index)
   pdf_writer_push_classic_xref_subsection(output, xrefs, 4, 1, xref_index)
   @test.assert_eq(
@@ -40,7 +40,7 @@ test "pdf_writer_push_classic_xref_subsection scans sorted xrefs in order" {
 
 ///|
 test "pdf_writer_xref_stream_data emits full table in object order" {
-  let xrefs : Array[(Int, Int, Int)] = [(1, 20, 0), (3, 300, 2)]
+  let xrefs : Array[(Int32, Int32, Int32)] = [(1, 20, 0), (3, 300, 2)]
   @test.assert_eq(
     pdf_writer_xref_stream_data(xrefs, 5, 4, 400),
     writer_wb_bytes_for_test([
@@ -52,8 +52,8 @@ test "pdf_writer_xref_stream_data emits full table in object order" {
 
 ///|
 test "pdf_writer_xref_stream_data_for_numbers emits sparse entries in order" {
-  let xrefs : Array[(Int, Int, Int)] = [(2, 33, 1), (4, 44, 2)]
-  let numbers : Array[Int] = [0, 2, 4, 5]
+  let xrefs : Array[(Int32, Int32, Int32)] = [(2, 33, 1), (4, 44, 2)]
+  let numbers : Array[Int32] = [0, 2, 4, 5]
   @test.assert_eq(
     pdf_writer_xref_stream_data_for_numbers(xrefs, numbers, 5, 55),
     writer_wb_bytes_for_test([
@@ -71,7 +71,7 @@ test "writer parses signed integer fragments for scientific reals" {
     -12,
   )
   @test.assert_eq(try! pdf_writer_parse_signed_int(@ascii.encode("12"), 0), 12)
-  let missing : Result[Int, Error] = try
+  let missing : Result[Int32, Error] = try
     pdf_writer_parse_signed_int(@ascii.encode("+"), 0)
   catch {
     err => Err(err)
@@ -81,7 +81,7 @@ test "writer parses signed integer fragments for scientific reals" {
   guard missing is Err(@core.PdfError::NumberExpected) else {
     fail("expected @core.PdfError::NumberExpected")
   }
-  let malformed : Result[Int, Error] = try
+  let malformed : Result[Int32, Error] = try
     pdf_writer_parse_signed_int(@ascii.encode("12a"), 0)
   catch {
     err => Err(err)

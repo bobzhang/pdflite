@@ -17,9 +17,13 @@ test "Bytes preserve raw PDF byte values" {
 
 ///|
 test "Scalar literals narrow by type context" {
-  let (byte, uint, uint16, int64, uint64) : (Byte, UInt, UInt16, Int64, UInt64) = (
-    255, 7, 65535, 42, 42,
-  )
+  let (byte, uint, uint16, int64, uint64) : (
+    Byte,
+    UInt32,
+    UInt16,
+    Int64,
+    UInt64,
+  ) = (255, 7, 65535, 42, 42)
   @test.assert_eq(byte.to_int(), 255)
   @test.assert_eq(uint.to_string(), "7")
   @test.assert_eq(uint16.to_int(), 65535)
@@ -29,7 +33,7 @@ test "Scalar literals narrow by type context" {
 
 ///|
 test "Primitive refs and growable arrays are explicit mutable containers" {
-  let counter : Ref[Int] = { val: 0 }
+  let counter : Ref[Int32] = { val: 0, }
   counter.val += 1
   let bytes : Array[Byte] = [1, 2, 3]
   bytes[1] = 255
@@ -39,7 +43,7 @@ test "Primitive refs and growable arrays are explicit mutable containers" {
 
 ///|
 test "FixedArray is the closest MoonBit container to OCaml array" {
-  let fixed : FixedArray[Int] = [1, 2, 3]
+  let fixed : FixedArray[Int32] = [1, 2, 3]
   fixed[1] = 9
   @test.assert_eq(fixed.length(), 3)
   @test.assert_eq(fixed[1], 9)
@@ -48,20 +52,20 @@ test "FixedArray is the closest MoonBit container to OCaml array" {
 }
 
 ///|
-fn array_view_length_for_test(values : ArrayView[Int]) -> Int {
+fn array_view_length_for_test(values : ArrayView[Int32]) -> Int32 {
   values.length()
 }
 
 ///|
 test "ArrayView accepts fixed and growable arrays for read-only APIs" {
-  let fixed : FixedArray[Int] = [1, 2, 3]
-  let growable : Array[Int] = [1, 2, 3]
+  let fixed : FixedArray[Int32] = [1, 2, 3]
+  let growable : Array[Int32] = [1, 2, 3]
   @test.assert_eq(array_view_length_for_test(fixed), 3)
   @test.assert_eq(array_view_length_for_test(growable), 3)
 }
 
 ///|
-fn first_sorted_for_ocaml2moonbit_test(values : ArrayView[Int]) -> Int {
+fn first_sorted_for_ocaml2moonbit_test(values : ArrayView[Int32]) -> Int32 {
   let owned = values.to_owned()
   owned.sort()
   owned[0]
@@ -69,8 +73,8 @@ fn first_sorted_for_ocaml2moonbit_test(values : ArrayView[Int]) -> Int {
 
 ///|
 test "ArrayView to_owned makes an explicit mutable sorting boundary" {
-  let fixed : FixedArray[Int] = [3, 1, 2]
-  let growable : Array[Int] = [4, 2, 3]
+  let fixed : FixedArray[Int32] = [3, 1, 2]
+  let growable : Array[Int32] = [4, 2, 3]
   @test.assert_eq(first_sorted_for_ocaml2moonbit_test(fixed), 1)
   @test.assert_eq(first_sorted_for_ocaml2moonbit_test(growable), 2)
   @test.assert_eq(fixed[0], 3)
@@ -79,7 +83,7 @@ test "ArrayView to_owned makes an explicit mutable sorting boundary" {
 
 ///|
 test "MoonBit iterates iterable key views without array conversion" {
-  let values : @hashmap.HashMap[Int, Int] = HashMap([])
+  let values : @hashmap.HashMap[Int32, Int32] = HashMap([])
   values[1] = 10
   values[2] = 20
   let mut total = 0
@@ -98,7 +102,7 @@ fn bytes_view_has_ab_for_test(view : BytesView) -> Bool {
 }
 
 ///|
-fn bytes_view_len_for_test(view : BytesView) -> Int {
+fn bytes_view_len_for_test(view : BytesView) -> Int32 {
   view.length()
 }
 
@@ -127,21 +131,21 @@ test "Core env API handles process variables and optional current directory" {
 }
 
 ///|
-fn apply_callback_twice_for_test(f : (Int) -> Int, value : Int) -> Int {
+fn apply_callback_twice_for_test(f : (Int32) -> Int32, value : Int32) -> Int32 {
   f(f(value))
 }
 
 ///|
 fn apply_raising_callback_for_test(
-  f : (Int) -> Int raise,
-  value : Int,
-) -> Int raise {
+  f : (Int32) -> Int32 raise,
+  value : Int32,
+) -> Int32 raise {
   f(value)
 }
 
 ///|
 test "Callback parameters use function types and can capture refs" {
-  let delta : Ref[Int] = { val: 1 }
+  let delta : Ref[Int32] = { val: 1, }
   @test.assert_eq(
     apply_callback_twice_for_test(
       fn(value) {
@@ -173,7 +177,7 @@ test "Raising callback parameters use raising function types" {
 
 ///|
 test "Imported packages are used through package aliases" {
-  let objects : @hashmap.HashMap[Int, String] = HashMap([])
+  let objects : @hashmap.HashMap[Int32, String] = HashMap([])
   objects[7] = "seven"
   @test.assert_eq(objects.get(7), Some("seven"))
 }

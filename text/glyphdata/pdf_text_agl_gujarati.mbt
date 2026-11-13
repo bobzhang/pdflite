@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_codepoint_of_gujarati_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_gujarati_glyphname(name : String) -> Int32? {
   match name {
     "/aagujarati" => Some(0x0A86)
     "/aavowelsigngujarati" => Some(0x0ABE)

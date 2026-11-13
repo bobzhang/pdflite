@@ -1,6 +1,6 @@
 ///|
 test "PdfTextExtractor decodes Cyrillic AFII AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/afii10017", 0x0410),
     ("/afii10018", 0x0411),
     ("/afii10019", 0x0412),
@@ -104,8 +104,8 @@ test "PdfTextExtractor decodes Cyrillic AFII AGL glyph names" {
     ("/afii10846", 0x04D9),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1

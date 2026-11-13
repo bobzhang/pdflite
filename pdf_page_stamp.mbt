@@ -2,16 +2,16 @@
 /// Compatibility wrapper for `PdfDocument::stamp_pages`.
 pub fn pdf_stamp(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   overlay : PdfDocument,
-  relative_to_box? : @core.PdfName = pdf_page_mediabox_key(),
-  position? : @geometry.PdfPosition = PdfPositionBottomLeft(0.0, 0.0),
-  topline? : Bool = false,
-  midline? : Bool = false,
-  fast? : Bool = false,
-  scale_to_fit? : Bool = false,
-  is_over? : Bool = true,
-  process_struct_tree? : Bool = false,
+  relative_to_box~ : @core.PdfName = pdf_page_mediabox_key(),
+  position~ : @geometry.PdfPosition = PdfPositionBottomLeft(0.0, 0.0),
+  topline~ : Bool = false,
+  midline~ : Bool = false,
+  fast~ : Bool = false,
+  scale_to_fit~ : Bool = false,
+  is_over~ : Bool = true,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.stamp_pages(
     page_numbers,
@@ -31,16 +31,16 @@ pub fn pdf_stamp(
 /// Stamp using cpdfpage's string page-box names.
 pub fn PdfDocument::stamp_pages_string(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   overlay : PdfDocument,
   relative_to_box : String,
-  position? : @geometry.PdfPosition = PdfPositionBottomLeft(0.0, 0.0),
-  topline? : Bool = false,
-  midline? : Bool = false,
-  fast? : Bool = false,
-  scale_to_fit? : Bool = false,
-  is_over? : Bool = true,
-  process_struct_tree? : Bool = false,
+  position~ : @geometry.PdfPosition = PdfPositionBottomLeft(0.0, 0.0),
+  topline~ : Bool = false,
+  midline~ : Bool = false,
+  fast~ : Bool = false,
+  scale_to_fit~ : Bool = false,
+  is_over~ : Bool = true,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.stamp_pages(
     page_numbers,
@@ -67,7 +67,7 @@ pub fn pdf_stamp_cpdf_order(
   fast : Bool,
   scale_to_fit : Bool,
   is_over : Bool,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   overlay : PdfDocument,
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {

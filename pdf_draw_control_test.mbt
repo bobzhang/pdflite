@@ -4,7 +4,7 @@ fn draw_control_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn draw_control_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn draw_control_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   let output : Array[Byte] = []
   for value in values {
     output.push(try! @core.pdf_byte_of_int(value))
@@ -23,7 +23,7 @@ fn draw_control_append_bytes_for_test(
 }
 
 ///|
-fn draw_control_push_u32_for_test(output : Array[Byte], value : Int) -> Unit {
+fn draw_control_push_u32_for_test(output : Array[Byte], value : Int32) -> Unit {
   output.push(try! @core.pdf_byte_of_int((value >> 24) & 0xFF))
   output.push(try! @core.pdf_byte_of_int((value >> 16) & 0xFF))
   output.push(try! @core.pdf_byte_of_int((value >> 8) & 0xFF))
@@ -32,7 +32,7 @@ fn draw_control_push_u32_for_test(output : Array[Byte], value : Int) -> Unit {
 
 ///|
 fn draw_control_png_chunk_for_test(
-  chunk_type : ArrayView[Int],
+  chunk_type : ArrayView[Int32],
   data : BytesView,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
@@ -92,7 +92,7 @@ fn draw_control_jpeg2000_for_test() -> @core.PdfBytes {
 fn draw_control_standard_font_for_test(
   font : @pdflite.PdfStandardFont,
 ) -> @pdflite.PdfFont {
-  PdfFontStandard({ font, encoding: PdfWinAnsiEncoding })
+  PdfFontStandard({ font, encoding: PdfWinAnsiEncoding, })
 }
 
 ///|
@@ -114,7 +114,7 @@ test "pdf draw control collects main text push and xobject frames in order" {
   try! control.add_op(PdfDrawFill)
   try! control.pop_group()
 
-  control.set_xobject_bbox({ x: 1.0, y: 2.0, width: 30.0, height: 40.0 })
+  control.set_xobject_bbox({ x: 1.0, y: 2.0, width: 30.0, height: 40.0, })
   control.start_xobject("XO")
   @test.assert_eq(try! control.current_frame_name(), "XO")
   try! control.add_op(PdfDrawLine(3.0, 4.0))
@@ -255,7 +255,7 @@ test "pdf draw control command helpers append cpdf draw ops" {
     PdfDrawSetLineJoin(2),
     PdfDrawSetMiterLimit(4.5),
     PdfDrawSetDashPattern([1.0, 2.0], 3.0),
-    PdfDrawMatrix({ a: 1.0, b: 2.0, c: 3.0, d: 4.0, e: 5.0, f: 6.0 }),
+    PdfDrawMatrix({ a: 1.0, b: 2.0, c: 3.0, d: 4.0, e: 5.0, f: 6.0, }),
     PdfDrawMatrix(@geometry.transform_translate(7.0, 8.0)),
     PdfDrawMatrix(@geometry.transform_rotate(@geometry.point2(0.0, 0.0), 0.5)),
     PdfDrawMatrix(
@@ -514,7 +514,7 @@ test "pdf draw control image data helpers propagate parser errors" {
 ///|
 test "pdf draw control text helpers add fontpack once and font text ops" {
   let control = @pdflite.pdf_draw_control_new()
-  let pack : @pdflite.PdfFontPack = { fonts: [], entries: [] }
+  let pack : @pdflite.PdfFontPack = { fonts: [], entries: [], }
   control.set_font("F0", 10.0)
   control.set_fontpack(Some(pack))
   control.begin_text_section()
@@ -547,7 +547,7 @@ test "pdf draw control text helpers add fontpack once and font text ops" {
 ///|
 test "pdf draw control default fontpack helper appends once" {
   let control = @pdflite.pdf_draw_control_new()
-  let first : @pdflite.PdfFontPack = { fonts: [], entries: [] }
+  let first : @pdflite.PdfFontPack = { fonts: [], entries: [], }
   let second : @pdflite.PdfFontPack = {
     fonts: [draw_control_standard_font_for_test(PdfHelvetica)],
     entries: [],
@@ -599,7 +599,7 @@ test "pdf draw control exposes font state readers" {
   @test.assert_eq(@pdflite.pdf_getfontsize(control), 9.5)
   @test.assert_eq(@pdflite.pdf_getindent(control), Some(4.0))
 
-  let pack : @pdflite.PdfFontPack = { fonts: [], entries: [] }
+  let pack : @pdflite.PdfFontPack = { fonts: [], entries: [], }
   control.set_fontpack(Some(pack))
   @test.assert_eq(control.fontpack_initialized(), false)
   try! control.add_default_fontpack(control.font_name())

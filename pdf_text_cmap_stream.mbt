@@ -2,7 +2,7 @@
 fn PdfDocument::pdf_text_cmap_stream_dictionary_wmode(
   self : PdfDocument,
   stream_object : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match self.lookup_direct(pdf_text_wmode_key_name, stream_object) {
     Some(PdfInteger(value)) => Some(value)
     _ => None
@@ -24,7 +24,7 @@ fn PdfDocument::pdf_text_cmap_stream_dictionary_cmap_name(
 fn PdfDocument::pdf_text_cmap_stream_dictionary_cmap_type(
   self : PdfDocument,
   stream_object : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match self.lookup_direct(pdf_text_cmap_type_key_name, stream_object) {
     Some(PdfInteger(value)) => Some(value)
     _ => None
@@ -112,7 +112,7 @@ fn PdfDocument::pdf_text_decoded_cmap_stream_data_direct(
 fn PdfDocument::parse_cmap_with_seen(
   self : PdfDocument,
   cmap : @syntax.PdfObject,
-  seen : @hashmap.HashMap[Int, Bool],
+  seen : @hashmap.HashMap[Int32, Bool],
 ) -> PdfParsedCMap raise @core.PdfError {
   match cmap {
     PdfIndirect(number) => {

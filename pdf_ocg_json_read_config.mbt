@@ -1,7 +1,7 @@
 ///|
 fn pdf_ocg_read_json_order_item(
   json : Json,
-) -> (@core.PdfBytes?, Array[Int]) raise @core.PdfError {
+) -> (@core.PdfBytes?, Array[Int32]) raise @core.PdfError {
   match json {
     Object(entries) if entries.length() == 2 => {
       let name = pdf_ocg_read_json_optional_pdf_string(
@@ -25,11 +25,11 @@ fn pdf_ocg_read_json_order_item(
 ///|
 fn pdf_ocg_read_json_order(
   json : Json,
-) -> Array[(@core.PdfBytes?, Array[Int])]? raise @core.PdfError {
+) -> Array[(@core.PdfBytes?, Array[Int32])]? raise @core.PdfError {
   match json {
     Null => None
     Array(values) => {
-      let output : Array[(@core.PdfBytes?, Array[Int])] = []
+      let output : Array[(@core.PdfBytes?, Array[Int32])] = []
       for value in values {
         output.push(pdf_ocg_read_json_order_item(value))
       }
@@ -42,11 +42,11 @@ fn pdf_ocg_read_json_order(
 ///|
 fn pdf_ocg_read_json_radio_groups(
   json : Json,
-) -> Array[Array[Int]]? raise @core.PdfError {
+) -> Array[Array[Int32]]? raise @core.PdfError {
   match json {
     Null => None
     Array(values) => {
-      let output : Array[Array[Int]] = []
+      let output : Array[Array[Int32]] = []
       for value in values {
         output.push(
           pdf_ocg_read_json_ints(value, "ocg_read_config: bad rbgroups"),
@@ -79,7 +79,7 @@ fn pdf_ocg_read_json_appdict(
         ),
         "ocg_read_ocg: bad category",
       )
-      Some({ event, ocgs, category })
+      Some({ event, ocgs, category, })
     }
     _ => raise SoftError("ocg_read_appdict: malformed")
   }

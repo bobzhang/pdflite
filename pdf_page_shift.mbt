@@ -1,8 +1,8 @@
 ///|
 fn pdf_page_shift_offset_index_map(
-  page_numbers : ArrayView[Int],
-) -> @hashmap.HashMap[Int, Int] {
-  let indexes : @hashmap.HashMap[Int, Int] = HashMap([])
+  page_numbers : ArrayView[Int32],
+) -> @hashmap.HashMap[Int32, Int32] {
+  let indexes : @hashmap.HashMap[Int32, Int32] = HashMap([])
   for index in 0..<page_numbers.length() {
     if !indexes.contains(page_numbers[index]) {
       indexes[page_numbers[index]] = index
@@ -13,7 +13,7 @@ fn pdf_page_shift_offset_index_map(
 
 ///|
 fn pdf_page_shift_validate_offsets(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   offsets : ArrayView[(Double, Double)],
 ) -> Unit raise @core.PdfError {
   if page_numbers.length() != offsets.length() {
@@ -26,7 +26,7 @@ fn pdf_page_shift_validate_offsets(
 ///|
 fn pdf_page_shift_validate_page_indexed_offsets(
   context : String,
-  page_count : Int,
+  page_count : Int32,
   offsets : ArrayView[(Double, Double)],
 ) -> Unit raise @core.PdfError {
   if offsets.length() != page_count {
@@ -36,7 +36,7 @@ fn pdf_page_shift_validate_page_indexed_offsets(
 
 ///|
 fn pdf_page_shift_select_page_indexed_offsets(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   offsets : ArrayView[(Double, Double)],
 ) -> Array[(Double, Double)] {
   let selected : Array[(Double, Double)] = Array::new(
@@ -68,9 +68,9 @@ fn PdfDocument::pdf_page_shift_page(
 /// transformed with the same matrix.
 pub fn PdfDocument::shift_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   offsets : ArrayView[(Double, Double)],
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   pdf_page_box_validate_page_numbers(
     page_numbers,
@@ -81,7 +81,7 @@ pub fn PdfDocument::shift_pages(
   let pages = self.pages_of_pagetree()
   let page_indexes = pdf_page_shift_offset_index_map(page_numbers)
   let rewritten : Array[@page.PdfPage] = Array::new(capacity=pages.length())
-  let matrices : Array[(Int, @geometry.TransformMatrix)] = Array::new(
+  let matrices : Array[(Int32, @geometry.TransformMatrix)] = Array::new(
     capacity=page_numbers.length(),
   )
   for index in 0..<pages.length() {
@@ -103,9 +103,9 @@ pub fn PdfDocument::shift_pages(
 /// Compatibility wrapper for `PdfDocument::shift_pages`.
 pub fn pdf_shift_pages(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   offsets : ArrayView[(Double, Double)],
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.shift_pages(page_numbers, offsets, fast~)
 }
@@ -117,9 +117,9 @@ pub fn pdf_shift_pages(
 /// selected page, while unselected pages are left untouched.
 pub fn PdfDocument::shift_pdf(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   offsets : ArrayView[(Double, Double)],
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(page_numbers, pages.length(), "shift_pdf")
@@ -140,8 +140,8 @@ pub fn PdfDocument::shift_pdf(
 pub fn pdf_shift_pdf(
   offsets : ArrayView[(Double, Double)],
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.shift_pdf(page_numbers, offsets, fast~)
 }

@@ -2,7 +2,7 @@
 fn pdf_text_width_of_standard_charcode(
   font : PdfStandardFont,
   encoding : PdfEncoding,
-  code : Int,
+  code : Int32,
 ) -> Double {
   if code >= 0 && code <= 255 {
     let bytes : FixedArray[Byte] = [code.to_byte()]
@@ -15,7 +15,7 @@ fn pdf_text_width_of_standard_charcode(
 ///|
 fn pdf_text_simple_font_charcode_width(
   font : PdfSimpleFont,
-  code : Int,
+  code : Int32,
 ) -> Double {
   match font.fontmetrics {
     Some(metrics) =>
@@ -44,7 +44,7 @@ fn pdf_text_simple_font_charcode_width(
 ///|
 fn pdf_text_cid_font_charcode_width(
   font : PdfCIDKeyedFont,
-  code : Int,
+  code : Int32,
 ) -> Double {
   for entry in font.composite.cid_widths {
     if entry.0 == code {

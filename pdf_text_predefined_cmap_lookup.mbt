@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_predefined_rksj_single_byte_codepoint(code : Int) -> Int? {
+fn pdf_text_predefined_rksj_single_byte_codepoint(code : Int32) -> Int32? {
   if code >= 0x00 && code <= 0x7F {
     Some(code)
   } else if code >= 0xA1 && code <= 0xDF {
@@ -10,7 +10,7 @@ fn pdf_text_predefined_rksj_single_byte_codepoint(code : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_predefined_rksj_single_byte_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_rksj_single_byte_charcode(codepoint : Int32) -> Int32? {
   if codepoint >= 0x00 && codepoint <= 0x7F {
     Some(codepoint)
   } else if codepoint >= 0xFF61 && codepoint <= 0xFF9F {
@@ -22,9 +22,9 @@ fn pdf_text_predefined_rksj_single_byte_charcode(codepoint : Int) -> Int? {
 
 ///|
 fn pdf_text_predefined_pair_table_lookup(
-  table : Array[(Int, Int)],
-  key : Int,
-) -> Int? {
+  table : Array[(Int32, Int32)],
+  key : Int32,
+) -> Int32? {
   let mut low = 0
   let mut high = table.length()
   while low < high {
@@ -43,9 +43,9 @@ fn pdf_text_predefined_pair_table_lookup(
 
 ///|
 fn pdf_text_predefined_pair_codepoints_table_lookup(
-  table : Array[(Int, Array[Int])],
-  key : Int,
-) -> Array[Int]? {
+  table : Array[(Int32, Array[Int32])],
+  key : Int32,
+) -> Array[Int32]? {
   let mut low = 0
   let mut high = table.length()
   while low < high {
@@ -64,9 +64,9 @@ fn pdf_text_predefined_pair_codepoints_table_lookup(
 
 ///|
 fn pdf_text_predefined_cid_range_lookup(
-  ranges : Array[(Int, Int, Int)],
-  code : Int,
-) -> Int? {
+  ranges : Array[(Int32, Int32, Int32)],
+  code : Int32,
+) -> Int32? {
   let mut low = 0
   let mut high = ranges.length()
   while low < high {
@@ -85,9 +85,9 @@ fn pdf_text_predefined_cid_range_lookup(
 
 ///|
 fn pdf_text_predefined_cid_range_lookup_unsigned(
-  ranges : ArrayView[(Int, Int, Int)],
-  code : Int,
-) -> Int? {
+  ranges : ArrayView[(Int32, Int32, Int32)],
+  code : Int32,
+) -> Int32? {
   let target = code.reinterpret_as_uint()
   let mut low = 0
   let mut high = ranges.length()
@@ -106,7 +106,10 @@ fn pdf_text_predefined_cid_range_lookup_unsigned(
 }
 
 ///|
-fn pdf_text_lower_packed_charcode(current : Int?, candidate : Int) -> Int? {
+fn pdf_text_lower_packed_charcode(
+  current : Int32?,
+  candidate : Int32,
+) -> Int32? {
   match current {
     Some(value) =>
       if candidate.reinterpret_as_uint() < value.reinterpret_as_uint() {
@@ -120,9 +123,9 @@ fn pdf_text_lower_packed_charcode(current : Int?, candidate : Int) -> Int? {
 
 ///|
 fn pdf_text_lower_optional_packed_charcode(
-  current : Int?,
-  candidate : Int?,
-) -> Int? {
+  current : Int32?,
+  candidate : Int32?,
+) -> Int32? {
   match candidate {
     Some(code) => pdf_text_lower_packed_charcode(current, code)
     None => current
@@ -131,10 +134,10 @@ fn pdf_text_lower_optional_packed_charcode(
 
 ///|
 fn pdf_text_predefined_cid_range_charcode_of_cid(
-  ranges : ArrayView[(Int, Int, Int)],
-  cid : Int,
-) -> Int? {
-  let mut found : Int? = None
+  ranges : ArrayView[(Int32, Int32, Int32)],
+  cid : Int32,
+) -> Int32? {
+  let mut found : Int32? = None
   for range in ranges {
     let first_cid = range.2
     let last_cid = range.2 + range.1 - range.0
@@ -147,12 +150,12 @@ fn pdf_text_predefined_cid_range_charcode_of_cid(
 
 ///|
 fn pdf_text_predefined_unicode_table_charcode(
-  unicode_table : ArrayView[Int],
-  charcode_ranges : ArrayView[(Int, Int, Int)],
-  codepoint : Int,
-) -> Int? {
+  unicode_table : ArrayView[Int32],
+  charcode_ranges : ArrayView[(Int32, Int32, Int32)],
+  codepoint : Int32,
+) -> Int32? {
   guard codepoint != 0 else { return None }
-  let mut found : Int? = None
+  let mut found : Int32? = None
   for cid, candidate in unicode_table {
     if candidate == codepoint {
       match
@@ -167,11 +170,11 @@ fn pdf_text_predefined_unicode_table_charcode(
 
 ///|
 fn pdf_text_predefined_codepoint_range_charcode(
-  codepoint_ranges : ArrayView[(Int, Int, Int)],
-  charcode_ranges : ArrayView[(Int, Int, Int)],
-  codepoint : Int,
-) -> Int? {
-  let mut found : Int? = None
+  codepoint_ranges : ArrayView[(Int32, Int32, Int32)],
+  charcode_ranges : ArrayView[(Int32, Int32, Int32)],
+  codepoint : Int32,
+) -> Int32? {
+  let mut found : Int32? = None
   for range in codepoint_ranges {
     let first_codepoint = range.2
     let last_codepoint = range.2 + range.1 - range.0
@@ -189,11 +192,11 @@ fn pdf_text_predefined_codepoint_range_charcode(
 
 ///|
 fn pdf_text_predefined_sequence_table_charcode(
-  sequence_table : ArrayView[(Int, Array[Int])],
-  charcode_ranges : ArrayView[(Int, Int, Int)],
-  codepoint : Int,
-) -> Int? {
-  let mut found : Int? = None
+  sequence_table : ArrayView[(Int32, Array[Int32])],
+  charcode_ranges : ArrayView[(Int32, Int32, Int32)],
+  codepoint : Int32,
+) -> Int32? {
+  let mut found : Int32? = None
   for entry in sequence_table {
     match entry.1 {
       [candidate] if candidate == codepoint =>

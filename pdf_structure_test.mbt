@@ -4,7 +4,7 @@ fn structure_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn structure_json_int_for_test(value : Int) -> Json {
+fn structure_json_int_for_test(value : Int32) -> Json {
   Json::number(value.to_double(), repr=value.to_string())
 }
 
@@ -35,7 +35,7 @@ fn structure_struct_tree_doc_for_test() -> @pdflite.PdfDocument raise {
 
 ///|
 fn structure_parent_tree_doc_for_test(
-  entries : ArrayView[(Int, @syntax.PdfObject)],
+  entries : ArrayView[(Int32, @syntax.PdfObject)],
 ) -> @pdflite.PdfDocument {
   let key_struct_tree_root = structure_name_for_test("/StructTreeRoot")
   let key_parent_tree = structure_name_for_test("/ParentTree")
@@ -55,15 +55,15 @@ fn structure_parent_tree_doc_for_test(
 ///|
 fn structure_parent_tree_entries_for_test(
   doc : @pdflite.PdfDocument,
-) -> Array[(Int, @syntax.PdfObject)] raise {
+) -> Array[(Int32, @syntax.PdfObject)] raise {
   structure_parent_tree_entries_from_catalog_for_test(doc, doc.root())
 }
 
 ///|
 fn structure_parent_tree_entries_from_catalog_for_test(
   doc : @pdflite.PdfDocument,
-  catalog_number : Int,
-) -> Array[(Int, @syntax.PdfObject)] raise {
+  catalog_number : Int32,
+) -> Array[(Int32, @syntax.PdfObject)] raise {
   let key_struct_tree_root = structure_name_for_test("/StructTreeRoot")
   let key_parent_tree = structure_name_for_test("/ParentTree")
   let catalog = doc.lookup_object_or_null(catalog_number)
@@ -79,9 +79,9 @@ fn structure_parent_tree_entries_from_catalog_for_test(
 ///|
 fn structure_merge_add_root_and_child_for_test(
   doc : @pdflite.PdfDocument,
-  root_number : Int,
-  child_number : Int,
-  parent_key : Int,
+  root_number : Int32,
+  child_number : Int32,
+  parent_key : Int32,
   label : String,
 ) -> Unit {
   let key_parent_tree = structure_name_for_test("/ParentTree")
@@ -108,9 +108,9 @@ fn structure_merge_add_root_and_child_for_test(
 
 ///|
 fn structure_merge_source_doc_for_test(
-  root_number : Int,
-  child_number : Int,
-  parent_key : Int,
+  root_number : Int32,
+  child_number : Int32,
+  parent_key : Int32,
   label : String,
 ) -> @pdflite.PdfDocument {
   let key_struct_tree_root = structure_name_for_test("/StructTreeRoot")

@@ -1,7 +1,7 @@
 ///|
 fn PdfDocument::pdf_merge_oldstyle_destinations(
   self : PdfDocument,
-  changes : ArrayView[(Int, Int)],
+  changes : ArrayView[(Int32, Int32)],
   name_changes : ArrayView[(@core.PdfName, @core.PdfName)],
 ) -> Array[(@core.PdfName, @syntax.PdfObject)] raise @core.PdfError {
   let change_map = pdf_page_reference_map(changes)
@@ -31,7 +31,7 @@ fn PdfDocument::pdf_merge_oldstyle_destinations(
 ///|
 fn PdfDocument::pdf_merge_nametree_destinations(
   self : PdfDocument,
-  changes : ArrayView[(Int, Int)],
+  changes : ArrayView[(Int32, Int32)],
   name_changes : ArrayView[(@core.PdfBytes, @core.PdfBytes)],
 ) -> Array[(@core.PdfBytes, @syntax.PdfObject)] raise @core.PdfError {
   let change_map = pdf_page_reference_map(changes)

@@ -1,10 +1,10 @@
 ///|
 priv enum PdfImageResolutionObject {
-  PdfImageResolutionImage(Int, Int)
+  PdfImageResolutionImage(Int32, Int32)
   PdfImageResolutionForm(
     @geometry.TransformMatrix,
     @syntax.PdfObject,
-    @syntax.PdfObject
+    @syntax.PdfObject,
   )
 }
 
@@ -12,22 +12,22 @@ priv enum PdfImageResolutionObject {
 priv struct PdfImageResolutionCandidate {
   name : @core.PdfName
   object : PdfImageResolutionObject
-  object_number : Int
+  object_number : Int32
 }
 
 ///|
 priv struct PdfImageResolutionEntry {
-  page_number : Int
+  page_number : Int32
   xobject : String
-  width : Int
-  height : Int
+  width : Int32
+  height : Int32
   xdpi : Double
   ydpi : Double
-  object_number : Int
+  object_number : Int32
 }
 
 ///|
-fn pdf_image_resolution_compare_double(left : Double, right : Double) -> Int {
+fn pdf_image_resolution_compare_double(left : Double, right : Double) -> Int32 {
   if left < right {
     -1
   } else if left > right {
@@ -41,7 +41,7 @@ fn pdf_image_resolution_compare_double(left : Double, right : Double) -> Int {
 fn pdf_image_resolution_entry_compare(
   left : PdfImageResolutionEntry,
   right : PdfImageResolutionEntry,
-) -> Int {
+) -> Int32 {
   let page = left.page_number.compare(right.page_number)
   if page != 0 {
     page
@@ -110,11 +110,11 @@ fn pdf_image_resolution_inches(
 ///|
 fn pdf_image_resolution_push_entry(
   entries : Array[PdfImageResolutionEntry],
-  page_number : Int,
+  page_number : Int32,
   name : @core.PdfName,
-  width : Int,
-  height : Int,
-  object_number : Int,
+  width : Int32,
+  height : Int32,
+  object_number : Int32,
   matrix : @geometry.TransformMatrix,
 ) -> Unit raise @core.PdfError {
   let (x_inches, y_inches) = pdf_image_resolution_inches(matrix)

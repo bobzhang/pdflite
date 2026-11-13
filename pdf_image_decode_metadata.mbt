@@ -4,7 +4,7 @@ fn PdfDocument::pdf_image_lookup_int_or_else(
   first_key : @core.PdfName,
   second_key : @core.PdfName,
   image : @syntax.PdfObject,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match self.lookup_direct_or_else(first_key, second_key, image) {
     Some(PdfInteger(value)) => value
     Some(_) => raise NumberExpected
@@ -16,7 +16,7 @@ fn PdfDocument::pdf_image_lookup_int_or_else(
 fn PdfDocument::pdf_image_bits_per_component_int(
   self : PdfDocument,
   image : @syntax.PdfObject,
-) -> Int? raise @core.PdfError {
+) -> Int32? raise @core.PdfError {
   match self.image_bits_per_component(image) {
     Some(PdfInteger(value)) => Some(value)
     Some(_) => raise NumberExpected
@@ -44,7 +44,7 @@ fn PdfDocument::pdf_image_decode_values(
 }
 
 ///|
-fn pdf_image_decode_identity_components(components : Int) -> Array[Double] {
+fn pdf_image_decode_identity_components(components : Int32) -> Array[Double] {
   let values : Array[Double] = Array::new(capacity=components * 2)
   for _ in 0..<components {
     values.push(0.0)

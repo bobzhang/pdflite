@@ -42,7 +42,7 @@ fn pdf_tweak_reveal_hidden_text_xobject(
 /// `Tr` text rendering-mode operators from selected content streams.
 pub fn PdfDocument::reveal_hidden_text(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
   let pages = document.pages_of_pagetree()
@@ -65,7 +65,7 @@ pub fn PdfDocument::reveal_hidden_text(
 /// Compatibility wrapper for `PdfDocument::reveal_hidden_text`.
 pub fn pdf_reveal_hidden_text(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.reveal_hidden_text(page_numbers)
 }
@@ -73,7 +73,7 @@ pub fn pdf_reveal_hidden_text(
 ///|
 /// Compatibility wrapper matching cpdftweak's `reveal_hidden_text` argument order.
 pub fn pdf_reveal_hidden_text_cpdf_order(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.reveal_hidden_text(page_numbers)

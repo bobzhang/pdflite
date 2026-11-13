@@ -9,7 +9,7 @@ test "PdfObjectMap stores parsed and deferred object states" {
   map.set_entry(
     9,
     @pdflite.pdf_object_entry(
-      ObjectToParseFromObjectStream({ object_stream_number: 5, index: 1 }),
+      ObjectToParseFromObjectStream({ object_stream_number: 5, index: 1, }),
     ),
   )
   @test.assert_eq(map.length(), 3)
@@ -59,7 +59,7 @@ test "pdf_objects_of_entries derives max object number without event log" {
   @test.assert_eq(objects.log(), [])
   guard objects.get_entry(1)
     is Some(
-      { data: ObjectParsedAlreadyDecrypted(PdfInteger(10)), generation: 3 }
+      { data: ObjectParsedAlreadyDecrypted(PdfInteger(10)), generation: 3, },
     ) else {
     fail("expected parsed state and generation to be preserved")
   }
@@ -87,16 +87,16 @@ test "PdfObjects map_objects_in_place preserves parsed state tags" {
     }
   })
   guard objects.get_entry(1)
-    is Some({ data: ObjectParsed(PdfInteger(11)), generation: 2 }) else {
+    is Some({ data: ObjectParsed(PdfInteger(11)), generation: 2, }) else {
     fail("expected mapped parsed object")
   }
   guard objects.get_entry(2)
     is Some(
-      { data: ObjectParsedAlreadyDecrypted(PdfInteger(21)), generation: 3 }
+      { data: ObjectParsedAlreadyDecrypted(PdfInteger(21)), generation: 3, },
     ) else {
     fail("expected mapped already-decrypted object")
   }
-  guard objects.get_entry(3) is Some({ data: ObjectToParse, generation: 4 }) else {
+  guard objects.get_entry(3) is Some({ data: ObjectToParse, generation: 4, }) else {
     fail("expected deferred object to remain deferred")
   }
 }
@@ -319,10 +319,10 @@ test "PdfDocument object iteration visits sorted parsed objects" {
   let doc = @pdflite.pdf_document_empty()
   doc.add_object_given_number(4, PdfInteger(40), generation=2)
   doc.add_object_given_number(1, PdfInteger(10), generation=3)
-  let seen : Array[(Int, @syntax.PdfObject)] = []
+  let seen : Array[(Int32, @syntax.PdfObject)] = []
   try! doc.iter_objects(fn(number, object) { seen.push((number, object)) })
   @test.assert_eq(seen, [(1, PdfInteger(10)), (4, PdfInteger(40))])
-  let with_generation : Array[(Int, Int, @syntax.PdfObject)] = []
+  let with_generation : Array[(Int32, Int32, @syntax.PdfObject)] = []
   try! doc.iter_objects_with_generation(fn(number, generation, object) {
     with_generation.push((number, generation, object))
   })

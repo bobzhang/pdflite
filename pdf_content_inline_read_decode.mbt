@@ -47,7 +47,7 @@ fn pdf_content_remove_inline_image_filter_metadata(
 ///|
 fn pdf_content_read_sized_inline_image_data(
   cursor : @core.ByteCursor,
-  length : Int,
+  length : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   match cursor.peek_byte() {
     value if @core.pdf_is_whitespace_byte(value) => cursor.nudge()

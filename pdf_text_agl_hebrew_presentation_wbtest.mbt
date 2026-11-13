@@ -1,6 +1,6 @@
 ///|
 test "private Hebrew presentation-form AGL glyph helper covers table" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/afii57694", 0xFB2A),
     ("/afii57695", 0xFB2B),
     ("/afii57700", 0xFB4B),

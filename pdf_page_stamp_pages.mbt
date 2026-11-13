@@ -1,5 +1,5 @@
 ///|
-fn pdf_page_stamp_identity_changes(count : Int) -> Array[(Int, Int)] {
+fn pdf_page_stamp_identity_changes(count : Int32) -> Array[(Int32, Int32)] {
   [
     for page_number in 1..<=count => (page_number, page_number)
   ]
@@ -27,16 +27,16 @@ fn PdfDocument::pdf_page_stamp_overlay_first_page(
 /// Stamp the first page of `overlay` onto selected pages by merging content.
 pub fn PdfDocument::stamp_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   overlay : PdfDocument,
-  relative_to_box? : @core.PdfName = pdf_page_mediabox_key(),
-  position? : @geometry.PdfPosition = PdfPositionBottomLeft(0.0, 0.0),
-  topline? : Bool = false,
-  midline? : Bool = false,
-  fast? : Bool = false,
-  scale_to_fit? : Bool = false,
-  is_over? : Bool = true,
-  process_struct_tree? : Bool = false,
+  relative_to_box~ : @core.PdfName = pdf_page_mediabox_key(),
+  position~ : @geometry.PdfPosition = PdfPositionBottomLeft(0.0, 0.0),
+  topline~ : Bool = false,
+  midline~ : Bool = false,
+  fast~ : Bool = false,
+  scale_to_fit~ : Bool = false,
+  is_over~ : Bool = true,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let overlay = if process_struct_tree {
     overlay.remove_struct_tree().mark_all_as_artifact()

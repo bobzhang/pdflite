@@ -9,9 +9,9 @@ pub fn pdf_texttopdf_typeset(
   font_size : Double,
   paper : @geometry.PaperSize,
   text : BytesView,
-  process_struct_tree? : Bool = false,
-  subformat? : PdfUASubformat? = None,
-  title? : String? = None,
+  process_struct_tree~ : Bool = false,
+  subformat~ : PdfUASubformat? = None,
+  title~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   let process_struct_tree = process_struct_tree || subformat != None
   let title = match (subformat, title) {
@@ -60,8 +60,8 @@ pub fn pdf_texttopdf_typeset_cpdf_order(
   fontpack : PdfFontPack,
   font_size : Double,
   text : BytesView,
-  subformat? : PdfUASubformat? = None,
-  title? : String? = None,
+  subformat~ : PdfUASubformat? = None,
+  title~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   pdf_texttopdf_typeset(
     fontpack,

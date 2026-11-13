@@ -1,6 +1,6 @@
 ///|
 fn crypt_decrypt_model_bytes_for_test(
-  values : ArrayView[Int],
+  values : ArrayView[Int32],
 ) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
@@ -85,7 +85,7 @@ fn crypt_decrypt_aesv3_r5_permissions_for_test() -> @core.PdfBytes {
 #warnings("-unused_error_type")
 fn crypt_decrypt_aesv3_r5_random_for_test(
   field : @crypt_core.PdfAesV3RandomField,
-  _length : Int,
+  _length : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   match field {
     PdfAesV3FileKey => crypt_decrypt_aesv3_r5_file_key_for_test()
@@ -130,7 +130,7 @@ fn crypt_decrypt_standard_encrypt_dictionary_values_for_test(
   entries : ArrayView[(@core.PdfName, @syntax.PdfObject)],
   owner_entry : @core.PdfBytes,
   user_entry : @core.PdfBytes,
-  permissions : Int,
+  permissions : Int32,
 ) -> @syntax.PdfObject {
   let output : Array[(@core.PdfName, @syntax.PdfObject)] = [
     (

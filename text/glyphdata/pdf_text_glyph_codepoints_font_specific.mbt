@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_codepoint_of_expert_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_expert_glyphname(name : String) -> Int32? {
   match name {
     "/AEsmall" => Some(0xF7E6)
     "/Aacutesmall" => Some(0xF7E1)
@@ -118,7 +118,7 @@ fn pdf_text_codepoint_of_expert_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_symbol_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_symbol_glyphname(name : String) -> Int32? {
   match name {
     "/Alpha" => Some(0x0391)
     "/Beta" => Some(0x0392)
@@ -275,7 +275,7 @@ fn pdf_text_codepoint_of_symbol_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_half_fullwidth_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_half_fullwidth_glyphname(name : String) -> Int32? {
   match name {
     "/Amonospace" => Some(0xFF21)
     "/Bmonospace" => Some(0xFF22)
@@ -444,7 +444,7 @@ fn pdf_text_codepoint_of_half_fullwidth_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_dingbat_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_dingbat_glyphname(name : String) -> Int32? {
   match name {
     "/a1" => Some(0x2701)
     "/a2" => Some(0x2702)

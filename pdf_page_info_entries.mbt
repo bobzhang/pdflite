@@ -1,14 +1,14 @@
 ///|
 priv struct PdfPageInfoEntry {
-  page_number : Int
+  page_number : Int32
   label : String
   mediabox : Array[Double]?
   cropbox : Array[Double]?
   bleedbox : Array[Double]?
   trimbox : Array[Double]?
   artbox : Array[Double]?
-  rotation : Int
-  annotations : Int
+  rotation : Int32
+  annotations : Int32
 }
 
 ///|
@@ -52,7 +52,7 @@ fn PdfDocument::pdf_page_info_box_numbers(
 fn PdfDocument::pdf_page_info_annotation_count(
   self : PdfDocument,
   page : @page.PdfPage,
-) -> Int {
+) -> Int32 {
   match self.lookup_direct(pdf_page_annots_key(), page.rest) {
     Some(PdfArray(annotations)) => annotations.length()
     _ => 0
@@ -61,7 +61,7 @@ fn PdfDocument::pdf_page_info_annotation_count(
 
 ///|
 fn pdf_page_info_label_text(
-  page_number : Int,
+  page_number : Int32,
   labels : ArrayView[@label.PdfPageLabel],
 ) -> String raise @core.PdfError {
   match @label.pdf_page_label_text_of_page_number(page_number, labels) {
@@ -73,7 +73,7 @@ fn pdf_page_info_label_text(
 ///|
 fn PdfDocument::pdf_page_info_entry(
   self : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   page : @page.PdfPage,
   labels : ArrayView[@label.PdfPageLabel],
   unit : @geometry.PdfUnit,
@@ -102,7 +102,7 @@ fn PdfDocument::pdf_page_info_entry(
 ///|
 fn PdfDocument::pdf_page_info_entries(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   unit : @geometry.PdfUnit,
 ) -> Array[PdfPageInfoEntry] raise @core.PdfError {
   let pages = self.pages_of_pagetree()

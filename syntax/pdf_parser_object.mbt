@@ -1,5 +1,5 @@
 ///|
-fn pdf_skip_comments(lexemes : ArrayView[PdfLexeme], index : Int) -> Int {
+fn pdf_skip_comments(lexemes : ArrayView[PdfLexeme], index : Int32) -> Int32 {
   let mut current = index
   let mut done = false
   while !done && current < lexemes.length() {
@@ -14,8 +14,8 @@ fn pdf_skip_comments(lexemes : ArrayView[PdfLexeme], index : Int) -> Int {
 ///|
 fn pdf_lexeme_indirect_reference_number(
   lexemes : ArrayView[PdfLexeme],
-  index : Int,
-) -> Int? {
+  index : Int32,
+) -> Int32? {
   if index + 2 < lexemes.length() {
     match (lexemes[index], lexemes[index + 1], lexemes[index + 2]) {
       (LexInt(object_number), LexInt(_), LexR) => Some(object_number)
@@ -30,7 +30,7 @@ fn pdf_lexeme_indirect_reference_number(
 /// Return whether lexemes at `index` start an indirect-object header.
 pub fn pdf_lexeme_indirect_object_header_at(
   lexemes : ArrayView[PdfLexeme],
-  index : Int,
+  index : Int32,
 ) -> Bool {
   if index + 2 < lexemes.length() {
     match (lexemes[index], lexemes[index + 1], lexemes[index + 2]) {
@@ -43,7 +43,10 @@ pub fn pdf_lexeme_indirect_object_header_at(
 }
 
 ///|
-fn pdf_parse_array_capacity(lexemes : ArrayView[PdfLexeme], index : Int) -> Int {
+fn pdf_parse_array_capacity(
+  lexemes : ArrayView[PdfLexeme],
+  index : Int32,
+) -> Int32 {
   let mut current = index
   let mut array_depth = 0
   let mut dictionary_depth = 0
@@ -69,8 +72,8 @@ fn pdf_parse_array_capacity(lexemes : ArrayView[PdfLexeme], index : Int) -> Int 
 ///|
 fn pdf_parse_dictionary_capacity(
   lexemes : ArrayView[PdfLexeme],
-  index : Int,
-) -> Int {
+  index : Int32,
+) -> Int32 {
   let mut current = index
   let mut array_depth = 0
   let mut dictionary_depth = 0
@@ -96,8 +99,8 @@ fn pdf_parse_dictionary_capacity(
 ///|
 fn pdf_parse_array_at(
   lexemes : ArrayView[PdfLexeme],
-  index : Int,
-) -> (PdfObject, Int) raise @core.PdfError {
+  index : Int32,
+) -> (PdfObject, Int32) raise @core.PdfError {
   let values : Array[PdfObject] = Array::new(
     capacity=pdf_parse_array_capacity(lexemes, index),
   )
@@ -125,7 +128,10 @@ fn pdf_parse_array_at(
 }
 
 ///|
-fn pdf_skip_dictionary_tail(lexemes : ArrayView[PdfLexeme], index : Int) -> Int {
+fn pdf_skip_dictionary_tail(
+  lexemes : ArrayView[PdfLexeme],
+  index : Int32,
+) -> Int32 {
   let mut current = index
   let mut depth = 0
   while current < lexemes.length() {
@@ -143,8 +149,8 @@ fn pdf_skip_dictionary_tail(lexemes : ArrayView[PdfLexeme], index : Int) -> Int 
 ///|
 fn pdf_parse_dictionary_at(
   lexemes : ArrayView[PdfLexeme],
-  index : Int,
-) -> (PdfObject, Int) raise @core.PdfError {
+  index : Int32,
+) -> (PdfObject, Int32) raise @core.PdfError {
   let entries : Array[(@core.PdfName, PdfObject)] = Array::new(
     capacity=pdf_parse_dictionary_capacity(lexemes, index),
   )
@@ -212,8 +218,8 @@ fn pdf_parse_dictionary_at(
 ///|
 fn pdf_parse_value_at(
   lexemes : ArrayView[PdfLexeme],
-  index : Int,
-) -> (PdfObject, Int) raise @core.PdfError {
+  index : Int32,
+) -> (PdfObject, Int32) raise @core.PdfError {
   let current = pdf_skip_comments(lexemes, index)
   if current >= lexemes.length() {
     raise ParseObjectExpected

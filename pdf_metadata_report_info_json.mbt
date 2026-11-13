@@ -2,8 +2,8 @@
 /// Return cpdf-style document information report fields as JSON.
 pub fn PdfDocument::info_json(
   self : PdfDocument,
-  encoding? : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
-  unit? : @geometry.PdfUnit = PdfPoint,
+  encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> Json raise @core.PdfError {
   let output : Map[String, Json] = Map([])
   let (major, minor) = self.version()
@@ -101,8 +101,8 @@ pub fn PdfDocument::info_json(
 /// Return cpdf-style document information report fields as UTF-8 JSON bytes.
 pub fn PdfDocument::info_json_blob(
   self : PdfDocument,
-  encoding? : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
-  unit? : @geometry.PdfUnit = PdfPoint,
+  encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> @core.PdfBytes raise @core.PdfError {
   @utf8.encode(self.info_json(encoding~, unit~).stringify())
 }

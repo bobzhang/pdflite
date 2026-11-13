@@ -3,6 +3,7 @@
 ///
 /// `PdfTypeText` stores raw one-byte PDF charcodes, matching the OCaml
 /// `char list` representation rather than Unicode text.
+#derive(Debug, Eq, ToJson)
 pub(all) enum PdfTypeElement {
   PdfTypeText(@core.PdfBytes)
   PdfTypeHGlue(Double)
@@ -13,16 +14,17 @@ pub(all) enum PdfTypeElement {
   PdfTypeBeginDest(@destination.PdfDestination, String?)
   PdfTypeEndDest
   PdfTypeBeginDocument
-  PdfTypeTag(String, Int)
+  PdfTypeTag(String, Int32)
   PdfTypeEndTag
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Pages and per-page structure tags produced by the cpdftype typesetter.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfTypeTypesetResult {
   pages : Array[@page.PdfPage]
-  tags : Array[Array[(String, Int)]]
-} derive(Debug, Eq, ToJson)
+  tags : Array[Array[(String, Int32)]]
+}
 
 ///|
 priv struct PdfTypeTypesetState {
@@ -33,13 +35,13 @@ priv struct PdfTypeTypesetState {
   mut font_id : String?
   mut font_size : Double
   mut dest : (@destination.PdfDestination, String?)?
-  mut mcid : Int
+  mut mcid : Int32
   mut ops : Array[@content.PdfContentOp]
-  fonts : Array[(String, Int)]
-  mut page_font_numbers : Array[Int]
+  fonts : Array[(String, Int32)]
+  mut page_font_numbers : Array[Int32]
   mut page_annotations : Array[@syntax.PdfObject]
   mut dest_rectangles : Array[(Double, Double, Double, Double)]
   pages : Array[@page.PdfPage]
-  mut tags : Array[(String, Int)]
-  tags_out : Array[Array[(String, Int)]]
+  mut tags : Array[(String, Int32)]
+  tags_out : Array[Array[(String, Int32)]]
 }

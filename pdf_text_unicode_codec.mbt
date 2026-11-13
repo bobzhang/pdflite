@@ -10,9 +10,9 @@ pub fn pdf_is_unicode_string(bytes : BytesView) -> Bool {
 ///|
 fn pdf_text_write_utf16be_unit(
   output : Array[Byte],
-  position : Int,
-  value : Int,
-) -> Int raise @core.PdfError {
+  position : Int32,
+  value : Int32,
+) -> Int32 raise @core.PdfError {
   output[position] = @core.pdf_byte_of_int((value >> 8) & 0xFF)
   output[position + 1] = @core.pdf_byte_of_int(value & 0xFF)
   position + 2
@@ -20,8 +20,8 @@ fn pdf_text_write_utf16be_unit(
 
 ///|
 fn pdf_text_utf16be_codepoint_length(
-  codepoint : Int,
-) -> Int raise @core.PdfError {
+  codepoint : Int32,
+) -> Int32 raise @core.PdfError {
   pdf_text_check_unicode_codepoint(codepoint)
   if codepoint < 0x10000 {
     2
@@ -33,9 +33,9 @@ fn pdf_text_utf16be_codepoint_length(
 ///|
 fn pdf_text_write_utf16be_codepoint(
   output : Array[Byte],
-  position : Int,
-  codepoint : Int,
-) -> Int raise @core.PdfError {
+  position : Int32,
+  codepoint : Int32,
+) -> Int32 raise @core.PdfError {
   pdf_text_check_unicode_codepoint(codepoint)
   if codepoint < 0x10000 {
     pdf_text_write_utf16be_unit(output, position, codepoint)
@@ -56,7 +56,7 @@ fn pdf_text_write_utf16be_codepoint(
 /// Invalid scalar values, including surrogate codepoints, raise
 /// `@core.PdfError::InvalidUnicodeCodepoint`.
 pub fn pdf_utf16be_of_codepoints(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   let mut length = 2
   for codepoint in codepoints {
@@ -75,8 +75,8 @@ pub fn pdf_utf16be_of_codepoints(
 ///|
 fn pdf_text_utf16be_unit(
   bytes : BytesView,
-  index : Int,
-) -> Int raise @core.PdfError {
+  index : Int32,
+) -> Int32 raise @core.PdfError {
   guard index + 1 < bytes.length() else { raise InvalidUTF16BE }
   (bytes[index].to_int() << 8) | bytes[index + 1].to_int()
 }
@@ -89,8 +89,8 @@ fn pdf_text_utf16be_unit(
 /// and malformed pairs raise `@core.PdfError::InvalidUTF16BE`.
 pub fn pdf_codepoints_of_utf16be(
   bytes : BytesView,
-) -> Array[Int] raise @core.PdfError {
-  let codepoints : Array[Int] = Array::new(capacity=bytes.length() / 2)
+) -> Array[Int32] raise @core.PdfError {
+  let codepoints : Array[Int32] = Array::new(capacity=bytes.length() / 2)
   let mut index = 0
   while index < bytes.length() {
     let w1 = pdf_text_utf16be_unit(bytes, index)
@@ -111,7 +111,7 @@ pub fn pdf_codepoints_of_utf16be(
 
 ///|
 fn pdf_text_check_unicode_codepoint(
-  codepoint : Int,
+  codepoint : Int32,
 ) -> Unit raise @core.PdfError {
   if codepoint < 0 ||
     codepoint > 0x10FFFF ||
@@ -121,7 +121,9 @@ fn pdf_text_check_unicode_codepoint(
 }
 
 ///|
-fn pdf_text_utf8_codepoint_length(codepoint : Int) -> Int raise @core.PdfError {
+fn pdf_text_utf8_codepoint_length(
+  codepoint : Int32,
+) -> Int32 raise @core.PdfError {
   pdf_text_check_unicode_codepoint(codepoint)
   if codepoint <= 0x7F {
     1
@@ -137,9 +139,9 @@ fn pdf_text_utf8_codepoint_length(codepoint : Int) -> Int raise @core.PdfError {
 ///|
 fn pdf_text_write_utf8_codepoint(
   output : Array[Byte],
-  position : Int,
-  codepoint : Int,
-) -> Int raise @core.PdfError {
+  position : Int32,
+  codepoint : Int32,
+) -> Int32 raise @core.PdfError {
   pdf_text_check_unicode_codepoint(codepoint)
   if codepoint <= 0x7F {
     output[position] = @core.pdf_byte_of_int(codepoint)
@@ -174,7 +176,7 @@ fn pdf_text_write_utf8_codepoint(
 /// Invalid scalar values, including surrogate codepoints, raise
 /// `@core.PdfError::InvalidUnicodeCodepoint`.
 pub fn pdf_utf8_of_codepoints(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   let mut length = 0
   for codepoint in codepoints {
@@ -189,15 +191,15 @@ pub fn pdf_utf8_of_codepoints(
 }
 
 ///|
-fn pdf_text_is_utf8_continuation(byte : Int) -> Bool {
+fn pdf_text_is_utf8_continuation(byte : Int32) -> Bool {
   byte >> 6 == 0b10
 }
 
 ///|
 fn pdf_text_push_utf8_codepoint(
-  output : Array[Int],
-  codepoint : Int,
-  min_codepoint : Int,
+  output : Array[Int32],
+  codepoint : Int32,
+  min_codepoint : Int32,
 ) -> Unit raise @core.PdfError {
   pdf_text_check_unicode_codepoint(codepoint)
   guard codepoint >= min_codepoint else { raise InvalidUTF8 }
@@ -212,8 +214,8 @@ fn pdf_text_push_utf8_codepoint(
 /// `@core.PdfError::InvalidUnicodeCodepoint`.
 pub fn pdf_codepoints_of_utf8(
   bytes : BytesView,
-) -> Array[Int] raise @core.PdfError {
-  let output : Array[Int] = Array::new(capacity=bytes.length())
+) -> Array[Int32] raise @core.PdfError {
+  let output : Array[Int32] = Array::new(capacity=bytes.length())
   let mut index = 0
   while index < bytes.length() {
     let first = bytes[index].to_int()

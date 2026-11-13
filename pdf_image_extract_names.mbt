@@ -55,7 +55,7 @@ fn PdfDocument::pdf_image_extraction_name(
   self : PdfDocument,
   encoding : @metadata.PdfMetadataEncoding,
   stem : String,
-  page_number : Int,
+  page_number : Int32,
   image : @syntax.PdfObject,
   state : PdfImageExtractionRunState,
 ) -> String raise @core.PdfError {

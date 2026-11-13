@@ -1,5 +1,5 @@
 ///|
-fn pdf_cursor_input_next_hex_byte(cursor : @core.ByteCursor) -> Int {
+fn pdf_cursor_input_next_hex_byte(cursor : @core.ByteCursor) -> Int32 {
   let mut result = @core.pdf_no_more
   let mut done = false
   while !done {
@@ -13,7 +13,7 @@ fn pdf_cursor_input_next_hex_byte(cursor : @core.ByteCursor) -> Int {
 }
 
 ///|
-fn pdf_cursor_hex_string_output_capacity(cursor : @core.ByteCursor) -> Int {
+fn pdf_cursor_hex_string_output_capacity(cursor : @core.ByteCursor) -> Int32 {
   let mut index = cursor.absolute_position()
   let mut digits = 0
   let mut done = false

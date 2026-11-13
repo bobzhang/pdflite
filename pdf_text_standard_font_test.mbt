@@ -4,16 +4,18 @@ fn text_standard_font_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn text_standard_font_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn text_standard_font_bytes_for_test(
+  values : ArrayView[Int32],
+) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
 ///|
 fn text_standard_font_difference_for_test(
   name : String,
-  code : Int,
+  code : Int32,
 ) -> @pdflite.PdfEncodingDifference {
-  { name: text_standard_font_name_for_test(name), code }
+  { name: text_standard_font_name_for_test(name), code, }
 }
 
 ///|
@@ -21,7 +23,7 @@ fn text_standard_font_data_helper_for_test(
   font : @pdflite.PdfStandardFont,
   encoding : @pdflite.PdfEncoding,
 ) -> @pdflite.PdfStandardFontData {
-  { font, encoding }
+  { font, encoding, }
 }
 
 ///|
@@ -32,7 +34,7 @@ fn text_standard_font_descriptor_for_test() -> @pdflite.PdfFontDescriptor {
     avgwidth: 0.0,
     maxwidth: 0.0,
     flags: 0,
-    fontbbox: { min_x: 0.0, min_y: 0.0, max_x: 0.0, max_y: 0.0 },
+    fontbbox: { min_x: 0.0, min_y: 0.0, max_x: 0.0, max_y: 0.0, },
     italicangle: 0.0,
     capheight: 0.0,
     xheight: 0.0,
@@ -121,7 +123,7 @@ test "pdf_standard_font_of_name accepts CamlPDF aliases" {
 
 ///|
 test "PdfStandardFont exposes standard14 baseline stem and flags" {
-  let metrics : Array[(@pdflite.PdfStandardFont, Int, Int, Int)] = [
+  let metrics : Array[(@pdflite.PdfStandardFont, Int32, Int32, Int32)] = [
     (PdfTimesRoman, 331, 116, 32),
     (PdfTimesBold, 338, 122, 32),
     (PdfTimesItalic, 326, 105, 32),
@@ -158,7 +160,7 @@ test "PdfStandardFont exposes standard14 baseline stem and flags" {
 
 ///|
 test "PdfStandardFont exposes Standard14 AFM data tables" {
-  let counts : Array[(@pdflite.PdfStandardFont, Int, Int, Int, Int)] = [
+  let counts : Array[(@pdflite.PdfStandardFont, Int32, Int32, Int32, Int32)] = [
     (PdfTimesRoman, 25, 149, 315, 206),
     (PdfTimesBold, 25, 149, 315, 223),
     (PdfTimesItalic, 25, 149, 315, 213),
@@ -264,7 +266,7 @@ test "PdfStandardFont text_width uses glyph-name widths for explicit encodings" 
     722,
   )
   let slashless : @pdflite.PdfEncoding = PdfCustomEncoding(PdfWinAnsiEncoding, [
-    { name: text_standard_font_name_for_test("AE"), code: 65 },
+    { name: text_standard_font_name_for_test("AE"), code: 65, },
   ])
   @test.assert_eq(
     @pdflite.PdfHelvetica.text_width(slashless, symbol_text),

@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_codepoint_of_latin_extended_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_latin_extended_glyphname(name : String) -> Int32? {
   match name {
     "/Abreve" => Some(0x0102)
     "/Amacron" => Some(0x0100)

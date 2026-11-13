@@ -1,7 +1,7 @@
 ///|
 fn pdf_content_operand_number(
   operands : ArrayView[PdfObject],
-  index : Int,
+  index : Int32,
 ) -> Double? {
   if index >= operands.length() {
     None
@@ -17,8 +17,8 @@ fn pdf_content_operand_number(
 ///|
 fn pdf_content_operand_int(
   operands : ArrayView[PdfObject],
-  index : Int,
-) -> Int? {
+  index : Int32,
+) -> Int32? {
   if index >= operands.length() {
     None
   } else {
@@ -33,7 +33,7 @@ fn pdf_content_operand_int(
 ///|
 fn pdf_content_operand_name(
   operands : ArrayView[PdfObject],
-  index : Int,
+  index : Int32,
 ) -> PdfName? {
   if index >= operands.length() {
     None
@@ -48,7 +48,7 @@ fn pdf_content_operand_name(
 ///|
 fn pdf_content_operand_string(
   operands : ArrayView[PdfObject],
-  index : Int,
+  index : Int32,
 ) -> PdfBytes? {
   if index >= operands.length() {
     None
@@ -187,7 +187,7 @@ fn pdf_content_matrix_from_operands(
       pdf_content_operand_number(operands, 5),
     ) {
     (Some(a), Some(b), Some(c), Some(d), Some(e), Some(f)) =>
-      Some({ a, b, c, d, e, f })
+      Some({ a, b, c, d, e, f, })
     _ => None
   }
 }

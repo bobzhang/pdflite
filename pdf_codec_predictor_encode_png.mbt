@@ -1,13 +1,16 @@
 ///|
-fn pdf_encode_png_encoded_length(data : BytesView, scanline_width : Int) -> Int {
+fn pdf_encode_png_encoded_length(
+  data : BytesView,
+  scanline_width : Int32,
+) -> Int32 {
   data.length() / scanline_width * (scanline_width + 1)
 }
 
 ///|
 fn pdf_encode_png_sub_predictor(
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let scanline_width = pdf_predictor_scanline_width(
@@ -37,9 +40,9 @@ fn pdf_encode_png_sub_predictor(
 
 ///|
 fn pdf_encode_png_up_predictor(
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let scanline_width = pdf_predictor_scanline_width(
@@ -69,13 +72,13 @@ fn pdf_encode_png_up_predictor(
 
 ///|
 fn pdf_encode_png_predictor_value(
-  predictor : Int,
+  predictor : Int32,
   data : BytesView,
-  row_start : Int,
-  index : Int,
-  scanline_width : Int,
-  bytes_per_pixel : Int,
-) -> Int raise @core.PdfError {
+  row_start : Int32,
+  index : Int32,
+  scanline_width : Int32,
+  bytes_per_pixel : Int32,
+) -> Int32 raise @core.PdfError {
   let left = if index < bytes_per_pixel {
     0
   } else {
@@ -104,13 +107,13 @@ fn pdf_encode_png_predictor_value(
 ///|
 fn pdf_encode_png_push_scanline(
   output : Array[Byte],
-  position : Int,
-  predictor : Int,
+  position : Int32,
+  predictor : Int32,
   data : BytesView,
-  row_start : Int,
-  scanline_width : Int,
-  bytes_per_pixel : Int,
-) -> Int raise @core.PdfError {
+  row_start : Int32,
+  scanline_width : Int32,
+  bytes_per_pixel : Int32,
+) -> Int32 raise @core.PdfError {
   let mut current = position
   output[current] = predictor.to_byte()
   current += 1
@@ -128,12 +131,12 @@ fn pdf_encode_png_push_scanline(
 
 ///|
 fn pdf_encode_png_predictor_score(
-  predictor : Int,
+  predictor : Int32,
   data : BytesView,
-  row_start : Int,
-  scanline_width : Int,
-  bytes_per_pixel : Int,
-) -> Int raise @core.PdfError {
+  row_start : Int32,
+  scanline_width : Int32,
+  bytes_per_pixel : Int32,
+) -> Int32 raise @core.PdfError {
   let mut score = 0
   for i in 0..<scanline_width {
     let predicted = pdf_encode_png_predictor_value(
@@ -149,10 +152,10 @@ fn pdf_encode_png_predictor_score(
 
 ///|
 fn pdf_encode_png_tagged_predictor(
-  predictor : Int,
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  predictor : Int32,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let scanline_width = pdf_predictor_scanline_width(
@@ -182,9 +185,9 @@ fn pdf_encode_png_tagged_predictor(
 
 ///|
 fn pdf_encode_png_optimum_predictor(
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let scanline_width = pdf_predictor_scanline_width(

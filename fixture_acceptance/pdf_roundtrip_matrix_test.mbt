@@ -37,7 +37,7 @@ let fixture_acceptance_roundtrip_modes_for_test : Array[
 
 ///|
 let fixture_acceptance_checked_in_roundtrip_fixtures_for_test : Array[
-  (String, Int),
+  (String, Int32),
 ] = [
   ("fixtures/camlpdf/logo.pdf", 1),
   ("fixtures/camlpdf/introduction_to_camlpdf.pdf", 10),
@@ -50,7 +50,7 @@ fn fixture_acceptance_assert_roundtrip_shape_for_test(
   path : String,
   mode : FixtureAcceptanceRoundTripMode,
   reparsed : @pdflite.PdfDocument,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let context = path + " via " + mode.name()
   let actual_pages = reparsed.endpage()

@@ -2,7 +2,7 @@
 fn PdfDocument::pdf_text_tounicode_of_font(
   self : PdfDocument,
   font : @syntax.PdfObject,
-) -> Array[(Int, @core.PdfBytes)]? {
+) -> Array[(Int32, @core.PdfBytes)]? {
   match self.lookup_direct(pdf_text_tounicode_key_name, font) {
     Some(PdfStreamObject(_) as stream) =>
       try self.parse_cmap(stream) catch {
@@ -17,15 +17,15 @@ fn PdfDocument::pdf_text_tounicode_of_font(
 ///|
 fn PdfFontDescriptor::pdf_text_with_tounicode(
   self : PdfFontDescriptor,
-  tounicode : Array[(Int, @core.PdfBytes)],
+  tounicode : Array[(Int32, @core.PdfBytes)],
 ) -> PdfFontDescriptor {
-  { ..self, tounicode: Some(tounicode) }
+  { ..self, tounicode: Some(tounicode), }
 }
 
 ///|
 fn PdfFont::pdf_text_with_tounicode(
   self : PdfFont,
-  tounicode : Array[(Int, @core.PdfBytes)]?,
+  tounicode : Array[(Int32, @core.PdfBytes)]?,
 ) -> PdfFont {
   match tounicode {
     None => self

@@ -21,7 +21,7 @@ fn pdf_number_view_has_real_marker(view : BytesView) -> Bool {
 
 ///|
 /// Parse an integer token view, returning `None` when the view is not an integer.
-pub fn pdf_number_view_int(view : BytesView) -> Int? {
+pub fn pdf_number_view_int(view : BytesView) -> Int32? {
   if view.length() == 0 {
     None
   } else {

@@ -14,7 +14,7 @@ fn PdfDocument::load_classic_plain_xref_objects(
   self : PdfDocument,
   cursor : @core.ByteCursor,
   xrefs : ArrayView[@reader.PdfClassicXRefEntry],
-  xref_stream_refs : ArrayView[(Int, Int)],
+  xref_stream_refs : ArrayView[(Int32, Int32)],
 ) -> Unit raise @core.PdfError {
   let xref_stream_ref_set = @reader.pdf_reader_xref_stream_ref_set(
     xref_stream_refs,
@@ -67,7 +67,7 @@ fn PdfDocument::load_classic_xrefs(
   self : PdfDocument,
   cursor : @core.ByteCursor,
   xrefs : ArrayView[@reader.PdfClassicXRefEntry],
-  xref_stream_refs : ArrayView[(Int, Int)],
+  xref_stream_refs : ArrayView[(Int32, Int32)],
   user_password : BytesView?,
   owner_password : BytesView?,
 ) -> Unit raise @core.PdfError {

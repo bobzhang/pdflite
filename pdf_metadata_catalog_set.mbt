@@ -4,8 +4,8 @@ pub fn PdfDocument::set_viewer_preference(
   self : PdfDocument,
   key : @core.PdfName,
   value : @syntax.PdfObject,
-  version : Int,
-  keep_version? : Bool = false,
+  version : Int32,
+  keep_version~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
   document.pdf_metadata_update_catalog(fn(catalog) raise @core.PdfError {
@@ -27,7 +27,7 @@ pub fn PdfDocument::set_viewer_preference(
 /// Set one `/ViewerPreferences` entry from cpdf's string-key tuple form.
 pub fn PdfDocument::set_viewer_preference_string(
   self : PdfDocument,
-  entry : (String, @syntax.PdfObject, Int),
+  entry : (String, @syntax.PdfObject, Int32),
 ) -> PdfDocument raise @core.PdfError {
   self.set_viewer_preference(
     pdf_metadata_source_key_name(entry.0),
@@ -145,9 +145,9 @@ fn pdf_metadata_parse_open_action_destination(
 /// indirect reference.
 pub fn PdfDocument::set_open_action(
   self : PdfDocument,
-  page_number : Int,
-  fit? : Bool = true,
-  destination? : @syntax.PdfObject? = None,
+  page_number : Int32,
+  fit~ : Bool = true,
+  destination~ : @syntax.PdfObject? = None,
 ) -> PdfDocument raise @core.PdfError {
   let page_numbers = self.page_reference_numbers()
   if page_number < 1 || page_number > page_numbers.length() {
@@ -186,9 +186,9 @@ pub fn PdfDocument::set_open_action(
 /// Set the catalog `/OpenAction` from cpdf-style PDF destination syntax.
 pub fn PdfDocument::set_open_action_string_destination(
   self : PdfDocument,
-  page_number : Int,
-  fit? : Bool = true,
-  destination? : String? = None,
+  page_number : Int32,
+  fit~ : Bool = true,
+  destination~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   let destination_object = match destination {
     Some(value) => Some(pdf_metadata_parse_open_action_destination(value))

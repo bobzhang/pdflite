@@ -28,19 +28,19 @@ fn pdf_util_string_from_name(
 }
 
 ///|
-fn pdf_util_json_number(value : Int) -> Json {
+fn pdf_util_json_number(value : Int32) -> Json {
   Json::number(value.to_double(), repr=value.to_string())
 }
 
 ///|
-fn pdf_util_json_integral_number(value : Double) -> Int raise @core.PdfError {
+fn pdf_util_json_integral_number(value : Double) -> Int32 raise @core.PdfError {
   let integer = value.to_int()
   guard integer.to_double() == value else { raise NumberExpected }
   integer
 }
 
 ///|
-fn pdf_util_json_truncated_number(value : Double) -> Int {
+fn pdf_util_json_truncated_number(value : Double) -> Int32 {
   value.to_int()
 }
 
@@ -158,10 +158,10 @@ fn PdfDocument::pdf_util_json_of_object(
 pub fn PdfDocument::json_of_object(
   self : PdfDocument,
   object : @syntax.PdfObject,
-  utf8? : Bool = false,
-  clean_strings? : Bool = false,
-  no_stream_data? : Bool = false,
-  parse_content? : Bool = false,
+  utf8~ : Bool = false,
+  clean_strings~ : Bool = false,
+  no_stream_data~ : Bool = false,
+  parse_content~ : Bool = false,
 ) -> Json raise @core.PdfError {
   self.pdf_util_json_of_object(
     object, utf8, clean_strings, no_stream_data, false, parse_content,
@@ -275,10 +275,10 @@ pub fn pdf_object_of_json(
 pub fn pdf_json_of_object(
   document : PdfDocument,
   object : @syntax.PdfObject,
-  utf8? : Bool = false,
-  clean_strings? : Bool = false,
-  no_stream_data? : Bool = false,
-  parse_content? : Bool = false,
+  utf8~ : Bool = false,
+  clean_strings~ : Bool = false,
+  no_stream_data~ : Bool = false,
+  parse_content~ : Bool = false,
 ) -> Json raise @core.PdfError {
   document.json_of_object(
     object,

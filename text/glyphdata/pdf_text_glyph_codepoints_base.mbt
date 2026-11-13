@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_codepoint_of_basic_latin_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_basic_latin_glyphname(name : String) -> Int32? {
   match name {
     "/A" => Some(65)
     "/B" => Some(66)
@@ -88,7 +88,7 @@ fn pdf_text_codepoint_of_basic_latin_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_digit_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_digit_glyphname(name : String) -> Int32? {
   match name {
     "/zero" => Some(48)
     "/one" => Some(49)
@@ -142,7 +142,7 @@ fn pdf_text_codepoint_of_digit_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_punctuation_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_punctuation_glyphname(name : String) -> Int32? {
   match name {
     "/space" => Some(32)
     "/blank" => Some(0x2423)
@@ -352,7 +352,7 @@ fn pdf_text_codepoint_of_punctuation_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_ipa_extension_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_ipa_extension_glyphname(name : String) -> Int32? {
   match name {
     "/Gsmallhook" => Some(0x029B)
     "/Rsmallinverted" => Some(0x0281)
@@ -439,7 +439,7 @@ fn pdf_text_codepoint_of_ipa_extension_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_spacing_modifier_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_spacing_modifier_glyphname(name : String) -> Int32? {
   match name {
     "/Rsmallinvertedsuperior" => Some(0x02B6)
     "/acutelowmod" => Some(0x02CF)
@@ -495,7 +495,7 @@ fn pdf_text_codepoint_of_spacing_modifier_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_combining_mark_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_combining_mark_glyphname(name : String) -> Int32? {
   match name {
     "/acutebelowcmb" => Some(0x0317)
     "/acutecmb" => Some(0x0301)
@@ -578,7 +578,7 @@ fn pdf_text_codepoint_of_combining_mark_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_currency_letterlike_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_currency_letterlike_glyphname(name : String) -> Int32? {
   match name {
     "/afii08941" => Some(0x20A4)
     "/afii57636" => Some(0x20AA)
@@ -611,7 +611,7 @@ fn pdf_text_codepoint_of_currency_letterlike_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_arrow_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_arrow_glyphname(name : String) -> Int32? {
   match name {
     "/arrowdashdown" => Some(0x21E3)
     "/arrowdashleft" => Some(0x21E0)
@@ -648,7 +648,7 @@ fn pdf_text_codepoint_of_arrow_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_greek_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_greek_glyphname(name : String) -> Int32? {
   match name {
     "/Alphatonos" => Some(0x0386)
     "/Deicoptic" => Some(0x03EE)

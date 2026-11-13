@@ -20,7 +20,7 @@ fn pdf_write_name_to(output : Array[Byte], name : @core.PdfName) -> Unit {
 }
 
 ///|
-fn pdf_write_name_start(bytes : BytesView) -> Int {
+fn pdf_write_name_start(bytes : BytesView) -> Int32 {
   if bytes.length() > 0 && bytes[0].to_int() == 47 {
     1
   } else {
@@ -29,7 +29,7 @@ fn pdf_write_name_start(bytes : BytesView) -> Int {
 }
 
 ///|
-fn pdf_write_name_length(bytes : BytesView, start : Int) -> Int {
+fn pdf_write_name_length(bytes : BytesView, start : Int32) -> Int32 {
   let mut length = 1
   for i in start..<bytes.length() {
     let value = bytes[i].to_int()
@@ -48,9 +48,9 @@ fn pdf_write_name_length(bytes : BytesView, start : Int) -> Int {
 ///|
 fn pdf_writer_hex_escape_at(
   output : Array[Byte],
-  position : Int,
-  value : Int,
-) -> Int {
+  position : Int32,
+  value : Int32,
+) -> Int32 {
   output[position] = b'#'
   output[position + 1] = pdf_writer_hex_digit(value / 16)
   output[position + 2] = pdf_writer_hex_digit(value % 16)

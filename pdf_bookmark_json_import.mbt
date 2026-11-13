@@ -29,8 +29,8 @@ fn pdf_bookmark_json_colour(
 ) -> @bookmark.PdfBookmarkColour raise @core.PdfError {
   match value {
     Some(
-      Array([Number(red, repr=_), Number(green, repr=_), Number(blue, repr=_)])
-    ) => { red, green, blue }
+      Array([Number(red, repr=_), Number(green, repr=_), Number(blue, repr=_)]),
+    ) => { red, green, blue, }
     _ => raise SoftError("malformed mark in mark_of_json")
   }
 }
@@ -78,7 +78,7 @@ fn PdfDocument::pdf_bookmark_import_json_mark(
 pub fn PdfDocument::parse_bookmark_json(
   self : PdfDocument,
   json : Json,
-  verify? : Bool = true,
+  verify~ : Bool = true,
 ) -> Array[@bookmark.PdfBookmark] raise @core.PdfError {
   let items = match json {
     Array(items) => items
@@ -101,7 +101,7 @@ pub fn PdfDocument::parse_bookmark_json(
 pub fn PdfDocument::add_bookmarks_from_json(
   self : PdfDocument,
   json : Json,
-  verify? : Bool = true,
+  verify~ : Bool = true,
 ) -> PdfDocument raise @core.PdfError {
   self.add_bookmarks(self.parse_bookmark_json(json, verify~))
 }

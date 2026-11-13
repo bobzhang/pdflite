@@ -1,5 +1,5 @@
 ///|
-fn pdf_markdown_last_codepoint(output : Array[Int]) -> Int? {
+fn pdf_markdown_last_codepoint(output : Array[Int32]) -> Int32? {
   if output.length() == 0 {
     None
   } else {
@@ -8,14 +8,16 @@ fn pdf_markdown_last_codepoint(output : Array[Int]) -> Int? {
 }
 
 ///|
-fn pdf_markdown_trim_trailing_spaces(output : Array[Int]) -> Unit {
+fn pdf_markdown_trim_trailing_spaces(output : Array[Int32]) -> Unit {
   while output.length() > 0 && output[output.length() - 1] == 0x20 {
     ignore(output.pop())
   }
 }
 
 ///|
-fn pdf_markdown_trim_space_before_terminal_hyphen(output : Array[Int]) -> Unit {
+fn pdf_markdown_trim_space_before_terminal_hyphen(
+  output : Array[Int32],
+) -> Unit {
   if output.length() >= 2 &&
     output[output.length() - 1] == 0x2D &&
     output[output.length() - 2] == 0x20 {
@@ -25,7 +27,7 @@ fn pdf_markdown_trim_space_before_terminal_hyphen(output : Array[Int]) -> Unit {
 }
 
 ///|
-fn pdf_markdown_push_line_break(output : Array[Int]) -> Unit {
+fn pdf_markdown_push_line_break(output : Array[Int32]) -> Unit {
   pdf_markdown_trim_trailing_spaces(output)
   pdf_markdown_trim_space_before_terminal_hyphen(output)
   match pdf_markdown_last_codepoint(output) {
@@ -35,7 +37,7 @@ fn pdf_markdown_push_line_break(output : Array[Int]) -> Unit {
 }
 
 ///|
-fn pdf_markdown_push_word_space(output : Array[Int]) -> Unit {
+fn pdf_markdown_push_word_space(output : Array[Int32]) -> Unit {
   match pdf_markdown_last_codepoint(output) {
     None | Some(0x0A) | Some(0x20) => ()
     Some(_) => output.push(0x20)
@@ -80,8 +82,8 @@ fn pdf_markdown_glyph_run_has_unreliable_notdef_control(
 ///|
 fn pdf_markdown_codepoints_of_glyphs(
   glyphs : ArrayView[@pdflite.PdfTextGlyph],
-) -> Array[Int] {
-  let output : Array[Int] = []
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   if !pdf_markdown_glyph_run_has_unreliable_notdef_control(glyphs) {
     for glyph in glyphs {
       for codepoint in glyph.codepoints {
@@ -96,8 +98,8 @@ fn pdf_markdown_codepoints_of_glyphs(
 fn pdf_markdown_extracted_codepoints(
   extractor : @pdflite.PdfTextExtractor?,
   text : @core.PdfBytes,
-) -> Array[Int] raise {
-  let output : Array[Int] = []
+) -> Array[Int32] raise {
+  let output : Array[Int32] = []
   match extractor {
     Some(extractor) =>
       for
@@ -113,7 +115,7 @@ fn pdf_markdown_extracted_codepoints(
 
 ///|
 fn pdf_markdown_push_extracted_text(
-  output : Array[Int],
+  output : Array[Int32],
   extractor : @pdflite.PdfTextExtractor?,
   text : @core.PdfBytes,
 ) -> Unit raise {
@@ -125,8 +127,8 @@ fn pdf_markdown_push_extracted_text(
 
 ///|
 fn pdf_markdown_append_codepoints(
-  output : Array[Int],
-  codepoints : ArrayView[Int],
+  output : Array[Int32],
+  codepoints : ArrayView[Int32],
 ) -> Unit {
   for codepoint in codepoints {
     output.push(codepoint)
@@ -134,12 +136,12 @@ fn pdf_markdown_append_codepoints(
 }
 
 ///|
-fn pdf_markdown_is_space(codepoint : Int) -> Bool {
+fn pdf_markdown_is_space(codepoint : Int32) -> Bool {
   codepoint == 0x09 || codepoint == 0x0C || codepoint == 0x20
 }
 
 ///|
-fn pdf_markdown_is_non_text_control(codepoint : Int) -> Bool {
+fn pdf_markdown_is_non_text_control(codepoint : Int32) -> Bool {
   (
     codepoint >= 0 &&
     codepoint < 0x20 &&
@@ -151,10 +153,10 @@ fn pdf_markdown_is_non_text_control(codepoint : Int) -> Bool {
 }
 
 ///|
-let pdf_markdown_replacement_codepoint : Int = 0xFFFD
+let pdf_markdown_replacement_codepoint : Int32 = 0xFFFD
 
 ///|
-fn pdf_markdown_push_replacement(output : Array[Int]) -> Unit {
+fn pdf_markdown_push_replacement(output : Array[Int32]) -> Unit {
   if pdf_markdown_last_codepoint(output) !=
     Some(pdf_markdown_replacement_codepoint) {
     output.push(pdf_markdown_replacement_codepoint)
@@ -162,8 +164,10 @@ fn pdf_markdown_push_replacement(output : Array[Int]) -> Unit {
 }
 
 ///|
-fn pdf_markdown_normalize_codepoints(codepoints : ArrayView[Int]) -> Array[Int] {
-  let output : Array[Int] = []
+fn pdf_markdown_normalize_codepoints(
+  codepoints : ArrayView[Int32],
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   let mut pending_space = false
   for codepoint in codepoints {
     match codepoint {
@@ -204,7 +208,7 @@ fn pdf_markdown_normalize_codepoints(codepoints : ArrayView[Int]) -> Array[Int] 
 
 ///|
 fn pdf_markdown_string_of_codepoints(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> String raise {
   let normalized = pdf_markdown_normalize_codepoints(codepoints)
   let bytes = @pdflite.pdf_utf8_of_codepoints(normalized)

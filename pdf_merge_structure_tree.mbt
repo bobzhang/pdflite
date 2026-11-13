@@ -2,7 +2,7 @@
 fn PdfDocument::pdf_merge_structure_parented_item(
   self : PdfDocument,
   item : @syntax.PdfObject,
-  parent_number : Int,
+  parent_number : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   match item {
     PdfIndirect(number) => {
@@ -30,7 +30,7 @@ fn PdfDocument::pdf_merge_structure_parented_item(
 fn PdfDocument::pdf_merge_structure_tree_root(
   self : PdfDocument,
   structure_tree_roots : ArrayView[@syntax.PdfObject],
-  parent_tree_entries : ArrayView[(Int, @syntax.PdfObject)],
+  parent_tree_entries : ArrayView[(Int32, @syntax.PdfObject)],
   add_toplevel_document : Bool,
 ) -> @syntax.PdfObject? raise @core.PdfError {
   if structure_tree_roots.length() == 0 {

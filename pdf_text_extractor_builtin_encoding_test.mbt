@@ -5,7 +5,7 @@ fn text_extractor_builtin_name_for_test(text : String) -> @core.PdfName {
 
 ///|
 fn text_extractor_builtin_bytes_for_test(
-  values : ArrayView[Int],
+  values : ArrayView[Int32],
 ) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
@@ -13,9 +13,9 @@ fn text_extractor_builtin_bytes_for_test(
 ///|
 fn text_extractor_builtin_difference_for_test(
   name : String,
-  code : Int,
+  code : Int32,
 ) -> @pdflite.PdfEncodingDifference {
-  { name: text_extractor_builtin_name_for_test(name), code }
+  { name: text_extractor_builtin_name_for_test(name), code, }
 }
 
 ///|
@@ -23,7 +23,7 @@ fn text_extractor_builtin_standard_font_data_for_test(
   font : @pdflite.PdfStandardFont,
   encoding : @pdflite.PdfEncoding,
 ) -> @pdflite.PdfStandardFontData {
-  { font, encoding }
+  { font, encoding, }
 }
 
 ///|

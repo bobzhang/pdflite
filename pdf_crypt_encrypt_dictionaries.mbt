@@ -1,8 +1,8 @@
 ///|
 fn pdf_crypt_saved_arc4_dictionary(
   values : @crypt_core.PdfEncryptionValues,
-  key_length_bits : Int,
-  revision : Int,
+  key_length_bits : Int32,
+  revision : Int32,
 ) -> @syntax.PdfObject {
   if revision == 4 {
     let std_cf = pdf_crypt_std_cf_name

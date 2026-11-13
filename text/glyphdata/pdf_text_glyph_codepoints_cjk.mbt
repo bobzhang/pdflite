@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_codepoint_of_cjk_symbol_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_cjk_symbol_glyphname(name : String) -> Int32? {
   match name {
     "/anglebracketleft" => Some(0x3008)
     "/anglebracketright" => Some(0x3009)
@@ -47,7 +47,7 @@ fn pdf_text_codepoint_of_cjk_symbol_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_hiragana_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_hiragana_glyphname(name : String) -> Int32? {
   match name {
     "/ahiragana" => Some(0x3042)
     "/asmallhiragana" => Some(0x3041)
@@ -142,7 +142,7 @@ fn pdf_text_codepoint_of_hiragana_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_katakana_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_katakana_glyphname(name : String) -> Int32? {
   match name {
     "/akatakana" => Some(0x30A2)
     "/asmallkatakana" => Some(0x30A1)
@@ -243,7 +243,7 @@ fn pdf_text_codepoint_of_katakana_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_bopomofo_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_bopomofo_glyphname(name : String) -> Int32? {
   match name {
     "/abopomofo" => Some(0x311A)
     "/aibopomofo" => Some(0x311E)
@@ -287,7 +287,7 @@ fn pdf_text_codepoint_of_bopomofo_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_hangul_compat_jamo_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_hangul_compat_jamo_glyphname(name : String) -> Int32? {
   match name {
     "/aekorean" => Some(0x3150)
     "/akorean" => Some(0x314F)
@@ -388,7 +388,7 @@ fn pdf_text_codepoint_of_hangul_compat_jamo_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_enclosed_cjk_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_enclosed_cjk_glyphname(name : String) -> Int32? {
   match name {
     "/chieuchacirclekorean" => Some(0x3277)
     "/chieuchaparenkorean" => Some(0x3217)

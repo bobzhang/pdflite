@@ -1,10 +1,10 @@
 ///|
-fn jpeg_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn jpeg_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
 ///|
-fn jpeg_bytes_to_ints_for_test(bytes : @core.PdfBytes) -> Array[Int] {
+fn jpeg_bytes_to_ints_for_test(bytes : @core.PdfBytes) -> Array[Int32] {
   @core.pdf_bytes_to_array(bytes).map(byte => byte.to_int())
 }
 
@@ -60,7 +60,7 @@ test "@codec.pdf_cursor_read_jpeg_data reports missing JPEG EOI marker" {
 }
 
 ///|
-fn jpeg_jfif_for_test(marker : Int) -> @core.PdfBytes {
+fn jpeg_jfif_for_test(marker : Int32) -> @core.PdfBytes {
   jpeg_bytes_for_test([
     0xFF, 0xD8, 0xFF, 0xE0,
     // APP0 length = 9, followed by "JFIF\0" and two padding bytes.
@@ -129,7 +129,7 @@ test "@codec.pdf_jpeg_dimensions scans over non-SOF JPEG segments" {
 
 ///|
 test "@codec.pdf_jpeg_dimensions rejects progressive or missing SOF0 dimensions" {
-  let progressive : Result[(Int, Int), Error] = try
+  let progressive : Result[(Int32, Int32), Error] = try
     @codec.pdf_jpeg_dimensions(jpeg_jfif_for_test(0xC2))
   catch {
     err => Err(err)
@@ -157,7 +157,7 @@ test "@codec.pdf_jpeg_backup_dimensions reads progressive and generic SOF marker
 
 ///|
 test "@codec.pdf_jpeg_dimensions reports malformed JPEG inputs" {
-  let bad_header : Result[(Int, Int), Error] = try
+  let bad_header : Result[(Int32, Int32), Error] = try
     @codec.pdf_jpeg_dimensions(jpeg_bytes_for_test([0xFF, 0xD8, 0xFF, 0xDB]))
   catch {
     err => Err(err)
@@ -167,7 +167,7 @@ test "@codec.pdf_jpeg_dimensions reports malformed JPEG inputs" {
   guard bad_header is Err(@core.PdfError::BadJPEGHeader) else {
     fail("expected BadJPEGHeader")
   }
-  let bad_string : Result[(Int, Int), Error] = try
+  let bad_string : Result[(Int32, Int32), Error] = try
     @codec.pdf_jpeg_dimensions(
       jpeg_bytes_for_test([
         0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x09, 0x4E, 0x4F, 0x50, 0x45, 0x00,
@@ -181,7 +181,7 @@ test "@codec.pdf_jpeg_dimensions reports malformed JPEG inputs" {
   guard bad_string is Err(@core.PdfError::BadJPEGString) else {
     fail("expected BadJPEGString")
   }
-  let bad_block : Result[(Int, Int), Error] = try
+  let bad_block : Result[(Int32, Int32), Error] = try
     @codec.pdf_jpeg_dimensions(
       jpeg_bytes_for_test([
         0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x09, 0x4A, 0x46, 0x49, 0x46, 0x00, 0xAA, 0xBB,
@@ -196,7 +196,7 @@ test "@codec.pdf_jpeg_dimensions reports malformed JPEG inputs" {
   guard bad_block is Err(@core.PdfError::InvalidJPEGBlock) else {
     fail("expected InvalidJPEGBlock")
   }
-  let truncated : Result[(Int, Int), Error] = try
+  let truncated : Result[(Int32, Int32), Error] = try
     @codec.pdf_jpeg_dimensions(
       jpeg_bytes_for_test([
         0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x09, 0x4A, 0x46, 0x49, 0x46, 0x00, 0xAA,
@@ -214,7 +214,7 @@ test "@codec.pdf_jpeg_dimensions reports malformed JPEG inputs" {
 
 ///|
 test "@codec.pdf_jpeg_backup_dimensions reports malformed SOF scanning inputs" {
-  let bad_header : Result[(Int, Int), Error] = try
+  let bad_header : Result[(Int32, Int32), Error] = try
     @codec.pdf_jpeg_backup_dimensions(jpeg_bytes_for_test([0x00, 0xD8]))
   catch {
     err => Err(err)
@@ -224,7 +224,7 @@ test "@codec.pdf_jpeg_backup_dimensions reports malformed SOF scanning inputs" {
   guard bad_header is Err(@core.PdfError::BadJPEGHeader) else {
     fail("expected BadJPEGHeader")
   }
-  let bad_block : Result[(Int, Int), Error] = try
+  let bad_block : Result[(Int32, Int32), Error] = try
     @codec.pdf_jpeg_backup_dimensions(
       jpeg_bytes_for_test([0xFF, 0xD8, 0xFF, 0xDB, 0x00, 0x01]),
     )
@@ -236,7 +236,7 @@ test "@codec.pdf_jpeg_backup_dimensions reports malformed SOF scanning inputs" {
   guard bad_block is Err(@core.PdfError::InvalidJPEGBlock) else {
     fail("expected InvalidJPEGBlock")
   }
-  let no_dimensions : Result[(Int, Int), Error] = try
+  let no_dimensions : Result[(Int32, Int32), Error] = try
     @codec.pdf_jpeg_backup_dimensions(
       jpeg_bytes_for_test([0xFF, 0xD8, 0xFF, 0xD9]),
     )

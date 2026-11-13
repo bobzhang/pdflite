@@ -1,6 +1,6 @@
 ///|
 test "private presentation-form AGL glyph helper covers table" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/anglebracketleftvertical", 0xFE3F),
     ("/anglebracketrightvertical", 0xFE40),
     ("/asterisksmall", 0xFE61),

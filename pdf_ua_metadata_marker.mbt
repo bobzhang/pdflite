@@ -1,5 +1,5 @@
 ///|
-fn pdf_ua_pdfua_marker_length(subformat : PdfUASubformat) -> Int {
+fn pdf_ua_pdfua_marker_length(subformat : PdfUASubformat) -> Int32 {
   match subformat {
     PdfUA1 => pdf_ua_ascii_length("<pdfuaid:part>1</pdfuaid:part>\n")
     PdfUA2 =>
@@ -11,9 +11,9 @@ fn pdf_ua_pdfua_marker_length(subformat : PdfUASubformat) -> Int {
 ///|
 fn pdf_ua_write_pdfua_marker(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   subformat : PdfUASubformat,
-) -> Int {
+) -> Int32 {
   match subformat {
     PdfUA1 =>
       pdf_ua_write_ascii(output, position, "<pdfuaid:part>1</pdfuaid:part>\n")
@@ -30,7 +30,7 @@ fn pdf_ua_write_pdfua_marker(
 }
 
 ///|
-fn pdf_ua_pdfua_marker_part_length(part : String, revision : Int?) -> Int {
+fn pdf_ua_pdfua_marker_part_length(part : String, revision : Int32?) -> Int32 {
   let mut length = pdf_ua_ascii_length("<pdfuaid:part>") +
     pdf_ua_ascii_length(part) +
     pdf_ua_ascii_length("</pdfuaid:part>\n")
@@ -47,10 +47,10 @@ fn pdf_ua_pdfua_marker_part_length(part : String, revision : Int?) -> Int {
 ///|
 fn pdf_ua_write_pdfua_marker_part(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   part : String,
-  revision : Int?,
-) -> Int {
+  revision : Int32?,
+) -> Int32 {
   let mut current = pdf_ua_write_ascii(output, position, "<pdfuaid:part>")
   current = pdf_ua_write_ascii(output, current, part)
   current = pdf_ua_write_ascii(output, current, "</pdfuaid:part>\n")

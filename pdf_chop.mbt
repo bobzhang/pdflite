@@ -6,12 +6,12 @@
 /// removed from each generated piece, matching cpdf's chop behavior.
 pub fn PdfDocument::chop(
   self : PdfDocument,
-  x : Int,
-  y : Int,
+  x : Int32,
+  y : Int32,
   columns : Bool,
   btt : Bool,
   rtl : Bool,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   pdf_chop_validate_grid(x, y)
   self.pdf_chop_inner(0.0, x, y, columns, btt, rtl, page_numbers, "chop")
@@ -24,7 +24,7 @@ pub fn PdfDocument::chop_hv(
   is_h : Bool,
   line : Double,
   columns : Bool,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_chop_inner(
     line,
@@ -54,12 +54,12 @@ pub fn PdfDocument::chop_hv(
 /// Compatibility wrapper for `PdfDocument::chop`.
 pub fn pdf_chop(
   document : PdfDocument,
-  x : Int,
-  y : Int,
+  x : Int32,
+  y : Int32,
   columns : Bool,
   btt : Bool,
   rtl : Bool,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.chop(x, y, columns, btt, rtl, page_numbers)
 }
@@ -67,13 +67,13 @@ pub fn pdf_chop(
 ///|
 /// Compatibility wrapper matching cpdfchop's source argument order.
 pub fn pdf_chop_cpdf_order(
-  x : Int,
-  y : Int,
+  x : Int32,
+  y : Int32,
   columns : Bool,
   btt : Bool,
   rtl : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.chop(x, y, columns, btt, rtl, page_numbers)
 }
@@ -85,7 +85,7 @@ pub fn pdf_chop_hv(
   is_h : Bool,
   line : Double,
   columns : Bool,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.chop_hv(is_h, line, columns, page_numbers)
 }
@@ -97,7 +97,7 @@ pub fn pdf_chop_hv_cpdf_order(
   line : Double,
   columns : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.chop_hv(is_h, line, columns, page_numbers)
 }

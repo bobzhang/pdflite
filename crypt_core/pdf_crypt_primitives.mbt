@@ -1,10 +1,10 @@
 ///|
-fn pdf_crypto_low_byte(value : Int, shift : Int) -> Byte {
+fn pdf_crypto_low_byte(value : Int32, shift : Int32) -> Byte {
   ((value >> shift) & 0xff).to_byte()
 }
 
 ///|
-fn pdf_arc4_swap(state : Array[Int], left : Int, right : Int) -> Unit {
+fn pdf_arc4_swap(state : Array[Int32], left : Int32, right : Int32) -> Unit {
   let value = state[left]
   state[left] = state[right]
   state[right] = value

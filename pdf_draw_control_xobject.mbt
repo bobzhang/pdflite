@@ -68,7 +68,7 @@ pub fn pdf_addjpeg(
   control : PdfDrawControl,
   name : String,
   data : BytesView,
-  path_to_im? : String = "",
+  path_to_im~ : String = "",
 ) -> Unit raise @core.PdfError {
   ignore(path_to_im)
   control.add_jpeg_data(name, data)
@@ -101,7 +101,7 @@ pub fn PdfDrawControl::start_xobject(
   self : PdfDrawControl,
   name : String,
 ) -> Unit {
-  self.frames.push({ name, ops: [] })
+  self.frames.push({ name, ops: [], })
 }
 
 ///|

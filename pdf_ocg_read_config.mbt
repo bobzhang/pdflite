@@ -17,24 +17,24 @@ fn PdfDocument::pdf_ocg_read_appdict(
     Some(object) => self.pdf_ocg_name_array(object)
     _ => []
   }
-  { event, ocgs, category }
+  { event, ocgs, category, }
 }
 
 ///|
 fn PdfDocument::pdf_ocg_read_order(
   self : PdfDocument,
   order : @syntax.PdfObject,
-) -> Array[(@core.PdfBytes?, Array[Int])] {
+) -> Array[(@core.PdfBytes?, Array[Int32])] {
   match self.direct(order) {
     PdfArray(items) => {
-      let output : Array[(@core.PdfBytes?, Array[Int])] = []
+      let output : Array[(@core.PdfBytes?, Array[Int32])] = []
       for item in items {
         match item {
           PdfIndirect(number) => output.push((None, [number]))
           _ =>
             match self.direct(item) {
               PdfArray([PdfString(label), .. rest]) => {
-                let numbers : Array[Int] = []
+                let numbers : Array[Int32] = []
                 for child in rest {
                   match child {
                     PdfIndirect(number) => numbers.push(number)
@@ -44,7 +44,7 @@ fn PdfDocument::pdf_ocg_read_order(
                 output.push((Some(label), numbers))
               }
               PdfArray(children) => {
-                let numbers : Array[Int] = []
+                let numbers : Array[Int32] = []
                 for child in children {
                   match child {
                     PdfIndirect(number) => numbers.push(number)

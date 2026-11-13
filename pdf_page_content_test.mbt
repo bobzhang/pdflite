@@ -36,7 +36,7 @@ fn page_content_prefix_resource_entry_for_test(
 
 ///|
 fn page_content_prefix_full_resources_for_test(
-  prefix? : String = "",
+  prefix~ : String = "",
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -72,7 +72,7 @@ fn page_content_prefix_full_resources_for_test(
 
 ///|
 fn page_content_prefix_content_ops_for_test(
-  prefix? : String = "",
+  prefix~ : String = "",
 ) -> Array[@content.PdfContentOp] {
   [
     Op_Tf(page_content_name_for_test("/" + prefix + "F0"), 12.0),

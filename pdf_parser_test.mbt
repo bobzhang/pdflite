@@ -1,10 +1,10 @@
 ///|
-fn parser_name_for_test(values : ArrayView[Int]) -> @core.PdfName {
+fn parser_name_for_test(values : ArrayView[Int32]) -> @core.PdfName {
   @core.pdf_name_of_bytes(try! @core.pdf_bytes_of_int_array(values))
 }
 
 ///|
-fn parser_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn parser_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -231,7 +231,7 @@ test "@syntax.pdf_parse_indirect_object_lexemes reports malformed indirect objec
       LexObj,
       LexNull,
     ]),
-    { number: 7, generation: 0, object: PdfNull },
+    { number: 7, generation: 0, object: PdfNull, },
   )
   let missing_object : Result[@syntax.PdfParsedIndirectObject, Error] = try
     @syntax.pdf_parse_indirect_object_lexemes([

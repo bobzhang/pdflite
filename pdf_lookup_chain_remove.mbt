@@ -3,7 +3,7 @@ fn PdfDocument::remove_chain_from_object(
   self : PdfDocument,
   object : @syntax.PdfObject,
   chain : ArrayView[@core.PdfName],
-  chain_index : Int,
+  chain_index : Int32,
 ) -> (@syntax.PdfObject, Bool) raise @core.PdfError {
   let key = chain[chain_index]
   let final_key = chain_index + 1 == chain.length()

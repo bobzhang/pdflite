@@ -2,7 +2,7 @@
 fn PdfDocument::pdf_ocg_write_usage(
   self : PdfDocument,
   usage : @ocg.PdfOcgUsage,
-) -> Int {
+) -> Int32 {
   let entries : Array[(@core.PdfName, @syntax.PdfObject)] = []
   match usage.creator_info {
     Some((creator, subtype)) =>

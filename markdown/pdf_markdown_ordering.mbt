@@ -2,7 +2,7 @@
 fn pdf_markdown_positioned_chunk_compare(
   left : PdfMarkdownTextChunk,
   right : PdfMarkdownTextChunk,
-) -> Int {
+) -> Int32 {
   let y_delta = left.y - right.y
   if y_delta.abs() > pdf_markdown_line_y_tolerance {
     if y_delta > 0.0 {
@@ -88,7 +88,7 @@ fn pdf_markdown_suppress_fullwidth_inline_gap(
 }
 
 ///|
-fn pdf_markdown_codepoint_forbids_preceding_space(codepoint : Int) -> Bool {
+fn pdf_markdown_codepoint_forbids_preceding_space(codepoint : Int32) -> Bool {
   match codepoint {
     0x21 | 0x25 | 0x29 | 0x2C | 0x2E | 0x3A | 0x3B | 0x3F | 0x5D | 0x7D => true
     _ => false
@@ -122,11 +122,11 @@ fn pdf_markdown_lines_of_sorted_chunks(
   let lines : Array[PdfMarkdownTextLine] = []
   for chunk in sorted {
     if lines.length() == 0 {
-      lines.push({ y: chunk.y, chunks: [chunk] })
+      lines.push({ y: chunk.y, chunks: [chunk], })
     } else {
       let last = lines[lines.length() - 1]
       if (chunk.y - last.y).abs() > pdf_markdown_line_y_tolerance {
-        lines.push({ y: chunk.y, chunks: [chunk] })
+        lines.push({ y: chunk.y, chunks: [chunk], })
       } else {
         last.chunks.push(chunk)
       }
@@ -137,7 +137,7 @@ fn pdf_markdown_lines_of_sorted_chunks(
 
 ///|
 fn pdf_markdown_push_text_line_chunks(
-  output : Array[Int],
+  output : Array[Int32],
   line : PdfMarkdownTextLine,
 ) -> Unit {
   let mut current_right = 0.0

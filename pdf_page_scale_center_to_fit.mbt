@@ -39,7 +39,7 @@ fn PdfDocument::pdf_page_scale_center_offsets(
 /// are shifted by offsets calculated from the original page crop/media bounds.
 pub fn PdfDocument::center_to_fit_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
@@ -69,7 +69,7 @@ pub fn PdfDocument::center_to_fit_pages(
 /// Compatibility wrapper for `PdfDocument::center_to_fit_pages`.
 pub fn pdf_center_to_fit_pages(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
 ) -> PdfDocument raise @core.PdfError {
   document.center_to_fit_pages(page_numbers, sizes)
@@ -79,7 +79,7 @@ pub fn pdf_center_to_fit_pages(
 /// Compatibility method using cpdfpage's `center_to_fit` name.
 pub fn PdfDocument::center_to_fit(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
 ) -> PdfDocument raise @core.PdfError {
   self.center_to_fit_pages(page_numbers, sizes)
@@ -90,7 +90,7 @@ pub fn PdfDocument::center_to_fit(
 pub fn pdf_center_to_fit(
   sizes : ArrayView[(Double, Double)],
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.center_to_fit(page_numbers, sizes)
 }

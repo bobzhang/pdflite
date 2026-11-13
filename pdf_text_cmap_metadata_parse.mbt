@@ -1,5 +1,8 @@
 ///|
-fn pdf_text_parse_cmap_int_after_token(data : BytesView, key : String) -> Int? {
+fn pdf_text_parse_cmap_int_after_token(
+  data : BytesView,
+  key : String,
+) -> Int32? {
   let cursor = @core.byte_cursor_of_view(data)
   let mut expect_value = false
   for line in cursor.read_line_views() {
@@ -28,7 +31,7 @@ fn pdf_text_parse_cmap_int_after_token(data : BytesView, key : String) -> Int? {
 }
 
 ///|
-fn pdf_text_parse_cmap_wmode(data : BytesView) -> Int? {
+fn pdf_text_parse_cmap_wmode(data : BytesView) -> Int32? {
   pdf_text_parse_cmap_int_after_token(data, "/WMode")
 }
 
@@ -109,7 +112,7 @@ fn pdf_text_parse_cmap_cid_system_value(
   token : BytesView,
   registry : Array[@core.PdfBytes],
   ordering : Array[@core.PdfBytes],
-  supplement : Array[Int],
+  supplement : Array[Int32],
 ) -> Unit {
   match (key, pdf_text_parse_cmap_object_token(token)) {
     (PdfTextCMapCIDSystemRegistry, Some(PdfString(value))) =>
@@ -127,7 +130,7 @@ fn pdf_text_parse_cmap_cid_system_info(data : BytesView) -> PdfCIDSystemInfo? {
   let cursor = @core.byte_cursor_of_view(data)
   let registries : Array[@core.PdfBytes] = Array::new(capacity=1)
   let orderings : Array[@core.PdfBytes] = Array::new(capacity=1)
-  let supplements : Array[Int] = Array::new(capacity=1)
+  let supplements : Array[Int32] = Array::new(capacity=1)
   let mut seen_cid_system_info = false
   let mut expect_value : PdfTextCMapCIDSystemInfoKey? = None
   for line in cursor.read_line_views() {

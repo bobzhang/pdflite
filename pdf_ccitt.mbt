@@ -1,15 +1,15 @@
 ///|
 priv struct PdfCCITTCode {
-  bits : Int
-  width : Int
-  run : Int
+  bits : Int32
+  width : Int32
+  run : Int32
   makeup : Bool
 }
 
 ///|
 priv struct PdfCCITTMode {
-  bits : Int
-  width : Int
+  bits : Int32
+  width : Int32
   mode : PdfCCITTModeKind
 }
 
@@ -17,27 +17,27 @@ priv struct PdfCCITTMode {
 priv enum PdfCCITTModeKind {
   CCITTPass
   CCITTHorizontal
-  CCITTVertical(Int)
+  CCITTVertical(Int32)
   CCITTUncompressed
   CCITTEOFB
 }
 
 ///|
 priv struct PdfCCITTRun {
-  run : Int
+  run : Int32
   makeup : Bool
 }
 
 ///|
 priv struct PdfCCITTParams {
-  k : Int
+  k : Int32
   end_of_line : Bool
   encoded_byte_align : Bool
-  columns : Int
-  rows : Int
+  columns : Int32
+  rows : Int32
   end_of_block : Bool
   black_is_1 : Bool
-  damaged_rows_before_error : Int
+  damaged_rows_before_error : Int32
 }
 
 ///|

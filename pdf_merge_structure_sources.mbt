@@ -31,7 +31,7 @@ fn PdfDocument::pdf_merge_structure_tree_root_k_items(
 fn PdfDocument::pdf_merge_structure_parent_tree_entries(
   self : PdfDocument,
   root : @syntax.PdfObject,
-) -> Array[(Int, @syntax.PdfObject)] {
+) -> Array[(Int32, @syntax.PdfObject)] {
   match self.lookup_direct(pdf_merge_parent_tree_key(), root) {
     Some(parent_tree) => self.read_number_tree(parent_tree)
     None => []

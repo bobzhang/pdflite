@@ -1,15 +1,15 @@
 ///|
-fn pdf_pagespec_is_digit(value : Int) -> Bool {
+fn pdf_pagespec_is_digit(value : Int32) -> Bool {
   value >= 48 && value <= 57
 }
 
 ///|
-fn pdf_pagespec_is_separator(value : Int) -> Bool {
+fn pdf_pagespec_is_separator(value : Int32) -> Bool {
   value == 45 || value == 44 || @core.pdf_is_whitespace_byte(value)
 }
 
 ///|
-fn pdf_pagespec_parse_nonnegative_int(text : String) -> Int? {
+fn pdf_pagespec_parse_nonnegative_int(text : String) -> Int32? {
   if text.length() == 0 {
     None
   } else {
@@ -23,7 +23,7 @@ fn pdf_pagespec_parse_nonnegative_int(text : String) -> Int? {
     if !valid {
       None
     } else {
-      let parsed : Result[Int, Error] = try @strconv.from_str(text) catch {
+      let parsed : Result[Int32, Error] = try @strconv.from_str(text) catch {
         err => Err(err)
       } noraise {
         value => Ok(value)

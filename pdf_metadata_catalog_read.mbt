@@ -97,8 +97,8 @@ pub fn PdfDocument::is_xfa(self : PdfDocument) -> Bool {
 ///|
 fn PdfDocument::pdf_metadata_page_number_for_reference(
   self : PdfDocument,
-  reference : Int,
-) -> Int? raise @core.PdfError {
+  reference : Int32,
+) -> Int32? raise @core.PdfError {
   let page_numbers = self.page_reference_numbers()
   for index in 0..<page_numbers.length() {
     if page_numbers[index] == reference {

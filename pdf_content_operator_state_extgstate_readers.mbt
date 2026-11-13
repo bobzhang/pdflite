@@ -8,7 +8,7 @@ fn pdf_content_extgstate_number(object : @syntax.PdfObject) -> Double? {
 }
 
 ///|
-fn pdf_content_extgstate_integer(object : @syntax.PdfObject) -> Int? {
+fn pdf_content_extgstate_integer(object : @syntax.PdfObject) -> Int32? {
   match object {
     PdfInteger(value) => Some(value)
     _ => None
@@ -32,7 +32,7 @@ fn PdfDocument::content_extgstate_integer(
   self : PdfDocument,
   extgstate : @syntax.PdfObject,
   key : @core.PdfName,
-) -> Int? {
+) -> Int32? {
   match self.lookup_direct(key, extgstate) {
     Some(value) => pdf_content_extgstate_integer(value)
     None => None

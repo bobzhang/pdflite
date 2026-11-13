@@ -1,15 +1,15 @@
 ///|
-fn pdf_bytes_for_cursor_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn pdf_bytes_for_cursor_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
 ///|
-fn pdf_bytes_to_ints_for_cursor_test(bytes : @core.PdfBytes) -> Array[Int] {
+fn pdf_bytes_to_ints_for_cursor_test(bytes : @core.PdfBytes) -> Array[Int32] {
   @core.pdf_bytes_to_array(bytes).map(byte => byte.to_int())
 }
 
 ///|
-fn bytes_view_to_ints_for_cursor_test(view : BytesView) -> Array[Int] {
+fn bytes_view_to_ints_for_cursor_test(view : BytesView) -> Array[Int32] {
   view.to_array().map(byte => byte.to_int())
 }
 

@@ -54,7 +54,7 @@ pub fn pdf_encode_output(
 ///|
 fn PdfDocument::pdf_metadata_bump_minor(
   self : PdfDocument,
-  version : Int,
+  version : Int32,
   keep_version : Bool,
 ) -> Unit {
   if self.major == 1 && !keep_version && self.minor < version {

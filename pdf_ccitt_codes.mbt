@@ -8,7 +8,7 @@ fn pdf_ccitt_read_run_code(
     bits = (bits << 1) | input.get_bit_int()
     for code in table {
       if code.width == width && code.bits == bits {
-        return { run: code.run, makeup: code.makeup }
+        return { run: code.run, makeup: code.makeup, }
       }
     }
   }
@@ -19,7 +19,7 @@ fn pdf_ccitt_read_run_code(
 fn pdf_ccitt_read_run(
   input : @core.BitStream,
   white : Bool,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let table = if white {
     pdf_ccitt_white_codes[:]
   } else {
@@ -59,7 +59,7 @@ fn pdf_ccitt_read_mode(
 fn pdf_ccitt_write_code(
   output : @core.BitWriter,
   table : ArrayView[PdfCCITTCode],
-  run : Int,
+  run : Int32,
   makeup : Bool,
 ) -> Unit raise @core.PdfError {
   for code in table {
@@ -101,7 +101,7 @@ fn pdf_ccitt_write_mode(
 fn pdf_ccitt_write_run(
   output : @core.BitWriter,
   white : Bool,
-  length : Int,
+  length : Int32,
 ) -> Unit raise @core.PdfError {
   if length < 0 {
     raise InvalidCCITTData

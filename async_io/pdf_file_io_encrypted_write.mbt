@@ -6,9 +6,9 @@ pub async fn pdf_write_encrypted_40bit_document_to_file(
   user_password : BytesView,
   owner_password : BytesView,
   denied_permissions : ArrayView[@crypt_core.PdfPermission],
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  file_id? : BytesView = [],
-  permission? : Int = 0o644,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  file_id~ : BytesView = [],
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -30,11 +30,12 @@ pub async fn pdf_write_encrypted_40bit_document_to_file(
 ///
 /// `filename` is both the path read from disk and the source name used for the
 /// generated portfolio entry.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfPortfolioFileEntry {
   filename : String
   relationship : String?
   description : String?
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Encrypt with 128-bit ARC4 revision 3, serialize, and write to a file.
@@ -44,9 +45,9 @@ pub async fn pdf_write_encrypted_128bit_document_to_file(
   user_password : BytesView,
   owner_password : BytesView,
   denied_permissions : ArrayView[@crypt_core.PdfPermission],
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  file_id? : BytesView = [],
-  permission? : Int = 0o644,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  file_id~ : BytesView = [],
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -73,10 +74,10 @@ pub async fn pdf_write_encrypted_128bit_r4_document_to_file(
   user_password : BytesView,
   owner_password : BytesView,
   denied_permissions : ArrayView[@crypt_core.PdfPermission],
-  encrypt_metadata? : Bool = true,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  file_id? : BytesView = [],
-  permission? : Int = 0o644,
+  encrypt_metadata~ : Bool = true,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  file_id~ : BytesView = [],
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -102,11 +103,11 @@ pub async fn pdf_write_encrypted_aesv2_document_to_file_with_iv_provider(
   user_password : BytesView,
   owner_password : BytesView,
   denied_permissions : ArrayView[@crypt_core.PdfPermission],
-  iv_provider : (Int, Int, Int) -> @core.PdfBytes raise @core.PdfError,
-  encrypt_metadata? : Bool = true,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  file_id? : BytesView = [],
-  permission? : Int = 0o644,
+  iv_provider : (Int32, Int32, Int32) -> @core.PdfBytes raise @core.PdfError,
+  encrypt_metadata~ : Bool = true,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  file_id~ : BytesView = [],
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -135,10 +136,10 @@ pub async fn pdf_write_encrypted_aesv2_document_to_file(
   user_password : BytesView,
   owner_password : BytesView,
   denied_permissions : ArrayView[@crypt_core.PdfPermission],
-  encrypt_metadata? : Bool = true,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  file_id? : BytesView = [],
-  permission? : Int = 0o644,
+  encrypt_metadata~ : Bool = true,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  file_id~ : BytesView = [],
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -167,13 +168,13 @@ pub async fn pdf_write_encrypted_aesv3_document_to_file_with_providers(
   user_password : BytesView,
   owner_password : BytesView,
   denied_permissions : ArrayView[@crypt_core.PdfPermission],
-  random_provider : (@crypt_core.PdfAesV3RandomField, Int) -> @core.PdfBytes raise @core.PdfError,
-  iv_provider : (Int, Int, Int) -> @core.PdfBytes raise @core.PdfError,
-  iso? : Bool = false,
-  encrypt_metadata? : Bool = true,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  file_id? : BytesView = [],
-  permission? : Int = 0o644,
+  random_provider : (@crypt_core.PdfAesV3RandomField, Int32) -> @core.PdfBytes raise @core.PdfError,
+  iv_provider : (Int32, Int32, Int32) -> @core.PdfBytes raise @core.PdfError,
+  iso~ : Bool = false,
+  encrypt_metadata~ : Bool = true,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  file_id~ : BytesView = [],
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -204,11 +205,11 @@ pub async fn pdf_write_encrypted_aesv3_document_to_file(
   user_password : BytesView,
   owner_password : BytesView,
   denied_permissions : ArrayView[@crypt_core.PdfPermission],
-  iso? : Bool = false,
-  encrypt_metadata? : Bool = true,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  file_id? : BytesView = [],
-  permission? : Int = 0o644,
+  iso~ : Bool = false,
+  encrypt_metadata~ : Bool = true,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  file_id~ : BytesView = [],
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -235,12 +236,12 @@ pub async fn pdf_write_encrypted_aesv3_iso_document_to_file_with_providers(
   user_password : BytesView,
   owner_password : BytesView,
   denied_permissions : ArrayView[@crypt_core.PdfPermission],
-  random_provider : (@crypt_core.PdfAesV3RandomField, Int) -> @core.PdfBytes raise @core.PdfError,
-  iv_provider : (Int, Int, Int) -> @core.PdfBytes raise @core.PdfError,
-  encrypt_metadata? : Bool = true,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  file_id? : BytesView = [],
-  permission? : Int = 0o644,
+  random_provider : (@crypt_core.PdfAesV3RandomField, Int32) -> @core.PdfBytes raise @core.PdfError,
+  iv_provider : (Int32, Int32, Int32) -> @core.PdfBytes raise @core.PdfError,
+  encrypt_metadata~ : Bool = true,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  file_id~ : BytesView = [],
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -268,10 +269,10 @@ pub async fn pdf_write_encrypted_aesv3_iso_document_to_file(
   user_password : BytesView,
   owner_password : BytesView,
   denied_permissions : ArrayView[@crypt_core.PdfPermission],
-  encrypt_metadata? : Bool = true,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  file_id? : BytesView = [],
-  permission? : Int = 0o644,
+  encrypt_metadata~ : Bool = true,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  file_id~ : BytesView = [],
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,

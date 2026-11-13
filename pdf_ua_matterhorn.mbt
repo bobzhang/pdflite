@@ -192,7 +192,7 @@ pub fn PdfDocument::test_matterhorn_json(
 ///|
 fn pdf_ua_matterhorn_text_failure_length(
   failure : PdfUAMatterhornFailure,
-) -> Int {
+) -> Int32 {
   let mut length = pdf_ua_ascii_length(failure.name) +
     1 +
     pdf_ua_ascii_length(failure.section) +
@@ -206,7 +206,10 @@ fn pdf_ua_matterhorn_text_failure_length(
 }
 
 ///|
-fn pdf_ua_matterhorn_write_space(output : Array[Byte], position : Int) -> Int {
+fn pdf_ua_matterhorn_write_space(
+  output : Array[Byte],
+  position : Int32,
+) -> Int32 {
   output[position] = 32
   position + 1
 }
@@ -214,9 +217,9 @@ fn pdf_ua_matterhorn_write_space(output : Array[Byte], position : Int) -> Int {
 ///|
 fn pdf_ua_matterhorn_write_text_failure(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   failure : PdfUAMatterhornFailure,
-) -> Int {
+) -> Int32 {
   let mut current = pdf_ua_write_ascii(output, position, failure.name)
   current = pdf_ua_matterhorn_write_space(output, current)
   current = pdf_ua_write_ascii(output, current, failure.section)
@@ -237,7 +240,7 @@ fn pdf_ua_matterhorn_write_text_failure(
 ///|
 fn pdf_ua_matterhorn_text_length(
   failures : ArrayView[PdfUAMatterhornFailure],
-) -> Int {
+) -> Int32 {
   let mut length = 0
   for failure in failures {
     length += pdf_ua_matterhorn_text_failure_length(failure)

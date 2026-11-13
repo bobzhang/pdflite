@@ -1,7 +1,7 @@
 // Whitebox tests for private encryption guards.
 
 ///|
-fn crypt_wb_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn crypt_wb_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -20,8 +20,8 @@ fn crypt_wb_concat_bytes_for_test(
 
 ///|
 fn crypt_wb_repeated_bytes_for_test(
-  value : Int,
-  length : Int,
+  value : Int32,
+  length : Int32,
 ) -> @core.PdfBytes {
   crypt_wb_bytes_for_test([ for _ in 0..<length => value ])
 }
@@ -34,8 +34,8 @@ fn crypt_wb_name_for_test(text : String) -> @core.PdfName {
 ///|
 fn crypt_wb_standard_encrypt_dictionary_for_test(
   entries : ArrayView[(@core.PdfName, @syntax.PdfObject)],
-  owner_length? : Int = 40,
-  user_length? : Int = 40,
+  owner_length~ : Int32 = 40,
+  user_length~ : Int32 = 40,
 ) -> @syntax.PdfObject {
   crypt_wb_standard_encrypt_dictionary_values_for_test(
     entries,
@@ -50,7 +50,7 @@ fn crypt_wb_standard_encrypt_dictionary_values_for_test(
   entries : ArrayView[(@core.PdfName, @syntax.PdfObject)],
   owner_entry : @core.PdfBytes,
   user_entry : @core.PdfBytes,
-  permissions : Int,
+  permissions : Int32,
 ) -> @syntax.PdfObject {
   let output : Array[(@core.PdfName, @syntax.PdfObject)] = [
     (
@@ -105,7 +105,7 @@ fn crypt_wb_expect_encryption_method_error_for_test(
 }
 
 ///|
-fn crypt_wb_iv_for_test(index : Int) -> @core.PdfBytes {
+fn crypt_wb_iv_for_test(index : Int32) -> @core.PdfBytes {
   crypt_wb_bytes_for_test(
     [
       for offset in 0..<16 => 0x30 + index * 16 + offset
@@ -203,7 +203,7 @@ fn crypt_wb_aesv3_r5_values_for_test() -> @crypt_core.PdfEncryptionValues {
 #warnings("-unused_error_type")
 fn crypt_wb_aesv3_r5_random_for_test(
   field : @crypt_core.PdfAesV3RandomField,
-  _length : Int,
+  _length : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   match field {
     PdfAesV3FileKey => crypt_wb_aesv3_r5_file_key_for_test()
@@ -232,7 +232,7 @@ test "private encryption password settings reject AESV3" {
     user_encryption_key: None,
     owner_encryption_key: None,
   }
-  let result : Result[(Int, Int), Error] = try
+  let result : Result[(Int32, Int32), Error] = try
     values.password_settings()
   catch {
     err => Err(err)
@@ -241,7 +241,7 @@ test "private encryption password settings reject AESV3" {
   }
   guard result
     is Err(
-      @core.PdfError::EncryptionAuthenticationUnsupported(PdfCryptAESV3(false))
+      @core.PdfError::EncryptionAuthenticationUnsupported(PdfCryptAESV3(false)),
     ) else {
     fail("expected unsupported AESV3 password settings")
   }
@@ -909,7 +909,7 @@ test "PdfDocument AESV2 encrypt preserves parser-private object states" {
   doc.objects.set_entry(
     3,
     pdf_object_entry(
-      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0 }),
+      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0, }),
     ),
   )
   let encrypted = try! doc.aesv2_encrypt_parsed_objects_with_iv_provider(
@@ -937,7 +937,7 @@ test "PdfDocument AESV2 decrypt preserves parser-private object states" {
   doc.objects.set_entry(
     3,
     pdf_object_entry(
-      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0 }),
+      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0, }),
     ),
   )
   let decrypted = try! doc.aesv2_decrypt_parsed_objects(key, 128, false, 0)
@@ -961,7 +961,7 @@ test "PdfDocument AESV3 encrypt recurses and preserves parser-private object sta
   doc.objects.set_entry(
     4,
     pdf_object_entry(
-      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0 }),
+      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0, }),
     ),
   )
   let encrypted = try! doc.aesv3_encrypt_parsed_objects_with_iv_provider(
@@ -996,7 +996,7 @@ test "PdfDocument AESV3 decrypt preserves parser-private object states" {
   doc.objects.set_entry(
     3,
     pdf_object_entry(
-      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0 }),
+      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0, }),
     ),
   )
   let decrypted = try! doc.aesv3_decrypt_parsed_objects(key, false, 0)

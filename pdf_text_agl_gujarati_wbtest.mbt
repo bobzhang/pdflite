@@ -1,6 +1,6 @@
 ///|
 test "private Gujarati AGL glyph helper covers table" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/aagujarati", 0x0A86),
     ("/aavowelsigngujarati", 0x0ABE),
     ("/agujarati", 0x0A85),

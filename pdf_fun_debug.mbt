@@ -83,7 +83,7 @@ fn pdf_fun_debug_doubles(values : ArrayView[Double]) -> String {
 }
 
 ///|
-fn pdf_fun_debug_ints(values : ArrayView[Int]) -> String {
+fn pdf_fun_debug_ints(values : ArrayView[Int32]) -> String {
   pdf_fun_join_strings([ for value in values => value.to_string() ], " ")
 }
 

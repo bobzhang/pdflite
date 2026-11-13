@@ -4,7 +4,7 @@ fn PdfDocument::pdf_image_resolution_lookup_inline_int(
   first_key : @core.PdfName,
   second_key : @core.PdfName,
   image : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match self.lookup_direct_or_else(first_key, second_key, image) {
     Some(PdfInteger(value)) => Some(value)
     _ => None
@@ -92,10 +92,10 @@ fn PdfDocument::pdf_image_resolution_process_content(
   resources : @syntax.PdfObject,
   content : ArrayView[@syntax.PdfObject],
   candidates : ArrayView[PdfImageResolutionCandidate],
-  page_number : Int,
+  page_number : Int32,
   inline : Bool,
   initial_matrix : @geometry.TransformMatrix,
-  depth : Int,
+  depth : Int32,
   results : Array[PdfImageResolutionEntry],
 ) -> Unit raise @core.PdfError {
   if depth > 64 {
@@ -153,8 +153,8 @@ fn PdfDocument::pdf_image_resolution_process_content(
               {
                 object: PdfImageResolutionImage(width, height),
                 object_number,
-                ..,
-              }
+                ..
+              },
             ) =>
               pdf_image_resolution_push_entry(
                 results,
@@ -168,8 +168,8 @@ fn PdfDocument::pdf_image_resolution_process_content(
             Some(
               {
                 object: PdfImageResolutionForm(matrix, form, form_resources),
-                ..,
-              }
+                ..
+              },
             ) => {
               let form_candidates = self.pdf_image_resolution_candidates(
                 form_resources,

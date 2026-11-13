@@ -3,8 +3,8 @@
 #borrow(data, status)
 extern "C" fn pdf_flate_zlib_encode_ffi(
   data : @core.PdfBytes,
-  level : Int,
-  status : Ref[Int],
+  level : Int32,
+  status : Ref[Int32],
 ) -> @core.PdfBytes = "pdflite_zlib_compress"
 
 ///|
@@ -12,7 +12,7 @@ extern "C" fn pdf_flate_zlib_encode_ffi(
 #borrow(data, status)
 extern "C" fn pdf_flate_zlib_decode_ffi(
   data : @core.PdfBytes,
-  status : Ref[Int],
+  status : Ref[Int32],
 ) -> @core.PdfBytes = "pdflite_zlib_decompress"
 
 ///|
@@ -20,7 +20,7 @@ extern "C" fn pdf_flate_zlib_decode_ffi(
 #coverage.skip
 fn pdf_flate_native_payload(
   result : @core.PdfBytes,
-  status : Ref[Int],
+  status : Ref[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   if status.val != 1 {
     raise InvalidFlateData
@@ -33,10 +33,10 @@ fn pdf_flate_native_payload(
 #coverage.skip
 fn pdf_flate_encode_bytes_native(
   data : @core.PdfBytes,
-  level : Int,
+  level : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let _ = pdf_flate_header_for_level(level)
-  let status = Ref::{ val: 0 }
+  let status = Ref::{ val: 0, }
   try
     pdf_flate_native_payload(
       pdf_flate_zlib_encode_ffi(data, level, status),
@@ -58,7 +58,7 @@ fn pdf_flate_decode_bytes_native(
   if data.length() == 0 {
     Bytes::new(0)
   } else {
-    let status = Ref::{ val: 0 }
+    let status = Ref::{ val: 0, }
     try
       pdf_flate_native_payload(pdf_flate_zlib_decode_ffi(data, status), status)
     catch {

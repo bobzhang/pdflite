@@ -10,7 +10,7 @@ fn PdfDrawRenderState::extgstate(
     }
   }
   let name = self.fresh_name("/G")
-  self.extgstates.push({ kind, value, name })
+  self.extgstates.push({ kind, value, name, })
   name
 }
 
@@ -59,7 +59,7 @@ fn PdfDrawRenderState::form_resource_name(
 fn PdfDrawRenderState::font_resource_name(
   self : PdfDrawRenderState,
   identifier : String,
-  font_index : Int,
+  font_index : Int32,
 ) -> @core.PdfName raise @core.PdfError {
   match self.stored_font_resource(identifier, font_index) {
     Some(resource) => {

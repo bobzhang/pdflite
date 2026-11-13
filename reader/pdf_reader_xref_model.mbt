@@ -3,34 +3,35 @@
 ///
 /// Entries are stored newest first by the document reader. `object_stream`
 /// records compressed-object locations for xref-stream entries.
+#derive(Debug, Eq)
 pub(all) struct PdfClassicXRefEntry {
-  object_number : Int
-  offset : Int
-  generation : Int
+  object_number : Int32
+  offset : Int32
+  generation : Int32
   in_use : Bool
   object_stream : @xref_model.ObjectStreamReference?
-} derive(Debug, Eq)
+}
 
 ///|
 /// Parsed xref section and associated trailer.
 pub(all) struct PdfXRefSection {
   entries : Array[PdfClassicXRefEntry]
   trailer : @syntax.PdfObject
-  stream_object_number : Int?
-  stream_object_offset : Int?
+  stream_object_number : Int32?
+  stream_object_offset : Int32?
 }
 
 ///|
 /// Object-number index over active classic xref entries.
 pub(all) struct PdfClassicXRefIndex {
-  entries : @hashmap.HashMap[Int, PdfClassicXRefEntry]
+  entries : @hashmap.HashMap[Int32, PdfClassicXRefEntry]
 }
 
 ///|
 /// Find the first active xref entry for `object_number`.
 pub fn pdf_classic_xref_lookup(
   xrefs : ArrayView[PdfClassicXRefEntry],
-  object_number : Int,
+  object_number : Int32,
 ) -> PdfClassicXRefEntry? {
   for xref in xrefs {
     if xref.in_use && xref.object_number == object_number {
@@ -46,7 +47,7 @@ pub fn pdf_classic_xref_lookup(
 pub fn pdf_classic_xref_index(
   xrefs : ArrayView[PdfClassicXRefEntry],
 ) -> PdfClassicXRefIndex {
-  let entries : @hashmap.HashMap[Int, PdfClassicXRefEntry] = HashMap([])
+  let entries : @hashmap.HashMap[Int32, PdfClassicXRefEntry] = HashMap([])
   for xref in xrefs {
     if xref.in_use && !entries.contains(xref.object_number) {
       entries[xref.object_number] = xref
@@ -59,7 +60,7 @@ pub fn pdf_classic_xref_index(
 /// Return the active xref entry for `object_number`, if present.
 pub fn PdfClassicXRefIndex::lookup(
   self : PdfClassicXRefIndex,
-  object_number : Int,
+  object_number : Int32,
 ) -> PdfClassicXRefEntry? {
   self.entries.get(object_number)
 }

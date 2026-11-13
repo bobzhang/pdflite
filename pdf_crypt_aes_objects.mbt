@@ -1,7 +1,7 @@
 ///|
 fn pdf_aes_next_iv(
-  iv_provider : (Int) -> @core.PdfBytes raise @core.PdfError,
-  iv_index : Ref[Int],
+  iv_provider : (Int32) -> @core.PdfBytes raise @core.PdfError,
+  iv_index : Ref[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   let iv = iv_provider(iv_index.val)
   iv_index.val += 1
@@ -11,8 +11,8 @@ fn pdf_aes_next_iv(
 ///|
 fn pdf_aes_encrypt_pdf_object_with_data_encryptor(
   object : @syntax.PdfObject,
-  iv_provider : (Int) -> @core.PdfBytes raise @core.PdfError,
-  iv_index : Ref[Int],
+  iv_provider : (Int32) -> @core.PdfBytes raise @core.PdfError,
+  iv_index : Ref[Int32],
   encrypt_data : (BytesView, BytesView) -> @core.PdfBytes raise @core.PdfError,
   no_encrypt_metadata : Bool,
 ) -> @syntax.PdfObject raise @core.PdfError {
@@ -79,15 +79,15 @@ fn pdf_aes_encrypt_pdf_object_with_data_encryptor(
 /// The IV provider is called with a zero-based index for each encrypted string
 /// or stream inside the object. Identity crypt-filter streams are preserved.
 fn pdf_aesv2_encrypt_pdf_object_with_iv_provider(
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   file_key : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
   object : @syntax.PdfObject,
-  iv_provider : (Int) -> @core.PdfBytes raise @core.PdfError,
+  iv_provider : (Int32) -> @core.PdfBytes raise @core.PdfError,
   no_encrypt_metadata : Bool,
 ) -> @syntax.PdfObject raise @core.PdfError {
-  let iv_index : Ref[Int] = { val: 0 }
+  let iv_index : Ref[Int32] = { val: 0, }
   pdf_aes_encrypt_pdf_object_with_data_encryptor(
     object,
     iv_provider,
@@ -109,10 +109,10 @@ fn pdf_aesv2_encrypt_pdf_object_with_iv_provider(
 fn pdf_aesv3_encrypt_pdf_object_with_iv_provider(
   file_key : BytesView,
   object : @syntax.PdfObject,
-  iv_provider : (Int) -> @core.PdfBytes raise @core.PdfError,
+  iv_provider : (Int32) -> @core.PdfBytes raise @core.PdfError,
   no_encrypt_metadata : Bool,
 ) -> @syntax.PdfObject raise @core.PdfError {
-  let iv_index : Ref[Int] = { val: 0 }
+  let iv_index : Ref[Int32] = { val: 0, }
   pdf_aes_encrypt_pdf_object_with_data_encryptor(
     object,
     iv_provider,
@@ -204,10 +204,10 @@ fn pdf_aes_decrypt_pdf_object_with_key(
 /// Deferred stream data is annotated with AESV2 crypt state so it can be
 /// decrypted lazily when the stream bytes are loaded.
 fn pdf_aesv2_decrypt_pdf_object(
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   file_key : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
   object : @syntax.PdfObject,
   no_encrypt_metadata : Bool,
 ) -> @syntax.PdfObject raise @core.PdfError {

@@ -9,13 +9,13 @@ pub fn ToGet::input(self : ToGet) -> @core.ByteCursor {
 ///
 /// The value is interpreted relative to the `@core.ByteCursor`'s offset when the
 /// stream is materialized.
-pub fn ToGet::position(self : ToGet) -> Int {
+pub fn ToGet::position(self : ToGet) -> Int32 {
   self.position
 }
 
 ///|
 /// Return the byte length of a deferred stream slice.
-pub fn ToGet::length(self : ToGet) -> Int {
+pub fn ToGet::length(self : ToGet) -> Int32 {
   self.length
 }
 

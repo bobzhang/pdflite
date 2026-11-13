@@ -1,6 +1,6 @@
 ///|
 #borrow(output)
-extern "C" fn pdf_current_time_ffi(output : FixedArray[Int]) -> Int = "pdflite_local_time"
+extern "C" fn pdf_current_time_ffi(output : FixedArray[Int32]) -> Int32 = "pdflite_local_time"
 
 ///|
 /// Return the current local time on the native target.
@@ -28,7 +28,7 @@ pub fn pdf_current_time() -> @date.PdfStrftimeTime raise @core.PdfError {
 /// When `time` is omitted, the native local time is used.
 pub fn pdf_strftime(
   text : String,
-  time? : @date.PdfStrftimeTime? = None,
+  time~ : @date.PdfStrftimeTime? = None,
 ) -> String raise @core.PdfError {
   let resolved = match time {
     Some(value) => value

@@ -13,17 +13,17 @@
 /// attached to the generated `/StructTreeRoot`.
 pub fn PdfDocument::draw(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   drawops : ArrayView[PdfDrawOp],
-  struct_tree? : Bool = false,
-  fast? : Bool = false,
-  underneath? : Bool = false,
-  filename? : String = "",
-  bates? : Int = 1,
-  bates_pad? : Int? = None,
-  time? : @date.PdfStrftimeTime? = None,
-  add_artifacts? : Bool = false,
-  role_map? : String = "",
+  struct_tree~ : Bool = false,
+  fast~ : Bool = false,
+  underneath~ : Bool = false,
+  filename~ : String = "",
+  bates~ : Int32 = 1,
+  bates_pad~ : Int32? = None,
+  time~ : @date.PdfStrftimeTime? = None,
+  add_artifacts~ : Bool = false,
+  role_map~ : String = "",
 ) -> PdfDocument raise @core.PdfError {
   pdf_page_box_validate_page_numbers(page_numbers, self.endpage(), "draw")
   let write_structure_tree = struct_tree &&
@@ -75,17 +75,17 @@ pub fn PdfDocument::draw(
 /// Compatibility wrapper for `PdfDocument::draw`.
 pub fn pdf_draw(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   drawops : ArrayView[PdfDrawOp],
-  struct_tree? : Bool = false,
-  fast? : Bool = false,
-  underneath? : Bool = false,
-  filename? : String = "",
-  bates? : Int = 1,
-  bates_pad? : Int? = None,
-  time? : @date.PdfStrftimeTime? = None,
-  add_artifacts? : Bool = false,
-  role_map? : String = "",
+  struct_tree~ : Bool = false,
+  fast~ : Bool = false,
+  underneath~ : Bool = false,
+  filename~ : String = "",
+  bates~ : Int32 = 1,
+  bates_pad~ : Int32? = None,
+  time~ : @date.PdfStrftimeTime? = None,
+  add_artifacts~ : Bool = false,
+  role_map~ : String = "",
 ) -> PdfDocument raise @core.PdfError {
   document.draw(
     page_numbers,

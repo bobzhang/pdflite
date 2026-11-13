@@ -1,8 +1,8 @@
 ///|
 fn random_native_fill_incrementing_for_test(
   output : FixedArray[Byte],
-  length : Int,
-) -> Int {
+  length : Int32,
+) -> Int32 {
   for index in 0..<length {
     output[index] = index.to_byte()
   }

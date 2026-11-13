@@ -99,7 +99,7 @@ fn @page.PdfPage::change_presentation_effect(
   delay : Double?,
   horizontal : Bool,
   inward : Bool,
-  direction : Int,
+  direction : Int32,
   effect_duration : Double,
 ) -> @page.PdfPage raise @core.PdfError {
   let mut transdict = match transition {
@@ -160,12 +160,12 @@ fn @page.PdfPage::change_presentation_effect(
 /// `@core.PdfError::SoftError("Unknown presentation type")`.
 pub fn PdfDocument::presentation(
   self : PdfDocument,
-  range : ArrayView[Int],
+  range : ArrayView[Int32],
   transition : String?,
   delay : Double?,
   horizontal : Bool,
   inward : Bool,
-  direction : Int,
+  direction : Int32,
   effect_duration : Double,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
@@ -190,12 +190,12 @@ pub fn PdfDocument::presentation(
 ///|
 /// Compatibility wrapper for `PdfDocument::presentation`.
 pub fn pdf_presentation(
-  range : ArrayView[Int],
+  range : ArrayView[Int32],
   transition : String?,
   delay : Double?,
   horizontal : Bool,
   inward : Bool,
-  direction : Int,
+  direction : Int32,
   effect_duration : Double,
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {

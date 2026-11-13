@@ -1,6 +1,6 @@
 ///|
 /// Return the cpdf CSS color table as lowercase names paired with RGB integers.
-pub fn pdf_css_colours() -> Array[(String, Int)] {
+pub fn pdf_css_colours() -> Array[(String, Int32)] {
   [
     ("aliceblue", 0xF0F8FF),
     ("antiquewhite", 0xFAEBD7),
@@ -155,13 +155,13 @@ pub fn pdf_css_colours() -> Array[(String, Int)] {
 
 ///|
 /// Source-spelled compatibility alias for cpdfcolours' colour table.
-pub fn pdf_colours() -> Array[(String, Int)] {
+pub fn pdf_colours() -> Array[(String, Int32)] {
   pdf_css_colours()
 }
 
 ///|
 /// Look up a CSS color by name using cpdf's lowercase color table.
-pub fn pdf_css_colour_value(name : String) -> Int? {
+pub fn pdf_css_colour_value(name : String) -> Int32? {
   let lower = name.to_lower()
   for entry in pdf_css_colours() {
     if entry.0 == lower {
@@ -213,7 +213,7 @@ fn pdf_colour_lexemes(
 }
 
 ///|
-fn pdf_colour_rgb_value(value : Int) -> PdfContentColour {
+fn pdf_colour_rgb_value(value : Int32) -> PdfContentColour {
   PdfContentRGB(
     ((value >> 16) & 0xFF).to_double() / 255.0,
     ((value >> 8) & 0xFF).to_double() / 255.0,

@@ -12,8 +12,8 @@ fn pdf_page_inheritable_keys() -> Array[@core.PdfName] {
 fn PdfDocument::pdf_page_preserve_materialized_inherited_entries(
   self : PdfDocument,
   source : PdfDocument,
-  old_page_numbers : ArrayView[Int],
-  new_page_numbers : ArrayView[Int],
+  old_page_numbers : ArrayView[Int32],
+  new_page_numbers : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   for index in 0..<old_page_numbers.length() {
     let old_page = source.lookup_object_or_null(old_page_numbers[index])

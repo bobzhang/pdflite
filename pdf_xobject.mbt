@@ -80,7 +80,7 @@ fn pdf_xobject_id_key() -> @core.PdfName {
 ///|
 fn pdf_xobject_all_page_range(
   document : PdfDocument,
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   let count = document.pages_of_pagetree().length()
   [
     for page_number in 1..<=count => page_number
@@ -88,7 +88,7 @@ fn pdf_xobject_all_page_range(
 }
 
 ///|
-fn pdf_xobject_identity_changes(count : Int) -> Array[(Int, Int)] {
+fn pdf_xobject_identity_changes(count : Int32) -> Array[(Int32, Int32)] {
   [
     for page_number in 1..<=count => (page_number, page_number)
   ]
@@ -127,7 +127,7 @@ fn PdfDocument::pdf_xobject_add_to_page(
   self : PdfDocument,
   page : @page.PdfPage,
   name : @core.PdfName,
-  object_number : Int,
+  object_number : Int32,
 ) -> @page.PdfPage raise @core.PdfError {
   let xobjects = match
     self.lookup_direct(pdf_xobject_xobject(), page.resources) {
@@ -144,7 +144,7 @@ fn PdfDocument::pdf_xobject_add_to_page(
 ///|
 fn PdfDocument::pdf_xobject_add_page_as_xobject(
   self : PdfDocument,
-  range : ArrayView[Int],
+  range : ArrayView[Int32],
   page : @page.PdfPage,
   name : @core.PdfName,
 ) -> PdfDocument raise @core.PdfError {
@@ -189,8 +189,8 @@ fn PdfDocument::pdf_xobject_copy_trailer_id_from(
 ///|
 fn pdf_xobject_retained_bookmarks(
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  old_page_numbers : ArrayView[Int],
-  new_page_numbers : ArrayView[Int],
+  old_page_numbers : ArrayView[Int32],
+  new_page_numbers : ArrayView[Int32],
 ) -> Array[@bookmark.PdfBookmark] raise @core.PdfError {
   let change_map = pdf_page_reference_map(
     pdf_page_reference_changes(old_page_numbers, new_page_numbers),
@@ -211,7 +211,7 @@ fn pdf_xobject_retained_bookmarks(
 /// base document are preserved and retargeted to the rebuilt page tree.
 pub fn PdfDocument::stamp_as_xobject(
   self : PdfDocument,
-  range : ArrayView[Int],
+  range : ArrayView[Int32],
   overlay : PdfDocument,
 ) -> (PdfDocument, @core.PdfName) raise @core.PdfError {
   let prefix = self.shortest_unused_prefix()
@@ -261,7 +261,7 @@ pub fn PdfDocument::stamp_as_xobject(
 /// Compatibility wrapper for `PdfDocument::stamp_as_xobject`.
 pub fn pdf_stamp_as_xobject(
   document : PdfDocument,
-  range : ArrayView[Int],
+  range : ArrayView[Int32],
   overlay : PdfDocument,
 ) -> (PdfDocument, @core.PdfName) raise @core.PdfError {
   document.stamp_as_xobject(range, overlay)
@@ -271,7 +271,7 @@ pub fn pdf_stamp_as_xobject(
 /// Compatibility wrapper matching cpdfxobject's string resource-name result.
 pub fn pdf_stamp_as_xobject_string(
   document : PdfDocument,
-  range : ArrayView[Int],
+  range : ArrayView[Int32],
   overlay : PdfDocument,
 ) -> (PdfDocument, String) raise @core.PdfError {
   let (stamped, name) = document.stamp_as_xobject(range, overlay)

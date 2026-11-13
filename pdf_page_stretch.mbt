@@ -27,9 +27,9 @@ fn PdfDocument::pdf_page_stretch_matrix(
 /// are transformed by the computed x/y scale.
 pub fn PdfDocument::stretch_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   pdf_page_box_validate_page_numbers(
     page_numbers,
@@ -44,7 +44,7 @@ pub fn PdfDocument::stretch_pages(
   let pages = self.pages_of_pagetree()
   let page_indexes = pdf_page_scale_pair_index_map(page_numbers)
   let rewritten : Array[@page.PdfPage] = Array::new(capacity=pages.length())
-  let matrices : Array[(Int, @geometry.TransformMatrix)] = Array::new(
+  let matrices : Array[(Int32, @geometry.TransformMatrix)] = Array::new(
     capacity=page_numbers.length(),
   )
   for index in 0..<pages.length() {
@@ -68,9 +68,9 @@ pub fn PdfDocument::stretch_pages(
 /// Compatibility wrapper for `PdfDocument::stretch_pages`.
 pub fn pdf_stretch_pages(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.stretch_pages(page_numbers, sizes, fast~)
 }
@@ -79,9 +79,9 @@ pub fn pdf_stretch_pages(
 /// Stretch selected pages using cpdf's absolute page-indexed size list.
 pub fn PdfDocument::stretch(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(page_numbers, pages.length(), "stretch")
@@ -103,8 +103,8 @@ pub fn PdfDocument::stretch(
 pub fn pdf_stretch(
   sizes : ArrayView[(Double, Double)],
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.stretch(page_numbers, sizes, fast~)
 }

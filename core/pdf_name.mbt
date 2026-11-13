@@ -4,7 +4,8 @@
 /// Names are byte-oriented in the PDF file format. Keeping the original bytes
 /// avoids accidental UTF-16 or UTF-8 interpretation while still allowing
 /// explicit views and owned-byte access.
-pub(all) struct PdfName(Bytes) derive(Debug, Eq, ToJson)
+#derive(Debug, Eq, ToJson)
+pub(all) struct PdfName(Bytes)
 
 ///|
 /// Wraps owned bytes as a PDF name without copying.
@@ -36,6 +37,6 @@ pub fn PdfName::view(self : PdfName) -> BytesView {
 
 ///|
 /// Returns the byte length of this PDF name.
-pub fn PdfName::byte_length(self : PdfName) -> Int {
+pub fn PdfName::byte_length(self : PdfName) -> Int32 {
   self.0.length()
 }

@@ -1,9 +1,9 @@
 ///|
 fn pdf_image_indexed_lookup(
-  table : ArrayView[(Int, Array[Int])],
-  index : Int,
-  components : Int,
-) -> ArrayView[Int] raise @core.PdfError {
+  table : ArrayView[(Int32, Array[Int32])],
+  index : Int32,
+  components : Int32,
+) -> ArrayView[Int32] raise @core.PdfError {
   for entry in table {
     if entry.0 == index && entry.1.length() == components {
       break entry.1
@@ -16,10 +16,10 @@ fn pdf_image_indexed_lookup(
 ///|
 fn pdf_image_rgb_indexed_value(
   output : Array[Byte],
-  position : Int,
-  table : ArrayView[(Int, Array[Int])],
-  index : Int,
-) -> Int raise @core.PdfError {
+  position : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
+  index : Int32,
+) -> Int32 raise @core.PdfError {
   let values = pdf_image_indexed_lookup(table, index, 3)
   output[position] = @core.pdf_byte_of_int(values[0])
   output[position + 1] = @core.pdf_byte_of_int(values[1])
@@ -30,10 +30,10 @@ fn pdf_image_rgb_indexed_value(
 ///|
 fn pdf_image_cmyk_indexed_value(
   output : Array[Byte],
-  position : Int,
-  table : ArrayView[(Int, Array[Int])],
-  index : Int,
-) -> Int raise @core.PdfError {
+  position : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
+  index : Int32,
+) -> Int32 raise @core.PdfError {
   let values = pdf_image_indexed_lookup(table, index, 4)
   let (red, green, blue) = pdf_image_rgb_of_cmyk(
     values[0],
@@ -100,11 +100,11 @@ fn pdf_image_rgb_of_xyz(
 ///|
 fn pdf_image_lab_indexed_value(
   output : Array[Byte],
-  position : Int,
-  table : ArrayView[(Int, Array[Int])],
-  index : Int,
+  position : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
+  index : Int32,
   white : PdfTristimulusPoint,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let values = pdf_image_indexed_lookup(table, index, 3)
   let lightness = (values[0] - 127).to_double() / 255.0
   let a = (values[1] - 127).to_double() / 255.0
@@ -119,9 +119,9 @@ fn pdf_image_lab_indexed_value(
 
 ///|
 fn pdf_image_indexed_8bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let pixels = width * height
@@ -141,9 +141,9 @@ fn pdf_image_indexed_8bpp_as_rgb24(
 
 ///|
 fn pdf_image_lab_indexed_8bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   white : PdfTristimulusPoint,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
@@ -165,10 +165,10 @@ fn pdf_image_lab_indexed_8bpp_as_rgb24(
 
 ///|
 fn pdf_image_lab_indexed_packed_bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  bits_per_component : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  bits_per_component : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   white : PdfTristimulusPoint,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
@@ -192,9 +192,9 @@ fn pdf_image_lab_indexed_packed_bpp_as_rgb24(
 
 ///|
 fn pdf_image_lab_indexed_4bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   white : PdfTristimulusPoint,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
@@ -205,9 +205,9 @@ fn pdf_image_lab_indexed_4bpp_as_rgb24(
 
 ///|
 fn pdf_image_lab_indexed_2bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   white : PdfTristimulusPoint,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
@@ -218,9 +218,9 @@ fn pdf_image_lab_indexed_2bpp_as_rgb24(
 
 ///|
 fn pdf_image_lab_indexed_1bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   white : PdfTristimulusPoint,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
@@ -231,9 +231,9 @@ fn pdf_image_lab_indexed_1bpp_as_rgb24(
 
 ///|
 fn pdf_image_cmyk_indexed_8bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let pixels = width * height
@@ -253,10 +253,10 @@ fn pdf_image_cmyk_indexed_8bpp_as_rgb24(
 
 ///|
 fn pdf_image_indexed_packed_bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  bits_per_component : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  bits_per_component : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let bytes_per_row = pdf_image_packed_bytes_per_row(width, bits_per_component)
@@ -277,9 +277,9 @@ fn pdf_image_indexed_packed_bpp_as_rgb24(
 
 ///|
 fn pdf_image_indexed_4bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_indexed_packed_bpp_as_rgb24(width, height, 4, table, data)
@@ -287,9 +287,9 @@ fn pdf_image_indexed_4bpp_as_rgb24(
 
 ///|
 fn pdf_image_indexed_2bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_indexed_packed_bpp_as_rgb24(width, height, 2, table, data)
@@ -297,9 +297,9 @@ fn pdf_image_indexed_2bpp_as_rgb24(
 
 ///|
 fn pdf_image_indexed_1bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_indexed_packed_bpp_as_rgb24(width, height, 1, table, data)
@@ -307,10 +307,10 @@ fn pdf_image_indexed_1bpp_as_rgb24(
 
 ///|
 fn pdf_image_cmyk_indexed_packed_bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  bits_per_component : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  bits_per_component : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let bytes_per_row = pdf_image_packed_bytes_per_row(width, bits_per_component)
@@ -331,9 +331,9 @@ fn pdf_image_cmyk_indexed_packed_bpp_as_rgb24(
 
 ///|
 fn pdf_image_cmyk_indexed_4bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_cmyk_indexed_packed_bpp_as_rgb24(width, height, 4, table, data)
@@ -341,9 +341,9 @@ fn pdf_image_cmyk_indexed_4bpp_as_rgb24(
 
 ///|
 fn pdf_image_cmyk_indexed_2bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_cmyk_indexed_packed_bpp_as_rgb24(width, height, 2, table, data)
@@ -351,9 +351,9 @@ fn pdf_image_cmyk_indexed_2bpp_as_rgb24(
 
 ///|
 fn pdf_image_cmyk_indexed_1bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  table : ArrayView[(Int, Array[Int])],
+  width : Int32,
+  height : Int32,
+  table : ArrayView[(Int32, Array[Int32])],
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_cmyk_indexed_packed_bpp_as_rgb24(width, height, 1, table, data)

@@ -1,9 +1,9 @@
 ///|
 fn PdfDocument::pdf_page_object_numbers_in_map(
   self : PdfDocument,
-) -> Array[Int] {
+) -> Array[Int32] {
   let object_numbers = self.object_numbers()
-  let page_numbers : Array[Int] = Array::new(capacity=object_numbers.length())
+  let page_numbers : Array[Int32] = Array::new(capacity=object_numbers.length())
   for number in object_numbers {
     let object = self.lookup_object_or_null(number)
     match object.lookup_immediate(pdf_page_type_key()) {
@@ -71,7 +71,7 @@ fn pdf_page_nullify_entry(
         ),
         generation: entry.generation,
       }
-    _ => { data: entry.data, generation: entry.generation }
+    _ => { data: entry.data, generation: entry.generation, }
   }
 }
 
@@ -99,7 +99,7 @@ fn PdfDocument::pdf_page_nullify_deleted_page_references(
 ///|
 fn PdfDocument::pdf_referenced_from_object(
   self : PdfDocument,
-  found : @hashmap.HashMap[Int, Bool],
+  found : @hashmap.HashMap[Int32, Bool],
   object : @syntax.PdfObject,
 ) -> Unit {
   match object {
@@ -135,7 +135,7 @@ pub fn PdfDocument::remove_unreferenced(
   self : PdfDocument,
 ) -> Unit raise @core.PdfError {
   self.pdf_page_nullify_deleted_page_references()
-  let found : @hashmap.HashMap[Int, Bool] = HashMap([])
+  let found : @hashmap.HashMap[Int32, Bool] = HashMap([])
   if self.trailer_dict().lookup_immediate(pdf_page_root_key()) is None &&
     self.root() > 0 {
     found[self.root()] = true
@@ -146,7 +146,7 @@ pub fn PdfDocument::remove_unreferenced(
   }
   self.pdf_referenced_from_object(found, self.trailer_dict())
   let object_numbers = self.object_numbers()
-  let to_remove : Array[Int] = Array::new(capacity=object_numbers.length())
+  let to_remove : Array[Int32] = Array::new(capacity=object_numbers.length())
   for number in object_numbers {
     if !found.contains(number) {
       to_remove.push(number)

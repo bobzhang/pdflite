@@ -1,5 +1,5 @@
 ///|
-fn pdf_metadata_pad2(value : Int) -> String {
+fn pdf_metadata_pad2(value : Int32) -> String {
   let absolute = if value < 0 { -value } else { value }
   if absolute < 10 {
     "0" + absolute.to_string()
@@ -9,7 +9,7 @@ fn pdf_metadata_pad2(value : Int) -> String {
 }
 
 ///|
-fn pdf_metadata_pad4(value : Int) -> String {
+fn pdf_metadata_pad4(value : Int32) -> String {
   if value < 10 {
     "000" + value.to_string()
   } else if value < 100 {
@@ -56,12 +56,12 @@ fn pdf_metadata_xmp_date(date : String) -> String raise @core.PdfError {
 }
 
 ///|
-fn pdf_metadata_is_leap_year(year : Int) -> Bool {
+fn pdf_metadata_is_leap_year(year : Int32) -> Bool {
   (year % 4 == 0 && year % 100 != 0) || year % 400 == 0
 }
 
 ///|
-fn pdf_metadata_days_in_month(year : Int, month : Int) -> Int {
+fn pdf_metadata_days_in_month(year : Int32, month : Int32) -> Int32 {
   match month {
     1 | 3 | 5 | 7 | 8 | 10 | 12 => 31
     4 | 6 | 9 | 11 => 30

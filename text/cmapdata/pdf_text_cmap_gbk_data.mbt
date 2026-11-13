@@ -4,7 +4,7 @@
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_gbk_codepoint_table : Array[(Int, Int)] = [
+pub let pdf_text_gbk_codepoint_table : Array[(Int32, Int32)] = [
   (0x8140, 0x4E02),
   (0x8141, 0x4E04),
   (0x8142, 0x4E05),
@@ -23952,7 +23952,7 @@ pub let pdf_text_gbk_codepoint_table : Array[(Int, Int)] = [
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_gbk_charcode_table : Array[(Int, Int)] = [
+pub let pdf_text_gbk_charcode_table : Array[(Int32, Int32)] = [
   (0x00A4, 0xA1E8),
   (0x00A7, 0xA1EC),
   (0x00A8, 0xA1A7),

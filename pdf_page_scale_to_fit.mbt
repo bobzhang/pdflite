@@ -103,7 +103,7 @@ fn PdfDocument::pdf_page_scale_to_fit_boxes(
       None => ()
     }
   }
-  { ..page, mediabox: target, rest }
+  { ..page, mediabox: target, rest, }
 }
 
 ///|
@@ -125,11 +125,11 @@ fn PdfDocument::pdf_page_scale_to_fit_page(
 /// Scale selected pages to fit target page sizes while preserving aspect ratio.
 pub fn PdfDocument::scale_to_fit_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
-  position? : @geometry.PdfPosition = PdfPositionCentre,
-  input_scale? : Double = 1.0,
-  fast? : Bool = false,
+  position~ : @geometry.PdfPosition = PdfPositionCentre,
+  input_scale~ : Double = 1.0,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   pdf_page_box_validate_page_numbers(
     page_numbers,
@@ -144,7 +144,7 @@ pub fn PdfDocument::scale_to_fit_pages(
   let pages = self.pages_of_pagetree()
   let page_indexes = pdf_page_scale_pair_index_map(page_numbers)
   let rewritten : Array[@page.PdfPage] = Array::new(capacity=pages.length())
-  let matrices : Array[(Int, @geometry.TransformMatrix)] = Array::new(
+  let matrices : Array[(Int32, @geometry.TransformMatrix)] = Array::new(
     capacity=page_numbers.length(),
   )
   for index in 0..<pages.length() {
@@ -180,11 +180,11 @@ pub fn PdfDocument::scale_to_fit_pages(
 /// Compatibility wrapper for `PdfDocument::scale_to_fit_pages`.
 pub fn pdf_scale_to_fit_pages(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
-  position? : @geometry.PdfPosition = PdfPositionCentre,
-  input_scale? : Double = 1.0,
-  fast? : Bool = false,
+  position~ : @geometry.PdfPosition = PdfPositionCentre,
+  input_scale~ : Double = 1.0,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.scale_to_fit_pages(
     page_numbers,
@@ -199,11 +199,11 @@ pub fn pdf_scale_to_fit_pages(
 /// Scale selected pages to fit using cpdf's absolute page-indexed size list.
 pub fn PdfDocument::scale_to_fit_pdf(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
-  position? : @geometry.PdfPosition = PdfPositionCentre,
-  input_scale? : Double = 1.0,
-  fast? : Bool = false,
+  position~ : @geometry.PdfPosition = PdfPositionCentre,
+  input_scale~ : Double = 1.0,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(
@@ -234,8 +234,8 @@ pub fn[T] pdf_scale_to_fit_pdf(
   sizes : ArrayView[(Double, Double)],
   _op : T,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.scale_to_fit_pdf(page_numbers, sizes, position~, input_scale~, fast~)
 }

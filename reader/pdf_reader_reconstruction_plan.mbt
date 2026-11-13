@@ -1,7 +1,7 @@
 ///|
 /// Scanned reconstruction inputs needed by the higher-level document loader.
 pub(all) struct PdfReaderReconstructionPlan {
-  classic_xref_sections : Array[(Int, PdfXRefSection)]
+  classic_xref_sections : Array[(Int32, PdfXRefSection)]
   xref_stream_sections : Array[PdfXRefSection]
   xref_coverage : PdfReconstructedXRefCoverage
   classic_xrefs : Array[PdfClassicXRefEntry]
@@ -12,19 +12,22 @@ pub(all) struct PdfReaderReconstructionPlan {
 ///|
 /// Parser and verifier callbacks needed by the scanner-side reconstruction plan.
 pub(all) struct PdfReaderReconstructionCallbacks {
-  read_classic_xref_section_at : (@core.ByteCursor, Int) -> (
+  read_classic_xref_section_at : (@core.ByteCursor, Int32) -> (
     PdfXRefSection,
-    Int,
+    Int32,
   ) raise @core.PdfError
-  read_xref_stream_section_at : (@core.ByteCursor, Int) -> (PdfXRefSection, Int) raise @core.PdfError
+  read_xref_stream_section_at : (@core.ByteCursor, Int32) -> (
+    PdfXRefSection,
+    Int32,
+  ) raise @core.PdfError
   read_object_xref_at_current : (
     @core.ByteCursor,
-    Int,
+    Int32,
     ArrayView[PdfClassicXRefEntry],
     PdfClassicXRefIndex,
-  ) -> (PdfClassicXRefEntry?, Int?) raise @core.PdfError
-  read_trailer_at : (@core.ByteCursor, Int) -> @syntax.PdfObject raise @core.PdfError
-  read_xref_stream_trailer_at : (@core.ByteCursor, Int) -> @syntax.PdfObject raise @core.PdfError
+  ) -> (PdfClassicXRefEntry?, Int32?) raise @core.PdfError
+  read_trailer_at : (@core.ByteCursor, Int32) -> @syntax.PdfObject raise @core.PdfError
+  read_xref_stream_trailer_at : (@core.ByteCursor, Int32) -> @syntax.PdfObject raise @core.PdfError
   verify_classic_xref_entry : (
     BytesView,
     ArrayView[PdfClassicXRefEntry],

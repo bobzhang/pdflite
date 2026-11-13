@@ -2,7 +2,7 @@
 fn PdfDocument::pdf_font_table_target_font(
   self : PdfDocument,
   font_name : String,
-  page_number : Int,
+  page_number : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   let font = self.font_from_name(font_name, page_number)
   let mut selected = font
@@ -32,7 +32,7 @@ fn pdf_font_table_charset(font : PdfFont) -> Array[@core.PdfName]? {
 ///|
 fn pdf_font_table_text_bytes(
   font : PdfFont,
-  code : Int,
+  code : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   if font.uses_two_byte_codes() {
     Bytes::from_array([@core.pdf_byte_of_int(0), @core.pdf_byte_of_int(code)])
@@ -79,7 +79,7 @@ fn pdf_font_table_in_charset(
 
 ///|
 fn pdf_font_table_utf8_text(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> String raise @core.PdfError {
   let bytes = pdf_utf8_of_codepoints(codepoints)
   @utf8.decode(bytes) catch {
@@ -89,7 +89,7 @@ fn pdf_font_table_utf8_text(
 
 ///|
 fn pdf_font_table_unicode_fields(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> (String, String, String) raise @core.PdfError {
   match codepoints {
     [codepoint] => {
@@ -121,7 +121,7 @@ fn pdf_font_table_unicode_fields(
 fn pdf_font_table_entry(
   font : PdfFont,
   extractor : PdfTextExtractor,
-  code : Int,
+  code : Int32,
 ) -> @font.PdfFontTableEntry? raise @core.PdfError {
   let text = pdf_font_table_text_bytes(font, code)
   let glyphnames = extractor.glyphnames_of_text(text)
@@ -137,7 +137,7 @@ fn pdf_font_table_entry(
         let (unicode, utf8, unicode_name) = pdf_font_table_unicode_fields(
           codepoints,
         )
-        Some({ code, unicode, utf8, unicode_name, glyphnames: glyphnames_text })
+        Some({ code, unicode, utf8, unicode_name, glyphnames: glyphnames_text, })
       }
     }
   }
@@ -151,7 +151,7 @@ fn pdf_font_table_entry(
 pub fn PdfDocument::font_table(
   self : PdfDocument,
   font_name : String,
-  page_number : Int,
+  page_number : Int32,
 ) -> Array[@font.PdfFontTableEntry] raise @core.PdfError {
   let font_object = self.pdf_font_table_target_font(font_name, page_number)
   let font = self.read_font(font_object)
@@ -171,7 +171,7 @@ pub fn PdfDocument::font_table(
 pub fn pdf_font_table(
   document : PdfDocument,
   font_name : String,
-  page_number : Int,
+  page_number : Int32,
 ) -> Array[@font.PdfFontTableEntry] raise @core.PdfError {
   document.font_table(font_name, page_number)
 }
@@ -179,9 +179,9 @@ pub fn pdf_font_table(
 ///|
 fn pdf_font_write_table_line(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   entry : @font.PdfFontTableEntry,
-) -> Int {
+) -> Int32 {
   let mut current = pdf_font_write_utf8(
     output,
     position,
@@ -200,7 +200,7 @@ fn pdf_font_write_table_line(
 }
 
 ///|
-fn pdf_font_table_line_length(entry : @font.PdfFontTableEntry) -> Int {
+fn pdf_font_table_line_length(entry : @font.PdfFontTableEntry) -> Int32 {
   pdf_font_utf8_length(entry.code.to_string()) +
   pdf_font_utf8_length(entry.unicode) +
   pdf_font_utf8_length(entry.utf8) +
@@ -212,7 +212,7 @@ fn pdf_font_table_line_length(entry : @font.PdfFontTableEntry) -> Int {
 ///|
 fn pdf_font_table_text_length(
   entries : ArrayView[@font.PdfFontTableEntry],
-) -> Int {
+) -> Int32 {
   let mut length = 0
   for entry in entries {
     length += pdf_font_table_line_length(entry)
@@ -225,7 +225,7 @@ fn pdf_font_table_text_length(
 pub fn PdfDocument::font_table_text(
   self : PdfDocument,
   font_name : String,
-  page_number : Int,
+  page_number : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let entries = self.font_table(font_name, page_number)
   let output = Array::make(pdf_font_table_text_length(entries), b'\x00')
@@ -241,7 +241,7 @@ pub fn PdfDocument::font_table_text(
 pub fn pdf_font_table_text(
   document : PdfDocument,
   font_name : String,
-  page_number : Int,
+  page_number : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.font_table_text(font_name, page_number)
 }
@@ -251,7 +251,7 @@ pub fn pdf_font_table_text(
 pub fn PdfDocument::print_font_table(
   self : PdfDocument,
   font_name : String,
-  page_number : Int,
+  page_number : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   self.font_table_text(font_name, page_number)
 }
@@ -261,7 +261,7 @@ pub fn PdfDocument::print_font_table(
 pub fn pdf_print_font_table(
   document : PdfDocument,
   font_name : String,
-  page_number : Int,
+  page_number : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.print_font_table(font_name, page_number)
 }

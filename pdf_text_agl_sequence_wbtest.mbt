@@ -1,6 +1,6 @@
 ///|
 test "private multi-codepoint AGL sequence helper covers table" {
-  let entries : Array[(String, Array[Int])] = [
+  let entries : Array[(String, Array[Int32])] = [
     ("/dalethatafpatah", [0x05D3, 0x05B2]),
     ("/dalethatafpatahhebrew", [0x05D3, 0x05B2]),
     ("/dalethatafsegol", [0x05D3, 0x05B1]),

@@ -36,8 +36,8 @@ fn pdf_page_box_name_of_string(text : String) -> @core.PdfName {
 
 ///|
 fn pdf_page_box_validate_page_numbers(
-  page_numbers : ArrayView[Int],
-  end_page : Int,
+  page_numbers : ArrayView[Int32],
+  end_page : Int32,
   context : String,
 ) -> Unit raise @core.PdfError {
   for page_number in page_numbers {
@@ -52,9 +52,9 @@ fn pdf_page_box_validate_page_numbers(
 ///|
 fn PdfDocument::pdf_page_box_rewrite_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   context : String,
-  rewrite : (PdfDocument, Int, @page.PdfPage) -> @page.PdfPage raise @core.PdfError,
+  rewrite : (PdfDocument, Int32, @page.PdfPage) -> @page.PdfPage raise @core.PdfError,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(page_numbers, pages.length(), context)
@@ -74,7 +74,7 @@ fn PdfDocument::pdf_page_box_rewrite_pages(
 ///|
 fn pdf_page_box_validate_xywh_boxes(
   boxes : ArrayView[(Double, Double, Double, Double)],
-  end_page : Int,
+  end_page : Int32,
 ) -> Unit raise @core.PdfError {
   if boxes.length() != end_page {
     raise BadPageSpecification(
@@ -86,7 +86,7 @@ fn pdf_page_box_validate_xywh_boxes(
 ///|
 fn pdf_page_box_validate_xywh_boxes_with_context(
   boxes : ArrayView[(Double, Double, Double, Double)],
-  end_page : Int,
+  end_page : Int32,
   context : String,
 ) -> Unit raise @core.PdfError {
   if boxes.length() != end_page {
@@ -97,7 +97,7 @@ fn pdf_page_box_validate_xywh_boxes_with_context(
 ///|
 fn pdf_page_box_validate_offsets(
   offsets : ArrayView[(Double, Double)],
-  end_page : Int,
+  end_page : Int32,
 ) -> Unit raise @core.PdfError {
   if offsets.length() != end_page {
     raise BadPageSpecification(

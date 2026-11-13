@@ -1,7 +1,7 @@
 ///|
 fn pdf_page_label_continuation(
   labels : ArrayView[@label.PdfPageLabel],
-  start_page : Int,
+  start_page : Int32,
 ) -> @label.PdfPageLabel? {
   if labels.length() == 0 {
     None
@@ -21,10 +21,10 @@ fn pdf_page_label_continuation(
 /// Existing ranges after `range_end_page` are preserved, and a continuation
 /// range is inserted when needed so later labels keep their previous numbering.
 pub fn pdf_page_label_add_label(
-  end_page : Int,
+  end_page : Int32,
   labels : ArrayView[@label.PdfPageLabel],
   label : @label.PdfPageLabel,
-  range_end_page : Int,
+  range_end_page : Int32,
 ) -> Array[@label.PdfPageLabel] {
   let before_or_during_or_equal : Array[@label.PdfPageLabel] = Array::new(
     capacity=labels.length(),
@@ -72,9 +72,11 @@ pub fn pdf_page_label_add_label(
 
 ///|
 fn pdf_page_label_range_extents(
-  page_numbers : ArrayView[Int],
-) -> Array[(Int, Int)] {
-  let ranges : Array[(Int, Int)] = Array::new(capacity=page_numbers.length())
+  page_numbers : ArrayView[Int32],
+) -> Array[(Int32, Int32)] {
+  let ranges : Array[(Int32, Int32)] = Array::new(
+    capacity=page_numbers.length(),
+  )
   if page_numbers.length() > 0 {
     let mut start = page_numbers[0]
     let mut previous = page_numbers[0]
@@ -105,8 +107,10 @@ fn pdf_page_label_has_page_one(labels : ArrayView[@label.PdfPageLabel]) -> Bool 
 }
 
 ///|
-fn pdf_page_label_start_additions(ranges : ArrayView[(Int, Int)]) -> Array[Int] {
-  let additions : Array[Int] = Array::new(capacity=ranges.length())
+fn pdf_page_label_start_additions(
+  ranges : ArrayView[(Int32, Int32)],
+) -> Array[Int32] {
+  let additions : Array[Int32] = Array::new(capacity=ranges.length())
   let mut so_far = 0
   for range in ranges {
     let (start_page, end_page) = range
@@ -143,8 +147,8 @@ pub fn PdfDocument::add_page_labels(
   progress : Bool,
   style : @label.PdfPageLabelStyle,
   prefix : @core.PdfBytes?,
-  start_value : Int,
-  page_numbers : ArrayView[Int],
+  start_value : Int32,
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   let ranges = pdf_page_label_range_extents(page_numbers)
   if ranges.length() == 0 {
@@ -178,8 +182,8 @@ pub fn pdf_add_page_labels(
   progress : Bool,
   style : @label.PdfPageLabelStyle,
   prefix : @core.PdfBytes?,
-  start_value : Int,
-  page_numbers : ArrayView[Int],
+  start_value : Int32,
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.add_page_labels(progress, style, prefix, start_value, page_numbers)
 }

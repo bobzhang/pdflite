@@ -56,7 +56,7 @@ fn pdf_tree_array_pairs(
 fn pdf_tree_object_compare(
   left : @syntax.PdfObject,
   right : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match (left, right) {
     (PdfString(left), PdfString(right)) =>
       Some(pdf_tree_bytes_compare(left, right))
@@ -196,7 +196,7 @@ pub fn PdfDocument::name_tree_lookup(
 /// Look up an integer key in a PDF number tree.
 pub fn PdfDocument::number_tree_lookup(
   self : PdfDocument,
-  key : Int,
+  key : Int32,
   tree : @syntax.PdfObject,
 ) -> @syntax.PdfObject? {
   self.name_tree_lookup_object(PdfInteger(key), tree)

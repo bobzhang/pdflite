@@ -4,22 +4,22 @@ fn pdf_coord_name(text : String) -> @core.PdfName {
 }
 
 ///|
-fn pdf_coord_is_digit(value : Int) -> Bool {
+fn pdf_coord_is_digit(value : Int32) -> Bool {
   value >= 48 && value <= 57
 }
 
 ///|
-fn pdf_coord_is_number_start(value : Int) -> Bool {
+fn pdf_coord_is_number_start(value : Int32) -> Bool {
   pdf_coord_is_digit(value) || value == 43 || value == 45 || value == 46
 }
 
 ///|
-fn pdf_coord_is_word_boundary(value : Int) -> Bool {
+fn pdf_coord_is_word_boundary(value : Int32) -> Bool {
   @core.pdf_is_whitespace_byte(value)
 }
 
 ///|
-fn pdf_coord_is_unit_pair(first : Int, second : Int) -> Bool {
+fn pdf_coord_is_unit_pair(first : Int32, second : Int32) -> Bool {
   (first == 109 && second == 109) ||
   (first == 99 && second == 109) ||
   (first == 105 && second == 110) ||
@@ -27,7 +27,7 @@ fn pdf_coord_is_unit_pair(first : Int, second : Int) -> Bool {
 }
 
 ///|
-fn pdf_coord_spaced_units_length(bytes : BytesView) -> Int {
+fn pdf_coord_spaced_units_length(bytes : BytesView) -> Int32 {
   let mut length = 0
   let mut index = 0
   while index < bytes.length() {
@@ -68,7 +68,7 @@ fn pdf_coord_space_units(text : String) -> String {
 }
 
 ///|
-fn pdf_coord_number_end(bytes : BytesView, start : Int) -> Int {
+fn pdf_coord_number_end(bytes : BytesView, start : Int32) -> Int32 {
   let mut index = start
   if index < bytes.length() &&
     (bytes[index].to_int() == 43 || bytes[index].to_int() == 45) {

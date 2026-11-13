@@ -1,6 +1,6 @@
 ///|
 test "PdfTextExtractor decodes Latin Extended Additional AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/Abreveacute", 0x1EAE),
     ("/Abrevedotbelow", 0x1EB6),
     ("/Abrevegrave", 0x1EB0),
@@ -249,8 +249,8 @@ test "PdfTextExtractor decodes Latin Extended Additional AGL glyph names" {
     ("/zlinebelow", 0x1E95),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1

@@ -3,7 +3,7 @@
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_gb_euc_codepoint_table : Array[(Int, Int)] = [
+pub let pdf_text_gb_euc_codepoint_table : Array[(Int32, Int32)] = [
   (0xA1A1, 0x3000),
   (0xA1A2, 0x3001),
   (0xA1A3, 0x3002),
@@ -7456,7 +7456,7 @@ pub let pdf_text_gb_euc_codepoint_table : Array[(Int, Int)] = [
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_gb_euc_charcode_table : Array[(Int, Int)] = [
+pub let pdf_text_gb_euc_charcode_table : Array[(Int32, Int32)] = [
   (0x00A4, 0xA1E8),
   (0x00A7, 0xA1EC),
   (0x00A8, 0xA1A7),

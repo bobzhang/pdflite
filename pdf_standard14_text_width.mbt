@@ -2,8 +2,8 @@
 fn pdf_standard14_width_of_code(
   data : @afm.PdfAfmData,
   encoding : PdfEncoding,
-  code : Int,
-) -> Int {
+  code : Int32,
+) -> Int32 {
   match encoding {
     PdfImplicitInFontFile =>
       @standard14.pdf_standard14_width_of_charcode(data, code)
@@ -26,8 +26,8 @@ pub fn pdf_standard14_text_width(
   font : PdfStandardFont,
   encoding : PdfEncoding,
   text : BytesView,
-  kern? : Bool = false,
-) -> Int {
+  kern~ : Bool = false,
+) -> Int32 {
   let data = font.afm_data()
   let mut width = 0
   for index in 0..<text.length() {
@@ -51,7 +51,7 @@ pub fn pdf_standard14_textwidth(
   encoding : PdfEncoding,
   font : PdfStandardFont,
   text : BytesView,
-) -> Int {
+) -> Int32 {
   pdf_standard14_text_width(font, encoding, text, kern~)
 }
 
@@ -61,8 +61,8 @@ pub fn PdfStandardFont::text_width(
   self : PdfStandardFont,
   encoding : PdfEncoding,
   text : BytesView,
-  kern? : Bool = false,
-) -> Int {
+  kern~ : Bool = false,
+) -> Int32 {
   pdf_standard14_text_width(self, encoding, text, kern~)
 }
 
@@ -72,7 +72,7 @@ pub fn PdfStandardFont::text_width(
 pub fn PdfStandardFontData::text_width(
   self : PdfStandardFontData,
   text : BytesView,
-  kern? : Bool = false,
-) -> Int {
+  kern~ : Bool = false,
+) -> Int32 {
   pdf_standard14_text_width(self.font, self.encoding, text, kern~)
 }

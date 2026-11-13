@@ -1,6 +1,6 @@
 ///|
 test "PdfTextExtractor decodes presentation-form AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/anglebracketleftvertical", 0xFE3F),
     ("/anglebracketrightvertical", 0xFE40),
     ("/asterisksmall", 0xFE61),
@@ -51,8 +51,8 @@ test "PdfTextExtractor decodes presentation-form AGL glyph names" {
     ("/whitecornerbracketrightvertical", 0xFE44),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1

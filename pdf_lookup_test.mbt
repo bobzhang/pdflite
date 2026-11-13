@@ -1,5 +1,5 @@
 ///|
-fn lookup_name_for_test(values : ArrayView[Int]) -> @core.PdfName {
+fn lookup_name_for_test(values : ArrayView[Int32]) -> @core.PdfName {
   @core.pdf_name_of_bytes(try! @core.pdf_bytes_of_int_array(values))
 }
 

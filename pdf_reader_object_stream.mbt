@@ -3,7 +3,7 @@ fn PdfDocument::pdf_object_stream_required_int(
   self : PdfDocument,
   dictionary : @syntax.PdfObject,
   key : @core.PdfName,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match self.lookup_direct(key, dictionary) {
     Some(PdfInteger(value)) if value >= 0 => value
     _ => raise XRefEntryExpected
@@ -13,9 +13,9 @@ fn PdfDocument::pdf_object_stream_required_int(
 ///|
 priv struct PdfObjectStreamContext {
   data : @core.PdfBytes
-  first : Int
-  pairs : Array[(Int, Int)]
-  end_offsets : Array[Int]
+  first : Int32
+  pairs : Array[(Int32, Int32)]
+  end_offsets : Array[Int32]
 }
 
 ///|
@@ -47,7 +47,7 @@ fn PdfDocument::read_object_stream_context_from_object(
         data.length(),
         first,
       )
-      { data, first, pairs, end_offsets }
+      { data, first, pairs, end_offsets, }
     }
     _ => raise XRefEntryExpected
   }
@@ -57,7 +57,7 @@ fn PdfDocument::read_object_stream_context_from_object(
 fn PdfObjectStreamContext::read_reference(
   self : PdfObjectStreamContext,
   reference : @xref_model.ObjectStreamReference,
-) -> (Int, @syntax.PdfObject) raise @core.PdfError {
+) -> (Int32, @syntax.PdfObject) raise @core.PdfError {
   if reference.index < 0 || reference.index >= self.pairs.length() {
     raise XRefEntryExpected
   }
@@ -77,7 +77,7 @@ fn PdfObjectStreamContext::read_reference(
 ///|
 fn PdfDocument::read_object_stream_context(
   self : PdfDocument,
-  object_stream_number : Int,
+  object_stream_number : Int32,
 ) -> PdfObjectStreamContext raise @core.PdfError {
   self.read_object_stream_context_from_object(
     self.lookup_object_or_null(object_stream_number),
@@ -87,7 +87,7 @@ fn PdfDocument::read_object_stream_context(
 ///|
 fn PdfDocument::read_object_stream_context_with_passwords(
   self : PdfDocument,
-  object_stream_number : Int,
+  object_stream_number : Int32,
   user_password : BytesView?,
   owner_password : BytesView?,
 ) -> (PdfObjectStreamContext, Bool) raise @core.PdfError {
@@ -120,7 +120,7 @@ fn PdfDocument::load_embedded_objects_from_context(
   xrefs : ArrayView[
     (@reader.PdfClassicXRefEntry, @xref_model.ObjectStreamReference),
   ],
-  object_stream_number : Int,
+  object_stream_number : Int32,
   context : PdfObjectStreamContext,
   already_decrypted : Bool,
 ) -> Unit raise @core.PdfError {

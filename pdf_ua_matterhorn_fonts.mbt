@@ -47,8 +47,8 @@ fn PdfDocument::pdf_ua_matterhorn_check_10_001_font(
 ///|
 fn PdfDocument::pdf_ua_matterhorn_all_page_numbers(
   self : PdfDocument,
-) -> Array[Int] raise @core.PdfError {
-  let pages : Array[Int] = []
+) -> Array[Int32] raise @core.PdfError {
+  let pages : Array[Int32] = []
   for page in 1..<=self.endpage() {
     pages.push(page)
   }

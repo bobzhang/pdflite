@@ -17,9 +17,9 @@ fn pdf_texttopdf_struct_parent_pages(
 
 ///|
 fn pdf_texttopdf_tag_triples(
-  tags : ArrayView[Array[(String, Int)]],
-) -> Array[(Int, Int, Int)] {
-  let output : Array[(Int, Int, Int)] = []
+  tags : ArrayView[Array[(String, Int32)]],
+) -> Array[(Int32, Int32, Int32)] {
+  let output : Array[(Int32, Int32, Int32)] = []
   for page_index in 0..<tags.length() {
     let page_tags = tags[page_index]
     for mcid in 0..<page_tags.length() {
@@ -32,9 +32,9 @@ fn pdf_texttopdf_tag_triples(
 
 ///|
 fn pdf_texttopdf_group_tag_triples(
-  triples : ArrayView[(Int, Int, Int)],
-) -> Array[Array[(Int, Int, Int)]] {
-  let output : Array[Array[(Int, Int, Int)]] = []
+  triples : ArrayView[(Int32, Int32, Int32)],
+) -> Array[Array[(Int32, Int32, Int32)]] {
+  let output : Array[Array[(Int32, Int32, Int32)]] = []
   for triple in triples {
     if output.length() == 0 {
       output.push([triple])
@@ -52,8 +52,8 @@ fn pdf_texttopdf_group_tag_triples(
 
 ///|
 fn pdf_texttopdf_page_reference(
-  page_references : ArrayView[Int],
-  page_index : Int,
+  page_references : ArrayView[Int32],
+  page_index : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   guard page_index >= 0 && page_index < page_references.length() else {
     raise BadPageSpecification("texttopdf: page reference not found")
@@ -64,9 +64,9 @@ fn pdf_texttopdf_page_reference(
 ///|
 fn pdf_texttopdf_structure_elements(
   document : PdfDocument,
-  parent_number : Int,
-  page_references : ArrayView[Int],
-  nodes : ArrayView[Array[(Int, Int, Int)]],
+  parent_number : Int32,
+  page_references : ArrayView[Int32],
+  nodes : ArrayView[Array[(Int32, Int32, Int32)]],
 ) -> Array[@syntax.PdfObject] raise @core.PdfError {
   let output : Array[@syntax.PdfObject] = []
   for parts in nodes {
@@ -102,7 +102,7 @@ fn pdf_texttopdf_structure_elements(
 ///|
 fn pdf_texttopdf_structure_element_for_tag(
   structure_elements : ArrayView[@syntax.PdfObject],
-  tag_number : Int,
+  tag_number : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   guard tag_number >= 0 && tag_number < structure_elements.length() else {
     raise BadPageSpecification("texttopdf: structure tag not found")
@@ -112,11 +112,11 @@ fn pdf_texttopdf_structure_element_for_tag(
 
 ///|
 fn pdf_texttopdf_parent_tree_entries(
-  page_count : Int,
-  triples : ArrayView[(Int, Int, Int)],
+  page_count : Int32,
+  triples : ArrayView[(Int32, Int32, Int32)],
   structure_elements : ArrayView[@syntax.PdfObject],
-) -> Array[(Int, @syntax.PdfObject)] raise @core.PdfError {
-  let output : Array[(Int, @syntax.PdfObject)] = []
+) -> Array[(Int32, @syntax.PdfObject)] raise @core.PdfError {
+  let output : Array[(Int32, @syntax.PdfObject)] = []
   for page_index in 0..<page_count {
     let entries : Array[@syntax.PdfObject] = []
     for triple in triples {
@@ -137,7 +137,7 @@ fn pdf_texttopdf_parent_tree_entries(
 ///|
 fn PdfDocument::pdf_texttopdf_add_structure_tree(
   self : PdfDocument,
-  tags : ArrayView[Array[(String, Int)]],
+  tags : ArrayView[Array[(String, Int32)]],
   subformat : PdfUASubformat?,
 ) -> Unit raise @core.PdfError {
   let triples = pdf_texttopdf_tag_triples(tags)

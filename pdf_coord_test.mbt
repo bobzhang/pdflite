@@ -5,19 +5,19 @@ fn coord_name_for_test(text : String) -> @core.PdfName {
 
 ///|
 fn coord_rect_object_for_test(
-  x0 : Int,
-  y0 : Int,
-  x1 : Int,
-  y1 : Int,
+  x0 : Int32,
+  y0 : Int32,
+  x1 : Int32,
+  y1 : Int32,
 ) -> @syntax.PdfObject {
   PdfArray([PdfInteger(x0), PdfInteger(y0), PdfInteger(x1), PdfInteger(y1)])
 }
 
 ///|
 fn coord_page_for_test(
-  width : Int,
-  height : Int,
-  cropbox? : @syntax.PdfObject? = None,
+  width : Int32,
+  height : Int32,
+  cropbox~ : @syntax.PdfObject? = None,
 ) -> @page.PdfPage {
   let page = @page.pdf_page_custom(
     coord_rect_object_for_test(0, 0, width, height),

@@ -2,8 +2,8 @@
 fn pdf_writer_push_classic_xref_and_trailer(
   output : Array[Byte],
   document : PdfDocument,
-  xrefs : ArrayView[(Int, Int, Int)],
-  xref_start : Int,
+  xrefs : ArrayView[(Int32, Int32, Int32)],
+  xref_start : Int32,
 ) -> Unit raise @core.PdfError {
   let size = document.objects.max_object_number() + 1
   pdf_writer_push_ascii(output, "xref\n0 ")
@@ -32,7 +32,10 @@ fn pdf_writer_push_classic_xref_and_trailer(
 }
 
 ///|
-fn pdf_writer_int_array_contains(values : ArrayView[Int], value : Int) -> Bool {
+fn pdf_writer_int_array_contains(
+  values : ArrayView[Int32],
+  value : Int32,
+) -> Bool {
   for item in values {
     if item == value {
       break true
@@ -43,11 +46,11 @@ fn pdf_writer_int_array_contains(values : ArrayView[Int], value : Int) -> Bool {
 }
 
 ///|
-fn pdf_writer_changed_object_numbers(document : PdfDocument) -> Array[Int] {
+fn pdf_writer_changed_object_numbers(document : PdfDocument) -> Array[Int32] {
   let log = document.event_log()
-  let numbers : Array[Int] = Array::new(capacity=log.length() + 1)
+  let numbers : Array[Int32] = Array::new(capacity=log.length() + 1)
   numbers.push(0)
-  let seen : @hashmap.HashMap[Int, Bool] = HashMap([])
+  let seen : @hashmap.HashMap[Int32, Bool] = HashMap([])
   seen[0] = true
   for item in log {
     let (number, _) = item
@@ -64,18 +67,20 @@ fn pdf_writer_changed_object_numbers(document : PdfDocument) -> Array[Int] {
 fn pdf_writer_write_document_objects_for_numbers(
   output : Array[Byte],
   document : PdfDocument,
-  numbers : ArrayView[Int],
-) -> Array[(Int, Int, Int)] raise @core.PdfError {
-  let xrefs : Array[(Int, Int, Int)] = Array::new(capacity=numbers.length())
+  numbers : ArrayView[Int32],
+) -> Array[(Int32, Int32, Int32)] raise @core.PdfError {
+  let xrefs : Array[(Int32, Int32, Int32)] = Array::new(
+    capacity=numbers.length(),
+  )
   for number in numbers {
     if number > 0 {
       match document.objects.get_entry(number) {
-        Some({ data: ObjectParsed(object), generation })
-        | Some({ data: ObjectParsedAlreadyDecrypted(object), generation }) => {
+        Some({ data: ObjectParsed(object), generation, })
+        | Some({ data: ObjectParsedAlreadyDecrypted(object), generation, }) => {
           xrefs.push((number, output.length(), generation))
           pdf_writer_push_view(
             output,
-            pdf_write_indirect_object({ number, generation, object }),
+            pdf_write_indirect_object({ number, generation, object, }),
           )
         }
         Some(_) => raise ParsedObjectExpected
@@ -89,9 +94,9 @@ fn pdf_writer_write_document_objects_for_numbers(
 ///|
 fn pdf_writer_push_classic_xref_entry(
   output : Array[Byte],
-  xrefs : ArrayView[(Int, Int, Int)],
-  number : Int,
-  xref_index : Ref[Int],
+  xrefs : ArrayView[(Int32, Int32, Int32)],
+  number : Int32,
+  xref_index : Ref[Int32],
 ) -> Unit {
   if number == 0 {
     pdf_writer_push_ascii(output, "0000000000 65535 f \n")
@@ -114,10 +119,10 @@ fn pdf_writer_push_classic_xref_entry(
 ///|
 fn pdf_writer_push_classic_xref_subsection(
   output : Array[Byte],
-  xrefs : ArrayView[(Int, Int, Int)],
-  start : Int,
-  length : Int,
-  xref_index : Ref[Int],
+  xrefs : ArrayView[(Int32, Int32, Int32)],
+  start : Int32,
+  length : Int32,
+  xref_index : Ref[Int32],
 ) -> Unit {
   pdf_writer_push_ascii(output, start.to_string())
   pdf_writer_push_byte(output, 32)
@@ -132,13 +137,13 @@ fn pdf_writer_push_classic_xref_subsection(
 fn pdf_writer_push_classic_sparse_xref_and_trailer(
   output : Array[Byte],
   document : PdfDocument,
-  xrefs : ArrayView[(Int, Int, Int)],
-  entry_numbers : ArrayView[Int],
-  xref_start : Int,
-  previous_xref : Int,
+  xrefs : ArrayView[(Int32, Int32, Int32)],
+  entry_numbers : ArrayView[Int32],
+  xref_start : Int32,
+  previous_xref : Int32,
 ) -> Unit raise @core.PdfError {
   pdf_writer_push_ascii(output, "xref\n")
-  let xref_index : Ref[Int] = { val: 0 }
+  let xref_index : Ref[Int32] = { val: 0, }
   let mut run_start = -1
   let mut run_length = 0
   for number in entry_numbers {

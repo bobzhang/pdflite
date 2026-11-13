@@ -248,7 +248,7 @@ fn reader_xref_stream_pdf_without_type_with_bad_startxref() -> @core.PdfBytes {
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_index_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -296,7 +296,7 @@ fn reader_xref_stream_pdf_with_index_bad_startxref() -> @core.PdfBytes {
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_default_in_use_width_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -343,7 +343,7 @@ fn reader_xref_stream_pdf_with_default_in_use_width_bad_startxref() -> @core.Pdf
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_unknown_entry_type_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -419,7 +419,7 @@ fn reader_xref_stream_unknown_entry_with_later_physical_update_bad_startxref() -
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_ascii_hex_filter_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -466,7 +466,7 @@ fn reader_xref_stream_pdf_with_ascii_hex_filter_bad_startxref() -> @core.PdfByte
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_flate_filter_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -515,7 +515,7 @@ fn reader_xref_stream_pdf_with_flate_filter_bad_startxref() -> @core.PdfBytes {
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_flate_predictor_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
   use_short_names : Bool,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
@@ -581,7 +581,7 @@ fn reader_xref_stream_pdf_with_short_flate_predictor_bad_startxref() -> @core.Pd
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_filter_array_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -631,7 +631,7 @@ fn reader_xref_stream_pdf_with_filter_array_bad_startxref() -> @core.PdfBytes {
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_filter_array_predictor_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -682,7 +682,7 @@ fn reader_xref_stream_pdf_with_filter_array_predictor_bad_startxref() -> @core.P
 ///|
 #warnings("-unused_value")
 fn reader_hybrid_xref_stream_pdf_with_startxref_override(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -733,7 +733,7 @@ fn reader_hybrid_xref_stream_pdf_with_bad_startxref() -> @core.PdfBytes {
 ///|
 #warnings("-unused_value")
 fn reader_hybrid_compressed_xref_stream_pdf_with_startxref_override(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")

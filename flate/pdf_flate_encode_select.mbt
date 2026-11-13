@@ -4,7 +4,9 @@ fn pdf_flate_default_header() -> Array[Byte] {
 }
 
 ///|
-fn pdf_flate_header_for_level(level : Int) -> Array[Byte] raise @core.PdfError {
+fn pdf_flate_header_for_level(
+  level : Int32,
+) -> Array[Byte] raise @core.PdfError {
   guard level >= 0 && level <= 9 else { raise InvalidFlateData }
   let compression_hint = if level <= 1 {
     0
@@ -25,7 +27,7 @@ fn pdf_flate_header_for_level(level : Int) -> Array[Byte] raise @core.PdfError {
 ///|
 fn pdf_flate_output_with_header(
   header : ArrayView[Byte],
-  body_capacity_hint : Int,
+  body_capacity_hint : Int32,
 ) -> Array[Byte] {
   let output : Array[Byte] = Array::new(
     capacity=header.length() + body_capacity_hint,
@@ -60,7 +62,7 @@ fn pdf_flate_shortest_result(
 fn pdf_flate_encode_shortest_view_with_header(
   data : BytesView,
   header : ArrayView[Byte],
-  max_probes : Int,
+  max_probes : Int32,
 ) -> @core.PdfBytes {
   let stored = pdf_flate_encode_stored_view_with_header(data, header)
   let fixed = pdf_flate_encode_fixed_literal_view_with_header(data, header)
@@ -95,7 +97,7 @@ fn pdf_flate_encode_shortest_view_with_header(
 fn pdf_flate_encode_fast_view_with_header(
   data : BytesView,
   header : ArrayView[Byte],
-  max_probes : Int,
+  max_probes : Int32,
 ) -> @core.PdfBytes {
   let stored = pdf_flate_encode_stored_view_with_header(data, header)
   let matched : Result[@core.PdfBytes, Error] = try
@@ -109,7 +111,7 @@ fn pdf_flate_encode_fast_view_with_header(
 }
 
 ///|
-fn pdf_flate_max_probes_for_level(level : Int) -> Int {
+fn pdf_flate_max_probes_for_level(level : Int32) -> Int32 {
   if level <= 1 {
     8
   } else if level <= 3 {
@@ -128,7 +130,7 @@ fn pdf_flate_max_probes_for_level(level : Int) -> Int {
 ///|
 fn pdf_flate_encode_view_with_level_pure(
   data : BytesView,
-  level : Int,
+  level : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let header = pdf_flate_header_for_level(level)
   if level == 0 {

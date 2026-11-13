@@ -5,12 +5,13 @@
 /// bit order used by PDF filters such as CCITT and Flate Huffman tables.
 /// `align` discards any unread bits in the current byte and resumes at the next
 /// byte boundary.
+#derive(Debug, Eq, ToJson)
 pub struct BitStream {
   input : ByteCursor
-  mut current_byte : Int
-  mut bit_mask : Int
-  mut bits_read : Int
-} derive(Debug, Eq, ToJson)
+  mut current_byte : Int32
+  mut bit_mask : Int32
+  mut bits_read : Int32
+}
 
 ///|
 /// A restorable snapshot of a `BitStream` position.
@@ -18,17 +19,18 @@ pub struct BitStream {
 /// The snapshot captures both the underlying byte cursor position and the
 /// partially consumed current byte, so seeking back to it is safe even in the
 /// middle of a byte.
+#derive(Debug, Eq, ToJson)
 pub struct BitStreamPosition {
-  input_position : Int
-  current_byte : Int
-  bit_mask : Int
-  bits_read : Int
-} derive(Debug, Eq, ToJson)
+  input_position : Int32
+  current_byte : Int32
+  bit_mask : Int32
+  bits_read : Int32
+}
 
 ///|
 /// Creates a bit stream that reads from an existing byte cursor.
 pub fn bitstream_of_cursor(input : ByteCursor) -> BitStream {
-  { input, current_byte: 0, bit_mask: 0, bits_read: 0 }
+  { input, current_byte: 0, bit_mask: 0, bits_read: 0, }
 }
 
 ///|
@@ -38,7 +40,7 @@ pub fn bitstream_of_cursor(input : ByteCursor) -> BitStream {
 /// used in parse error messages.
 pub fn bitstream_of_bytes(
   data : PdfBytes,
-  source? : String = "bytes",
+  source~ : String = "bytes",
 ) -> BitStream {
   bitstream_of_view(data, source~)
 }
@@ -50,7 +52,7 @@ pub fn bitstream_of_bytes(
 /// pass owned bytes explicitly.
 pub fn bitstream_of_view(
   data : BytesView,
-  source? : String = "bytes",
+  source~ : String = "bytes",
 ) -> BitStream {
   bitstream_of_cursor(byte_cursor_of_view(data, source~))
 }
@@ -103,7 +105,7 @@ pub fn BitStream::get_bit(self : BitStream) -> Bool raise PdfError {
 ///
 /// Raises `PdfError::EndOfInput` if there is no byte available for the next
 /// bit.
-pub fn BitStream::get_bit_int(self : BitStream) -> Int raise PdfError {
+pub fn BitStream::get_bit_int(self : BitStream) -> Int32 raise PdfError {
   if self.get_bit() {
     1
   } else {
@@ -129,8 +131,8 @@ pub fn BitStream::align(self : BitStream) -> Unit {
 /// `PdfError::EndOfInput` if the stream ends early.
 pub fn BitStream::get_value_int(
   self : BitStream,
-  width : Int,
-) -> Int raise PdfError {
+  width : Int32,
+) -> Int32 raise PdfError {
   if width < 0 || width > 31 {
     raise InvalidBitCount(width)
   }
@@ -149,7 +151,7 @@ pub fn BitStream::get_value_int(
 /// outside `0..=32` and `PdfError::EndOfInput` if the stream ends early.
 pub fn BitStream::get_value_int64(
   self : BitStream,
-  width : Int,
+  width : Int32,
 ) -> Int64 raise PdfError {
   if width < 0 || width > 32 {
     raise InvalidBitCount(width)
@@ -165,6 +167,6 @@ pub fn BitStream::get_value_int64(
 /// Returns the number of bits consumed from this stream.
 ///
 /// The count includes bits skipped by `align`.
-pub fn BitStream::bits_read(self : BitStream) -> Int {
+pub fn BitStream::bits_read(self : BitStream) -> Int32 {
   self.bits_read
 }

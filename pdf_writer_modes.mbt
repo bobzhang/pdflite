@@ -25,7 +25,7 @@ pub fn pdf_write_document_incremental_update_with_generated_id(
   original : @core.PdfBytes,
   document : PdfDocument,
   path : String,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_write_document_incremental_update_with_mode(
     original,
@@ -55,7 +55,7 @@ pub fn pdf_write_document_with_mode(
 pub fn pdf_write_document_with_generated_id(
   document : PdfDocument,
   path : String,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_write_document_with_mode(document.copy_with_current_id(path), mode)
 }

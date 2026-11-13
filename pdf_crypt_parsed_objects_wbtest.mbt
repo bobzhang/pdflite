@@ -1,5 +1,5 @@
 ///|
-fn crypt_parsed_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn crypt_parsed_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -21,12 +21,12 @@ fn crypt_parsed_stream_for_test(
 
 ///|
 fn crypt_parsed_arc4_crypt_object_for_test(
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   file_key : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
   object : @syntax.PdfObject,
-  no_encrypt_metadata? : Bool = false,
+  no_encrypt_metadata~ : Bool = false,
 ) -> @syntax.PdfObject raise {
   let doc = pdf_document_empty()
   doc.add_object_given_number(object_number, object, generation~)
@@ -37,7 +37,7 @@ fn crypt_parsed_arc4_crypt_object_for_test(
 }
 
 ///|
-fn crypt_parsed_aes_iv_for_test(index : Int) -> @core.PdfBytes {
+fn crypt_parsed_aes_iv_for_test(index : Int32) -> @core.PdfBytes {
   crypt_parsed_bytes_for_test(
     [
       for offset in 0..<16 => 0x40 + index * 16 + offset
@@ -47,10 +47,10 @@ fn crypt_parsed_aes_iv_for_test(index : Int) -> @core.PdfBytes {
 
 ///|
 fn crypt_parsed_aesv2_encrypt_data_for_test(
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   file_key : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
   data : BytesView,
   iv : BytesView,
 ) -> @core.PdfBytes raise {
@@ -449,7 +449,7 @@ test "PdfDocument AESV2 parsed-object encryption skips metadata streams" {
     ],
     @ascii.encode("data"),
   )
-  let calls : Ref[Int] = { val: 0 }
+  let calls : Ref[Int32] = { val: 0, }
   let doc = pdf_document_empty()
   doc.add_object_given_number(12, metadata_stream)
   let encrypted_doc = try! doc.aesv2_encrypt_parsed_objects_with_iv_provider(

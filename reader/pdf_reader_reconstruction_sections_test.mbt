@@ -1,16 +1,16 @@
 ///|
 fn reader_reconstruction_section_scan_entry_for_test(
-  object_number : Int,
-  offset : Int,
+  object_number : Int32,
+  offset : Int32,
 ) -> @reader.PdfClassicXRefEntry {
-  { object_number, offset, generation: 0, in_use: true, object_stream: None }
+  { object_number, offset, generation: 0, in_use: true, object_stream: None, }
 }
 
 ///|
 fn reader_reconstruction_section_scan_section_for_test(
-  object_number : Int,
-  offset : Int,
-  stream_object_offset? : Int? = None,
+  object_number : Int32,
+  offset : Int32,
+  stream_object_offset~ : Int32? = None,
 ) -> @reader.PdfXRefSection {
   {
     entries: [
@@ -25,8 +25,8 @@ fn reader_reconstruction_section_scan_section_for_test(
 ///|
 fn reader_reconstruction_classic_section_parser_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
-) -> (@reader.PdfXRefSection, Int) raise @core.PdfError {
+  position : Int32,
+) -> (@reader.PdfXRefSection, Int32) raise @core.PdfError {
   cursor.seek_absolute(position)
   if position == 3 {
     (
@@ -41,8 +41,8 @@ fn reader_reconstruction_classic_section_parser_for_test(
 ///|
 fn reader_reconstruction_xref_stream_section_parser_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
-) -> (@reader.PdfXRefSection, Int) raise @core.PdfError {
+  position : Int32,
+) -> (@reader.PdfXRefSection, Int32) raise @core.PdfError {
   cursor.seek_absolute(position)
   if position == 0 {
     (

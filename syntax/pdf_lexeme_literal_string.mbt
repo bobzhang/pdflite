@@ -1,7 +1,7 @@
 ///|
 fn pdf_cursor_read_octal_escape(
   cursor : @core.ByteCursor,
-  first : Int,
+  first : Int32,
 ) -> Byte raise @core.PdfError {
   let mut value = first - 48
   let second = cursor.input_byte()
@@ -23,8 +23,8 @@ fn pdf_cursor_read_octal_escape(
 fn pdf_cursor_read_string_escape_into(
   cursor : @core.ByteCursor,
   bytes : Array[Byte],
-  position : Int,
-) -> Int raise @core.PdfError {
+  position : Int32,
+) -> Int32 raise @core.PdfError {
   let escaped = cursor.input_byte()
   match escaped {
     110 => pdf_lexeme_write_byte_at(bytes, position, (10).to_byte())
@@ -52,7 +52,9 @@ fn pdf_cursor_read_string_escape_into(
 }
 
 ///|
-fn pdf_cursor_literal_string_output_capacity(cursor : @core.ByteCursor) -> Int {
+fn pdf_cursor_literal_string_output_capacity(
+  cursor : @core.ByteCursor,
+) -> Int32 {
   let mut index = cursor.absolute_position()
   let mut capacity = 0
   let mut depth = 1

@@ -66,7 +66,7 @@ fn reader_xref_stream_pdf_with_prev_deleted_object() -> @core.PdfBytes {
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_compressed_prev_update_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -126,7 +126,7 @@ fn reader_xref_stream_pdf_with_compressed_prev_update_bad_startxref() -> @core.P
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_object_stream_number(
-  stored_object_number : Int,
+  stored_object_number : Int32,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -635,7 +635,7 @@ fn reader_xref_stream_pdf_with_object_stream_bad_first() -> @core.PdfBytes {
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_indirect_object_stream_filter_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")
@@ -702,7 +702,7 @@ fn reader_xref_stream_pdf_with_indirect_object_stream_filter_bad_startxref() -> 
 ///|
 #warnings("-unused_value")
 fn reader_xref_stream_pdf_with_indirect_object_stream_bounds_startxref(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   reader_push_ascii(output, "%PDF-1.5\n")

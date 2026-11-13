@@ -168,7 +168,7 @@ fn PdfDocument::pdf_draft_rewrite_ops(
 fn pdf_draft_stream_dictionary(
   original : @syntax.PdfObject,
   resources : @syntax.PdfObject,
-  length : Int,
+  length : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   original
   .remove_dict_entry(pdf_draft_filter_key())
@@ -313,13 +313,13 @@ fn PdfDocument::pdf_draft_page(
     rewritten_stream,
     only_if_smaller=true,
   )
-  { ..page, content: [encoded], resources: rewritten_resources }
+  { ..page, content: [encoded], resources: rewritten_resources, }
 }
 
 ///|
 fn pdf_draft_validate_page_numbers(
-  page_numbers : ArrayView[Int],
-  end_page : Int,
+  page_numbers : ArrayView[Int32],
+  end_page : Int32,
 ) -> Unit raise @core.PdfError {
   for page_number in page_numbers {
     if page_number < 1 || page_number > end_page {
@@ -340,7 +340,7 @@ pub fn PdfDocument::draft(
   self : PdfDocument,
   only_remove : @core.PdfName?,
   boxes : Bool,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   let end_page = self.endpage()
   pdf_draft_validate_page_numbers(page_numbers, end_page)
@@ -366,7 +366,7 @@ pub fn PdfDocument::draft(
 pub fn pdf_draft(
   only_remove : @core.PdfName?,
   boxes : Bool,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.draft(only_remove, boxes, page_numbers)
@@ -377,7 +377,7 @@ pub fn pdf_draft(
 pub fn pdf_draft_string(
   only_remove : String?,
   boxes : Bool,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   let only_remove_name = match only_remove {

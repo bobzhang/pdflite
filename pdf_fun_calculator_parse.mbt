@@ -13,7 +13,7 @@ priv enum PdfCalculatorItem {
 
 ///|
 fn pdf_fun_calculator_number_of_token(text : String) -> PdfCalculatorOp? {
-  let integer : Result[Int, Error] = try @strconv.from_str(text) catch {
+  let integer : Result[Int32, Error] = try @strconv.from_str(text) catch {
     err => Err(err)
   } noraise {
     value => Ok(value)
@@ -213,9 +213,9 @@ fn pdf_fun_calculator_push_operator(
 ///|
 fn pdf_fun_calculator_parse_items(
   tokens : ArrayView[PdfCalculatorToken],
-  start : Int,
+  start : Int32,
   stop_at_close~ : Bool,
-) -> (Array[PdfCalculatorItem], Int) raise @core.PdfError {
+) -> (Array[PdfCalculatorItem], Int32) raise @core.PdfError {
   let items : Array[PdfCalculatorItem] = []
   let mut index = start
   let mut closed = false
@@ -252,9 +252,9 @@ fn pdf_fun_calculator_parse_items(
 ///|
 fn pdf_fun_calculator_parse_operations(
   tokens : ArrayView[PdfCalculatorToken],
-  start : Int,
+  start : Int32,
   stop_at_close~ : Bool,
-) -> (Array[PdfCalculatorOp], Int) raise @core.PdfError {
+) -> (Array[PdfCalculatorOp], Int32) raise @core.PdfError {
   let (items, next_index) = pdf_fun_calculator_parse_items(
     tokens,
     start,

@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_codepoint_of_arabic_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_arabic_glyphname(name : String) -> Int32? {
   match name {
     "/afii57381" => Some(0x066A)
     "/afii57388" => Some(0x060C)

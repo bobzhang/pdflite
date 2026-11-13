@@ -1,6 +1,6 @@
 ///|
 fn crypt_recrypt_model_bytes_for_test(
-  values : ArrayView[Int],
+  values : ArrayView[Int32],
 ) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
@@ -9,7 +9,7 @@ fn crypt_recrypt_model_bytes_for_test(
 fn crypt_recrypt_bytes_start_with_at(
   haystack : @core.PdfBytes,
   needle : @core.PdfBytes,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -46,9 +46,9 @@ fn crypt_recrypt_bytes_contain_for_test(
 
 ///|
 fn crypt_recrypt_aes_document_iv_for_test(
-  object_number : Int,
-  generation : Int,
-  index : Int,
+  object_number : Int32,
+  generation : Int32,
+  index : Int32,
 ) -> @core.PdfBytes {
   crypt_recrypt_model_bytes_for_test(
     [
@@ -68,7 +68,7 @@ fn crypt_recrypt_aesv3_r5_file_key_for_test() -> @core.PdfBytes {
 #warnings("-unused_error_type")
 fn crypt_recrypt_aesv3_r5_random_for_test(
   field : @crypt_core.PdfAesV3RandomField,
-  _length : Int,
+  _length : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   match field {
     PdfAesV3FileKey => crypt_recrypt_aesv3_r5_file_key_for_test()
@@ -94,11 +94,11 @@ fn crypt_recrypt_aesv3_r5_random_for_test(
 
 ///|
 fn crypt_recrypt_aesv3_r5_document_with_object_for_test(
-  major : Int,
-  minor : Int,
-  object_number : Int,
+  major : Int32,
+  minor : Int32,
+  object_number : Int32,
   object : @syntax.PdfObject,
-  encrypt_metadata? : Bool = true,
+  encrypt_metadata~ : Bool = true,
 ) -> @pdflite.PdfDocument raise {
   let doc = crypt_recrypt_minimal_catalog_document_for_test(major, minor)
   doc.add_object_given_number(object_number, object)
@@ -133,9 +133,9 @@ fn crypt_recrypt_aesv3_r5_document_with_object_for_test(
 
 ///|
 fn crypt_recrypt_aesv3_r6_document_with_object_for_test(
-  major : Int,
-  minor : Int,
-  object_number : Int,
+  major : Int32,
+  minor : Int32,
+  object_number : Int32,
   object : @syntax.PdfObject,
 ) -> @pdflite.PdfDocument raise {
   let doc = crypt_recrypt_minimal_catalog_document_for_test(major, minor)
@@ -160,8 +160,8 @@ fn crypt_recrypt_name_for_test(text : String) -> @core.PdfName {
 
 ///|
 fn crypt_recrypt_minimal_catalog_document_for_test(
-  major : Int,
-  minor : Int,
+  major : Int32,
+  minor : Int32,
 ) -> @pdflite.PdfDocument {
   let key_type = crypt_recrypt_name_for_test("/Type")
   let key_catalog = crypt_recrypt_name_for_test("/Catalog")
@@ -209,9 +209,9 @@ fn crypt_recrypt_stream_object_bytes_for_test(
 
 ///|
 fn crypt_recrypt_document_with_stream_for_test(
-  major : Int,
-  minor : Int,
-  object_number : Int,
+  major : Int32,
+  minor : Int32,
+  object_number : Int32,
   data : @core.PdfBytes,
 ) -> @pdflite.PdfDocument {
   let doc = crypt_recrypt_minimal_catalog_document_for_test(major, minor)

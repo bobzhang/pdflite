@@ -1,6 +1,6 @@
 ///|
 test "private descriptive Hebrew core AGL glyph helper covers table" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/alef", 0x05D0),
     ("/alefhebrew", 0x05D0),
     ("/ayin", 0x05E2),

@@ -1,6 +1,6 @@
 ///|
 test "PdfTextExtractor decodes Gurmukhi AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/aagurmukhi", 0x0A06),
     ("/aamatragurmukhi", 0x0A3E),
     ("/addakgurmukhi", 0x0A71),
@@ -77,8 +77,8 @@ test "PdfTextExtractor decodes Gurmukhi AGL glyph names" {
     ("/zerogurmukhi", 0x0A66),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1

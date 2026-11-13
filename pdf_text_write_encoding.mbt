@@ -7,7 +7,7 @@
 pub fn PdfDocument::write_encoding(
   self : PdfDocument,
   encoding : PdfEncoding,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match encoding {
     PdfCustomEncoding(PdfImplicitInFontFile, differences) => {
       let values : Array[@syntax.PdfObject] = Array::new(

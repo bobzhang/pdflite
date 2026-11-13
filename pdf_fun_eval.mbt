@@ -39,7 +39,7 @@ fn pdf_fun_clamp_values(
 }
 
 ///|
-fn pdf_fun_max_sample(bits_per_sample : Int) -> Double {
+fn pdf_fun_max_sample(bits_per_sample : Int32) -> Double {
   @math.pow(2.0, bits_per_sample.to_double()) - 1.0
 }
 
@@ -75,8 +75,8 @@ fn PdfSampledFunction::encoded_inputs(
 ///|
 fn PdfSampledFunction::read_table(
   self : PdfSampledFunction,
-  indices : ArrayView[Int],
-  output_count : Int,
+  indices : ArrayView[Int32],
+  output_count : Int32,
 ) -> Array[Double] raise @core.PdfError {
   if self.size.length() != indices.length() {
     raise BadFunctionEvaluation("sampled table arity mismatch")
@@ -115,8 +115,8 @@ fn PdfSampledFunction::eval_sampled(
   }
   let output_count = range.length() / 2
   let encoded = self.encoded_inputs(function, clamped_inputs)
-  let floors : Array[Int] = []
-  let ceilings : Array[Int] = []
+  let floors : Array[Int32] = []
+  let ceilings : Array[Int32] = []
   for value in encoded {
     floors.push(@math.floor(value).to_int())
     ceilings.push(@math.ceil(value).to_int())
@@ -212,7 +212,7 @@ pub fn PdfFunction::eval(
   let clamped_inputs = self.clamped_inputs(inputs)
   let output = match self.func {
     PdfFunctionSampled(sampled) => sampled.eval_sampled(self, clamped_inputs)
-    PdfFunctionInterpolation({ c0, c1, n }) => {
+    PdfFunctionInterpolation({ c0, c1, n, }) => {
       let values : Array[Double] = []
       for input in clamped_inputs {
         let factor = @math.pow(input, n)

@@ -50,10 +50,10 @@ pub async fn pdf_load_substitute(
 /// `PdfDocument::extract_fontfile_bytes` API.
 pub async fn pdf_extract_fontfile_to_file(
   document : @pdflite.PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   font_name : String,
   path : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   match document.extract_fontfile_bytes(page_number, font_name) {
     Some(data) =>
@@ -65,11 +65,11 @@ pub async fn pdf_extract_fontfile_to_file(
 ///|
 /// Compatibility wrapper matching cpdffont's `extract_fontfile` argument order.
 pub async fn pdf_extract_fontfile(
-  page_number : Int,
+  page_number : Int32,
   font_name : String,
   path : StringView,
   document : @pdflite.PdfDocument,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   pdf_extract_fontfile_to_file(
     document,

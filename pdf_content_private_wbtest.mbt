@@ -9,8 +9,8 @@ fn wbtest_content_name(text : String) -> @core.PdfName {
 
 ///|
 fn content_wbtest_lzw_codes(
-  codes : ArrayView[Int],
-  early_change : Int,
+  codes : ArrayView[Int32],
+  early_change : Int32,
 ) -> @core.PdfBytes {
   let writer = @core.bit_writer_new()
   let mut code_length = 9
@@ -470,7 +470,7 @@ test "private content helpers cover malformed operand fallbacks" {
   guard missing_encoded_run_length_eod is Err(_) else {
     fail("expected missing encoded run length EOD to raise")
   }
-  let short_run_length_prefix : Result[(@core.PdfBytes, Int), Error] = try
+  let short_run_length_prefix : Result[(@core.PdfBytes, Int32), Error] = try
     pdf_content_run_length_decode_view_prefix(
       try! @core.pdf_bytes_of_int_array([253]),
     )

@@ -1,8 +1,8 @@
 ///|
 fn pdf_toc_original_page_changes(
-  original_page_count : Int,
-  toc_page_count : Int,
-) -> Array[(Int, Int)] {
+  original_page_count : Int32,
+  toc_page_count : Int32,
+) -> Array[(Int32, Int32)] {
   [
     for index in 0..<original_page_count => {
       (index + 1, index + 1 + toc_page_count)
@@ -31,7 +31,7 @@ fn pdf_toc_prepend_pages(
 /// cpdftoc writes a no-label range for the inserted TOC pages, then preserves
 /// existing labels by moving their start pages forward by the TOC page count.
 pub fn pdf_toc_shift_page_labels(
-  toc_page_count : Int,
+  toc_page_count : Int32,
   labels : ArrayView[@label.PdfPageLabel],
 ) -> Array[@label.PdfPageLabel] {
   let output : Array[@label.PdfPageLabel] = [
@@ -43,7 +43,7 @@ pub fn pdf_toc_shift_page_labels(
     },
   ]
   for label in labels {
-    output.push({ ..label, start_page: label.start_page + toc_page_count })
+    output.push({ ..label, start_page: label.start_page + toc_page_count, })
   }
   output
 }

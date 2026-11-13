@@ -10,7 +10,7 @@ test "private PDF number set deduplicates membership and additions" {
   numbers.add(2)
   numbers.add(2)
   @test.assert_eq(numbers.contains(2), true)
-  let output : Array[Int] = []
+  let output : Array[Int32] = []
   @core.pdf_push_unique_number(output, numbers, 2)
   @core.pdf_push_unique_number(output, numbers, 3)
   @core.pdf_push_unique_number(output, numbers, 3)
@@ -100,7 +100,7 @@ test "PdfDocument stream decompression preserves already-decrypted state" {
       {
         data: ObjectParsedAlreadyDecrypted(PdfStreamObject(decoded)),
         generation: 3,
-      }
+      },
     ) else {
     fail("expected already-decrypted stream")
   }
@@ -138,7 +138,7 @@ test "PdfDocument ARC4 crypt preserves parser-private object states" {
   doc.objects.set_entry(
     3,
     pdf_object_entry(
-      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0 }),
+      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0, }),
     ),
   )
   let encrypted = try! doc.arc4_crypt_parsed_objects(key, 40, false, 0)
@@ -155,7 +155,7 @@ test "PdfDocument select_object_numbers ignores deferred parser states" {
   doc.objects.set_entry(
     3,
     pdf_object_entry(
-      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0 }),
+      ObjectToParseFromObjectStream({ object_stream_number: 7, index: 0, }),
     ),
   )
   @test.assert_eq(doc.select_object_numbers(fn(object) { object == PdfNull }), [

@@ -84,16 +84,16 @@ fn PdfDocument::pdf_addtext_rectangle_page(
 /// appended unless `underneath` is set.
 pub fn PdfDocument::addtext_rectangle(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   coord : String,
   colour : @colour.PdfContentColour,
   position : @geometry.PdfPosition,
-  relative_to_box? : @core.PdfName = pdf_page_mediabox_key(),
-  outline? : Bool = false,
-  line_width? : Double = 1.0,
-  opacity? : Double = 1.0,
-  underneath? : Bool = false,
-  fast? : Bool = false,
+  relative_to_box~ : @core.PdfName = pdf_page_mediabox_key(),
+  outline~ : Bool = false,
+  line_width~ : Double = 1.0,
+  opacity~ : Double = 1.0,
+  underneath~ : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_addtext_validate_page_numbers(
@@ -124,16 +124,16 @@ pub fn PdfDocument::addtext_rectangle(
 /// Compatibility wrapper for `PdfDocument::addtext_rectangle`.
 pub fn pdf_addtext_rectangle(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   coord : String,
   colour : @colour.PdfContentColour,
   position : @geometry.PdfPosition,
-  relative_to_box? : @core.PdfName = pdf_page_mediabox_key(),
-  outline? : Bool = false,
-  line_width? : Double = 1.0,
-  opacity? : Double = 1.0,
-  underneath? : Bool = false,
-  fast? : Bool = false,
+  relative_to_box~ : @core.PdfName = pdf_page_mediabox_key(),
+  outline~ : Bool = false,
+  line_width~ : Double = 1.0,
+  opacity~ : Double = 1.0,
+  underneath~ : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.addtext_rectangle(
     page_numbers,
@@ -161,7 +161,7 @@ pub fn pdf_addrectangle(
   position : @geometry.PdfPosition,
   relative_to_box : String,
   underneath : Bool,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.addtext_rectangle(

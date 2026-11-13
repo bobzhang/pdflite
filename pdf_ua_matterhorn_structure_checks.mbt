@@ -4,7 +4,7 @@ fn pdf_ua_matterhorn_is_hnum(name : @core.PdfName) -> Bool {
   if text == "/H" || !text.has_prefix("/H") {
     false
   } else {
-    let result : Result[Int, Error] = try
+    let result : Result[Int32, Error] = try
       @strconv.from_str(text[2:].to_owned())
     catch {
       err => Err(err)
@@ -16,7 +16,7 @@ fn pdf_ua_matterhorn_is_hnum(name : @core.PdfName) -> Bool {
 }
 
 ///|
-fn pdf_ua_matterhorn_hnum(name : @core.PdfName) -> Int {
+fn pdf_ua_matterhorn_hnum(name : @core.PdfName) -> Int32 {
   let text = pdf_ua_matterhorn_name_text(name)
   @strconv.from_str(text[2:].to_owned()) catch {
     _ => 0
@@ -291,7 +291,7 @@ fn PdfDocument::pdf_ua_matterhorn_check_09_006(
   self : PdfDocument,
 ) -> Json? raise @core.PdfError {
   let tree = self.pdf_ua_matterhorn_read_struct_tree()
-  let seen_toc : Ref[Bool] = { val: false }
+  let seen_toc : Ref[Bool] = { val: false, }
   match pdf_ua_matterhorn_check_toci_position(tree, seen_toc) {
     Some(failure) => Some(failure)
     None => pdf_ua_matterhorn_check_toc_children(tree)

@@ -1,12 +1,12 @@
 ///|
-fn pdf_text_static_single_byte_glyph_name(value : Int) -> String {
+fn pdf_text_static_single_byte_glyph_name(value : Int32) -> String {
   let bytes : FixedArray[Byte] = [47, value.to_byte()]
   @ascii.decode_lossy(Bytes::from_array(bytes))
 }
 
 ///|
 fn pdf_text_basic_latin_glyphname(
-  code : Int,
+  code : Int32,
   standard_quotes : Bool,
 ) -> String? {
   match code {

@@ -13,9 +13,9 @@ fn page_redact_stream_for_test(
 ///|
 fn page_redact_page_for_test(
   ops : ArrayView[@content.PdfContentOp],
-  rest? : @syntax.PdfObject = PdfDictionary([]),
-  resources? : @syntax.PdfObject = PdfDictionary([]),
-  rotate? : @page.PdfPageRotation = Rotate0,
+  rest~ : @syntax.PdfObject = PdfDictionary([]),
+  resources~ : @syntax.PdfObject = PdfDictionary([]),
+  rotate~ : @page.PdfPageRotation = Rotate0,
 ) -> @page.PdfPage {
   {
     content: [page_redact_stream_for_test(ops)],
@@ -170,8 +170,8 @@ test "PdfDocument redact_pages validates selected pages" {
   guard bad
     is Err(
       @core.PdfError::BadPageSpecification(
-        "redact_pages: range contains pages not present in pdf"
-      )
+        "redact_pages: range contains pages not present in pdf",
+      ),
     ) else {
     fail("expected redact_pages to reject an out-of-range page")
   }

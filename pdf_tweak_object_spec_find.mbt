@@ -14,7 +14,7 @@ fn PdfDocument::pdf_tweak_find_chained_object(
 ///|
 fn PdfDocument::pdf_tweak_find_numbered_object(
   self : PdfDocument,
-  number : Int,
+  number : Int32,
   chain : ArrayView[@core.PdfName],
   source : String,
 ) -> @syntax.PdfObject raise @core.PdfError {

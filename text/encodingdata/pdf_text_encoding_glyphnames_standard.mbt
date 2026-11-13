@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_standard_control_glyphname(code : Int) -> String? {
+fn pdf_text_standard_control_glyphname(code : Int32) -> String? {
   match code {
     9 => Some("/controlHT")
     10 => Some("/controlLF")
@@ -11,7 +11,7 @@ fn pdf_text_standard_control_glyphname(code : Int) -> String? {
 
 ///|
 /// Return the StandardEncoding glyph name for a single-byte character code.
-pub fn pdf_text_standard_glyphname(code : Int) -> String? {
+pub fn pdf_text_standard_glyphname(code : Int32) -> String? {
   match pdf_text_standard_control_glyphname(code) {
     Some(name) => Some(name)
     None =>

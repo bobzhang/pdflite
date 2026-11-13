@@ -3,7 +3,7 @@ fn pdf_crypt_arc4_v4_length(
   pdf : PdfDocument,
   encrypt_dictionary : @syntax.PdfObject,
   cf_dictionary : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match pdf_crypt_lookup_int(pdf, pdf_crypt_length_name, encrypt_dictionary) {
     Some(value) => Some(value)
     None => pdf_crypt_lookup_int(pdf, pdf_crypt_length_name, cf_dictionary)

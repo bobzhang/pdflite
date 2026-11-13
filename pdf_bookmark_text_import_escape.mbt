@@ -1,5 +1,5 @@
 ///|
-fn pdf_bookmark_import_fixup_escape(value : Int) -> Byte? {
+fn pdf_bookmark_import_fixup_escape(value : Int32) -> Byte? {
   match value {
     92 => Some((92).to_byte())
     34 => Some((34).to_byte())
@@ -9,7 +9,7 @@ fn pdf_bookmark_import_fixup_escape(value : Int) -> Byte? {
 }
 
 ///|
-fn pdf_bookmark_import_fixup_text_length(text : BytesView) -> Int {
+fn pdf_bookmark_import_fixup_text_length(text : BytesView) -> Int32 {
   let mut length = 0
   let mut index = 0
   while index < text.length() {

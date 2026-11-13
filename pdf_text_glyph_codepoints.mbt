@@ -1,12 +1,14 @@
 ///|
-fn pdf_text_codepoint_of_agl_base_glyphname(base_name : @core.PdfName) -> Int? {
+fn pdf_text_codepoint_of_agl_base_glyphname(
+  base_name : @core.PdfName,
+) -> Int32? {
   @glyphdata.pdf_text_codepoint_of_agl_base_glyphname(
     pdf_text_string_of_name(base_name),
   )
 }
 
 ///|
-fn pdf_text_codepoints_of_glyphname(name : @core.PdfName) -> Array[Int]? {
+fn pdf_text_codepoints_of_glyphname(name : @core.PdfName) -> Array[Int32]? {
   let base = pdf_text_glyphname_base_bytes(name)
   match pdf_text_uni_glyphname_codepoints(base) {
     Some(codepoints) => Some(codepoints)
@@ -43,7 +45,7 @@ fn pdf_text_codepoints_of_glyphname(name : @core.PdfName) -> Array[Int]? {
 ///|
 fn pdf_text_codepoint_of_agl_symbol_conflict_glyphname(
   name : @core.PdfName,
-) -> Int? {
+) -> Int32? {
   match pdf_text_string_of_name(name) {
     "/Delta" => Some(0x2206)
     "/Omega" => Some(0x2126)
@@ -65,7 +67,7 @@ fn PdfFont::pdf_text_uses_symbol_codepoints(self : PdfFont) -> Bool {
 fn PdfFont::pdf_text_codepoints_of_glyphname(
   self : PdfFont,
   glyphname : @core.PdfName,
-) -> Array[Int]? {
+) -> Array[Int32]? {
   if self.pdf_text_uses_symbol_codepoints() {
     pdf_text_codepoints_of_glyphname(glyphname)
   } else {
@@ -80,7 +82,7 @@ fn PdfFont::pdf_text_codepoints_of_glyphname(
 fn PdfFont::pdf_text_glyphname_has_single_codepoint(
   self : PdfFont,
   glyphname : @core.PdfName,
-  codepoint : Int,
+  codepoint : Int32,
 ) -> Bool {
   match self.pdf_text_codepoints_of_glyphname(glyphname) {
     Some([single]) if single == codepoint => true
@@ -110,8 +112,8 @@ fn PdfFont::pdf_text_has_macexpert_base(self : PdfFont) -> Bool {
 ///|
 fn PdfFont::pdf_text_macexpert_duplicate_charcode(
   self : PdfFont,
-  codepoint : Int,
-) -> Int? {
+  codepoint : Int32,
+) -> Int32? {
   if codepoint == 0xF6E6 && self.pdf_text_has_macexpert_base() {
     Some(0x5F)
   } else {

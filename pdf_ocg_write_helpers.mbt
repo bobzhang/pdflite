@@ -6,7 +6,9 @@ fn pdf_ocg_name_array_object(
 }
 
 ///|
-fn pdf_ocg_indirect_array_object(numbers : ArrayView[Int]) -> @syntax.PdfObject {
+fn pdf_ocg_indirect_array_object(
+  numbers : ArrayView[Int32],
+) -> @syntax.PdfObject {
   PdfArray([ for number in numbers => PdfIndirect(number) ])
 }
 

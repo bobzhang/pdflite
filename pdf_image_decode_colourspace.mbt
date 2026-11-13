@@ -1,8 +1,8 @@
 ///|
 fn PdfDocument::pdf_image_separation_cmyk_8bpp_as_rgb24(
   self : PdfDocument,
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   tint : @syntax.PdfObject,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
@@ -32,10 +32,10 @@ fn PdfDocument::pdf_image_separation_cmyk_8bpp_as_rgb24(
 ///|
 fn PdfDocument::pdf_image_raw_colour_space_as_rgb24(
   self : PdfDocument,
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   colour_space : PdfColourSpace,
-  bpc : Int?,
+  bpc : Int32?,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   match (colour_space, bpc) {
@@ -112,10 +112,10 @@ fn PdfDocument::pdf_image_raw_colour_space_as_rgb24(
 ///|
 fn PdfDocument::pdf_image_raw_colour_space_as_rgb24_owned(
   self : PdfDocument,
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   colour_space : PdfColourSpace,
-  bpc : Int?,
+  bpc : Int32?,
   data : @core.PdfBytes,
 ) -> @core.PdfBytes raise @core.PdfError {
   match (colour_space, bpc) {
@@ -139,8 +139,8 @@ fn PdfDocument::pdf_image_raw_colour_space_as_rgb24_owned(
 fn PdfDocument::pdf_image_raw_8bpp_as_rgb24_owned(
   self : PdfDocument,
   resources : @syntax.PdfObject,
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   dictionary : @syntax.PdfObject,
   data : @core.PdfBytes,
 ) -> @core.PdfBytes raise @core.PdfError {

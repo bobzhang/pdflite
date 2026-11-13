@@ -253,7 +253,7 @@ test "PdfDocument number_tree_lookup finds nested number entries by limits" {
 ///|
 test "PdfDocument build_number_tree creates child limits and nested kids" {
   let doc = @pdflite.pdf_document_empty()
-  let entries : Array[(Int, @syntax.PdfObject)] = [
+  let entries : Array[(Int32, @syntax.PdfObject)] = [
     for i in 0..<101 => (i, PdfInteger(i))
   ]
   let tree = doc.build_number_tree(entries)

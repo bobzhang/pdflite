@@ -1,7 +1,7 @@
 ///|
 priv struct PdfImageExtractionRunState {
-  serial : Ref[Int]
-  written : Array[Int]
+  serial : Ref[Int32]
+  written : Array[Int32]
   jbig2 : PdfImageExtractionState
 }
 
@@ -42,7 +42,7 @@ fn PdfImageExtractionRunState::claim_images(
 ///|
 fn PdfImageExtractionRunState::next_serial(
   self : PdfImageExtractionRunState,
-) -> Int {
+) -> Int32 {
   let serial = self.serial.val
   self.serial.val += 1
   serial

@@ -10,7 +10,7 @@ pub fn pdf_toc_of_utf8(
   font_size : Double,
   text : BytesView,
 ) -> Array[PdfTypeElement] raise @core.PdfError {
-  let mapped : Array[(Int, Int, PdfFont)] = []
+  let mapped : Array[(Int32, Int32, PdfFont)] = []
   for codepoint in pdf_codepoints_of_utf8(text) {
     match fontpack.get_char(codepoint) {
       Some(run) => mapped.push(run)
@@ -24,8 +24,8 @@ pub fn pdf_toc_of_utf8(
 
 ///|
 fn pdf_toc_codepoints_contains(
-  codepoints : ArrayView[Int],
-  codepoint : Int,
+  codepoints : ArrayView[Int32],
+  codepoint : Int32,
 ) -> Bool {
   for current in codepoints {
     if current == codepoint {
@@ -37,8 +37,8 @@ fn pdf_toc_codepoints_contains(
 
 ///|
 fn pdf_toc_append_unique_codepoints(
-  output : Array[Int],
-  codepoints : ArrayView[Int],
+  output : Array[Int32],
+  codepoints : ArrayView[Int32],
 ) -> Unit {
   for codepoint in codepoints {
     if !pdf_toc_codepoints_contains(output, codepoint) {
@@ -49,7 +49,7 @@ fn pdf_toc_append_unique_codepoints(
 
 ///|
 fn pdf_toc_append_utf8_codepoints(
-  output : Array[Int],
+  output : Array[Int32],
   text : BytesView,
 ) -> Unit raise @core.PdfError {
   pdf_toc_append_unique_codepoints(output, pdf_codepoints_of_utf8(text))
@@ -57,7 +57,7 @@ fn pdf_toc_append_utf8_codepoints(
 
 ///|
 fn pdf_toc_append_pdfdocstring_codepoints(
-  output : Array[Int],
+  output : Array[Int32],
   text : BytesView,
 ) -> Unit raise @core.PdfError {
   pdf_toc_append_utf8_codepoints(output, pdf_utf8_of_pdfdocstring(text))
@@ -65,7 +65,7 @@ fn pdf_toc_append_pdfdocstring_codepoints(
 
 ///|
 fn pdf_toc_page_label_text(
-  page_number : Int,
+  page_number : Int32,
   labels : ArrayView[@label.PdfPageLabel],
 ) -> @core.PdfBytes {
   if page_number < 1 {
@@ -89,8 +89,8 @@ pub fn PdfDocument::toc_used_codepoints(
   labels : ArrayView[@label.PdfPageLabel],
   title : BytesView,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-) -> Array[Int] raise @core.PdfError {
-  let used : Array[Int] = [46]
+) -> Array[Int32] raise @core.PdfError {
+  let used : Array[Int32] = [46]
   pdf_toc_append_utf8_codepoints(used, title)
   for bookmark in bookmarks {
     pdf_toc_append_pdfdocstring_codepoints(used, bookmark.text)
@@ -110,7 +110,7 @@ pub fn pdf_toc_used_codepoints(
   labels : ArrayView[@label.PdfPageLabel],
   title : BytesView,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   document.toc_used_codepoints(labels, title, bookmarks)
 }
 

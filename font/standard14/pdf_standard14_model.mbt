@@ -3,6 +3,7 @@ pub using @afm {type PdfAfmData, type PdfBytes}
 
 ///|
 /// The built-in PDF standard 14 font faces.
+#derive(Debug, Eq, ToJson)
 pub(all) enum PdfStandardFont {
   PdfTimesRoman
   PdfTimesBold
@@ -18,7 +19,7 @@ pub(all) enum PdfStandardFont {
   PdfCourierBoldOblique
   PdfSymbol
   PdfZapfDingbats
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Return the canonical standard-font name without the leading PDF slash.
@@ -78,7 +79,7 @@ pub fn pdf_standard_font_of_name(name : String) -> PdfStandardFont? {
 
 ///|
 /// Return a synthetic baseline adjustment for simple standard-font placement.
-pub fn PdfStandardFont::baseline_adjustment(self : PdfStandardFont) -> Int {
+pub fn PdfStandardFont::baseline_adjustment(self : PdfStandardFont) -> Int32 {
   match self {
     PdfTimesRoman => 662 / 2
     PdfTimesBold => 676 / 2
@@ -97,7 +98,7 @@ pub fn PdfStandardFont::baseline_adjustment(self : PdfStandardFont) -> Int {
 
 ///|
 /// Return the standard-font `StemV` descriptor value used when writing fonts.
-pub fn PdfStandardFont::stemv(self : PdfStandardFont) -> Int {
+pub fn PdfStandardFont::stemv(self : PdfStandardFont) -> Int32 {
   match self {
     PdfTimesRoman => 116
     PdfTimesBold => 122
@@ -121,7 +122,7 @@ pub fn PdfStandardFont::stemv(self : PdfStandardFont) -> Int {
 ///
 /// The flags distinguish symbolic fonts, fixed-pitch Courier faces, and the
 /// nonsymbolic roman faces according to the PDF font descriptor bit layout.
-pub fn PdfStandardFont::flags(self : PdfStandardFont) -> Int {
+pub fn PdfStandardFont::flags(self : PdfStandardFont) -> Int32 {
   match self {
     PdfSymbol => 65541
     PdfZapfDingbats => 4

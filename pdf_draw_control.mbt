@@ -9,10 +9,11 @@ let pdf_draw_control_push_frame = "_PUSH"
 
 ///|
 /// Named frame of draw operations used by `PdfDrawControl` while nesting.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfDrawControlFrame {
   name : String
   ops : Array[PdfDrawOp]
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Stateful builder for cpdf draw-control operations.
@@ -21,6 +22,7 @@ pub(all) struct PdfDrawControlFrame {
 /// operations are appended to the current frame; text sections, pushed graphics
 /// groups, and form XObjects collect nested operations and collapse them into
 /// `TextSection`, `Qq`, and `FormXObject` operations when closed.
+#derive(Debug, Eq, ToJson)
 pub struct PdfDrawControl {
   frames : Array[PdfDrawControlFrame]
   mut xobject_bbox : @geometry.PdfCoordRectangle
@@ -31,18 +33,18 @@ pub struct PdfDrawControl {
   mut paragraph_indent : Double?
   mut role_map : String
   mut auto_artifacts : Bool
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 fn pdf_draw_control_default_bbox() -> @geometry.PdfCoordRectangle {
-  { x: 0.0, y: 0.0, width: 1000.0, height: 1000.0 }
+  { x: 0.0, y: 0.0, width: 1000.0, height: 1000.0, }
 }
 
 ///|
 /// Create a fresh cpdf draw-control state with an empty main frame.
 pub fn pdf_draw_control_new() -> PdfDrawControl {
   {
-    frames: [{ name: pdf_draw_control_main_frame, ops: [] }],
+    frames: [{ name: pdf_draw_control_main_frame, ops: [], }],
     xobject_bbox: pdf_draw_control_default_bbox(),
     font_name: "Times-Roman",
     font_size: 12.0,
@@ -81,7 +83,7 @@ pub fn PdfDrawControl::current_frame_name(
 
 ///|
 /// Return the current stack depth.
-pub fn PdfDrawControl::depth(self : PdfDrawControl) -> Int {
+pub fn PdfDrawControl::depth(self : PdfDrawControl) -> Int32 {
   self.frames.length()
 }
 
@@ -151,7 +153,7 @@ fn pdf_draw_control_read_floats(
 ///|
 fn pdf_draw_control_expect_floats(
   text : String,
-  count : Int,
+  count : Int32,
   count_message : String,
   parse_message : String,
 ) -> Array[Double] raise @core.PdfError {

@@ -1,6 +1,6 @@
 ///|
 test "private Cyrillic AFII AGL glyph helper covers aliases" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/afii10017", 0x0410),
     ("/afii10018", 0x0411),
     ("/afii10019", 0x0412),

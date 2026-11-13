@@ -1,7 +1,7 @@
 ///|
 fn pdf_text_predefined_gb1_vertical_codepoint_table(
   name : @core.PdfName,
-) -> Array[(Int, Int)]? {
+) -> Array[(Int32, Int32)]? {
   guard pdf_text_predefined_cmap_is_vertical(name) else { return None }
   let text = pdf_text_string_of_name(name)
   if text.contains("GBK2K") {
@@ -22,7 +22,7 @@ fn pdf_text_predefined_gb1_vertical_codepoint_table(
 ///|
 fn pdf_text_predefined_gb1_vertical_charcode_table(
   name : @core.PdfName,
-) -> Array[(Int, Int)]? {
+) -> Array[(Int32, Int32)]? {
   guard pdf_text_predefined_cmap_is_vertical(name) else { return None }
   let text = pdf_text_string_of_name(name)
   if text.contains("GBK2K") {
@@ -43,7 +43,7 @@ fn pdf_text_predefined_gb1_vertical_charcode_table(
 ///|
 fn pdf_text_predefined_cns1_vertical_codepoint_table(
   name : @core.PdfName,
-) -> Array[(Int, Int)]? {
+) -> Array[(Int32, Int32)]? {
   guard pdf_text_predefined_cmap_is_vertical(name) else { return None }
   let text = pdf_text_string_of_name(name)
   if text.contains("ETenms-B5") {
@@ -74,7 +74,7 @@ fn pdf_text_predefined_cns1_vertical_codepoint_table(
 ///|
 fn pdf_text_predefined_cns1_vertical_charcode_table(
   name : @core.PdfName,
-) -> Array[(Int, Int)]? {
+) -> Array[(Int32, Int32)]? {
   guard pdf_text_predefined_cmap_is_vertical(name) else { return None }
   let text = pdf_text_string_of_name(name)
   if text.contains("ETenms-B5") {
@@ -105,7 +105,7 @@ fn pdf_text_predefined_cns1_vertical_charcode_table(
 ///|
 fn pdf_text_predefined_korea1_vertical_codepoint_table(
   name : @core.PdfName,
-) -> Array[(Int, Int)]? {
+) -> Array[(Int32, Int32)]? {
   guard pdf_text_predefined_cmap_is_vertical(name) else { return None }
   let text = pdf_text_string_of_name(name)
   if text.contains("UHC") {
@@ -122,7 +122,7 @@ fn pdf_text_predefined_korea1_vertical_codepoint_table(
 ///|
 fn pdf_text_predefined_korea1_vertical_charcode_table(
   name : @core.PdfName,
-) -> Array[(Int, Int)]? {
+) -> Array[(Int32, Int32)]? {
   guard pdf_text_predefined_cmap_is_vertical(name) else { return None }
   let text = pdf_text_string_of_name(name)
   if text.contains("UHC") {
@@ -138,9 +138,9 @@ fn pdf_text_predefined_korea1_vertical_charcode_table(
 
 ///|
 fn pdf_text_predefined_vertical_codepoint(
-  table : Array[(Int, Int)]?,
-  code : Int,
-) -> Int? {
+  table : Array[(Int32, Int32)]?,
+  code : Int32,
+) -> Int32? {
   match table {
     Some(table) => pdf_text_predefined_pair_table_lookup(table, code)
     None => None
@@ -149,9 +149,9 @@ fn pdf_text_predefined_vertical_codepoint(
 
 ///|
 fn pdf_text_predefined_vertical_charcode(
-  table : Array[(Int, Int)]?,
-  codepoint : Int,
-) -> Int? {
+  table : Array[(Int32, Int32)]?,
+  codepoint : Int32,
+) -> Int32? {
   match table {
     Some(table) => pdf_text_predefined_pair_table_lookup(table, codepoint)
     None => None

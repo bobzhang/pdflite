@@ -15,7 +15,7 @@ test "private function helpers cover parser and evaluator guards" {
   guard bad_number_array is Err(@core.PdfError::NumberExpected) else {
     fail("expected number-array object")
   }
-  let missing_int_array : Result[Array[Int], Error] = try
+  let missing_int_array : Result[Array[Int32], Error] = try
     doc.pdf_fun_lookup_required_int_array(PdfDictionary([]), pdf_fun_size_key())
   catch {
     err => Err(err)
@@ -26,7 +26,7 @@ test "private function helpers cover parser and evaluator guards" {
     name == pdf_fun_size_key() else {
     fail("expected missing required int array")
   }
-  let missing_int : Result[Int, Error] = try
+  let missing_int : Result[Int32, Error] = try
     doc.pdf_fun_lookup_required_int(
       PdfDictionary([]),
       pdf_fun_bits_per_sample_key(),
@@ -40,7 +40,7 @@ test "private function helpers cover parser and evaluator guards" {
     name == pdf_fun_bits_per_sample_key() else {
     fail("expected missing required int")
   }
-  let bad_optional_int : Result[Int, Error] = try
+  let bad_optional_int : Result[Int32, Error] = try
     doc.pdf_fun_lookup_int_or(
       PdfDictionary([(pdf_fun_order_key(), PdfNameObject(pdf_fun_name("/Bad")))]),
       pdf_fun_order_key(),
@@ -169,7 +169,7 @@ test "private function helpers cover parser and evaluator guards" {
   let interpolation : PdfFunction = {
     domain: [0.0, 1.0],
     range: None,
-    func: PdfFunctionInterpolation({ c0: [0.0], c1: [1.0], n: 1.0 }),
+    func: PdfFunctionInterpolation({ c0: [0.0], c1: [1.0], n: 1.0, }),
   }
   let stitching : PdfStitchingFunction = {
     functions: [interpolation],

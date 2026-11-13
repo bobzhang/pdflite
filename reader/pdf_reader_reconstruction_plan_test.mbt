@@ -1,18 +1,18 @@
 ///|
 fn reader_reconstruction_plan_entry_for_test(
-  object_number : Int,
-  offset : Int,
+  object_number : Int32,
+  offset : Int32,
 ) -> @reader.PdfClassicXRefEntry {
-  { object_number, offset, generation: 0, in_use: true, object_stream: None }
+  { object_number, offset, generation: 0, in_use: true, object_stream: None, }
 }
 
 ///|
 fn reader_reconstruction_plan_section_for_test(
-  object_number : Int,
-  offset : Int,
-  trailer? : @syntax.PdfObject = PdfDictionary([]),
-  stream_object_number? : Int? = None,
-  stream_object_offset? : Int? = None,
+  object_number : Int32,
+  offset : Int32,
+  trailer~ : @syntax.PdfObject = PdfDictionary([]),
+  stream_object_number~ : Int32? = None,
+  stream_object_offset~ : Int32? = None,
 ) -> @reader.PdfXRefSection {
   {
     entries: [reader_reconstruction_plan_entry_for_test(object_number, offset)],
@@ -25,8 +25,8 @@ fn reader_reconstruction_plan_section_for_test(
 ///|
 fn reader_reconstruction_plan_classic_section_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
-) -> (@reader.PdfXRefSection, Int) raise @core.PdfError {
+  position : Int32,
+) -> (@reader.PdfXRefSection, Int32) raise @core.PdfError {
   cursor.seek_absolute(position)
   if position == 0 {
     (
@@ -45,8 +45,8 @@ fn reader_reconstruction_plan_classic_section_for_test(
 ///|
 fn reader_reconstruction_plan_xref_stream_section_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
-) -> (@reader.PdfXRefSection, Int) raise @core.PdfError {
+  position : Int32,
+) -> (@reader.PdfXRefSection, Int32) raise @core.PdfError {
   cursor.seek_absolute(position)
   (
     reader_reconstruction_plan_section_for_test(
@@ -62,10 +62,10 @@ fn reader_reconstruction_plan_xref_stream_section_for_test(
 ///|
 fn reader_reconstruction_plan_object_xref_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
+  position : Int32,
   _xrefs : ArrayView[@reader.PdfClassicXRefEntry],
   _xref_index : @reader.PdfClassicXRefIndex,
-) -> (@reader.PdfClassicXRefEntry?, Int?) raise @core.PdfError {
+) -> (@reader.PdfClassicXRefEntry?, Int32?) raise @core.PdfError {
   cursor.seek_absolute(position)
   (
     Some(reader_reconstruction_plan_entry_for_test(2, position)),
@@ -76,7 +76,7 @@ fn reader_reconstruction_plan_object_xref_for_test(
 ///|
 fn reader_reconstruction_plan_trailer_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
+  position : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   cursor.seek_absolute(position)
   PdfDictionary([(@reader.pdf_reader_size_name(), PdfInteger(3))])
@@ -85,7 +85,7 @@ fn reader_reconstruction_plan_trailer_for_test(
 ///|
 fn reader_reconstruction_plan_xref_stream_trailer_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
+  position : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   cursor.seek_absolute(position)
   PdfDictionary([(@reader.pdf_reader_size_name(), PdfInteger(8))])

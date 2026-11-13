@@ -4,7 +4,7 @@
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_b5pc_codepoint_table : Array[(Int, Int)] = [
+pub let pdf_text_b5pc_codepoint_table : Array[(Int32, Int32)] = [
   (0x0000, 0x0000),
   (0x0001, 0x0001),
   (0x0002, 0x0002),
@@ -13635,7 +13635,7 @@ pub let pdf_text_b5pc_codepoint_table : Array[(Int, Int)] = [
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_b5pc_charcode_table : Array[(Int, Int)] = [
+pub let pdf_text_b5pc_charcode_table : Array[(Int32, Int32)] = [
   (0x0000, 0x0000),
   (0x0001, 0x0001),
   (0x0002, 0x0002),

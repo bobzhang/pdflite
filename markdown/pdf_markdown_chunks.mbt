@@ -4,8 +4,8 @@ priv struct PdfMarkdownTextChunk {
   y : Double
   width : Double
   font_size : Double
-  index : Int
-  codepoints : Array[Int]
+  index : Int32
+  codepoints : Array[Int32]
 }
 
 ///|
@@ -25,7 +25,7 @@ fn pdf_markdown_text_matrix_position(
 }
 
 ///|
-fn pdf_markdown_codepoint_is_fullwidth(codepoint : Int) -> Bool {
+fn pdf_markdown_codepoint_is_fullwidth(codepoint : Int32) -> Bool {
   (codepoint >= 0x2E80 && codepoint <= 0xA4CF) ||
   (codepoint >= 0xAC00 && codepoint <= 0xD7AF) ||
   (codepoint >= 0xF900 && codepoint <= 0xFAFF) ||
@@ -35,7 +35,7 @@ fn pdf_markdown_codepoint_is_fullwidth(codepoint : Int) -> Bool {
 
 ///|
 fn pdf_markdown_estimated_codepoint_width(
-  codepoint : Int,
+  codepoint : Int32,
   font_size : Double,
 ) -> Double {
   if pdf_markdown_codepoint_is_fullwidth(codepoint) {
@@ -47,7 +47,7 @@ fn pdf_markdown_estimated_codepoint_width(
 
 ///|
 fn pdf_markdown_estimated_chunk_width(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
   font_size : Double,
 ) -> Double {
   let mut width = 0.0
@@ -60,11 +60,11 @@ fn pdf_markdown_estimated_chunk_width(
 ///|
 fn pdf_markdown_push_text_chunk(
   chunks : Array[PdfMarkdownTextChunk],
-  next_index : Ref[Int],
+  next_index : Ref[Int32],
   ctm : @geometry.TransformMatrix,
   text_matrix : @geometry.TransformMatrix,
   font_size : Double,
-  codepoints : Array[Int],
+  codepoints : Array[Int32],
 ) -> Unit {
   if codepoints.length() > 0 {
     let position = pdf_markdown_text_matrix_position(ctm, text_matrix)
@@ -82,12 +82,12 @@ fn pdf_markdown_push_text_chunk(
 
 ///|
 priv struct PdfMarkdownFontCache {
-  values : @hashmap.HashMap[Int, @pdflite.PdfTextExtractor?]
+  values : @hashmap.HashMap[Int32, @pdflite.PdfTextExtractor?]
 }
 
 ///|
 fn pdf_markdown_font_cache() -> PdfMarkdownFontCache {
-  { values: HashMap([]) }
+  { values: HashMap([]), }
 }
 
 ///|

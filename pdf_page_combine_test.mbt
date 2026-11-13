@@ -33,9 +33,9 @@ fn combine_font_resources_for_test(name : String) -> @syntax.PdfObject {
 ///|
 fn combine_page_for_test(
   ops : ArrayView[@content.PdfContentOp],
-  resources? : @syntax.PdfObject = PdfDictionary([]),
-  width? : Double = 100.0,
-  height? : Double = 100.0,
+  resources~ : @syntax.PdfObject = PdfDictionary([]),
+  width~ : Double = 100.0,
+  height~ : Double = 100.0,
 ) -> @page.PdfPage {
   {
     content: [combine_stream_for_test(ops)],

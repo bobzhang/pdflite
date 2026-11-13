@@ -14,7 +14,7 @@ fn pdf_fun_calculator_values_equal(
 ///|
 fn pdf_fun_calculator_numeric_binary(
   stack : Array[PdfCalculatorValue],
-  int_op : (Int, Int) -> Int,
+  int_op : (Int32, Int32) -> Int32,
   float_op : (Double, Double) -> Double,
 ) -> Unit raise @core.PdfError {
   let right = pdf_fun_calculator_pop_value(stack)
@@ -36,7 +36,7 @@ fn pdf_fun_calculator_numeric_binary(
 fn pdf_fun_calculator_boolean_or_integer_binary(
   stack : Array[PdfCalculatorValue],
   bool_op : (Bool, Bool) -> Bool,
-  int_op : (Int, Int) -> Int,
+  int_op : (Int32, Int32) -> Int32,
 ) -> Unit raise @core.PdfError {
   let right = pdf_fun_calculator_pop_value(stack)
   let left = pdf_fun_calculator_pop_value(stack)
@@ -55,24 +55,24 @@ fn pdf_fun_calculator_not(
 ) -> Unit raise @core.PdfError {
   match pdf_fun_calculator_pop_value(stack) {
     PdfCalculatorBoolean(value) => stack.push(PdfCalculatorBoolean(!value))
-    PdfCalculatorInt(value) => stack.push(PdfCalculatorInt(Int::lnot(value)))
+    PdfCalculatorInt(value) => stack.push(PdfCalculatorInt(Int32::lnot(value)))
     PdfCalculatorFloat(_) =>
       raise BadFunctionEvaluation("calculator integer operand expected")
   }
 }
 
 ///|
-fn pdf_fun_calculator_int_min() -> Int {
+fn pdf_fun_calculator_int_min() -> Int32 {
   -2147483648
 }
 
 ///|
-fn pdf_fun_calculator_int_max() -> Int {
+fn pdf_fun_calculator_int_max() -> Int32 {
   2147483647
 }
 
 ///|
-fn pdf_fun_calculator_bitshift(value : Int, shift : Int) -> Int {
+fn pdf_fun_calculator_bitshift(value : Int32, shift : Int32) -> Int32 {
   if shift >= 0 {
     value << shift
   } else {

@@ -21,7 +21,7 @@ fn pdf_text_dictionary_has_key(
 fn pdf_text_find_immediate_indirect(
   object : @syntax.PdfObject,
   key : @core.PdfName,
-) -> Int? {
+) -> Int32? {
   match object.dictionary_view() {
     Some(entries) =>
       for entry in entries {
@@ -66,7 +66,7 @@ fn pdf_text_fontfile_of_descriptor(
 
 ///|
 fn pdf_text_zero_rectangle() -> @geometry.PdfRectangle {
-  { min_x: 0.0, min_y: 0.0, max_x: 0.0, max_y: 0.0 }
+  { min_x: 0.0, min_y: 0.0, max_x: 0.0, max_y: 0.0, }
 }
 
 ///|
@@ -105,7 +105,7 @@ fn PdfDocument::pdf_text_optional_integer(
   self : PdfDocument,
   key : @core.PdfName,
   object : @syntax.PdfObject,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match self.lookup_direct(key, object) {
     Some(value) => self.get_number(value).to_int()
     None => 0

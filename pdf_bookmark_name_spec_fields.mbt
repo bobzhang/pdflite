@@ -1,8 +1,8 @@
 ///|
 fn pdf_bookmark_name_spec_scan_to_at(
   bytes : BytesView,
-  start : Int,
-) -> (Int, Int) {
+  start : Int32,
+) -> (Int32, Int32) {
   let mut end = start
   while end < bytes.length() && bytes[end].to_int() != 64 {
     end = end + 1
@@ -12,16 +12,16 @@ fn pdf_bookmark_name_spec_scan_to_at(
 }
 
 ///|
-fn pdf_bookmark_name_spec_ascii_length(text : String) -> Int {
+fn pdf_bookmark_name_spec_ascii_length(text : String) -> Int32 {
   @ascii.encode(text).length()
 }
 
 ///|
 fn pdf_bookmark_name_spec_copy_ascii(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   text : String,
-) -> Int {
+) -> Int32 {
   let mut position = position
   for byte in @ascii.encode(text) {
     output[position] = byte
@@ -34,11 +34,11 @@ fn pdf_bookmark_name_spec_copy_ascii(
 fn pdf_bookmark_name_spec_process_at_fields_length(
   bytes : BytesView,
   bookmark_name : String,
-  sequence : Int,
+  sequence : Int32,
   filename : String,
-  start_page : Int,
-  end_page : Int,
-) -> Int raise @core.PdfError {
+  start_page : Int32,
+  end_page : Int32,
+) -> Int32 raise @core.PdfError {
   let mut output_length = 0
   let mut index = 0
   while index < bytes.length() {
@@ -110,12 +110,12 @@ fn pdf_bookmark_name_spec_process_at_fields_length(
 fn PdfDocument::pdf_bookmark_name_spec_process_at_fields(
   self : PdfDocument,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  split_level : Int,
+  split_level : Int32,
   spec : String,
-  sequence : Int,
+  sequence : Int32,
   filename : String,
-  start_page : Int,
-  end_page : Int,
+  start_page : Int32,
+  end_page : Int32,
 ) -> String raise @core.PdfError {
   let bytes = @utf8.encode(spec)
   let bookmark_name = self.pdf_bookmark_name_for_page(

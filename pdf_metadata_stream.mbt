@@ -15,7 +15,7 @@ fn pdf_metadata_stream(data : BytesView) -> @syntax.PdfObject {
 pub fn PdfDocument::set_metadata_from_bytes(
   self : PdfDocument,
   data : BytesView,
-  keep_version? : Bool = false,
+  keep_version~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
   let metadata_number = document.add_object(pdf_metadata_stream(data))
@@ -100,7 +100,7 @@ pub fn PdfDocument::remove_all_metadata(
   self : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   let document = self.remove_metadata()
-  let to_remove : Array[Int] = []
+  let to_remove : Array[Int32] = []
   for entry in document.parsed_object_entries() {
     match document.lookup_direct(pdf_metadata_type(), entry.2) {
       Some(PdfNameObject(name)) if name == pdf_metadata_metadata() =>

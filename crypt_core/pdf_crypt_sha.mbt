@@ -29,7 +29,7 @@ let pdf_sha512_k : Array[UInt64] = [
 ]
 
 ///|
-fn pdf_sha512_rotr(value : UInt64, bits : Int) -> UInt64 {
+fn pdf_sha512_rotr(value : UInt64, bits : Int32) -> UInt64 {
   (value >> bits) | (value << (64 - bits))
 }
 
@@ -58,7 +58,7 @@ fn pdf_sha512_big_sigma1(value : UInt64) -> UInt64 {
 }
 
 ///|
-fn pdf_sha512_u64_from_be(data : BytesView, offset : Int) -> UInt64 {
+fn pdf_sha512_u64_from_be(data : BytesView, offset : Int32) -> UInt64 {
   let mut value : UInt64 = 0
   for index in 0..<8 {
     value = (value << 8) | data[offset + index].to_uint64()
@@ -69,7 +69,7 @@ fn pdf_sha512_u64_from_be(data : BytesView, offset : Int) -> UInt64 {
 ///|
 fn pdf_sha512_write_u64_be(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   value : UInt64,
 ) -> Unit {
   let mut offset = position
@@ -144,7 +144,7 @@ fn pdf_sha512_process_block(block : BytesView, state : Array[UInt64]) -> Unit {
 fn pdf_sha512_digest_with_state(
   data : BytesView,
   state : Array[UInt64],
-  output_words : Int,
+  output_words : Int32,
 ) -> @core.PdfBytes {
   let padded = pdf_sha512_padded(data)
   let mut offset = 0

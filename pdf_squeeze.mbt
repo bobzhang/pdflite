@@ -73,7 +73,7 @@ pub fn pdf_decompress_pdf(
 /// will not rewrite shared page content streams.
 pub fn PdfDocument::squeeze(
   self : PdfDocument,
-  page_data? : Bool = true,
+  page_data~ : Bool = true,
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
   let mut previous_count = -1
@@ -91,7 +91,7 @@ pub fn PdfDocument::squeeze(
 /// Compatibility wrapper for `PdfDocument::squeeze`.
 pub fn squeeze(
   document : PdfDocument,
-  page_data? : Bool = true,
+  page_data~ : Bool = true,
 ) -> PdfDocument raise @core.PdfError {
   document.squeeze(page_data~)
 }
@@ -100,7 +100,7 @@ pub fn squeeze(
 /// `pdf_`-prefixed compatibility alias for cpdfsqueeze's `squeeze`.
 pub fn pdf_squeeze(
   document : PdfDocument,
-  page_data? : Bool = true,
+  page_data~ : Bool = true,
 ) -> PdfDocument raise @core.PdfError {
   squeeze(document, page_data~)
 }

@@ -34,13 +34,13 @@ fn pdf_async_io_extracted_image_has_any_smask(
 /// image data; external PNM-to-PNG conversion remains outside this wrapper.
 pub async fn pdf_extract_single_image_to_files(
   document : @pdflite.PdfDocument,
-  object_number : Int,
+  object_number : Int32,
   stem : StringView,
-  raw? : Bool = false,
-  path_to_p2p? : String = "",
-  path_to_im? : String = "",
-  merge_masks? : Bool = false,
-  permission? : Int = 0o644,
+  raw~ : Bool = false,
+  path_to_p2p~ : String = "",
+  path_to_im~ : String = "",
+  merge_masks~ : Bool = false,
+  permission~ : Int32 = 0o644,
 ) -> Array[String] {
   ignore(raw)
   ignore(path_to_p2p)
@@ -69,12 +69,12 @@ pub async fn pdf_extract_single_image(
   merge_masks : Bool,
   encoding : @metadata.PdfMetadataEncoding,
   document : @pdflite.PdfDocument,
-  object_number : Int,
+  object_number : Int32,
   stem : StringView,
-  raw? : Bool = false,
-  path_to_p2p? : String = "",
-  path_to_im? : String = "",
-  permission? : Int = 0o644,
+  raw~ : Bool = false,
+  path_to_p2p~ : String = "",
+  path_to_im~ : String = "",
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   ignore(encoding)
   ignore(
@@ -99,17 +99,17 @@ pub async fn pdf_extract_single_image(
 /// PNM-to-PNG conversion remains outside this wrapper.
 pub async fn pdf_extract_images_to_files(
   document : @pdflite.PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   stem : StringView,
-  encoding? : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
-  inline? : Bool = false,
-  dedup? : Bool = false,
-  dedup_per_page? : Bool = false,
-  raw? : Bool = false,
-  path_to_p2p? : String = "",
-  path_to_im? : String = "",
-  merge_masks? : Bool = false,
-  permission? : Int = 0o644,
+  encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
+  inline~ : Bool = false,
+  dedup~ : Bool = false,
+  dedup_per_page~ : Bool = false,
+  raw~ : Bool = false,
+  path_to_p2p~ : String = "",
+  path_to_im~ : String = "",
+  merge_masks~ : Bool = false,
+  permission~ : Int32 = 0o644,
 ) -> Array[String] {
   ignore(raw)
   ignore(path_to_p2p)
@@ -147,12 +147,12 @@ pub async fn pdf_extract_images(
   dedup : Bool,
   dedup_per_page : Bool,
   document : @pdflite.PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   stem : StringView,
-  raw? : Bool = false,
-  path_to_p2p? : String = "",
-  path_to_im? : String = "",
-  permission? : Int = 0o644,
+  raw~ : Bool = false,
+  path_to_p2p~ : String = "",
+  path_to_im~ : String = "",
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   ignore(
     pdf_extract_images_to_files(

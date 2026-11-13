@@ -27,8 +27,8 @@ fn pdf_page_info_entry_json(entry : PdfPageInfoEntry) -> Json {
 /// Return cpdf's page-info JSON array for selected 1-based page numbers.
 pub fn PdfDocument::page_info_json(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  unit? : @geometry.PdfUnit = PdfPoint,
+  page_numbers : ArrayView[Int32],
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> Json raise @core.PdfError {
   Json::array(
     [
@@ -43,8 +43,8 @@ pub fn PdfDocument::page_info_json(
 /// Return cpdf's page-info JSON array as UTF-8 bytes.
 pub fn PdfDocument::page_info_json_blob(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  unit? : @geometry.PdfUnit = PdfPoint,
+  page_numbers : ArrayView[Int32],
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> @core.PdfBytes raise @core.PdfError {
   @utf8.encode(self.page_info_json(page_numbers, unit~).stringify())
 }

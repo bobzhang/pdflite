@@ -1,10 +1,10 @@
 ///|
-fn pdf_addtext_roman_upper(number : Int) -> String {
+fn pdf_addtext_roman_upper(number : Int32) -> String {
   @ascii.decode_lossy(@label.pdf_page_label_roman_upper(number))
 }
 
 ///|
-fn pdf_addtext_roman_lower(number : Int) -> String {
+fn pdf_addtext_roman_lower(number : Int32) -> String {
   @ascii.decode_lossy(
     @label.pdf_page_label_lowercase(@label.pdf_page_label_roman_upper(number)),
   )
@@ -13,9 +13,9 @@ fn pdf_addtext_roman_lower(number : Int) -> String {
 ///|
 /// Format cpdf add-text's `%Bates` replacement for one page.
 pub fn pdf_addtext_bates_number(
-  bates : Int,
-  page_number : Int,
-  bates_pad : Int?,
+  bates : Int32,
+  page_number : Int32,
+  bates_pad : Int32?,
 ) -> String {
   let number_text = (bates + page_number - 1).to_string()
   match bates_pad {
@@ -36,7 +36,7 @@ pub fn pdf_addtext_bates_number(
 ///|
 fn pdf_addtext_bookmark_replacement(
   values : @addtext.PdfAddTextReplacementValues,
-  level : Int,
+  level : Int32,
 ) -> String {
   if level >= 0 && level < values.bookmarks.length() {
     values.bookmarks[level]
@@ -112,7 +112,7 @@ fn pdf_addtext_page_label_number(label : @label.PdfPageLabel) -> String {
 /// Documents without page labels fall back to decimal page numbers.
 pub fn PdfDocument::addtext_page_label(
   self : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
 ) -> String raise @core.PdfError {
   let labels = @label.pdf_page_label_complete(self.read_page_labels())
   match @label.pdf_page_label_of_page_number(page_number, labels) {
@@ -127,7 +127,7 @@ pub fn PdfDocument::addtext_page_label(
 /// Compatibility wrapper for `PdfDocument::addtext_page_label`.
 pub fn pdf_addtext_page_label(
   document : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
 ) -> String raise @core.PdfError {
   document.addtext_page_label(page_number)
 }
@@ -147,8 +147,8 @@ fn pdf_addtext_bookmark_text(
 pub fn PdfDocument::addtext_bookmark_for_page(
   self : PdfDocument,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  level : Int,
-  page_number : Int,
+  level : Int32,
+  page_number : Int32,
 ) -> String raise @core.PdfError {
   let before : Array[@bookmark.PdfBookmark] = Array::new(
     capacity=bookmarks.length(),
@@ -202,8 +202,8 @@ pub fn PdfDocument::addtext_bookmark_for_page(
 pub fn pdf_addtext_bookmark_for_page(
   document : PdfDocument,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  level : Int,
-  page_number : Int,
+  level : Int32,
+  page_number : Int32,
 ) -> String raise @core.PdfError {
   document.addtext_bookmark_for_page(bookmarks, level, page_number)
 }
@@ -213,11 +213,11 @@ pub fn pdf_addtext_bookmark_for_page(
 pub fn PdfDocument::addtext_replacement_values(
   self : PdfDocument,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  page_number : Int,
-  end_page : Int,
+  page_number : Int32,
+  end_page : Int32,
   filename : String,
-  bates : Int,
-  bates_pad : Int?,
+  bates : Int32,
+  bates_pad : Int32?,
 ) -> @addtext.PdfAddTextReplacementValues raise @core.PdfError {
   let bookmark_values : Array[String] = Array::new(capacity=5)
   for level in 0..<5 {
@@ -242,11 +242,11 @@ pub fn PdfDocument::addtext_replacement_values(
 pub fn pdf_addtext_replacement_values(
   document : PdfDocument,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  page_number : Int,
-  end_page : Int,
+  page_number : Int32,
+  end_page : Int32,
   filename : String,
-  bates : Int,
-  bates_pad : Int?,
+  bates : Int32,
+  bates_pad : Int32?,
 ) -> @addtext.PdfAddTextReplacementValues raise @core.PdfError {
   document.addtext_replacement_values(
     bookmarks, page_number, end_page, filename, bates, bates_pad,
@@ -261,11 +261,11 @@ pub fn pdf_addtext_replacement_values(
 pub fn pdf_replace_pairs(
   bookmarks : ArrayView[@bookmark.PdfBookmark],
   document : PdfDocument,
-  end_page : Int,
+  end_page : Int32,
   filename : String,
-  bates : Int,
-  bates_pad : Int?,
-  page_number : Int,
+  bates : Int32,
+  bates_pad : Int32?,
+  page_number : Int32,
 ) -> Array[(String, () -> String)] raise @core.PdfError {
   let values = document.addtext_replacement_values(
     bookmarks, page_number, end_page, filename, bates, bates_pad,

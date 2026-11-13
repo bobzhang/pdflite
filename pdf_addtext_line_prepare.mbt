@@ -63,12 +63,12 @@ pub fn PdfDocument::addtext_prepare_line(
   font_size : Double,
   text : String,
   position : @geometry.PdfPosition,
-  relative_to_box? : @core.PdfName = pdf_page_mediabox_key(),
-  horizontal_offset? : Double = 0.0,
-  vertical_offset? : Double = 0.0,
-  justification? : @addtext.PdfAddTextJustification = PdfAddTextLeftJustify,
-  rotation? : @addtext.PdfAddTextRotation = PdfAddTextRot0,
-  raw? : Bool = false,
+  relative_to_box~ : @core.PdfName = pdf_page_mediabox_key(),
+  horizontal_offset~ : Double = 0.0,
+  vertical_offset~ : Double = 0.0,
+  justification~ : @addtext.PdfAddTextJustification = PdfAddTextLeftJustify,
+  rotation~ : @addtext.PdfAddTextRotation = PdfAddTextRot0,
+  raw~ : Bool = false,
 ) -> @addtext.PdfAddTextPreparedLine raise @core.PdfError {
   let processed = pdf_addtext_process_text_with_time(time, text, replacements)
   let parsed = @addtext.pdf_addtext_get_urls_line(processed)
@@ -132,12 +132,12 @@ pub fn pdf_addtext_prepare_line(
   font_size : Double,
   text : String,
   position : @geometry.PdfPosition,
-  relative_to_box? : @core.PdfName = pdf_page_mediabox_key(),
-  horizontal_offset? : Double = 0.0,
-  vertical_offset? : Double = 0.0,
-  justification? : @addtext.PdfAddTextJustification = PdfAddTextLeftJustify,
-  rotation? : @addtext.PdfAddTextRotation = PdfAddTextRot0,
-  raw? : Bool = false,
+  relative_to_box~ : @core.PdfName = pdf_page_mediabox_key(),
+  horizontal_offset~ : Double = 0.0,
+  vertical_offset~ : Double = 0.0,
+  justification~ : @addtext.PdfAddTextJustification = PdfAddTextLeftJustify,
+  rotation~ : @addtext.PdfAddTextRotation = PdfAddTextRot0,
+  raw~ : Bool = false,
 ) -> @addtext.PdfAddTextPreparedLine raise @core.PdfError {
   document.addtext_prepare_line(
     page,

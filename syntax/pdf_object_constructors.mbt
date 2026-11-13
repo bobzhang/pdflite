@@ -55,7 +55,7 @@ pub fn pdf_recurse_array(
 pub fn pdf_recurse_dict(
   transform : (PdfObject) -> PdfObject,
   entries : ArrayView[(@core.PdfName, PdfObject)],
-  preserve_order? : Bool = false,
+  preserve_order~ : Bool = false,
 ) -> PdfObject {
   let transformed : Array[(@core.PdfName, PdfObject)] = Array::new(
     capacity=entries.length(),
@@ -77,7 +77,7 @@ pub fn pdf_recurse_dict(
 /// malformed inputs can carry other objects and will be reported by helpers that
 /// require dictionary metadata.
 pub fn pdf_stream(dictionary : PdfObject, data : PdfStreamData) -> PdfObject {
-  PdfStreamObject({ dictionary, data })
+  PdfStreamObject({ dictionary, data, })
 }
 
 ///|
@@ -87,8 +87,8 @@ pub fn pdf_stream(dictionary : PdfObject, data : PdfStreamData) -> PdfObject {
 /// `position` when materialized.
 pub fn stream_to_get(
   input : @core.ByteCursor,
-  position : Int,
-  length : Int,
+  position : Int32,
+  length : Int32,
 ) -> ToGet {
-  { input, position, length, crypt: PdfStreamDataNoCrypt }
+  { input, position, length, crypt: PdfStreamDataNoCrypt, }
 }

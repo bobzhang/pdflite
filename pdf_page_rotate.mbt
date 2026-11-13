@@ -1,7 +1,7 @@
 ///|
 fn PdfDocument::pdf_page_rotate_rewrite(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   rotate : (@page.PdfPage) -> @page.PdfPageRotation raise @core.PdfError,
   label : String,
 ) -> PdfDocument raise @core.PdfError {
@@ -13,7 +13,7 @@ fn PdfDocument::pdf_page_rotate_rewrite(
     let page_number = index + 1
     let page = pages[index]
     if selected_pages.contains(page_number) {
-      rewritten.push({ ..page, rotate: rotate(page) })
+      rewritten.push({ ..page, rotate: rotate(page), })
     } else {
       rewritten.push(page)
     }
@@ -59,8 +59,8 @@ fn PdfDocument::pdf_page_rotate_contents_page(
 /// Set selected page `/Rotate` entries to an absolute rotation in degrees.
 pub fn PdfDocument::rotate_pages(
   self : PdfDocument,
-  rotation : Int,
-  page_numbers : ArrayView[Int],
+  rotation : Int32,
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   let normalized = @page.pdf_page_rotation_of_int(rotation)
   self.pdf_page_rotate_rewrite(
@@ -74,8 +74,8 @@ pub fn PdfDocument::rotate_pages(
 /// Compatibility method using cpdfpage's `rotate_pdf` name.
 pub fn PdfDocument::rotate_pdf(
   self : PdfDocument,
-  rotation : Int,
-  page_numbers : ArrayView[Int],
+  rotation : Int32,
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   self.rotate_pages(rotation, page_numbers)
 }
@@ -84,8 +84,8 @@ pub fn PdfDocument::rotate_pdf(
 /// Add `rotation` degrees to selected page `/Rotate` entries.
 pub fn PdfDocument::rotate_pages_by(
   self : PdfDocument,
-  rotation : Int,
-  page_numbers : ArrayView[Int],
+  rotation : Int32,
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_page_rotate_rewrite(
     page_numbers,
@@ -102,8 +102,8 @@ pub fn PdfDocument::rotate_pages_by(
 /// Compatibility method using cpdfpage's `rotate_pdf_by` name.
 pub fn PdfDocument::rotate_pdf_by(
   self : PdfDocument,
-  rotation : Int,
-  page_numbers : ArrayView[Int],
+  rotation : Int32,
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   self.rotate_pages_by(rotation, page_numbers)
 }
@@ -117,8 +117,8 @@ pub fn PdfDocument::rotate_pdf_by(
 pub fn PdfDocument::rotate_contents(
   self : PdfDocument,
   rotation : Double,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   pdf_page_box_validate_page_numbers(
     page_numbers,
@@ -128,7 +128,7 @@ pub fn PdfDocument::rotate_contents(
   let pages = self.pages_of_pagetree()
   let selected_pages = @core.pdf_number_set(page_numbers)
   let rewritten : Array[@page.PdfPage] = Array::new(capacity=pages.length())
-  let matrices : Array[(Int, @geometry.TransformMatrix)] = Array::new(
+  let matrices : Array[(Int32, @geometry.TransformMatrix)] = Array::new(
     capacity=page_numbers.length(),
   )
   for index in 0..<pages.length() {
@@ -150,8 +150,8 @@ pub fn PdfDocument::rotate_contents(
 /// Compatibility wrapper for `PdfDocument::rotate_pages`.
 pub fn pdf_rotate_pages(
   document : PdfDocument,
-  rotation : Int,
-  page_numbers : ArrayView[Int],
+  rotation : Int32,
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.rotate_pages(rotation, page_numbers)
 }
@@ -159,9 +159,9 @@ pub fn pdf_rotate_pages(
 ///|
 /// Compatibility wrapper matching cpdfpage's `rotate_pdf` argument order.
 pub fn pdf_rotate_pdf(
-  rotation : Int,
+  rotation : Int32,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.rotate_pdf(rotation, page_numbers)
 }
@@ -170,8 +170,8 @@ pub fn pdf_rotate_pdf(
 /// Compatibility wrapper for `PdfDocument::rotate_pages_by`.
 pub fn pdf_rotate_pages_by(
   document : PdfDocument,
-  rotation : Int,
-  page_numbers : ArrayView[Int],
+  rotation : Int32,
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.rotate_pages_by(rotation, page_numbers)
 }
@@ -179,9 +179,9 @@ pub fn pdf_rotate_pages_by(
 ///|
 /// Compatibility wrapper matching cpdfpage's `rotate_pdf_by` argument order.
 pub fn pdf_rotate_pdf_by(
-  rotation : Int,
+  rotation : Int32,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.rotate_pdf_by(rotation, page_numbers)
 }
@@ -191,8 +191,8 @@ pub fn pdf_rotate_pdf_by(
 pub fn pdf_rotate_contents(
   document : PdfDocument,
   rotation : Double,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.rotate_contents(rotation, page_numbers, fast~)
 }
@@ -203,8 +203,8 @@ pub fn pdf_rotate_contents(
 pub fn pdf_rotate_contents_cpdf_order(
   rotation : Double,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.rotate_contents(rotation, page_numbers, fast~)
 }

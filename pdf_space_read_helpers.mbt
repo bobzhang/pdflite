@@ -78,7 +78,7 @@ let pdf_space_metadata_key_name : @core.PdfName = pdf_space_name("/Metadata")
 
 ///|
 fn pdf_space_empty_point() -> PdfTristimulusPoint {
-  { x: 0.0, y: 0.0, z: 0.0 }
+  { x: 0.0, y: 0.0, z: 0.0, }
 }
 
 ///|
@@ -89,7 +89,7 @@ fn PdfDocument::pdf_space_read_point(
 ) -> PdfTristimulusPoint raise @core.PdfError {
   match self.lookup_direct(key, dictionary) {
     Some(PdfArray([x, y, z])) =>
-      { x: self.get_number(x), y: self.get_number(y), z: self.get_number(z) }
+      { x: self.get_number(x), y: self.get_number(y), z: self.get_number(z), }
     _ => pdf_space_empty_point()
   }
 }
@@ -99,7 +99,7 @@ fn PdfDocument::pdf_space_read_number_array(
   self : PdfDocument,
   dictionary : @syntax.PdfObject,
   key : @core.PdfName,
-  length : Int,
+  length : Int32,
   default : ArrayView[Double],
 ) -> Array[Double] raise @core.PdfError {
   match self.lookup_direct(key, dictionary) {
@@ -128,7 +128,7 @@ fn PdfDocument::pdf_space_read_number(
 }
 
 ///|
-fn pdf_space_default_icc_alternate(n : Int) -> PdfColourSpace? {
+fn pdf_space_default_icc_alternate(n : Int32) -> PdfColourSpace? {
   match n {
     1 => Some(PdfDeviceGray)
     3 => Some(PdfDeviceRGB)
@@ -138,7 +138,7 @@ fn pdf_space_default_icc_alternate(n : Int) -> PdfColourSpace? {
 }
 
 ///|
-fn pdf_space_default_icc_range(n : Int) -> Array[Double] {
+fn pdf_space_default_icc_range(n : Int32) -> Array[Double] {
   let output : Array[Double] = []
   for _ in 0..<n {
     output.push(0.0)
@@ -160,7 +160,7 @@ fn pdf_space_basic_table_colour_space(space : PdfColourSpace) -> PdfColourSpace 
 }
 
 ///|
-fn pdf_space_indexed_component_count(space : PdfColourSpace) -> Int? {
+fn pdf_space_indexed_component_count(space : PdfColourSpace) -> Int32? {
   match pdf_space_basic_table_colour_space(space) {
     PdfDeviceRGB | PdfCalRGB(_, _, _, _) | PdfLab(_, _, _) => Some(3)
     PdfDeviceCMYK => Some(4)

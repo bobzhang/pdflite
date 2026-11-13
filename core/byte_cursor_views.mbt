@@ -5,7 +5,7 @@
 /// `PdfError::EndOfInput` if the requested range extends past the input.
 pub fn ByteCursor::peek_view(
   self : ByteCursor,
-  length : Int,
+  length : Int32,
 ) -> BytesView raise PdfError {
   if length < 0 {
     raise InvalidReadLength(length)
@@ -23,7 +23,7 @@ pub fn ByteCursor::peek_view(
 /// Raises the same errors as `peek_view`.
 pub fn ByteCursor::peek_bytes(
   self : ByteCursor,
-  length : Int,
+  length : Int32,
 ) -> PdfBytes raise PdfError {
   self.peek_view(length).to_owned()
 }
@@ -32,8 +32,8 @@ pub fn ByteCursor::peek_bytes(
 /// Returns a read-only view at an absolute position without advancing.
 pub fn ByteCursor::view_at_absolute(
   self : ByteCursor,
-  position : Int,
-  length : Int,
+  position : Int32,
+  length : Int32,
 ) -> BytesView raise PdfError {
   if position < 0 {
     raise InvalidCursorPosition(position)
@@ -55,8 +55,8 @@ pub fn ByteCursor::view_at_absolute(
 /// Returns a read-only view at a logical position without advancing.
 pub fn ByteCursor::view_at(
   self : ByteCursor,
-  position : Int,
-  length : Int,
+  position : Int32,
+  length : Int32,
 ) -> BytesView raise PdfError {
   if position < 0 {
     raise InvalidCursorPosition(position)
@@ -117,7 +117,7 @@ pub fn ByteCursor::remaining_view(self : ByteCursor) -> BytesView {
 /// `PdfError::EndOfInput` if the requested range extends past the input.
 pub fn ByteCursor::read_view(
   self : ByteCursor,
-  length : Int,
+  length : Int32,
 ) -> BytesView raise PdfError {
   if length < 0 {
     raise InvalidReadLength(length)
@@ -138,8 +138,8 @@ pub fn ByteCursor::read_view(
 /// bytes are required.
 pub fn ByteCursor::read_view_at(
   self : ByteCursor,
-  position : Int,
-  length : Int,
+  position : Int32,
+  length : Int32,
 ) -> BytesView raise PdfError {
   self.seek(position)
   self.read_view(length)
@@ -153,8 +153,8 @@ pub fn ByteCursor::read_view_at(
 /// is raised.
 pub fn ByteCursor::read_until_view(
   self : ByteCursor,
-  stop : (Int) -> Bool,
-  eof_is_delimiter? : Bool = true,
+  stop : (Int32) -> Bool,
+  eof_is_delimiter~ : Bool = true,
 ) -> BytesView raise PdfError {
   let start = self.position
   let mut done = false
@@ -181,8 +181,8 @@ pub fn ByteCursor::read_until_view(
 /// The delimiter byte is left unread. EOF handling follows `read_until_view`.
 pub fn ByteCursor::ignore_until(
   self : ByteCursor,
-  stop : (Int) -> Bool,
-  eof_is_delimiter? : Bool = true,
+  stop : (Int32) -> Bool,
+  eof_is_delimiter~ : Bool = true,
 ) -> Unit raise PdfError {
   let mut done = false
   while !done {
@@ -207,7 +207,7 @@ pub fn ByteCursor::ignore_until(
 /// Raises the same errors as `read_view`.
 pub fn ByteCursor::read_bytes(
   self : ByteCursor,
-  length : Int,
+  length : Int32,
 ) -> PdfBytes raise PdfError {
   self.read_view(length).to_owned()
 }
@@ -225,8 +225,8 @@ pub fn ByteCursor::read_remaining_bytes(self : ByteCursor) -> PdfBytes {
 /// past them.
 pub fn ByteCursor::read_bytes_at(
   self : ByteCursor,
-  position : Int,
-  length : Int,
+  position : Int32,
+  length : Int32,
 ) -> PdfBytes raise PdfError {
   self.read_view_at(position, length).to_owned()
 }

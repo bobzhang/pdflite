@@ -1,5 +1,5 @@
 ///|
-let pdf_markdown_max_form_depth : Int = 32
+let pdf_markdown_max_form_depth : Int32 = 32
 
 ///|
 let pdf_markdown_line_y_tolerance : Double = 2.0
@@ -20,7 +20,7 @@ fn pdf_markdown_translate_text_line(
 }
 
 ///|
-fn pdf_markdown_codepoint_prefers_tj_join(codepoint : Int) -> Bool {
+fn pdf_markdown_codepoint_prefers_tj_join(codepoint : Int32) -> Bool {
   (codepoint >= 0x3000 && codepoint <= 0x30FF) ||
   (codepoint >= 0x31C0 && codepoint <= 0x31FF) ||
   (codepoint >= 0x3400 && codepoint <= 0x9FFF) ||
@@ -29,22 +29,24 @@ fn pdf_markdown_codepoint_prefers_tj_join(codepoint : Int) -> Bool {
 
 ///|
 fn pdf_markdown_codepoints_start_tj_joinable(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> Bool {
   codepoints.length() > 0 &&
   pdf_markdown_codepoint_prefers_tj_join(codepoints[0])
 }
 
 ///|
-fn pdf_markdown_codepoints_end_tj_joinable(codepoints : ArrayView[Int]) -> Bool {
+fn pdf_markdown_codepoints_end_tj_joinable(
+  codepoints : ArrayView[Int32],
+) -> Bool {
   codepoints.length() > 0 &&
   pdf_markdown_codepoint_prefers_tj_join(codepoints[codepoints.length() - 1])
 }
 
 ///|
 fn pdf_markdown_tj_word_space_needed(
-  left : ArrayView[Int],
-  right : ArrayView[Int],
+  left : ArrayView[Int32],
+  right : ArrayView[Int32],
 ) -> Bool {
   !(pdf_markdown_codepoints_end_tj_joinable(left) &&
   pdf_markdown_codepoints_start_tj_joinable(right))
@@ -54,8 +56,8 @@ fn pdf_markdown_tj_word_space_needed(
 fn pdf_markdown_extracted_codepoints_of_text_array(
   extractor : @pdflite.PdfTextExtractor?,
   items : ArrayView[@syntax.PdfObject],
-) -> Array[Int] raise {
-  let codepoints : Array[Int] = []
+) -> Array[Int32] raise {
+  let codepoints : Array[Int32] = []
   let mut pending_word_space = false
   for item in items {
     match item {
@@ -84,7 +86,7 @@ fn pdf_markdown_extracted_codepoints_of_text_array(
 ///|
 fn pdf_markdown_add_positioned_text_run(
   chunks : Array[PdfMarkdownTextChunk],
-  next_index : Ref[Int],
+  next_index : Ref[Int32],
   ctm : @geometry.TransformMatrix,
   text_matrix : @geometry.TransformMatrix,
   font_size : Double,
@@ -104,7 +106,7 @@ fn pdf_markdown_add_positioned_text_run(
 ///|
 fn pdf_markdown_add_positioned_text_array(
   chunks : Array[PdfMarkdownTextChunk],
-  next_index : Ref[Int],
+  next_index : Ref[Int32],
   ctm : @geometry.TransformMatrix,
   text_matrix : @geometry.TransformMatrix,
   font_size : Double,
@@ -127,10 +129,10 @@ fn pdf_markdown_collect_positioned_text_chunks(
   resources : @syntax.PdfObject,
   streams : ArrayView[@syntax.PdfObject],
   chunks : Array[PdfMarkdownTextChunk],
-  next_index : Ref[Int],
+  next_index : Ref[Int32],
   font_cache : PdfMarkdownFontCache,
   inherited_ctm : @geometry.TransformMatrix,
-  depth : Int,
+  depth : Int32,
 ) -> Unit raise {
   let mut ctm = inherited_ctm
   let ctm_stack : Array[@geometry.TransformMatrix] = []

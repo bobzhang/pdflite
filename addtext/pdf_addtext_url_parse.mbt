@@ -1,5 +1,9 @@
 ///|
-fn pdf_addtext_find_byte(bytes : BytesView, start : Int, value : Int) -> Int? {
+fn pdf_addtext_find_byte(
+  bytes : BytesView,
+  start : Int32,
+  value : Int32,
+) -> Int32? {
   let mut index = start
   while index < bytes.length() {
     if bytes[index].to_int() == value {
@@ -13,9 +17,9 @@ fn pdf_addtext_find_byte(bytes : BytesView, start : Int, value : Int) -> Int? {
 ///|
 fn pdf_addtext_require_byte(
   bytes : BytesView,
-  start : Int,
-  value : Int,
-) -> Int raise @core.PdfError {
+  start : Int32,
+  value : Int32,
+) -> Int32 raise @core.PdfError {
   match pdf_addtext_find_byte(bytes, start, value) {
     Some(index) => index
     None => raise SoftError("bad URL syntax in text")
@@ -23,7 +27,7 @@ fn pdf_addtext_require_byte(
 }
 
 ///|
-fn pdf_addtext_is_url_marker(bytes : BytesView, index : Int) -> Bool {
+fn pdf_addtext_is_url_marker(bytes : BytesView, index : Int32) -> Bool {
   index + 4 < bytes.length() &&
   bytes[index].to_int() == 37 &&
   bytes[index + 1].to_int() == 85 &&
@@ -42,7 +46,7 @@ fn pdf_addtext_utf8_string(bytes : BytesView) -> String raise @core.PdfError {
 ///|
 fn pdf_addtext_url_visible_length(
   bytes : BytesView,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let mut index = 0
   let mut length = 0
   while index < bytes.length() {
@@ -85,7 +89,7 @@ pub fn pdf_addtext_get_urls_line(
       }
       let url = pdf_addtext_utf8_string(bytes[pipe + 1:close])
       let end = position
-      urls.push({ url, start, end })
+      urls.push({ url, start, end, })
       index = close + 1
     } else {
       output[position] = bytes[index]
@@ -93,5 +97,5 @@ pub fn pdf_addtext_get_urls_line(
       index += 1
     }
   }
-  { text: pdf_addtext_utf8_string(Bytes::from_array(output)), urls }
+  { text: pdf_addtext_utf8_string(Bytes::from_array(output)), urls, }
 }

@@ -3,7 +3,7 @@ fn pdf_ua_create_pdfua(
   subformat : PdfUASubformat,
   title : String,
   paper : @geometry.PaperSize,
-  page_count : Int,
+  page_count : Int32,
 ) -> PdfDocument raise @core.PdfError {
   let document = pdf_create_blank_document_with_id_time(
     paper, page_count, pdf_create_now_as_double,
@@ -17,7 +17,7 @@ fn pdf_ua_create_pdfua(
 pub fn pdf_ua_create_pdfua1(
   title : String,
   paper : @geometry.PaperSize,
-  page_count : Int,
+  page_count : Int32,
 ) -> PdfDocument raise @core.PdfError {
   pdf_ua_create_pdfua(PdfUA1, title, paper, page_count)
 }
@@ -27,7 +27,7 @@ pub fn pdf_ua_create_pdfua1(
 pub fn pdf_ua_create_pdfua2(
   title : String,
   paper : @geometry.PaperSize,
-  page_count : Int,
+  page_count : Int32,
 ) -> PdfDocument raise @core.PdfError {
   pdf_ua_create_pdfua(PdfUA2, title, paper, page_count)
 }
@@ -44,7 +44,7 @@ pub fn PdfDocument::mark_pdfua1(
 /// Return a copy of the document marked as PDF/UA-2 for the given revision year.
 pub fn PdfDocument::mark_pdfua2(
   self : PdfDocument,
-  year : Int,
+  year : Int32,
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_ua_mark_inner("2", Some(year))
 }

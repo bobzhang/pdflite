@@ -12,14 +12,14 @@ let pdf_unicode_data_cache : Ref[Array[@unicodedata.PdfUnicodeDataEntry]?] = {
 
 ///|
 let pdf_unicode_data_lookup_cache : Ref[
-  @hashmap.HashMap[Int, PdfUnicodeDataLookup]?,
-] = { val: None }
+  @hashmap.HashMap[Int32, PdfUnicodeDataLookup]?,
+] = { val: None, }
 
 ///|
 fn pdf_unicode_data_field(
   source : BytesView,
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
 ) -> String raise @core.PdfError {
   @ascii.decode(source[start:end]) catch {
     _ => raise SoftError("malformed UnicodeData.txt row")
@@ -29,8 +29,8 @@ fn pdf_unicode_data_field(
 ///|
 fn pdf_unicode_data_parse_row(
   source : BytesView,
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
 ) -> @unicodedata.PdfUnicodeDataEntry raise @core.PdfError {
   let fields : Array[String] = []
   let mut field_start = start
@@ -117,7 +117,7 @@ pub fn pdf_unicodedata() -> Array[@unicodedata.PdfUnicodeDataEntry] raise @core.
 }
 
 ///|
-fn pdf_unicode_data_hex_digit(value : Byte) -> Int? {
+fn pdf_unicode_data_hex_digit(value : Byte) -> Int32? {
   match value.to_int() {
     digit if digit >= 0x30 && digit <= 0x39 => Some(digit - 0x30)
     upper if upper >= 0x41 && upper <= 0x46 => Some(upper - 0x41 + 10)
@@ -127,7 +127,7 @@ fn pdf_unicode_data_hex_digit(value : Byte) -> Int? {
 }
 
 ///|
-fn pdf_unicode_data_codepoint(text : String) -> Int? {
+fn pdf_unicode_data_codepoint(text : String) -> Int32? {
   let bytes = @ascii.encode(text)
   guard bytes.length() > 0 else { return None }
   let mut value = 0
@@ -142,13 +142,13 @@ fn pdf_unicode_data_codepoint(text : String) -> Int? {
 
 ///|
 fn pdf_unicode_data_lookup_table() -> @hashmap.HashMap[
-  Int,
+  Int32,
   PdfUnicodeDataLookup,
 ] raise @core.PdfError {
   match pdf_unicode_data_lookup_cache.val {
     Some(table) => table
     None => {
-      let table : @hashmap.HashMap[Int, PdfUnicodeDataLookup] = HashMap([])
+      let table : @hashmap.HashMap[Int32, PdfUnicodeDataLookup] = HashMap([])
       for entry in pdf_unicode_data() {
         match pdf_unicode_data_codepoint(entry.code_value) {
           Some(codepoint) =>
@@ -168,7 +168,7 @@ fn pdf_unicode_data_lookup_table() -> @hashmap.HashMap[
 
 ///|
 fn pdf_unicode_data_lookup(
-  codepoint : Int,
+  codepoint : Int32,
 ) -> PdfUnicodeDataLookup? raise @core.PdfError {
   pdf_unicode_data_lookup_table().get(codepoint)
 }

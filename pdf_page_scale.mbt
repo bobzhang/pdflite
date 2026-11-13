@@ -62,9 +62,9 @@ fn PdfDocument::pdf_page_scale_page(
 
 ///|
 fn pdf_page_scale_pair_index_map(
-  page_numbers : ArrayView[Int],
-) -> @hashmap.HashMap[Int, Int] {
-  let indexes : @hashmap.HashMap[Int, Int] = HashMap([])
+  page_numbers : ArrayView[Int32],
+) -> @hashmap.HashMap[Int32, Int32] {
+  let indexes : @hashmap.HashMap[Int32, Int32] = HashMap([])
   for index in 0..<page_numbers.length() {
     if !indexes.contains(page_numbers[index]) {
       indexes[page_numbers[index]] = index
@@ -75,7 +75,7 @@ fn pdf_page_scale_pair_index_map(
 
 ///|
 fn pdf_page_scale_validate_pairs(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   scales : ArrayView[(Double, Double)],
 ) -> Unit raise @core.PdfError {
   if page_numbers.length() != scales.length() {
@@ -87,7 +87,7 @@ fn pdf_page_scale_validate_pairs(
 fn pdf_page_scale_validate_page_indexed_pairs(
   context : String,
   label : String,
-  page_count : Int,
+  page_count : Int32,
   values : ArrayView[(Double, Double)],
 ) -> Unit raise @core.PdfError {
   if values.length() != page_count {
@@ -99,7 +99,7 @@ fn pdf_page_scale_validate_page_indexed_pairs(
 
 ///|
 fn pdf_page_scale_select_page_indexed_pairs(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   values : ArrayView[(Double, Double)],
 ) -> Array[(Double, Double)] {
   let selected : Array[(Double, Double)] = Array::new(

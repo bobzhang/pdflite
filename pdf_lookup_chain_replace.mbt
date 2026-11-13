@@ -1,7 +1,7 @@
 ///|
 fn pdf_lookup_wrap_chain(
   keys : ArrayView[@core.PdfName],
-  index : Int,
+  index : Int32,
   value : @syntax.PdfObject,
 ) -> @syntax.PdfObject {
   if index >= keys.length() {
@@ -16,7 +16,7 @@ fn pdf_lookup_wrap_chain(
 ///|
 fn pdf_lookup_replace_array_entry(
   values : ArrayView[@syntax.PdfObject],
-  index : Int,
+  index : Int32,
   value : @syntax.PdfObject,
   key : @core.PdfName,
 ) -> @syntax.PdfObject raise @core.PdfError {
@@ -42,7 +42,7 @@ fn PdfDocument::replace_chain_in_object(
   self : PdfDocument,
   object : @syntax.PdfObject,
   chain : ArrayView[@core.PdfName],
-  chain_index : Int,
+  chain_index : Int32,
   value : @syntax.PdfObject,
 ) -> @syntax.PdfObject raise @core.PdfError {
   let key = chain[chain_index]

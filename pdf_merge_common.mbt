@@ -1,7 +1,7 @@
 ///|
 fn pdf_merge_max_version(
   documents : ArrayView[PdfDocument],
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   if documents.length() == 0 {
     raise PageTreeExpected
   }

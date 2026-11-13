@@ -26,7 +26,10 @@ fn PdfDocument::pdf_tweak_remove_clipping_page(
   page : @page.PdfPage,
 ) -> @page.PdfPage raise @core.PdfError {
   let ops = self.pdf_page_parse_content_ops(page.resources, page.content)
-  { ..page, content: [pdf_content_stream_of_ops(pdf_remove_clipping_ops(ops))] }
+  {
+    ..page,
+    content: [pdf_content_stream_of_ops(pdf_remove_clipping_ops(ops))],
+  }
 }
 
 ///|
@@ -43,7 +46,7 @@ fn pdf_tweak_remove_clipping_xobject(
 /// Remove clipping paths from selected one-based pages and their Form XObjects.
 pub fn PdfDocument::remove_clipping(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
   let pages = document.pages_of_pagetree()
@@ -66,7 +69,7 @@ pub fn PdfDocument::remove_clipping(
 /// Compatibility wrapper for `PdfDocument::remove_clipping`.
 pub fn pdf_remove_clipping(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.remove_clipping(page_numbers)
 }

@@ -1,8 +1,8 @@
 ///|
 fn pdf_ocg_representative_number(
-  representatives : ArrayView[(@core.PdfBytes, Int)],
+  representatives : ArrayView[(@core.PdfBytes, Int32)],
   name : @core.PdfBytes,
-) -> Int? {
+) -> Int32? {
   for representative in representatives {
     if representative.0 == name {
       break Some(representative.1)
@@ -13,7 +13,10 @@ fn pdf_ocg_representative_number(
 }
 
 ///|
-fn pdf_ocg_changed_number(changes : ArrayView[(Int, Int)], number : Int) -> Int {
+fn pdf_ocg_changed_number(
+  changes : ArrayView[(Int32, Int32)],
+  number : Int32,
+) -> Int32 {
   for change in changes {
     if change.0 == number {
       break change.1
@@ -24,7 +27,7 @@ fn pdf_ocg_changed_number(changes : ArrayView[(Int, Int)], number : Int) -> Int 
 }
 
 ///|
-fn pdf_ocg_push_unique_number(output : Array[Int], number : Int) -> Unit {
+fn pdf_ocg_push_unique_number(output : Array[Int32], number : Int32) -> Unit {
   if !output.contains(number) {
     output.push(number)
   }
@@ -32,10 +35,10 @@ fn pdf_ocg_push_unique_number(output : Array[Int], number : Int) -> Unit {
 
 ///|
 fn pdf_ocg_coalesce_numbers(
-  changes : ArrayView[(Int, Int)],
-  numbers : ArrayView[Int],
-) -> Array[Int] {
-  let output : Array[Int] = []
+  changes : ArrayView[(Int32, Int32)],
+  numbers : ArrayView[Int32],
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   for number in numbers {
     pdf_ocg_push_unique_number(output, pdf_ocg_changed_number(changes, number))
   }
@@ -44,13 +47,13 @@ fn pdf_ocg_coalesce_numbers(
 
 ///|
 fn pdf_ocg_coalesce_order(
-  changes : ArrayView[(Int, Int)],
-  order : ArrayView[(@core.PdfBytes?, Array[Int])],
-) -> Array[(@core.PdfBytes?, Array[Int])] {
-  let output : Array[(@core.PdfBytes?, Array[Int])] = []
-  let seen : Array[Int] = []
+  changes : ArrayView[(Int32, Int32)],
+  order : ArrayView[(@core.PdfBytes?, Array[Int32])],
+) -> Array[(@core.PdfBytes?, Array[Int32])] {
+  let output : Array[(@core.PdfBytes?, Array[Int32])] = []
+  let seen : Array[Int32] = []
   for item in order {
-    let numbers : Array[Int] = []
+    let numbers : Array[Int32] = []
     for number in item.1 {
       let changed = pdf_ocg_changed_number(changes, number)
       if !seen.contains(changed) {
@@ -67,15 +70,15 @@ fn pdf_ocg_coalesce_order(
 
 ///|
 fn pdf_ocg_coalesce_appdict(
-  changes : ArrayView[(Int, Int)],
+  changes : ArrayView[(Int32, Int32)],
   appdict : @ocg.PdfOcgAppDict,
 ) -> @ocg.PdfOcgAppDict {
-  { ..appdict, ocgs: pdf_ocg_coalesce_numbers(changes, appdict.ocgs) }
+  { ..appdict, ocgs: pdf_ocg_coalesce_numbers(changes, appdict.ocgs), }
 }
 
 ///|
 fn pdf_ocg_coalesce_config(
-  changes : ArrayView[(Int, Int)],
+  changes : ArrayView[(Int32, Int32)],
   config : @ocg.PdfOcgConfig,
 ) -> @ocg.PdfOcgConfig {
   {
@@ -107,10 +110,10 @@ fn pdf_ocg_coalesce_config(
 ///|
 fn pdf_ocg_coalesce_content(
   content : @ocg.PdfOptionalContent,
-) -> (@ocg.PdfOptionalContent, Array[(Int, Int)]) {
-  let representatives : Array[(@core.PdfBytes, Int)] = []
-  let ocgs : Array[(Int, @ocg.PdfOcg)] = []
-  let changes : Array[(Int, Int)] = []
+) -> (@ocg.PdfOptionalContent, Array[(Int32, Int32)]) {
+  let representatives : Array[(@core.PdfBytes, Int32)] = []
+  let ocgs : Array[(Int32, @ocg.PdfOcg)] = []
+  let changes : Array[(Int32, Int32)] = []
   for entry in content.ocgs {
     let (number, ocg) = entry
     match pdf_ocg_representative_number(representatives, ocg.name) {

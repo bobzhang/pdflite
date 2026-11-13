@@ -1,5 +1,6 @@
 ///|
 /// Text-state fields needed by cpdfcontent's `process_tj` glyph placement.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentTextLayout {
   font_size : Double
   horizontal_scaling : Double
@@ -8,12 +9,13 @@ pub(all) struct PdfContentTextLayout {
   rise : Double
   ctm : @geometry.TransformMatrix
   text_matrix : @geometry.TransformMatrix
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Geometry emitted for one glyph by cpdfcontent-style text placement.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentTextGlyphPlacement {
-  charcode : Int
+  charcode : Int32
   text_matrix : @geometry.TransformMatrix
   width : Double
   pvx : Double
@@ -21,14 +23,15 @@ pub(all) struct PdfContentTextGlyphPlacement {
   advance_x : Double
   advance_y : Double
   bounding_box : PdfContentBoundingBox
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Result of placing one raw PDF text string with cpdfcontent text semantics.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentTextLayoutResult {
   glyphs : Array[PdfContentTextGlyphPlacement]
   text_matrix : @geometry.TransformMatrix
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 fn pdf_content_text_divisor(font : PdfFont) -> Double {
@@ -84,7 +87,7 @@ fn pdf_content_text_bounding_box(
 ///|
 fn pdf_content_text_advance(
   vertical : Bool,
-  charcode : Int,
+  charcode : Int32,
   width : Double,
   layout : PdfContentTextLayout,
 ) -> (Double, Double) {
@@ -156,7 +159,7 @@ pub fn PdfFont::content_text_layout_of_bytes(
       @geometry.transform_translate(advance.0, advance.1),
     )
   }
-  { glyphs, text_matrix }
+  { glyphs, text_matrix, }
 }
 
 ///|
@@ -224,7 +227,7 @@ pub fn PdfFont::content_text_layout_of_tj_array(
       _ => ()
     }
   }
-  { glyphs, text_matrix }
+  { glyphs, text_matrix, }
 }
 
 ///|

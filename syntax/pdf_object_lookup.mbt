@@ -50,7 +50,7 @@ pub fn PdfObject::lookup_immediate(
 pub fn PdfObject::find_indirect(
   self : PdfObject,
   key : @core.PdfName,
-) -> Int? raise @core.PdfError {
+) -> Int32? raise @core.PdfError {
   match self {
     PdfDictionary(_) =>
       match self.lookup_immediate(key) {

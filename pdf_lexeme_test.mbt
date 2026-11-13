@@ -1,10 +1,10 @@
 ///|
-fn lexeme_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn lexeme_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
 ///|
-fn lexeme_view_to_ints_for_test(view : BytesView) -> Array[Int] {
+fn lexeme_view_to_ints_for_test(view : BytesView) -> Array[Int32] {
   view.to_array().map(byte => byte.to_int())
 }
 

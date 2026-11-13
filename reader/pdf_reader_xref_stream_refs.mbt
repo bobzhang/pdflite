@@ -1,15 +1,15 @@
 ///|
 /// Lookup set for object-number and offset pairs claimed by xref streams.
 pub struct PdfReaderXRefStreamRefSet {
-  values : @hashmap.HashMap[Int, @core.PdfNumberSet]
+  values : @hashmap.HashMap[Int32, @core.PdfNumberSet]
 }
 
 ///|
 /// Build a lookup set for xref-stream object references.
 pub fn pdf_reader_xref_stream_ref_set(
-  refs : ArrayView[(Int, Int)],
+  refs : ArrayView[(Int32, Int32)],
 ) -> PdfReaderXRefStreamRefSet {
-  let values : @hashmap.HashMap[Int, @core.PdfNumberSet] = HashMap([])
+  let values : @hashmap.HashMap[Int32, @core.PdfNumberSet] = HashMap([])
   for item in refs {
     let (object_number, offset) = item
     match values.get(object_number) {
@@ -28,8 +28,8 @@ pub fn pdf_reader_xref_stream_ref_set(
 /// Return whether the set contains an object-number and offset pair.
 pub fn PdfReaderXRefStreamRefSet::contains(
   self : PdfReaderXRefStreamRefSet,
-  object_number : Int,
-  offset : Int,
+  object_number : Int32,
+  offset : Int32,
 ) -> Bool {
   match self.values.get(object_number) {
     Some(offsets) => offsets.contains(offset)

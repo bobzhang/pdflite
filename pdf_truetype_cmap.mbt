@@ -1,5 +1,5 @@
 ///|
-fn pdf_truetype_is_cmap_tag(data : BytesView, offset : Int) -> Bool {
+fn pdf_truetype_is_cmap_tag(data : BytesView, offset : Int32) -> Bool {
   offset >= 0 &&
   offset <= data.length() - 4 &&
   data[offset].to_int() == 0x63 &&
@@ -11,8 +11,8 @@ fn pdf_truetype_is_cmap_tag(data : BytesView, offset : Int) -> Bool {
 ///|
 fn pdf_truetype_collect_cmap_records(
   data : BytesView,
-  cmap_offset : Int,
-  records : Array[(Int, Int)],
+  cmap_offset : Int32,
+  records : Array[(Int32, Int32)],
 ) -> Unit {
   match pdf_truetype_read_u16(data, cmap_offset + 2) {
     Some(record_count) => {
@@ -41,8 +41,8 @@ fn pdf_truetype_collect_cmap_records(
 ///|
 fn pdf_truetype_cmap_glyph_from_entries(
   entries : ArrayView[@truetype.PdfTrueTypeCMapGlyph],
-  codepoint : Int,
-) -> Int? {
+  codepoint : Int32,
+) -> Int32? {
   for entry in entries {
     if entry.codepoint == codepoint {
       break Some(entry.glyph_index)
@@ -55,27 +55,27 @@ fn pdf_truetype_cmap_glyph_from_entries(
 ///|
 fn pdf_truetype_push_cmap_glyph(
   entries : Array[@truetype.PdfTrueTypeCMapGlyph],
-  codepoint : Int,
-  glyph_index : Int,
+  codepoint : Int32,
+  glyph_index : Int32,
 ) -> Unit {
   let normalized = pdf_truetype_normalize_u16(glyph_index)
   let mut replaced = false
   for index in 0..<entries.length() {
     if entries[index].codepoint == codepoint {
-      entries[index] = { codepoint, glyph_index: normalized }
+      entries[index] = { codepoint, glyph_index: normalized, }
       replaced = true
       break
     }
   }
   if !replaced {
-    entries.push({ codepoint, glyph_index: normalized })
+    entries.push({ codepoint, glyph_index: normalized, })
   }
 }
 
 ///|
 fn pdf_truetype_cmap_format0_glyphs(
   data : BytesView,
-  subtable_offset : Int,
+  subtable_offset : Int32,
   entries : Array[@truetype.PdfTrueTypeCMapGlyph],
 ) -> Unit {
   for codepoint in 0..<256 {
@@ -90,7 +90,7 @@ fn pdf_truetype_cmap_format0_glyphs(
 ///|
 fn pdf_truetype_cmap_format6_glyphs(
   data : BytesView,
-  subtable_offset : Int,
+  subtable_offset : Int32,
   entries : Array[@truetype.PdfTrueTypeCMapGlyph],
 ) -> Unit {
   match
@@ -117,7 +117,7 @@ fn pdf_truetype_cmap_format6_glyphs(
 ///|
 fn pdf_truetype_cmap_format4_glyphs(
   data : BytesView,
-  subtable_offset : Int,
+  subtable_offset : Int32,
   entries : Array[@truetype.PdfTrueTypeCMapGlyph],
 ) -> Unit {
   match pdf_truetype_read_u16(data, subtable_offset + 6) {
@@ -182,7 +182,7 @@ fn pdf_truetype_cmap_format4_glyphs(
 ///|
 fn pdf_truetype_cmap_subtable_glyphs(
   data : BytesView,
-  subtable_offset : Int,
+  subtable_offset : Int32,
   entries : Array[@truetype.PdfTrueTypeCMapGlyph],
 ) -> Unit {
   match pdf_truetype_read_u16(data, subtable_offset) {
@@ -196,7 +196,7 @@ fn pdf_truetype_cmap_subtable_glyphs(
 ///|
 fn pdf_truetype_identity_cmap_glyphs() -> Array[@truetype.PdfTrueTypeCMapGlyph] {
   [
-    for codepoint in 0..<256 => { codepoint, glyph_index: codepoint }
+    for codepoint in 0..<256 => { codepoint, glyph_index: codepoint, }
   ]
 }
 
@@ -260,7 +260,7 @@ pub fn pdf_truetype_cmap_glyphs(
 
 ///|
 /// Look up one Unicode codepoint in the merged TrueType cmap mappings.
-pub fn pdf_truetype_cmap_glyph(data : BytesView, codepoint : Int) -> Int? {
+pub fn pdf_truetype_cmap_glyph(data : BytesView, codepoint : Int32) -> Int32? {
   let entries = pdf_truetype_cmap_glyphs(data)
   for entry in entries {
     if entry.codepoint == codepoint {
@@ -278,8 +278,8 @@ pub fn pdf_truetype_cmap_glyph(data : BytesView, codepoint : Int) -> Int? {
 /// helper. The source function catches parse failures and returns the records
 /// collected before the failure; this function likewise ignores malformed or
 /// incomplete parts of the font after complete cmap records have been read.
-pub fn pdf_truetype_cmaps(data : BytesView) -> Array[(Int, Int)] {
-  let records : Array[(Int, Int)] = []
+pub fn pdf_truetype_cmaps(data : BytesView) -> Array[(Int32, Int32)] {
+  let records : Array[(Int32, Int32)] = []
   match pdf_truetype_read_u16(data, 4) {
     Some(table_count) => {
       let mut index = 0

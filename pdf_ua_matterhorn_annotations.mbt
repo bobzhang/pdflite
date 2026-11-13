@@ -30,7 +30,7 @@ fn PdfDocument::pdf_ua_matterhorn_check_28_007(
 fn PdfDocument::pdf_ua_matterhorn_page_annotation_count(
   self : PdfDocument,
   page : @page.PdfPage,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   self.annotations_of_page(page).length()
 }
 
@@ -105,7 +105,7 @@ fn pdf_ua_matterhorn_28_004_subtype_requires_contents_or_alt(
 ///|
 fn PdfDocument::pdf_ua_matterhorn_parent_tree_entries(
   self : PdfDocument,
-) -> Array[(Int, @syntax.PdfObject)] {
+) -> Array[(Int32, @syntax.PdfObject)] {
   match
     self.lookup_chain(self.trailer_dict(), [
       pdf_ua_root_key(),
@@ -119,8 +119,8 @@ fn PdfDocument::pdf_ua_matterhorn_parent_tree_entries(
 
 ///|
 fn pdf_ua_matterhorn_parent_tree_lookup(
-  parent_tree : ArrayView[(Int, @syntax.PdfObject)],
-  key : Int,
+  parent_tree : ArrayView[(Int32, @syntax.PdfObject)],
+  key : Int32,
 ) -> @syntax.PdfObject? {
   for entry in parent_tree {
     if entry.0 == key {
@@ -199,7 +199,7 @@ fn PdfDocument::pdf_ua_matterhorn_check_28_005(_self : PdfDocument) -> Json? {
 fn PdfDocument::pdf_ua_matterhorn_struct_parent_check(
   self : PdfDocument,
   object : @syntax.PdfObject,
-  parent_tree : ArrayView[(Int, @syntax.PdfObject)],
+  parent_tree : ArrayView[(Int32, @syntax.PdfObject)],
   expected_type : @core.PdfName,
   wrong_type_extra : String,
   missing_struct_parent_extra : String?,

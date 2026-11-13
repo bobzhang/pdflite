@@ -25,7 +25,7 @@ async fn bookmark_fixture_bytes_for_test(path : String) -> Bytes? {
 fn bookmark_fixture_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -44,7 +44,7 @@ fn bookmark_fixture_bytes_start_with_at_for_test(
 fn bookmark_fixture_find_last_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     haystack.length()
   } else if haystack.length() < needle.length() {
@@ -150,7 +150,7 @@ fn bookmark_fixture_title_for_test(
 fn bookmark_fixture_assert_page_for_test(
   document : @pdflite.PdfDocument,
   bookmark : @bookmark.PdfBookmark,
-  page_number : Int,
+  page_number : Int32,
 ) -> Unit raise {
   @test.assert_eq(document.page_number_of_target(bookmark.target), page_number)
   @test.assert_eq(

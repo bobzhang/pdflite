@@ -118,7 +118,7 @@ fn PdfDocument::pdf_transform_quadpoint_chunk(
   self : PdfDocument,
   matrix : @geometry.TransformMatrix,
   values : ArrayView[@syntax.PdfObject],
-  start : Int,
+  start : Int32,
 ) -> Array[@syntax.PdfObject] {
   let numbers : Array[Double] = []
   let mut valid = true

@@ -51,7 +51,7 @@ pub fn PdfDocument::copy(self : PdfDocument) -> PdfDocument {
 
 ///|
 /// Return the PDF version as `(major, minor)`.
-pub fn PdfDocument::version(self : PdfDocument) -> (Int, Int) {
+pub fn PdfDocument::version(self : PdfDocument) -> (Int32, Int32) {
   (self.major, self.minor)
 }
 
@@ -59,8 +59,8 @@ pub fn PdfDocument::version(self : PdfDocument) -> (Int, Int) {
 /// Set the PDF version stored on the document.
 pub fn PdfDocument::set_version(
   self : PdfDocument,
-  major : Int,
-  minor : Int,
+  major : Int32,
+  minor : Int32,
 ) -> Unit {
   self.major = major
   self.minor = minor
@@ -68,7 +68,7 @@ pub fn PdfDocument::set_version(
 
 ///|
 /// Return the catalog root object number tracked on the document.
-pub fn PdfDocument::root(self : PdfDocument) -> Int {
+pub fn PdfDocument::root(self : PdfDocument) -> Int32 {
   self.root
 }
 
@@ -94,7 +94,7 @@ pub fn PdfDocument::catalog(
 
 ///|
 /// Set the catalog root object number.
-pub fn PdfDocument::set_root(self : PdfDocument, root : Int) -> Unit {
+pub fn PdfDocument::set_root(self : PdfDocument, root : Int32) -> Unit {
   self.root = root
 }
 

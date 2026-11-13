@@ -5,10 +5,10 @@
 /// set, this returns UTF-8 JSON bytes for the same filtered bookmark set.
 pub fn PdfDocument::list_bookmarks(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  encoding? : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
-  json? : Bool = false,
-  json_preserve_actions? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
+  json~ : Bool = false,
+  json_preserve_actions~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   let bookmarks = self.pdf_bookmark_listing_bookmarks(
     page_numbers,
@@ -39,7 +39,7 @@ pub fn PdfDocument::list_bookmarks(
 /// Return cpdf's full-document bookmark JSON listing.
 pub fn PdfDocument::bookmarks_json(
   self : PdfDocument,
-  json_preserve_actions? : Bool = false,
+  json_preserve_actions~ : Bool = false,
 ) -> Json raise @core.PdfError {
   let end_page = self.endpage()
   let page_numbers = Array::make(end_page, 0)
@@ -56,7 +56,7 @@ pub fn PdfDocument::bookmarks_json(
 /// Return cpdf's full-document bookmark JSON listing as UTF-8 JSON bytes.
 pub fn PdfDocument::bookmarks_json_blob(
   self : PdfDocument,
-  json_preserve_actions? : Bool = false,
+  json_preserve_actions~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   @utf8.encode(self.bookmarks_json(json_preserve_actions~).stringify())
 }
@@ -67,7 +67,7 @@ pub fn pdf_list_bookmarks(
   json : Bool,
   json_preserve_actions : Bool,
   encoding : @metadata.PdfMetadataEncoding,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.list_bookmarks(

@@ -1,5 +1,5 @@
 ///|
-fn print_tree_name_for_test(value : Int) -> String {
+fn print_tree_name_for_test(value : Int32) -> String {
   match value {
     0 => "root"
     1 => "left"
@@ -10,7 +10,7 @@ fn print_tree_name_for_test(value : Int) -> String {
 }
 
 ///|
-fn print_tree_children_for_test(value : Int) -> Array[Int] {
+fn print_tree_children_for_test(value : Int32) -> Array[Int32] {
   match value {
     0 => [1, 2]
     1 => [3]

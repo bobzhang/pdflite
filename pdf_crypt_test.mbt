@@ -1,5 +1,5 @@
 ///|
-fn crypt_model_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn crypt_model_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -51,7 +51,7 @@ fn crypt_aesv3_r5_owner_encryption_key_for_test() -> @core.PdfBytes {
 
 ///|
 fn crypt_aesv3_r5_permissions_for_test(
-  permissions? : Int = -3904,
+  permissions~ : Int32 = -3904,
 ) -> @core.PdfBytes {
   match permissions {
     -3904 =>
@@ -121,15 +121,18 @@ fn crypt_stream_for_test(
 }
 
 ///|
-fn crypt_repeated_bytes_for_test(value : Int, length : Int) -> @core.PdfBytes {
+fn crypt_repeated_bytes_for_test(
+  value : Int32,
+  length : Int32,
+) -> @core.PdfBytes {
   crypt_model_bytes_for_test([ for _ in 0..<length => value ])
 }
 
 ///|
 fn crypt_standard_encrypt_dictionary_for_test(
   entries : ArrayView[(@core.PdfName, @syntax.PdfObject)],
-  owner_length? : Int = 40,
-  user_length? : Int = 40,
+  owner_length~ : Int32 = 40,
+  user_length~ : Int32 = 40,
 ) -> @syntax.PdfObject {
   crypt_standard_encrypt_dictionary_values_for_test(
     entries,
@@ -144,7 +147,7 @@ fn crypt_standard_encrypt_dictionary_values_for_test(
   entries : ArrayView[(@core.PdfName, @syntax.PdfObject)],
   owner_entry : @core.PdfBytes,
   user_entry : @core.PdfBytes,
-  permissions : Int,
+  permissions : Int32,
 ) -> @syntax.PdfObject {
   let output : Array[(@core.PdfName, @syntax.PdfObject)] = [
     (

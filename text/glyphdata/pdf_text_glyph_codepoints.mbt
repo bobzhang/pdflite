@@ -1,6 +1,6 @@
 ///|
 /// Return the Unicode scalar for an Adobe Glyph List base glyph name.
-pub fn pdf_text_codepoint_of_agl_base_glyphname(base_name : String) -> Int? {
+pub fn pdf_text_codepoint_of_agl_base_glyphname(base_name : String) -> Int32? {
   match pdf_text_codepoint_of_basic_latin_glyphname(base_name) {
     Some(codepoint) => return Some(codepoint)
     None => ()

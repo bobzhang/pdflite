@@ -9,7 +9,7 @@ let pdf_embed_length1_key_name : @core.PdfName = @core.pdf_name_of_bytes(
 )
 
 ///|
-let pdf_embed_font_number : Ref[Int] = { val: 0 }
+let pdf_embed_font_number : Ref[Int32] = { val: 0, }
 
 ///|
 fn pdf_embed_name(text : String) -> @core.PdfName {
@@ -27,7 +27,7 @@ fn pdf_embed_basename() -> String {
 fn PdfDocument::pdf_embed_add_truetype_fontfile(
   self : PdfDocument,
   fontfile : @core.PdfBytes,
-) -> Int {
+) -> Int32 {
   let length = fontfile.length()
   self.add_object(
     @syntax.pdf_stream(
@@ -60,7 +60,7 @@ fn pdf_embed_truetype_fontmetrics(
 ///|
 fn pdf_embed_truetype_descriptor(
   parsed : @truetype.PdfTrueTypeParsedSubset,
-  fontfile_number : Int,
+  fontfile_number : Int32,
 ) -> PdfFontDescriptor {
   {
     ascent: parsed.ascent.to_double(),
@@ -90,7 +90,7 @@ fn PdfDocument::pdf_embed_make_single_truetype_font(
   parsed : @truetype.PdfTrueTypeParsedSubset,
   fontname : String,
   encoding : PdfEncoding,
-) -> (Array[Int], PdfFont) {
+) -> (Array[Int32], PdfFont) {
   let fontfile_number = self.pdf_embed_add_truetype_fontfile(
     parsed.subset_fontfile,
   )
@@ -114,7 +114,7 @@ fn PdfDocument::pdf_embed_make_single_truetype_font(
 
 ///|
 fn pdf_embed_make_fontpack_entries(
-  subsets_and_fonts : ArrayView[(Array[Int], PdfFont)],
+  subsets_and_fonts : ArrayView[(Array[Int32], PdfFont)],
 ) -> Array[PdfFontPackEntry] {
   let mut entry_capacity = 0
   for entry in subsets_and_fonts {
@@ -127,7 +127,7 @@ fn pdf_embed_make_fontpack_entries(
     for codepoint in subset {
       match extractor.charcode_of_codepoint(codepoint) {
         Some(charcode) =>
-          entries.push({ codepoint, font_index: index, charcode })
+          entries.push({ codepoint, font_index: index, charcode, })
         None => ()
       }
     }
@@ -146,14 +146,14 @@ pub fn PdfDocument::embed_truetype(
   self : PdfDocument,
   fontfile : BytesView,
   fontname : String,
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
   encoding : PdfEncoding,
 ) -> PdfFontPack raise @core.PdfError {
   if codepoints.length() == 0 {
     pdf_fontpack_empty()
   } else {
     let parsed = pdf_truetype_parse(fontfile, encoding, codepoints)
-    let subsets_and_fonts : Array[(Array[Int], PdfFont)] = Array::new(
+    let subsets_and_fonts : Array[(Array[Int32], PdfFont)] = Array::new(
       capacity=parsed.length(),
     )
     for subset in parsed {
@@ -176,7 +176,7 @@ pub fn pdf_embed_truetype(
   document : PdfDocument,
   fontfile : BytesView,
   fontname : String,
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
   encoding : PdfEncoding,
 ) -> PdfFontPack raise @core.PdfError {
   document.embed_truetype(fontfile, fontname, codepoints, encoding)

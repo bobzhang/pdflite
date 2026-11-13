@@ -77,7 +77,7 @@ fn pdf_ocg_read_json_optional_number(
 fn pdf_ocg_read_json_int(
   json : Json,
   message : String,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match json {
     Number(value, repr=_) => pdf_util_json_truncated_number(value)
     _ => raise SoftError(message)
@@ -88,10 +88,10 @@ fn pdf_ocg_read_json_int(
 fn pdf_ocg_read_json_ints(
   json : Json,
   message : String,
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   match json {
     Array(values) => {
-      let output : Array[Int] = []
+      let output : Array[Int32] = []
       for value in values {
         output.push(pdf_ocg_read_json_int(value, message))
       }

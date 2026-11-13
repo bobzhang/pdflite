@@ -43,7 +43,7 @@ fn pdf_reference_should_follow_dictionary(
 ///|
 fn PdfDocument::collect_referenced_object_numbers(
   self : PdfDocument,
-  found : @hashmap.HashMap[Int, Bool],
+  found : @hashmap.HashMap[Int32, Bool],
   object : @syntax.PdfObject,
   no_follow_entries : ArrayView[@core.PdfName],
   no_follow_contains : ArrayView[(@core.PdfName, @syntax.PdfObject)],
@@ -107,10 +107,10 @@ fn PdfDocument::collect_referenced_object_numbers(
 pub fn PdfDocument::referenced_object_numbers(
   self : PdfDocument,
   object : @syntax.PdfObject,
-  no_follow_entries? : ArrayView[@core.PdfName] = [],
-  no_follow_contains? : ArrayView[(@core.PdfName, @syntax.PdfObject)] = [],
-) -> Array[Int] {
-  let found : @hashmap.HashMap[Int, Bool] = HashMap([])
+  no_follow_entries~ : ArrayView[@core.PdfName] = [],
+  no_follow_contains~ : ArrayView[(@core.PdfName, @syntax.PdfObject)] = [],
+) -> Array[Int32] {
+  let found : @hashmap.HashMap[Int32, Bool] = HashMap([])
   self.collect_referenced_object_numbers(
     found, object, no_follow_entries, no_follow_contains,
   )

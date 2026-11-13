@@ -35,7 +35,7 @@ pub fn ByteCursor::read_line(self : ByteCursor) -> PdfBytes raise PdfError {
 }
 
 ///|
-fn ByteCursor::remaining_line_count(self : ByteCursor) -> Int {
+fn ByteCursor::remaining_line_count(self : ByteCursor) -> Int32 {
   let mut index = self.position
   let mut count = 0
   while index < self.data.length() {

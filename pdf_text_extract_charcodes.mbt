@@ -1,9 +1,9 @@
 ///|
 fn pdf_text_push_two_byte_charcode(
-  output : Array[Int],
+  output : Array[Int32],
   text : BytesView,
-  index : Int,
-) -> Int raise @core.PdfError {
+  index : Int32,
+) -> Int32 raise @core.PdfError {
   guard index + 1 < text.length() else { raise BadText }
   output.push((text[index].to_int() << 8) | text[index + 1].to_int())
   index + 2
@@ -11,10 +11,10 @@ fn pdf_text_push_two_byte_charcode(
 
 ///|
 fn pdf_text_push_three_byte_charcode(
-  output : Array[Int],
+  output : Array[Int32],
   text : BytesView,
-  index : Int,
-) -> Int raise @core.PdfError {
+  index : Int32,
+) -> Int32 raise @core.PdfError {
   guard index + 2 < text.length() else { raise BadText }
   output.push(
     (((text[index].to_int() << 8) | text[index + 1].to_int()) << 8) |
@@ -25,10 +25,10 @@ fn pdf_text_push_three_byte_charcode(
 
 ///|
 fn pdf_text_push_four_byte_charcode(
-  output : Array[Int],
+  output : Array[Int32],
   text : BytesView,
-  index : Int,
-) -> Int raise @core.PdfError {
+  index : Int32,
+) -> Int32 raise @core.PdfError {
   guard index + 3 < text.length() else { raise BadText }
   output.push(
     (
@@ -45,10 +45,10 @@ fn pdf_text_push_four_byte_charcode(
 
 ///|
 fn pdf_text_push_utf8_charcode(
-  output : Array[Int],
+  output : Array[Int32],
   text : BytesView,
-  index : Int,
-) -> Int raise @core.PdfError {
+  index : Int32,
+) -> Int32 raise @core.PdfError {
   let first = text[index].to_int()
   let (length, code) = if first >> 7 == 0 {
     (1, first)
@@ -81,10 +81,10 @@ fn pdf_text_push_utf8_charcode(
 
 ///|
 fn pdf_text_push_utf16_charcode(
-  output : Array[Int],
+  output : Array[Int32],
   text : BytesView,
-  index : Int,
-) -> Int raise @core.PdfError {
+  index : Int32,
+) -> Int32 raise @core.PdfError {
   let first = pdf_text_pack_two_bytes(
     text[index].to_int(),
     text[index + 1].to_int(),
@@ -115,10 +115,10 @@ fn pdf_text_push_utf16_charcode(
 
 ///|
 fn pdf_text_push_utf32_charcode(
-  output : Array[Int],
+  output : Array[Int32],
   text : BytesView,
-  index : Int,
-) -> Int raise @core.PdfError {
+  index : Int32,
+) -> Int32 raise @core.PdfError {
   guard index + 3 < text.length() else { raise BadText }
   let code = pdf_text_pack_four_bytes(
     text[index].to_int(),
@@ -134,12 +134,12 @@ fn pdf_text_push_utf32_charcode(
 }
 
 ///|
-fn pdf_text_shift_jis_lead_byte(byte : Int) -> Bool {
+fn pdf_text_shift_jis_lead_byte(byte : Int32) -> Bool {
   (byte >= 0x81 && byte <= 0x9F) || (byte >= 0xE0 && byte <= 0xFC)
 }
 
 ///|
-fn pdf_text_gbk2k_four_byte_prefix(first : Int, second : Int) -> Bool {
+fn pdf_text_gbk2k_four_byte_prefix(first : Int32, second : Int32) -> Bool {
   first >= 0x81 && first <= 0xFE && second >= 0x30 && second <= 0x39
 }
 
@@ -147,8 +147,8 @@ fn pdf_text_gbk2k_four_byte_prefix(first : Int, second : Int) -> Bool {
 fn pdf_text_predefined_mixed_byte_charcodes(
   name : @core.PdfName,
   text : BytesView,
-) -> Array[Int] raise @core.PdfError {
-  let output : Array[Int] = Array::new(capacity=text.length())
+) -> Array[Int32] raise @core.PdfError {
+  let output : Array[Int32] = Array::new(capacity=text.length())
   let shift_jis = pdf_text_predefined_cmap_uses_shift_jis_charcodes(name)
   let b5pc = pdf_text_predefined_cmap_uses_b5pc_charcodes(name)
   let cns1_b5 = pdf_text_predefined_cmap_uses_cns1_b5_charcodes(name)
@@ -217,9 +217,9 @@ fn pdf_text_predefined_mixed_byte_charcodes(
 fn pdf_text_predefined_cmap_charcodes_of_text(
   name : @core.PdfName,
   text : BytesView,
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   if pdf_text_predefined_cmap_uses_utf8_charcodes(name) {
-    let output : Array[Int] = Array::new(capacity=text.length())
+    let output : Array[Int32] = Array::new(capacity=text.length())
     let mut index = 0
     while index < text.length() {
       index = pdf_text_push_utf8_charcode(output, text, index)
@@ -227,7 +227,7 @@ fn pdf_text_predefined_cmap_charcodes_of_text(
     output
   } else if pdf_text_predefined_cmap_uses_utf16_charcodes(name) {
     guard text.length() % 2 == 0 else { raise BadText }
-    let output : Array[Int] = Array::new(capacity=text.length() / 2)
+    let output : Array[Int32] = Array::new(capacity=text.length() / 2)
     let mut index = 0
     while index < text.length() {
       index = pdf_text_push_utf16_charcode(output, text, index)
@@ -235,7 +235,7 @@ fn pdf_text_predefined_cmap_charcodes_of_text(
     output
   } else if pdf_text_predefined_cmap_uses_utf32_charcodes(name) {
     guard text.length() % 4 == 0 else { raise BadText }
-    let output : Array[Int] = Array::new(capacity=text.length() / 4)
+    let output : Array[Int32] = Array::new(capacity=text.length() / 4)
     let mut index = 0
     while index < text.length() {
       index = pdf_text_push_utf32_charcode(output, text, index)
@@ -244,7 +244,7 @@ fn pdf_text_predefined_cmap_charcodes_of_text(
   } else if pdf_text_predefined_cmap_uses_mixed_byte_charcodes(name) {
     pdf_text_predefined_mixed_byte_charcodes(name, text)
   } else {
-    let output : Array[Int] = Array::new(capacity=text.length())
+    let output : Array[Int32] = Array::new(capacity=text.length())
     if name == pdf_text_identity_h_name ||
       name == pdf_text_identity_v_name ||
       pdf_text_predefined_cmap_uses_two_byte_charcodes(name) {
@@ -266,7 +266,7 @@ fn pdf_text_predefined_cmap_charcodes_of_text(
 fn PdfFont::pdf_text_charcodes_of_text(
   self : PdfFont,
   text : BytesView,
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   match self {
     PdfFontCIDKeyed(font) =>
       match font.encoding {
@@ -284,8 +284,8 @@ fn PdfFont::pdf_text_charcodes_of_text(
 fn PdfFont::pdf_text_fixed_or_single_byte_charcodes_of_text(
   self : PdfFont,
   text : BytesView,
-) -> Array[Int] raise @core.PdfError {
-  let output : Array[Int] = Array::new(capacity=text.length())
+) -> Array[Int32] raise @core.PdfError {
+  let output : Array[Int32] = Array::new(capacity=text.length())
   if self.uses_two_byte_codes() {
     guard text.length() % 2 == 0 else { raise BadText }
     let mut index = 0

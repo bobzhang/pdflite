@@ -5,9 +5,9 @@
 /// structure references to deleted pages.
 pub fn PdfDocument::pdf_of_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  retain_numbering? : Bool = false,
-  process_struct_tree? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  retain_numbering~ : Bool = false,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let source = self.copy()
   let all_page_numbers = source.page_reference_numbers()
@@ -76,20 +76,20 @@ pub fn PdfDocument::pdf_of_pages(
 /// Compatibility wrapper for `PdfDocument::pdf_of_pages`.
 pub fn pdf_of_pages(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  retain_numbering? : Bool = false,
-  process_struct_tree? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  retain_numbering~ : Bool = false,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.pdf_of_pages(page_numbers, retain_numbering~, process_struct_tree~)
 }
 
 ///|
 fn pdf_page_deleted_numbers(
-  all_page_numbers : ArrayView[Int],
-  active_page_numbers : ArrayView[Int],
-) -> Array[Int] {
+  all_page_numbers : ArrayView[Int32],
+  active_page_numbers : ArrayView[Int32],
+) -> Array[Int32] {
   let active_pages = @core.pdf_number_set(active_page_numbers)
-  let deleted : Array[Int] = Array::new(capacity=all_page_numbers.length())
+  let deleted : Array[Int32] = Array::new(capacity=all_page_numbers.length())
   for number in all_page_numbers {
     if !active_pages.contains(number) {
       deleted.push(number)

@@ -38,10 +38,10 @@ pub fn pdf_reader_object_is_xref_stream(object : @syntax.PdfObject) -> Bool {
 pub fn pdf_xref_stream_int_array(
   dictionary : @syntax.PdfObject,
   key : @core.PdfName,
-) -> Array[Int]? raise @core.PdfError {
+) -> Array[Int32]? raise @core.PdfError {
   match dictionary.lookup_immediate(key) {
     Some(PdfArray(values)) => {
-      let output : Array[Int] = Array::new(capacity=values.length())
+      let output : Array[Int32] = Array::new(capacity=values.length())
       for value in values {
         match value {
           PdfInteger(number) => output.push(number)
@@ -59,7 +59,7 @@ pub fn pdf_xref_stream_int_array(
 /// Read and validate xref-stream `/W` field widths.
 pub fn pdf_xref_stream_widths(
   dictionary : @syntax.PdfObject,
-) -> (Int, Int, Int) raise @core.PdfError {
+) -> (Int32, Int32, Int32) raise @core.PdfError {
   match pdf_xref_stream_int_array(dictionary, pdf_reader_w_name()) {
     Some([w0, w1, w2]) if w0 >= 0 && w1 >= 0 && w2 >= 0 && w0 + w1 + w2 > 0 =>
       (w0, w1, w2)
@@ -71,13 +71,15 @@ pub fn pdf_xref_stream_widths(
 /// Read and validate xref-stream `/Index` object-number ranges.
 pub fn pdf_xref_stream_index_pairs(
   dictionary : @syntax.PdfObject,
-) -> Array[(Int, Int)] raise @core.PdfError {
+) -> Array[(Int32, Int32)] raise @core.PdfError {
   match pdf_xref_stream_int_array(dictionary, pdf_reader_index_name()) {
     Some(values) => {
       if values.length() % 2 != 0 {
         raise XRefEntryExpected
       }
-      let pairs : Array[(Int, Int)] = Array::new(capacity=values.length() / 2)
+      let pairs : Array[(Int32, Int32)] = Array::new(
+        capacity=values.length() / 2,
+      )
       for pair_index in 0..<(values.length() / 2) {
         let i = pair_index * 2
         let start = values[i]

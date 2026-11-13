@@ -1,7 +1,7 @@
 ///|
 fn merge_font_one_page_doc_for_test(
-  major : Int,
-  minor : Int,
+  major : Int32,
+  minor : Int32,
 ) -> @pdflite.PdfDocument {
   let doc = try! @pdflite.pdf_minimum_valid_pdf()
   doc.set_version(major, minor)
@@ -41,7 +41,7 @@ fn merge_font_duplicate_stream_for_test() -> @syntax.PdfObject {
 ///|
 fn merge_font_catalog_stream_doc_for_test(
   key : @core.PdfName,
-  stream_number : Int,
+  stream_number : Int32,
 ) -> @pdflite.PdfDocument {
   let doc = merge_font_one_page_doc_for_test(1, 4)
   doc.add_object_given_number(

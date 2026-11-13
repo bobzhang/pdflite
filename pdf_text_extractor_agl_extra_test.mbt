@@ -5,7 +5,7 @@ fn text_extractor_agl_extra_name_for_test(text : String) -> @core.PdfName {
 
 ///|
 fn text_extractor_agl_extra_bytes_for_test(
-  values : ArrayView[Int],
+  values : ArrayView[Int32],
 ) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
@@ -13,9 +13,9 @@ fn text_extractor_agl_extra_bytes_for_test(
 ///|
 fn text_extractor_agl_extra_difference_for_test(
   name : String,
-  code : Int,
+  code : Int32,
 ) -> @pdflite.PdfEncodingDifference {
-  { name: text_extractor_agl_extra_name_for_test(name), code }
+  { name: text_extractor_agl_extra_name_for_test(name), code, }
 }
 
 ///|
@@ -23,12 +23,12 @@ fn text_extractor_agl_extra_standard_font_data_for_test(
   font : @pdflite.PdfStandardFont,
   encoding : @pdflite.PdfEncoding,
 ) -> @pdflite.PdfStandardFontData {
-  { font, encoding }
+  { font, encoding, }
 }
 
 ///|
 test "PdfTextExtractor decodes CJK symbol AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/anglebracketleft", 0x3008),
     ("/anglebracketright", 0x3009),
     ("/blacklenticularbracketleft", 0x3010),
@@ -72,8 +72,8 @@ test "PdfTextExtractor decodes CJK symbol AGL glyph names" {
     ("/whitetortoiseshellbracketright", 0x3019),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -104,7 +104,7 @@ test "PdfTextExtractor decodes CJK symbol AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes Hiragana AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/ahiragana", 0x3042),
     ("/asmallhiragana", 0x3041),
     ("/bahiragana", 0x3070),
@@ -195,8 +195,8 @@ test "PdfTextExtractor decodes Hiragana AGL glyph names" {
     ("/zuhiragana", 0x305A),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -227,7 +227,7 @@ test "PdfTextExtractor decodes Hiragana AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes Katakana AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/akatakana", 0x30A2),
     ("/asmallkatakana", 0x30A1),
     ("/bakatakana", 0x30D0),
@@ -324,8 +324,8 @@ test "PdfTextExtractor decodes Katakana AGL glyph names" {
     ("/zukatakana", 0x30BA),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -356,7 +356,7 @@ test "PdfTextExtractor decodes Katakana AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes Bopomofo AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/abopomofo", 0x311A),
     ("/aibopomofo", 0x311E),
     ("/anbopomofo", 0x3122),
@@ -396,8 +396,8 @@ test "PdfTextExtractor decodes Bopomofo AGL glyph names" {
     ("/zhbopomofo", 0x3113),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -428,7 +428,7 @@ test "PdfTextExtractor decodes Bopomofo AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes Hangul compatibility jamo AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/aekorean", 0x3150),
     ("/akorean", 0x314F),
     ("/araeaekorean", 0x318E),
@@ -525,8 +525,8 @@ test "PdfTextExtractor decodes Hangul compatibility jamo AGL glyph names" {
     ("/yuyeokorean", 0x318A),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -557,7 +557,7 @@ test "PdfTextExtractor decodes Hangul compatibility jamo AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes Enclosed CJK AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/chieuchacirclekorean", 0x3277),
     ("/chieuchaparenkorean", 0x3217),
     ("/chieuchcirclekorean", 0x3269),
@@ -673,8 +673,8 @@ test "PdfTextExtractor decodes Enclosed CJK AGL glyph names" {
     ("/twoideographicparen", 0x3221),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -705,7 +705,7 @@ test "PdfTextExtractor decodes Enclosed CJK AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes box drawing AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/SF010000", 0x250C),
     ("/SF020000", 0x2514),
     ("/SF030000", 0x2510),
@@ -748,8 +748,8 @@ test "PdfTextExtractor decodes box drawing AGL glyph names" {
     ("/SF540000", 0x256A),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -781,7 +781,7 @@ test "PdfTextExtractor decodes box drawing AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes block element AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/block", 0x2588),
     ("/dkshade", 0x2593),
     ("/dnblock", 0x2584),
@@ -795,8 +795,8 @@ test "PdfTextExtractor decodes block element AGL glyph names" {
     ("/upblock", 0x2580),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -827,7 +827,7 @@ test "PdfTextExtractor decodes block element AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes geometric shape AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/H18533", 0x25CF),
     ("/H18543", 0x25AA),
     ("/H18551", 0x25AB),
@@ -889,8 +889,8 @@ test "PdfTextExtractor decodes geometric shape AGL glyph names" {
     ("/whiteuppointingtriangle", 0x25B3),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -924,7 +924,7 @@ test "PdfTextExtractor decodes geometric shape AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes dingbat AGL alias glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/arrowrightheavy", 0x279E),
     ("/checkmark", 0x2713),
     ("/onecircleinversesansserif", 0x278A),
@@ -938,8 +938,8 @@ test "PdfTextExtractor decodes dingbat AGL alias glyph names" {
     ("/ninecircleinversesansserif", 0x2792),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -970,7 +970,7 @@ test "PdfTextExtractor decodes dingbat AGL alias glyph names" {
 
 ///|
 test "PdfTextExtractor decodes miscellaneous symbol AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/beamedsixteenthnotes", 0x266C),
     ("/blacksmilingface", 0x263B),
     ("/blackstar", 0x2605),
@@ -1008,8 +1008,8 @@ test "PdfTextExtractor decodes miscellaneous symbol AGL glyph names" {
     ("/yinyang", 0x262F),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -1042,7 +1042,7 @@ test "PdfTextExtractor decodes miscellaneous symbol AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes Latin Extended-A AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/Abreve", 0x0102),
     ("/Amacron", 0x0100),
     ("/Aogonek", 0x0104),
@@ -1204,8 +1204,8 @@ test "PdfTextExtractor decodes Latin Extended-A AGL glyph names" {
     ("/zdotaccent", 0x017C),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -1237,7 +1237,7 @@ test "PdfTextExtractor decodes Latin Extended-A AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes Latin Extended-B AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/AEacute", 0x01FC),
     ("/AEmacron", 0x01E2),
     ("/Acaron", 0x01CD),
@@ -1391,8 +1391,8 @@ test "PdfTextExtractor decodes Latin Extended-B AGL glyph names" {
     ("/zstroke", 0x01B6),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -1423,7 +1423,7 @@ test "PdfTextExtractor decodes Latin Extended-B AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes private-use AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/Acute", 0xF6C9),
     ("/Caron", 0xF6CA),
     ("/Dieresis", 0xF6CB),
@@ -1475,8 +1475,8 @@ test "PdfTextExtractor decodes private-use AGL glyph names" {
     ("/thanthakhatupperleftthai", 0xF896),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1
@@ -1507,7 +1507,7 @@ test "PdfTextExtractor decodes private-use AGL glyph names" {
 
 ///|
 test "PdfTextExtractor decodes Halfwidth and Fullwidth AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/Amonospace", 0xFF21),
     ("/Bmonospace", 0xFF22),
     ("/Cmonospace", 0xFF23),
@@ -1672,8 +1672,8 @@ test "PdfTextExtractor decodes Halfwidth and Fullwidth AGL glyph names" {
     ("/zmonospace", 0xFF5A),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1

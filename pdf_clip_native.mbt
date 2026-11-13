@@ -4,8 +4,8 @@
 extern "C" fn pdf_clip_polygon_clip_ffi(
   subject : @core.PdfBytes,
   clip : @core.PdfBytes,
-  operation : Int,
-  status : Ref[Int],
+  operation : Int32,
+  status : Ref[Int32],
 ) -> @core.PdfBytes = "pdflite_gpc_clip"
 
 ///|
@@ -18,9 +18,9 @@ fn pdf_clip_raise_bad_native_encoding() -> Unit raise @core.PdfError {
 #cfg(target="native")
 fn pdf_clip_write_i32_le(
   output : Array[Byte],
-  position : Int,
-  value : Int,
-) -> Int raise @core.PdfError {
+  position : Int32,
+  value : Int32,
+) -> Int32 raise @core.PdfError {
   if value < 0 {
     pdf_clip_raise_bad_native_encoding()
   }
@@ -35,9 +35,9 @@ fn pdf_clip_write_i32_le(
 #cfg(target="native")
 fn pdf_clip_write_u64_le(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   value : UInt64,
-) -> Int {
+) -> Int32 {
   let mut position = position
   for byte in value.to_le_bytes() {
     output[position] = byte
@@ -48,7 +48,7 @@ fn pdf_clip_write_u64_le(
 
 ///|
 #cfg(target="native")
-fn pdf_clip_encoded_polygon_length(polygon : PdfClipPolygon) -> Int {
+fn pdf_clip_encoded_polygon_length(polygon : PdfClipPolygon) -> Int32 {
   let mut length = 4
   for contour in polygon.contours {
     length += 8 + contour.vertices.length() * 16
@@ -91,8 +91,8 @@ fn pdf_clip_encode_polygon(
 #cfg(target="native")
 fn pdf_clip_read_i32_le(
   data : BytesView,
-  position : Ref[Int],
-) -> Int raise @core.PdfError {
+  position : Ref[Int32],
+) -> Int32 raise @core.PdfError {
   if position.val < 0 ||
     position.val > data.length() ||
     data.length() - position.val < 4 {
@@ -114,7 +114,7 @@ fn pdf_clip_read_i32_le(
 #cfg(target="native")
 fn pdf_clip_read_u64_le(
   data : BytesView,
-  position : Ref[Int],
+  position : Ref[Int32],
 ) -> UInt64 raise @core.PdfError {
   if position.val < 0 ||
     position.val > data.length() ||
@@ -133,10 +133,10 @@ fn pdf_clip_read_u64_le(
 ///|
 #cfg(target="native")
 fn pdf_clip_decode_count_for_remaining_bytes(
-  count : Int,
-  bytes_per_item : Int,
+  count : Int32,
+  bytes_per_item : Int32,
   data : BytesView,
-  position : Ref[Int],
+  position : Ref[Int32],
 ) -> Unit raise @core.PdfError {
   if count < 0 ||
     bytes_per_item <= 0 ||
@@ -150,7 +150,7 @@ fn pdf_clip_decode_count_for_remaining_bytes(
 fn pdf_clip_decode_polygon(
   data : BytesView,
 ) -> PdfClipPolygon raise @core.PdfError {
-  let position = Ref::{ val: 0 }
+  let position = Ref::{ val: 0, }
   let contour_count = pdf_clip_read_i32_le(data, position)
   pdf_clip_decode_count_for_remaining_bytes(contour_count, 8, data, position)
   let contours : Array[PdfClipContour] = []
@@ -192,7 +192,7 @@ pub fn pdf_clip_polygon_clip(
 ) -> PdfClipPolygon raise @core.PdfError {
   let subject_bytes = pdf_clip_encode_polygon(subject)
   let clip_bytes = pdf_clip_encode_polygon(clip)
-  let status = Ref::{ val: 0 }
+  let status = Ref::{ val: 0, }
   let result = pdf_clip_polygon_clip_ffi(
     subject_bytes,
     clip_bytes,

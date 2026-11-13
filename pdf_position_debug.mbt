@@ -1,5 +1,5 @@
 ///|
-fn pdf_position_fixed_six_fraction(value : Int) -> String {
+fn pdf_position_fixed_six_fraction(value : Int32) -> String {
   let mut output = ""
   let mut divisor = 100000
   while divisor > 0 {

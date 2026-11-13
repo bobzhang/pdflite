@@ -1,10 +1,10 @@
 ///|
-fn pdf_ocg_json_int(value : Int) -> Json {
+fn pdf_ocg_json_int(value : Int32) -> Json {
   pdf_util_json_number(value)
 }
 
 ///|
-fn pdf_ocg_json_ints(values : ArrayView[Int]) -> Json {
+fn pdf_ocg_json_ints(values : ArrayView[Int32]) -> Json {
   Json::array([ for value in values => pdf_ocg_json_int(value) ])
 }
 
@@ -103,7 +103,7 @@ fn pdf_ocg_json_event(event : @ocg.PdfOcgEvent) -> Json {
 
 ///|
 fn pdf_ocg_json_order(
-  order : ArrayView[(@core.PdfBytes?, Array[Int])],
+  order : ArrayView[(@core.PdfBytes?, Array[Int32])],
 ) -> Json raise @core.PdfError {
   let output : Array[Json] = []
   for item in order {
@@ -122,7 +122,7 @@ fn pdf_ocg_json_order(
 
 ///|
 fn pdf_ocg_json_optional_order(
-  order : Array[(@core.PdfBytes?, Array[Int])]?,
+  order : Array[(@core.PdfBytes?, Array[Int32])]?,
 ) -> Json raise @core.PdfError {
   match order {
     Some(order) => pdf_ocg_json_order(order)
@@ -131,7 +131,7 @@ fn pdf_ocg_json_optional_order(
 }
 
 ///|
-fn pdf_ocg_json_radio_groups(groups : Array[Array[Int]]?) -> Json {
+fn pdf_ocg_json_radio_groups(groups : Array[Array[Int32]]?) -> Json {
   match groups {
     Some(groups) =>
       Json::array([ for group in groups => pdf_ocg_json_ints(group) ])
@@ -265,7 +265,7 @@ fn pdf_ocg_json_ocg(ocg : @ocg.PdfOcg) -> Json raise @core.PdfError {
 
 ///|
 fn pdf_ocg_json_ocgs(
-  ocgs : ArrayView[(Int, @ocg.PdfOcg)],
+  ocgs : ArrayView[(Int32, @ocg.PdfOcg)],
 ) -> Json raise @core.PdfError {
   let entries : Map[String, Json] = Map([])
   for item in ocgs {

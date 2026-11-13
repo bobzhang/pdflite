@@ -24,8 +24,8 @@ fn pdf_remove_text_is_stamp_bmc(op : @content.PdfContentOp) -> Bool {
 ///|
 fn pdf_remove_text_after_stamp(
   ops : ArrayView[@content.PdfContentOp],
-  start : Int,
-) -> Int {
+  start : Int32,
+) -> Int32 {
   let mut index = start
   let mut level = 1
   while index < ops.length() {
@@ -102,7 +102,7 @@ fn PdfDocument::pdf_remove_text_page(
   transform : (ArrayView[@content.PdfContentOp]) -> Array[@content.PdfContentOp],
 ) -> @page.PdfPage raise @core.PdfError {
   let ops = self.pdf_page_parse_content_ops(page.resources, page.content)
-  { ..page, content: [pdf_content_stream_of_ops(transform(ops))] }
+  { ..page, content: [pdf_content_stream_of_ops(transform(ops))], }
 }
 
 ///|
@@ -119,7 +119,7 @@ fn pdf_remove_text_all_text_xobject(
 /// Remove text added by cpdf add-text stamping from selected one-based pages.
 pub fn PdfDocument::remove_added_text(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   let selected_pages = @core.pdf_number_set(page_numbers)
@@ -140,7 +140,7 @@ pub fn PdfDocument::remove_added_text(
 /// Compatibility wrapper for `PdfDocument::remove_added_text`.
 pub fn pdf_remove_added_text(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.remove_added_text(page_numbers)
 }
@@ -148,7 +148,7 @@ pub fn pdf_remove_added_text(
 ///|
 /// Compatibility wrapper matching cpdfremovetext's source-spelled `removetext`.
 pub fn pdf_removetext(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.remove_added_text(page_numbers)
@@ -159,7 +159,7 @@ pub fn pdf_removetext(
 /// referenced Form XObjects.
 pub fn PdfDocument::remove_all_text(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
   let pages = document.pages_of_pagetree()
@@ -184,7 +184,7 @@ pub fn PdfDocument::remove_all_text(
 /// Compatibility wrapper for `PdfDocument::remove_all_text`.
 pub fn pdf_remove_all_text(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.remove_all_text(page_numbers)
 }
@@ -192,7 +192,7 @@ pub fn pdf_remove_all_text(
 ///|
 /// Compatibility wrapper matching cpdfremovetext's page-list-first order.
 pub fn pdf_remove_all_text_cpdf_order(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.remove_all_text(page_numbers)

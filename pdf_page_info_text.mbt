@@ -16,9 +16,9 @@ fn pdf_page_info_box_text(box : Array[Double]?) -> String {
 ///|
 fn pdf_page_info_write_utf8(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   text : String,
-) -> Int {
+) -> Int32 {
   let mut current = position
   for byte in @utf8.encode(text) {
     output[current] = byte
@@ -30,10 +30,10 @@ fn pdf_page_info_write_utf8(
 ///|
 fn pdf_page_info_write_line(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   key : String,
   value : String,
-) -> Int {
+) -> Int32 {
   let mut current = pdf_page_info_write_utf8(output, position, key)
   current = pdf_page_info_write_utf8(output, current, value)
   output[current] = 10
@@ -43,9 +43,9 @@ fn pdf_page_info_write_line(
 ///|
 fn pdf_page_info_write_entry(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   entry : PdfPageInfoEntry,
-) -> Int {
+) -> Int32 {
   let mut current = pdf_page_info_write_utf8(
     output,
     position,
@@ -97,17 +97,17 @@ fn pdf_page_info_write_entry(
 }
 
 ///|
-fn pdf_page_info_utf8_length(text : String) -> Int {
+fn pdf_page_info_utf8_length(text : String) -> Int32 {
   @utf8.encode(text).length()
 }
 
 ///|
-fn pdf_page_info_line_length(key : String, value : String) -> Int {
+fn pdf_page_info_line_length(key : String, value : String) -> Int32 {
   pdf_page_info_utf8_length(key) + pdf_page_info_utf8_length(value) + 1
 }
 
 ///|
-fn pdf_page_info_entry_text_length(entry : PdfPageInfoEntry) -> Int {
+fn pdf_page_info_entry_text_length(entry : PdfPageInfoEntry) -> Int32 {
   pdf_page_info_utf8_length("Page " + entry.page_number.to_string() + ":\n") +
   pdf_page_info_line_length("Label: ", entry.label) +
   pdf_page_info_line_length(
@@ -126,7 +126,7 @@ fn pdf_page_info_entry_text_length(entry : PdfPageInfoEntry) -> Int {
 }
 
 ///|
-fn pdf_page_info_text_length(entries : ArrayView[PdfPageInfoEntry]) -> Int {
+fn pdf_page_info_text_length(entries : ArrayView[PdfPageInfoEntry]) -> Int32 {
   let mut length = 0
   for entry in entries {
     length += pdf_page_info_entry_text_length(entry)
@@ -138,8 +138,8 @@ fn pdf_page_info_text_length(entries : ArrayView[PdfPageInfoEntry]) -> Int {
 /// Render cpdf's plain-text page-info report for selected pages.
 pub fn PdfDocument::page_info_text(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  unit? : @geometry.PdfUnit = PdfPoint,
+  page_numbers : ArrayView[Int32],
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> @core.PdfBytes raise @core.PdfError {
   let entries = self.pdf_page_info_entries(page_numbers, unit)
   let output = Array::make(pdf_page_info_text_length(entries), b'\x00')

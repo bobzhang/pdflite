@@ -23,7 +23,7 @@ pub fn pdf_cursor_read_trailer_dictionary(
 /// Read a non-negative `/Prev` trailer offset, if present.
 pub fn pdf_trailer_prev_position(
   trailer : @syntax.PdfObject,
-) -> Int? raise @core.PdfError {
+) -> Int32? raise @core.PdfError {
   match trailer.lookup_immediate(pdf_reader_prev_name()) {
     Some(PdfInteger(position)) if position >= 0 => Some(position)
     Some(_) => raise TrailerExpected
@@ -35,7 +35,7 @@ pub fn pdf_trailer_prev_position(
 /// Read a non-negative `/XRefStm` trailer offset, if present.
 pub fn pdf_trailer_xref_stream_position(
   trailer : @syntax.PdfObject,
-) -> Int? raise @core.PdfError {
+) -> Int32? raise @core.PdfError {
   match trailer.lookup_immediate(pdf_reader_xrefstm_name()) {
     Some(PdfInteger(position)) if position >= 0 => Some(position)
     Some(PdfInteger(_)) => raise XRefExpected
@@ -47,7 +47,7 @@ pub fn pdf_trailer_xref_stream_position(
 /// Return the persistent trailer dictionary after transient reader keys are removed.
 pub fn pdf_reader_sanitize_trailer(
   trailer : @syntax.PdfObject,
-  size : Int,
+  size : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   trailer
   .add_dict_entry(pdf_reader_size_name(), PdfInteger(size))

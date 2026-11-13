@@ -1,7 +1,7 @@
 ///|
 fn pdf_addtext_validate_page_numbers(
-  page_numbers : ArrayView[Int],
-  end_page : Int,
+  page_numbers : ArrayView[Int32],
+  end_page : Int32,
   context : String,
 ) -> Unit raise @core.PdfError {
   for page_number in page_numbers {

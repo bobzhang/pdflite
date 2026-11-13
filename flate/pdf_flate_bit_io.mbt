@@ -1,20 +1,20 @@
 ///|
 priv struct FlateBitReader {
   bytes : BytesView
-  mut byte_pos : Int
-  mut bit_buf : UInt
-  mut bit_count : Int
+  mut byte_pos : Int32
+  mut bit_buf : UInt32
+  mut bit_count : Int32
 }
 
 ///|
 fn FlateBitReader::new(bytes : BytesView) -> FlateBitReader {
-  { bytes, byte_pos: 0, bit_buf: 0, bit_count: 0 }
+  { bytes, byte_pos: 0, bit_buf: 0, bit_count: 0, }
 }
 
 ///|
 fn FlateBitReader::ensure_bits(
   self : FlateBitReader,
-  count : Int,
+  count : Int32,
 ) -> Unit raise @core.PdfError {
   if count < 0 {
     raise InvalidFlateData
@@ -33,8 +33,8 @@ fn FlateBitReader::ensure_bits(
 ///|
 fn FlateBitReader::read_bits(
   self : FlateBitReader,
-  count : Int,
-) -> UInt raise @core.PdfError {
+  count : Int32,
+) -> UInt32 raise @core.PdfError {
   self.ensure_bits(count)
   let mask = pdf_flate_bit_mask(count)
   let value = self.bit_buf & mask
@@ -44,7 +44,7 @@ fn FlateBitReader::read_bits(
 }
 
 ///|
-fn FlateBitReader::peek_bits(self : FlateBitReader, count : Int) -> UInt? {
+fn FlateBitReader::peek_bits(self : FlateBitReader, count : Int32) -> UInt32? {
   if count < 0 {
     return None
   }
@@ -66,7 +66,7 @@ fn FlateBitReader::peek_bits(self : FlateBitReader, count : Int) -> UInt? {
 ///|
 fn FlateBitReader::drop_bits(
   self : FlateBitReader,
-  count : Int,
+  count : Int32,
 ) -> Unit raise @core.PdfError {
   self.ensure_bits(count)
   self.bit_buf = self.bit_buf >> count
@@ -91,16 +91,16 @@ fn FlateBitReader::read_byte(
 }
 
 ///|
-let pdf_flate_bit_mask_table : Array[UInt] = [
+let pdf_flate_bit_mask_table : Array[UInt32] = [
   0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767, 65535,
 ]
 
 ///|
-fn pdf_flate_bit_mask(count : Int) -> UInt {
+fn pdf_flate_bit_mask(count : Int32) -> UInt32 {
   if count >= 0 && count < pdf_flate_bit_mask_table.length() {
     pdf_flate_bit_mask_table[count]
   } else {
-    let mut mask : UInt = 0
+    let mut mask : UInt32 = 0
     for _ in 0..<count {
       mask = (mask << 1) | 1
     }
@@ -109,9 +109,9 @@ fn pdf_flate_bit_mask(count : Int) -> UInt {
 }
 
 ///|
-fn pdf_flate_reverse_bits(value : UInt, bits : Int) -> UInt {
+fn pdf_flate_reverse_bits(value : UInt32, bits : Int32) -> UInt32 {
   let mut current = value
-  let mut result : UInt = 0
+  let mut result : UInt32 = 0
   for _ in 0..<bits {
     result = (result << 1) | (current & 1)
     current = current >> 1
@@ -122,20 +122,20 @@ fn pdf_flate_reverse_bits(value : UInt, bits : Int) -> UInt {
 ///|
 priv struct FlateBitWriter {
   output : Array[Byte]
-  mut current_byte : Int
-  mut bit_count : Int
+  mut current_byte : Int32
+  mut bit_count : Int32
 }
 
 ///|
 fn FlateBitWriter::new(output : Array[Byte]) -> FlateBitWriter {
-  { output, current_byte: 0, bit_count: 0 }
+  { output, current_byte: 0, bit_count: 0, }
 }
 
 ///|
 fn FlateBitWriter::write_bits(
   self : FlateBitWriter,
-  value : UInt,
-  width : Int,
+  value : UInt32,
+  width : Int32,
 ) -> Unit {
   for bit_index in 0..<width {
     if ((value >> bit_index) & 1) == 1 {

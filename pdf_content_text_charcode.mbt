@@ -1,9 +1,9 @@
 ///|
-fn pdf_content_two_byte_charcodes_or_empty(bytes : BytesView) -> Array[Int] {
+fn pdf_content_two_byte_charcodes_or_empty(bytes : BytesView) -> Array[Int32] {
   if bytes.length() % 2 != 0 {
     []
   } else {
-    let output : Array[Int] = Array::new(capacity=bytes.length() / 2)
+    let output : Array[Int32] = Array::new(capacity=bytes.length() / 2)
     let mut index = 0
     while index < bytes.length() {
       let high = bytes[index].to_int()
@@ -24,7 +24,7 @@ fn pdf_content_two_byte_charcodes_or_empty(bytes : BytesView) -> Array[Int] {
 pub fn PdfFont::content_charcodes_of_bytes(
   self : PdfFont,
   bytes : BytesView,
-) -> Array[Int] {
+) -> Array[Int32] {
   match self {
     PdfFontCIDKeyed(_) => pdf_content_two_byte_charcodes_or_empty(bytes)
     _ => [ for byte in bytes => byte.to_int() ]
@@ -36,7 +36,7 @@ pub fn PdfFont::content_charcodes_of_bytes(
 pub fn pdf_content_charcodes_of_bytes(
   bytes : BytesView,
   font : PdfFont,
-) -> Array[Int] {
+) -> Array[Int32] {
   font.content_charcodes_of_bytes(bytes)
 }
 
@@ -48,7 +48,7 @@ pub fn pdf_content_charcodes_of_bytes(
 /// matching the source helper's `char_of_int` failure cases.
 pub fn PdfFont::content_bytes_of_charcode(
   self : PdfFont,
-  charcode : Int,
+  charcode : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   match self {
     PdfFontCIDKeyed(_) =>
@@ -64,7 +64,7 @@ pub fn PdfFont::content_bytes_of_charcode(
 /// Compatibility wrapper for `PdfFont::content_bytes_of_charcode`.
 pub fn pdf_content_bytes_of_charcode(
   font : PdfFont,
-  charcode : Int,
+  charcode : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   font.content_bytes_of_charcode(charcode)
 }

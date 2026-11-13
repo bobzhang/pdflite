@@ -1,6 +1,6 @@
 ///|
 fn rotate_page_for_test(
-  rotate? : @page.PdfPageRotation = Rotate0,
+  rotate~ : @page.PdfPageRotation = Rotate0,
 ) -> @page.PdfPage {
   { ..@page.pdf_page_blank(@geometry.paper_a4), rotate, }
 }
@@ -37,8 +37,8 @@ fn rotate_stream_for_test(
 ///|
 fn rotate_content_page_for_test(
   ops : ArrayView[@content.PdfContentOp],
-  rest? : @syntax.PdfObject = PdfDictionary([]),
-  resources? : @syntax.PdfObject = PdfDictionary([]),
+  rest~ : @syntax.PdfObject = PdfDictionary([]),
+  resources~ : @syntax.PdfObject = PdfDictionary([]),
 ) -> @page.PdfPage {
   {
     content: [rotate_stream_for_test(ops)],
@@ -120,8 +120,8 @@ test "PdfDocument rotate_pages validates rotation and page range" {
   guard bad_page
     is Err(
       @core.PdfError::BadPageSpecification(
-        "rotate_pages_by: range contains pages not present in pdf"
-      )
+        "rotate_pages_by: range contains pages not present in pdf",
+      ),
     ) else {
     fail("expected rotate_pages_by to reject invalid pages")
   }
@@ -278,8 +278,8 @@ test "PdfDocument rotate_contents validates selected pages" {
   guard bad_page
     is Err(
       @core.PdfError::BadPageSpecification(
-        "rotate_contents: range contains pages not present in pdf"
-      )
+        "rotate_contents: range contains pages not present in pdf",
+      ),
     ) else {
     fail("expected rotate_contents to reject invalid pages")
   }

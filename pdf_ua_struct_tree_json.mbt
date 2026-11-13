@@ -1,5 +1,5 @@
 ///|
-fn pdf_ua_struct_tree_header(page_object_numbers : ArrayView[Int]) -> Json {
+fn pdf_ua_struct_tree_header(page_object_numbers : ArrayView[Int32]) -> Json {
   Json::array([
     pdf_util_json_number(0),
     Json::object(
@@ -22,7 +22,7 @@ fn pdf_ua_struct_tree_header(page_object_numbers : ArrayView[Int]) -> Json {
 fn PdfDocument::pdf_ua_struct_tree_referenced_numbers(
   self : PdfDocument,
   struct_tree_root : @syntax.PdfObject,
-) -> Array[Int] {
+) -> Array[Int32] {
   self.referenced_object_numbers(struct_tree_root, no_follow_entries=[
     pdf_structure_pg_key(),
     pdf_structure_obj_key(),
@@ -61,7 +61,9 @@ fn PdfDocument::pdf_ua_extract_struct_tree_inner(
 }
 
 ///|
-fn pdf_ua_struct_tree_json_item_number(json : Json) -> Int raise @core.PdfError {
+fn pdf_ua_struct_tree_json_item_number(
+  json : Json,
+) -> Int32 raise @core.PdfError {
   match json {
     Number(value, repr=_) => pdf_util_json_integral_number(value)
     _ => raise SoftError("structure 1")
@@ -71,7 +73,7 @@ fn pdf_ua_struct_tree_json_item_number(json : Json) -> Int raise @core.PdfError 
 ///|
 fn pdf_ua_read_struct_tree_json_row(
   json : Json,
-) -> (Int, @syntax.PdfObject) raise @core.PdfError {
+) -> (Int32, @syntax.PdfObject) raise @core.PdfError {
   match json {
     Array([number_json, object_json]) =>
       (
@@ -85,7 +87,7 @@ fn pdf_ua_read_struct_tree_json_row(
 ///|
 fn pdf_ua_rewrite_struct_tree_indirects(
   object : @syntax.PdfObject,
-  replacements : @hashmap.HashMap[Int, Int],
+  replacements : @hashmap.HashMap[Int32, Int32],
 ) -> @syntax.PdfObject {
   match object {
     PdfIndirect(number) =>
@@ -137,8 +139,8 @@ fn PdfDocument::pdf_ua_replace_struct_tree_inner(
     }
     _ => raise SoftError("Top level JSON wrong. Must be list with 0 first.")
   }
-  let positives : Array[(Int, @syntax.PdfObject)] = []
-  let new_objects : Array[(Int, @syntax.PdfObject)] = []
+  let positives : Array[(Int32, @syntax.PdfObject)] = []
+  let new_objects : Array[(Int32, @syntax.PdfObject)] = []
   for row in rows {
     let entry = pdf_ua_read_struct_tree_json_row(row)
     if entry.0 > 0 {
@@ -149,7 +151,7 @@ fn PdfDocument::pdf_ua_replace_struct_tree_inner(
   }
   let document = self.copy()
   let next_number = document.objects.max_object_number() + 1
-  let replacements : @hashmap.HashMap[Int, Int] = HashMap([])
+  let replacements : @hashmap.HashMap[Int32, Int32] = HashMap([])
   for index in 0..<new_objects.length() {
     replacements[new_objects[index].0] = next_number + index
   }

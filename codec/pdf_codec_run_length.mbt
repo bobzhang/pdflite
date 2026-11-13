@@ -1,11 +1,11 @@
 ///|
 fn pdf_run_length_flush_literal(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   data : BytesView,
-  start : Int,
-  length : Int,
-) -> Int {
+  start : Int32,
+  length : Int32,
+) -> Int32 {
   let mut current = position
   if length > 0 {
     output[current] = (length - 1).to_byte()
@@ -78,7 +78,7 @@ pub fn pdf_run_length_encode(data : @core.PdfBytes) -> @core.PdfBytes {
 }
 
 ///|
-fn pdf_run_length_decoded_length(data : BytesView) -> Int {
+fn pdf_run_length_decoded_length(data : BytesView) -> Int32 {
   let mut length = 0
   let mut index = 0
   let mut done = false

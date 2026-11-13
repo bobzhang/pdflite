@@ -1,5 +1,5 @@
 ///|
-fn codec_stream_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn codec_stream_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -15,8 +15,8 @@ fn codec_stream_name_for_test(text : String) -> @core.PdfName {
 
 ///|
 fn codec_stream_lzw_codes_for_test(
-  codes : ArrayView[Int],
-  early_change : Int,
+  codes : ArrayView[Int32],
+  early_change : Int32,
 ) -> @core.PdfBytes {
   let writer = @core.bit_writer_new()
   let mut code_length = 9
@@ -48,7 +48,7 @@ fn codec_stream_lzw_codes_for_test(
 }
 
 ///|
-fn codec_stream_bits_for_test(bits : ArrayView[Int]) -> @core.PdfBytes {
+fn codec_stream_bits_for_test(bits : ArrayView[Int32]) -> @core.PdfBytes {
   let writer = @core.bit_writer_new()
   for bit in bits {
     try! writer.put_bit(bit)
@@ -284,7 +284,7 @@ test "PdfDocument pdf_decode_stream applies indirect lzw EarlyChange" {
     9,
     @syntax.pdf_dictionary([(early_change, PdfInteger(0))]),
   )
-  let codes : Array[Int] = [256]
+  let codes : Array[Int32] = [256]
   for _ in 0..<255 {
     codes.push(65)
   }
@@ -1003,7 +1003,7 @@ test "pdf_decode_stream_onestage applies lzw EarlyChange DecodeParms" {
   let filter = codec_stream_name_for_test("/Filter")
   let decodeparms = codec_stream_name_for_test("/DecodeParms")
   let early_change = codec_stream_name_for_test("/EarlyChange")
-  let codes : Array[Int] = [256]
+  let codes : Array[Int32] = [256]
   for _ in 0..<255 {
     codes.push(65)
   }

@@ -55,7 +55,7 @@ fn pdf_attach_relationship_text(name : @core.PdfName) -> String? {
 }
 
 ///|
-fn pdf_attach_is_unsafe_filename_codepoint(codepoint : Int) -> Bool {
+fn pdf_attach_is_unsafe_filename_codepoint(codepoint : Int32) -> Bool {
   codepoint == 47 ||
   codepoint == 63 ||
   codepoint == 60 ||
@@ -81,7 +81,7 @@ pub fn pdf_attachment_remove_unsafe_characters(
   text : String,
 ) -> String raise @core.PdfError {
   let codepoints = pdf_codepoints_of_utf8(@utf8.encode(text))
-  let output : Array[Int] = Array::new(capacity=codepoints.length())
+  let output : Array[Int32] = Array::new(capacity=codepoints.length())
   for codepoint in codepoints {
     if !pdf_attach_is_unsafe_filename_codepoint(codepoint) {
       output.push(codepoint)

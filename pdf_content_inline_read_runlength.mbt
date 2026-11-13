@@ -1,5 +1,5 @@
 ///|
-fn pdf_content_run_length_encoded_length(data : BytesView) -> Int? {
+fn pdf_content_run_length_encoded_length(data : BytesView) -> Int32? {
   let mut index = 0
   while index < data.length() {
     let control = data[index].to_int()
@@ -36,7 +36,7 @@ fn pdf_content_read_run_length_inline_image_data(
 ///|
 fn pdf_content_run_length_decode_view_prefix(
   data : BytesView,
-) -> (@core.PdfBytes, Int) raise @core.PdfError {
+) -> (@core.PdfBytes, Int32) raise @core.PdfError {
   let (output_length, consumed) = pdf_content_run_length_decoded_prefix_length(
     data,
   )
@@ -68,7 +68,7 @@ fn pdf_content_run_length_decode_view_prefix(
 ///|
 fn pdf_content_run_length_decoded_prefix_length(
   data : BytesView,
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   let mut output_length = 0
   let mut index = 0
   while index < data.length() {

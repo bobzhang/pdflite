@@ -960,7 +960,7 @@ async test "optional cpdf source attachments preserve real source payloads" {
 fn fixture_acceptance_assert_unicode_data_row_matches_for_test(
   actual : @unicodedata.PdfUnicodeDataEntry,
   expected : @unicodedata.PdfUnicodeDataEntry,
-  index : Int,
+  index : Int32,
 ) -> Unit raise {
   guard actual == expected else {
     fail("UnicodeData row mismatch at " + index.to_string())
@@ -3001,7 +3001,7 @@ async test "optional cpdf source manual fixture reports page label fallbacks" {
 
 ///|
 async test "optional cpdf source manual fixture extracts retained pages" {
-  let selected_pages : ReadOnlyArray[Int] = [33, 19, 1, 175]
+  let selected_pages : ReadOnlyArray[Int32] = [33, 19, 1, 175]
   match
     fixture_acceptance_optional_bytes_for_test(
       "fixtures/cpdf-source/cpdfmanual.pdf",

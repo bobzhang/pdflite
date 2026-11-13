@@ -1,3 +1,4 @@
+///|
 import {
   "moonbitlang/async",
   "moonbitlang/async/fs",
@@ -62,7 +63,7 @@ async fn main {
 async fn run_release_check(
   full_native_tests : Bool,
   publish_dry_run : Bool,
-) -> Int {
+) -> Int32 {
   let steps = release_check_steps(full_native_tests, publish_dry_run)
   for step in steps {
     let code = run_release_check_step(step)
@@ -79,16 +80,21 @@ fn release_check_steps(
   publish_dry_run : Bool,
 ) -> Array[ReleaseCheckStep] {
   let steps : Array[ReleaseCheckStep] = [
-    { name: "update public interfaces", args: ["info"] },
-    { name: "check formatting", args: ["fmt", "--check"] },
+    { name: "update public interfaces", args: ["info"], },
+    { name: "check formatting", args: ["fmt", "--check"], },
     {
       name: "check all targets",
       args: ["check", "--target", "all", "--warn-list", release_check_warn_list],
     },
-    { name: "test native CLI package", args: ["test", "--target", "native", "cmd/main"] },
+    {
+      name: "test native CLI package",
+      args: ["test", "--target", "native", "cmd/main"],
+    },
     {
       name: "build native CLI",
-      args: ["run", "--target", "native", "--release", "--build-only", "cmd/main"],
+      args: [
+        "run", "--target", "native", "--release", "--build-only", "cmd/main",
+      ],
     },
     {
       name: "test native CLI documentation",
@@ -97,23 +103,13 @@ fn release_check_steps(
     {
       name: "test checked-in fixture roundtrip matrix",
       args: [
-        "test",
-        "--target",
-        "native",
-        "fixture_acceptance",
-        "--filter",
-        "checked-in PDF fixture matrix roundtrips through writer modes",
+        "test", "--target", "native", "fixture_acceptance", "--filter", "checked-in PDF fixture matrix roundtrips through writer modes",
       ],
     },
     {
       name: "test large fixture rewrite smoke",
       args: [
-        "test",
-        "--target",
-        "native",
-        "fixture_acceptance",
-        "--filter",
-        "large checked-in PDF fixture rewrites within sane size bounds",
+        "test", "--target", "native", "fixture_acceptance", "--filter", "large checked-in PDF fixture rewrites within sane size bounds",
       ],
     },
   ]
@@ -123,15 +119,15 @@ fn release_check_steps(
       args: ["test", "--target", "native"],
     })
   }
-  steps.push({ name: "package", args: ["package"] })
+  steps.push({ name: "package", args: ["package"], })
   if publish_dry_run {
-    steps.push({ name: "publish dry run", args: ["publish", "--dry-run"] })
+    steps.push({ name: "publish dry run", args: ["publish", "--dry-run"], })
   }
   steps
 }
 
 ///|
-async fn run_release_check_step(step : ReleaseCheckStep) -> Int {
+async fn run_release_check_step(step : ReleaseCheckStep) -> Int32 {
   eprintln("$ moon " + step.args.join(" "))
   if step.name == "publish dry run" {
     return run_release_check_publish_dry_run_step(step)
@@ -151,7 +147,7 @@ async fn run_release_check_step(step : ReleaseCheckStep) -> Int {
 }
 
 ///|
-async fn run_release_check_cram_cli_step(step : ReleaseCheckStep) -> Int {
+async fn run_release_check_cram_cli_step(step : ReleaseCheckStep) -> Int32 {
   let cwd = match @env.current_dir() {
     Some(value) => value
     None => {
@@ -169,11 +165,10 @@ async fn run_release_check_cram_cli_step(step : ReleaseCheckStep) -> Int {
     eprintln("release_check: PDF fixture does not exist: " + fixture_path)
     return 1
   }
-  let code = @process.run(
-    "moon",
-    step.args,
-    extra_env={"PDFLITE_CLI": cli_path, "PDFLITE_LOGO_PDF": fixture_path},
-  )
+  let code = @process.run("moon", step.args, extra_env={
+    "PDFLITE_CLI": cli_path,
+    "PDFLITE_LOGO_PDF": fixture_path,
+  })
   if code != 0 {
     eprintln(
       "release_check: " +
@@ -186,7 +181,9 @@ async fn run_release_check_cram_cli_step(step : ReleaseCheckStep) -> Int {
 }
 
 ///|
-async fn run_release_check_publish_dry_run_step(step : ReleaseCheckStep) -> Int {
+async fn run_release_check_publish_dry_run_step(
+  step : ReleaseCheckStep,
+) -> Int32 {
   let (code, output) = @process.collect_output_merged("moon", step.args)
   let text = output.text() catch { _ => "" }
   let accepted = text.contains("Server status: 202 Accepted") &&

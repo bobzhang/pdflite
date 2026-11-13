@@ -1,7 +1,7 @@
 ///|
 fn merge_one_page_doc_for_test(
-  major : Int,
-  minor : Int,
+  major : Int32,
+  minor : Int32,
 ) -> @pdflite.PdfDocument {
   let doc = try! @pdflite.pdf_minimum_valid_pdf()
   doc.set_version(major, minor)
@@ -30,7 +30,7 @@ fn merge_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn merge_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn merge_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -68,7 +68,10 @@ fn merge_destination_object_for_test(
 }
 
 ///|
-fn merge_ocg_doc_for_test(number : Int, label : String) -> @pdflite.PdfDocument {
+fn merge_ocg_doc_for_test(
+  number : Int32,
+  label : String,
+) -> @pdflite.PdfDocument {
   let doc = merge_one_page_doc_for_test(1, 5)
   try! doc.write_optional_content_groups({
     ocgs: [
@@ -230,7 +233,7 @@ fn merge_destination_name_entries_for_test(
 ///|
 fn merge_first_annotation_dest_for_test(
   doc : @pdflite.PdfDocument,
-  page_index : Int,
+  page_index : Int32,
 ) -> @syntax.PdfObject? {
   let page_refs = try! doc.page_reference_numbers()
   match
@@ -297,7 +300,7 @@ fn merge_info_doc_for_test(title : String) -> @pdflite.PdfDocument {
 
 ///|
 fn merge_acroform_doc_with_entries_for_test(
-  field_number : Int,
+  field_number : Int32,
   label : String,
   extra_entries : ArrayView[(@core.PdfName, @syntax.PdfObject)],
 ) -> @pdflite.PdfDocument {

@@ -18,8 +18,8 @@ pub fn pdf_addtext_expand_lines_with_time(
 
 ///|
 fn pdf_addtext_codepoints_contains(
-  codepoints : ArrayView[Int],
-  codepoint : Int,
+  codepoints : ArrayView[Int32],
+  codepoint : Int32,
 ) -> Bool {
   for existing in codepoints {
     if existing == codepoint {
@@ -37,8 +37,8 @@ fn pdf_addtext_codepoints_contains(
 /// callers and tests.
 pub fn pdf_addtext_used_codepoints(
   lines : ArrayView[String],
-) -> Array[Int] raise @core.PdfError {
-  let used : Array[Int] = Array::new(capacity=lines.length())
+) -> Array[Int32] raise @core.PdfError {
+  let used : Array[Int32] = Array::new(capacity=lines.length())
   for line in lines {
     for codepoint in pdf_codepoints_of_utf8(@utf8.encode(line)) {
       if !pdf_addtext_codepoints_contains(used, codepoint) {

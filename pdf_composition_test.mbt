@@ -135,8 +135,8 @@ fn composition_sample_document_for_test() -> @pdflite.PdfDocument {
 ///|
 fn composition_object_size_for_test(
   document : @pdflite.PdfDocument,
-  number : Int,
-) -> Int {
+  number : Int32,
+) -> Int32 {
   (try! @pdflite.pdf_write_object(document.lookup_object_or_null(number))).length()
 }
 
@@ -144,7 +144,7 @@ fn composition_object_size_for_test(
 fn composition_entry_bytes_for_test(
   entries : ArrayView[@composition.PdfCompositionEntry],
   label : String,
-) -> Int raise {
+) -> Int32 raise {
   for entry in entries {
     if entry.label == label {
       break entry.bytes

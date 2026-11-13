@@ -5,6 +5,7 @@
 /// slice converts path, graphics-state, colour, matrix, and paint operations to
 /// `@content.PdfContentOp`; structure and page-level operations are represented here
 /// and will be rendered by later cpdfdraw slices.
+#derive(Debug, Eq, ToJson)
 pub(all) enum PdfDrawOp {
   PdfDrawRect(Double, Double, Double, Double)
   PdfDrawBezier(Double, Double, Double, Double, Double, Double)
@@ -16,8 +17,8 @@ pub(all) enum PdfDrawOp {
   PdfDrawSetFill(@colour.PdfDrawColour)
   PdfDrawSetStroke(@colour.PdfDrawColour)
   PdfDrawSetLineThickness(Double)
-  PdfDrawSetLineCap(Int)
-  PdfDrawSetLineJoin(Int)
+  PdfDrawSetLineCap(Int32)
+  PdfDrawSetLineJoin(Int32)
   PdfDrawSetMiterLimit(Double)
   PdfDrawSetDashPattern(Array[Double], Double)
   PdfDrawMatrix(@geometry.TransformMatrix)
@@ -36,7 +37,7 @@ pub(all) enum PdfDrawOp {
   PdfDrawNewPage
   PdfDrawOpacity(Double)
   PdfDrawSOpacity(Double)
-  PdfDrawFontPack(String, PdfFontPack, Array[Int])
+  PdfDrawFontPack(String, PdfFontPack, Array[Int32])
   PdfDrawFont(String, Double)
   PdfDrawTextSection(Array[PdfDrawOp])
   PdfDrawText(String)
@@ -47,7 +48,7 @@ pub(all) enum PdfDrawOp {
   PdfDrawCharSpace(Double)
   PdfDrawWordSpace(Double)
   PdfDrawTextScale(Double)
-  PdfDrawRenderMode(Int)
+  PdfDrawRenderMode(Int32)
   PdfDrawRise(Double)
   PdfDrawTag(String)
   PdfDrawEndTag
@@ -59,4 +60,4 @@ pub(all) enum PdfDrawOp {
   PdfDrawEltInfo(String, @syntax.PdfObject)
   PdfDrawEndEltInfo(String)
   PdfDrawAutoTag(Bool)
-} derive(Debug, Eq, ToJson)
+}

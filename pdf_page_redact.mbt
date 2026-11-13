@@ -21,8 +21,8 @@ fn PdfDocument::pdf_page_redact_page(
 /// trimmed.
 pub fn PdfDocument::redact_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  process_struct_tree? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(
@@ -53,8 +53,8 @@ pub fn PdfDocument::redact_pages(
 /// Compatibility wrapper for `PdfDocument::redact_pages`.
 pub fn pdf_redact_pages(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  process_struct_tree? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.redact_pages(page_numbers, process_struct_tree~)
 }
@@ -64,7 +64,7 @@ pub fn pdf_redact_pages(
 pub fn pdf_redact_pages_cpdf_order(
   process_struct_tree : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.redact_pages(page_numbers, process_struct_tree~)
 }

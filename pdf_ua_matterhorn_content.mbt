@@ -23,7 +23,7 @@ fn PdfDocument::pdf_ua_matterhorn_stream_resources(
 ///|
 fn PdfDocument::pdf_ua_matterhorn_all_ops(
   self : PdfDocument,
-  xobjects? : Bool = true,
+  xobjects~ : Bool = true,
 ) -> Array[Array[@content.PdfContentOp]] raise @core.PdfError {
   let output : Array[Array[@content.PdfContentOp]] = []
   if xobjects {

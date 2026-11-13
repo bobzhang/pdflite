@@ -1,5 +1,5 @@
 ///|
-fn pdf_flate_adler32(data : BytesView) -> (Int, Int) {
+fn pdf_flate_adler32(data : BytesView) -> (Int32, Int32) {
   let mod_adler = 65521
   let mut s1 = 1
   let mut s2 = 0

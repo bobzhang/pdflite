@@ -4,17 +4,17 @@ fn image_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn image_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn image_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
 ///|
-fn image_json_int_for_test(value : Int) -> Json {
+fn image_json_int_for_test(value : Int32) -> Json {
   Json::number(value.to_double(), repr=value.to_string())
 }
 
 ///|
-fn image_json_int_or_null_for_test(value : Int?) -> Json {
+fn image_json_int_or_null_for_test(value : Int32?) -> Json {
   match value {
     Some(value) => image_json_int_for_test(value)
     None => Json::null()
@@ -31,17 +31,17 @@ fn image_json_string_or_null_for_test(value : String?) -> Json {
 
 ///|
 fn image_json_entry_for_test(
-  object_number : Int,
-  pages : ArrayView[Int],
+  object_number : Int32,
+  pages : ArrayView[Int32],
   name : String,
-  width : Int,
-  height : Int,
-  byte_count : Int,
-  bits_per_component : Int?,
+  width : Int32,
+  height : Int32,
+  byte_count : Int32,
+  bits_per_component : Int32?,
   colourspace : String?,
   filter : String?,
   mask : String,
-  mask_object_number : Int?,
+  mask_object_number : Int32?,
 ) -> Json {
   Json::object(
     Map([
@@ -69,11 +69,11 @@ fn image_json_entry_for_test(
 
 ///|
 fn image_resolution_json_entry_for_test(
-  object_number : Int,
-  page_number : Int,
+  object_number : Int32,
+  page_number : Int32,
   xobject : String,
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   xdpi : Double,
   ydpi : Double,
 ) -> Json {
@@ -109,7 +109,7 @@ fn image_lookup_indirect_object_for_test(
   document : @pdflite.PdfDocument,
   object : @syntax.PdfObject,
   key : String,
-) -> (Int, @syntax.PdfObject) raise {
+) -> (Int32, @syntax.PdfObject) raise {
   let reference = try! image_lookup_for_test(object, key)
   guard reference is PdfIndirect(number) else {
     fail("expected dictionary key " + key + " to be indirect")
@@ -148,12 +148,12 @@ fn image_jbig2_for_document_test() -> @core.PdfBytes {
 }
 
 ///|
-fn image_push_byte_for_test(output : Array[Byte], value : Int) -> Unit {
+fn image_push_byte_for_test(output : Array[Byte], value : Int32) -> Unit {
   output.push(try! @core.pdf_byte_of_int(value))
 }
 
 ///|
-fn image_push_u32_for_test(output : Array[Byte], value : Int) -> Unit {
+fn image_push_u32_for_test(output : Array[Byte], value : Int32) -> Unit {
   image_push_byte_for_test(output, (value >> 24) & 0xFF)
   image_push_byte_for_test(output, (value >> 16) & 0xFF)
   image_push_byte_for_test(output, (value >> 8) & 0xFF)
@@ -169,7 +169,7 @@ fn image_append_bytes_for_test(output : Array[Byte], bytes : BytesView) -> Unit 
 
 ///|
 fn image_png_chunk_for_test(
-  chunk_type : ArrayView[Int],
+  chunk_type : ArrayView[Int32],
   data : BytesView,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
@@ -184,11 +184,11 @@ fn image_png_chunk_for_test(
 
 ///|
 fn image_png_header_for_test(
-  width : Int,
-  height : Int,
-  bit_depth : Int,
-  color_type : Int,
-  interlace : Int,
+  width : Int32,
+  height : Int32,
+  bit_depth : Int32,
+  color_type : Int32,
+  interlace : Int32,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   image_push_u32_for_test(output, width)
@@ -203,11 +203,11 @@ fn image_png_header_for_test(
 
 ///|
 fn image_png_for_test(
-  width : Int,
-  height : Int,
-  bit_depth : Int,
-  color_type : Int,
-  interlace : Int,
+  width : Int32,
+  height : Int32,
+  bit_depth : Int32,
+  color_type : Int32,
+  interlace : Int32,
   idat_chunks : ArrayView[@core.PdfBytes],
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
@@ -266,7 +266,7 @@ fn image_png_rgba_for_test() -> @core.PdfBytes {
 fn image_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -282,7 +282,7 @@ fn image_bytes_start_with_at_for_test(
 }
 
 ///|
-fn image_find_bytes_for_test(haystack : BytesView, needle : BytesView) -> Int {
+fn image_find_bytes_for_test(haystack : BytesView, needle : BytesView) -> Int32 {
   if needle.length() == 0 {
     0
   } else if haystack.length() < needle.length() {
@@ -476,7 +476,7 @@ test "PdfDocument image_resolution reports selected image xobject DPI" {
       StreamGot([]),
     ),
   )
-  let placement = { ..@geometry.transform_identity_matrix, a: 400.0, d: 300.0 }
+  let placement = { ..@geometry.transform_identity_matrix, a: 400.0, d: 300.0, }
   let page = {
     ..@page.pdf_page_blank(@geometry.paper_a4),
     resources: @syntax.pdf_dictionary([
@@ -527,7 +527,7 @@ test "PdfDocument image_resolution optionally includes inline images" {
       PdfNameObject(image_name_for_test("/DeviceRGB")),
     ),
   ])
-  let placement = { ..@geometry.transform_identity_matrix, a: 144.0, d: 72.0 }
+  let placement = { ..@geometry.transform_identity_matrix, a: 144.0, d: 72.0, }
   let page = {
     ..@page.pdf_page_blank(@geometry.paper_a4),
     content: [
@@ -572,7 +572,7 @@ test "PdfDocument image_resolution descends into form xobjects" {
       StreamGot([]),
     ),
   )
-  let form_scale = { ..@geometry.transform_identity_matrix, a: 72.0, d: 72.0 }
+  let form_scale = { ..@geometry.transform_identity_matrix, a: 72.0, d: 72.0, }
   let form = (try! @pdflite.pdf_content_stream_of_ops([
       Op_cm(form_scale),
       Op_Do(image_name_for_test("/Inner")),
@@ -593,7 +593,7 @@ test "PdfDocument image_resolution descends into form xobjects" {
       ]),
     )
   doc.add_object_given_number(30, form)
-  let page_scale = { ..@geometry.transform_identity_matrix, a: 2.0, d: 2.0 }
+  let page_scale = { ..@geometry.transform_identity_matrix, a: 2.0, d: 2.0, }
   let page = {
     ..@page.pdf_page_blank(@geometry.paper_a4),
     resources: @syntax.pdf_dictionary([
@@ -1128,7 +1128,7 @@ test "pdf_image_document_of_jbig2_data preserves globals object" {
 ///|
 test "pdf_image_object_of_jbig2_data reports short data" {
   let result : Result[
-    (@syntax.PdfObject, Array[(Int, @syntax.PdfObject)]),
+    (@syntax.PdfObject, Array[(Int32, @syntax.PdfObject)]),
     Error,
   ] = try
     @pdflite.pdf_image_object_of_jbig2_data(image_bytes_for_test([0, 1, 2]))
@@ -1159,7 +1159,7 @@ test "pdf_image_document_of_jpeg_data creates structured image page" {
     try! image_lookup_for_test(pages[0].rest, "/StructParents"),
     PdfInteger(1),
   )
-  let placement = { ..@geometry.transform_identity_matrix, a: 400.0, d: 300.0 }
+  let placement = { ..@geometry.transform_identity_matrix, a: 400.0, d: 300.0, }
   @test.assert_eq(try! document.parse_content_ops(pages[0].content), [
     Op_BDC(
       image_name_for_test("/Figure"),

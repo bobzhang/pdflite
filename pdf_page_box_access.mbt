@@ -7,10 +7,10 @@
 /// without parsing existing content.
 pub fn PdfDocument::hard_box(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   box_name : @core.PdfName,
-  mediabox_if_missing? : Bool = false,
-  fast? : Bool = false,
+  mediabox_if_missing~ : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_page_box_rewrite_pages(page_numbers, "hard_box", (_, _, page) => {
     self.pdf_page_hard_box_page(page, box_name, mediabox_if_missing, fast)
@@ -21,10 +21,10 @@ pub fn PdfDocument::hard_box(
 /// Compatibility wrapper for `PdfDocument::hard_box`.
 pub fn pdf_hard_box(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   box_name : @core.PdfName,
-  mediabox_if_missing? : Bool = false,
-  fast? : Bool = false,
+  mediabox_if_missing~ : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.hard_box(page_numbers, box_name, mediabox_if_missing~, fast~)
 }
@@ -33,10 +33,10 @@ pub fn pdf_hard_box(
 /// Compatibility wrapper using cpdfpage's string page-box names.
 pub fn PdfDocument::hard_box_string(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   box_name : String,
-  mediabox_if_missing? : Bool = false,
-  fast? : Bool = false,
+  mediabox_if_missing~ : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.hard_box(
     page_numbers,
@@ -50,10 +50,10 @@ pub fn PdfDocument::hard_box_string(
 /// Compatibility wrapper using cpdfpage's string page-box names.
 pub fn pdf_hard_box_string(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   box_name : String,
-  mediabox_if_missing? : Bool = false,
-  fast? : Bool = false,
+  mediabox_if_missing~ : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.hard_box_string(page_numbers, box_name, mediabox_if_missing~, fast~)
 }
@@ -66,7 +66,7 @@ pub fn pdf_hard_box_string(
 /// `/MediaBox` as always present.
 pub fn PdfDocument::has_page_box(
   self : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   box_name : @core.PdfName,
 ) -> Bool raise @core.PdfError {
   let pages = self.pages_of_pagetree()
@@ -83,7 +83,7 @@ pub fn PdfDocument::has_page_box(
 /// Compatibility wrapper for `PdfDocument::has_page_box`.
 pub fn pdf_hasbox(
   document : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   box_name : @core.PdfName,
 ) -> Bool raise @core.PdfError {
   document.has_page_box(page_number, box_name)
@@ -93,7 +93,7 @@ pub fn pdf_hasbox(
 /// Compatibility wrapper using cpdfpage's string page-box names.
 pub fn PdfDocument::hasbox_string(
   self : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   box_name : String,
 ) -> Bool raise @core.PdfError {
   self.has_page_box(page_number, pdf_page_box_name_of_string(box_name))
@@ -103,7 +103,7 @@ pub fn PdfDocument::hasbox_string(
 /// Compatibility wrapper using cpdfpage's string page-box names.
 pub fn pdf_hasbox_string(
   document : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   box_name : String,
 ) -> Bool raise @core.PdfError {
   document.hasbox_string(page_number, box_name)
@@ -116,10 +116,10 @@ pub fn pdf_hasbox_string(
 /// is true, in which case the page `/MediaBox` is copied.
 pub fn PdfDocument::copy_page_box(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   from_box : @core.PdfName,
   to_box : @core.PdfName,
-  mediabox_if_missing? : Bool = false,
+  mediabox_if_missing~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_page_box_rewrite_pages(page_numbers, "copy_page_box", (_, _, page) => {
     self.pdf_page_copy_box_page(page, from_box, to_box, mediabox_if_missing)
@@ -130,10 +130,10 @@ pub fn PdfDocument::copy_page_box(
 /// Compatibility wrapper for `PdfDocument::copy_page_box`.
 pub fn pdf_copy_page_box(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   from_box : @core.PdfName,
   to_box : @core.PdfName,
-  mediabox_if_missing? : Bool = false,
+  mediabox_if_missing~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.copy_page_box(page_numbers, from_box, to_box, mediabox_if_missing~)
 }
@@ -142,10 +142,10 @@ pub fn pdf_copy_page_box(
 /// Compatibility wrapper using cpdfpage's string page-box names.
 pub fn PdfDocument::copy_box(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   from_box : String,
   to_box : String,
-  mediabox_if_missing? : Bool = false,
+  mediabox_if_missing~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.copy_page_box(
     page_numbers,
@@ -162,7 +162,7 @@ pub fn pdf_copy_box(
   to_box : String,
   mediabox_if_missing : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.copy_box(page_numbers, from_box, to_box, mediabox_if_missing~)
 }

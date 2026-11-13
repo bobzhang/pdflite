@@ -36,16 +36,16 @@ pub fn pdf_pad_password(password : BytesView) -> @core.PdfBytes {
 ///
 /// Standard-security permission values are serialized least-significant byte
 /// first when deriving the file encryption key.
-pub fn pdf_crypt_low_byte(value : Int, shift : Int) -> Byte {
+pub fn pdf_crypt_low_byte(value : Int32, shift : Int32) -> Byte {
   ((value >> shift) & 0xff).to_byte()
 }
 
 ///|
 fn pdf_crypt_copy_view(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   data : BytesView,
-) -> Int {
+) -> Int32 {
   let mut current = position
   for byte in data {
     output[current] = byte
@@ -62,11 +62,11 @@ fn pdf_crypt_copy_view(
 pub fn pdf_encryption_file_key(
   no_encrypt_metadata : Bool,
   password : BytesView,
-  revision : Int,
+  revision : Int32,
   owner_entry : BytesView,
-  permissions : Int,
+  permissions : Int32,
   file_id : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
 ) -> @core.PdfBytes {
   let padded_password = pdf_pad_password(password)
   let metadata_marker_length = if revision >= 4 && no_encrypt_metadata {
@@ -113,7 +113,7 @@ pub fn pdf_encryption_file_key(
 }
 
 ///|
-fn pdf_key_xor_iteration(key : BytesView, iteration : Int) -> @core.PdfBytes {
+fn pdf_key_xor_iteration(key : BytesView, iteration : Int32) -> @core.PdfBytes {
   Bytes::makei(key.length(), index => {
     (key[index].to_int() ^ iteration).to_byte()
   })
@@ -127,11 +127,11 @@ fn pdf_key_xor_iteration(key : BytesView, iteration : Int) -> @core.PdfBytes {
 pub fn pdf_make_user_password_entry(
   no_encrypt_metadata : Bool,
   user_password : BytesView,
-  revision : Int,
+  revision : Int32,
   owner_entry : BytesView,
-  permissions : Int,
+  permissions : Int32,
   file_id : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let key = pdf_encryption_file_key(
     no_encrypt_metadata, user_password, revision, owner_entry, permissions, file_id,
@@ -165,7 +165,7 @@ pub fn pdf_make_user_password_entry(
 pub fn pdf_bytes_prefix_equal(
   left : BytesView,
   right : BytesView,
-  length : Int,
+  length : Int32,
 ) -> Bool {
   guard left.length() >= length && right.length() >= length else {
     return false
@@ -184,12 +184,12 @@ pub fn pdf_bytes_prefix_equal(
 pub fn pdf_authenticate_user_password(
   no_encrypt_metadata : Bool,
   user_password : BytesView,
-  revision : Int,
+  revision : Int32,
   user_entry : BytesView,
   owner_entry : BytesView,
-  permissions : Int,
+  permissions : Int32,
   file_id : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
 ) -> Bool raise @core.PdfError {
   let expected = pdf_make_user_password_entry(
     no_encrypt_metadata, user_password, revision, owner_entry, permissions, file_id,
@@ -206,8 +206,8 @@ pub fn pdf_authenticate_user_password(
 ///|
 fn pdf_owner_password_key(
   owner_password : BytesView,
-  revision : Int,
-  key_length_bits : Int,
+  revision : Int32,
+  key_length_bits : Int32,
 ) -> @core.PdfBytes {
   let padded_owner = pdf_pad_password(owner_password)
   let mut digest = pdf_md5_digest(padded_owner)
@@ -225,10 +225,10 @@ fn pdf_owner_password_key(
 /// A blank owner password follows PDF behavior by using the user password as
 /// the owner-password source.
 pub fn pdf_make_owner_password_entry(
-  revision : Int,
+  revision : Int32,
   owner_password : BytesView,
   user_password : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let source_password = if owner_password.length() == 0 {
     user_password
@@ -255,10 +255,10 @@ pub fn pdf_make_owner_password_entry(
 /// The returned bytes are the padded/truncated internal password form, not a
 /// decoded MoonBit string.
 pub fn pdf_user_password_from_owner_password(
-  revision : Int,
+  revision : Int32,
   owner_password : BytesView,
   owner_entry : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let key = pdf_owner_password_key(owner_password, revision, key_length_bits)
   if revision == 2 {
@@ -283,12 +283,12 @@ pub fn pdf_user_password_from_owner_password(
 pub fn pdf_authenticate_owner_password(
   no_encrypt_metadata : Bool,
   owner_password : BytesView,
-  revision : Int,
+  revision : Int32,
   user_entry : BytesView,
   owner_entry : BytesView,
-  permissions : Int,
+  permissions : Int32,
   file_id : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
 ) -> Bool raise @core.PdfError {
   let user_password = pdf_user_password_from_owner_password(
     revision, owner_password, owner_entry, key_length_bits,

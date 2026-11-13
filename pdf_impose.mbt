@@ -9,16 +9,16 @@ pub fn PdfDocument::impose(
   self : PdfDocument,
   x : Double,
   y : Double,
-  fit? : Bool = false,
-  columns? : Bool = false,
-  rtl? : Bool = false,
-  btt? : Bool = false,
-  center? : Bool = false,
-  margin? : Double = 0.0,
-  spacing? : Double = 0.0,
-  line_width? : Double = 0.0,
-  fast? : Bool = false,
-  process_struct_tree? : Bool = false,
+  fit~ : Bool = false,
+  columns~ : Bool = false,
+  rtl~ : Bool = false,
+  btt~ : Bool = false,
+  center~ : Bool = false,
+  margin~ : Double = 0.0,
+  spacing~ : Double = 0.0,
+  line_width~ : Double = 0.0,
+  fast~ : Bool = false,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let source = if process_struct_tree {
     self.mark_all_as_artifact()
@@ -85,16 +85,16 @@ pub fn pdf_impose(
   document : PdfDocument,
   x : Double,
   y : Double,
-  fit? : Bool = false,
-  columns? : Bool = false,
-  rtl? : Bool = false,
-  btt? : Bool = false,
-  center? : Bool = false,
-  margin? : Double = 0.0,
-  spacing? : Double = 0.0,
-  line_width? : Double = 0.0,
-  fast? : Bool = false,
-  process_struct_tree? : Bool = false,
+  fit~ : Bool = false,
+  columns~ : Bool = false,
+  rtl~ : Bool = false,
+  btt~ : Bool = false,
+  center~ : Bool = false,
+  margin~ : Double = 0.0,
+  spacing~ : Double = 0.0,
+  line_width~ : Double = 0.0,
+  fast~ : Bool = false,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.impose(
     x,
@@ -119,8 +119,8 @@ pub fn pdf_impose(
 /// imposed sheets by -90 degrees and uprights them into ordinary page geometry.
 pub fn PdfDocument::twoup_stack(
   self : PdfDocument,
-  fast? : Bool = false,
-  process_struct_tree? : Bool = false,
+  fast~ : Bool = false,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let imposed = self.impose(2.0, 1.0, fast~, process_struct_tree~)
   let all_pages = pdf_impose_all_pages(imposed.endpage())
@@ -131,8 +131,8 @@ pub fn PdfDocument::twoup_stack(
 /// Compatibility wrapper for `PdfDocument::twoup_stack`.
 pub fn pdf_twoup_stack(
   document : PdfDocument,
-  fast? : Bool = false,
-  process_struct_tree? : Bool = false,
+  fast~ : Bool = false,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.twoup_stack(fast~, process_struct_tree~)
 }
@@ -145,8 +145,8 @@ pub fn pdf_twoup_stack(
 /// size.
 pub fn PdfDocument::twoup(
   self : PdfDocument,
-  fast? : Bool = false,
-  process_struct_tree? : Bool = false,
+  fast~ : Bool = false,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   if pages.length() == 0 {
@@ -203,8 +203,8 @@ pub fn PdfDocument::twoup(
 /// Compatibility wrapper for `PdfDocument::twoup`.
 pub fn pdf_twoup(
   document : PdfDocument,
-  fast? : Bool = false,
-  process_struct_tree? : Bool = false,
+  fast~ : Bool = false,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.twoup(fast~, process_struct_tree~)
 }

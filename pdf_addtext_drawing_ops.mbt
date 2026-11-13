@@ -40,7 +40,7 @@ fn pdf_addtext_fontpack_text_ops(
   text : String,
 ) -> Array[@content.PdfContentOp] raise @core.PdfError {
   let codepoints = pdf_codepoints_of_utf8(@utf8.encode(text))
-  let triples : Array[(Int, Int, PdfFont)] = Array::new(
+  let triples : Array[(Int32, Int32, PdfFont)] = Array::new(
     capacity=codepoints.length(),
   )
   for codepoint in codepoints {

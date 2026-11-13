@@ -1,5 +1,5 @@
 ///|
-fn writer_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn writer_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -81,7 +81,7 @@ fn writer_concat_bytes_for_test(
 }
 
 ///|
-fn writer_name_for_test(values : ArrayView[Int]) -> @core.PdfName {
+fn writer_name_for_test(values : ArrayView[Int32]) -> @core.PdfName {
   @core.pdf_name_of_bytes(writer_bytes_for_test(values))
 }
 
@@ -89,7 +89,7 @@ fn writer_name_for_test(values : ArrayView[Int]) -> @core.PdfName {
 fn writer_bytes_start_with_at(
   haystack : @core.PdfBytes,
   needle : @core.PdfBytes,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   for i in 0..<needle.length() {
     if haystack[start + i] != needle[i] {
@@ -101,7 +101,10 @@ fn writer_bytes_start_with_at(
 }
 
 ///|
-fn writer_find_bytes(haystack : @core.PdfBytes, needle : @core.PdfBytes) -> Int {
+fn writer_find_bytes(
+  haystack : @core.PdfBytes,
+  needle : @core.PdfBytes,
+) -> Int32 {
   if needle.length() == 0 {
     0
   } else if haystack.length() < needle.length() {
@@ -122,8 +125,8 @@ fn writer_find_bytes(haystack : @core.PdfBytes, needle : @core.PdfBytes) -> Int 
 fn writer_find_bytes_from(
   haystack : @core.PdfBytes,
   needle : @core.PdfBytes,
-  start_at : Int,
-) -> Int {
+  start_at : Int32,
+) -> Int32 {
   if needle.length() == 0 {
     start_at
   } else if start_at < 0 ||

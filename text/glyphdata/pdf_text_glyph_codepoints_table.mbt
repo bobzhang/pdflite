@@ -3,7 +3,7 @@
 pub fn pdf_text_codepoint_of_glyphname_table(
   table : String,
   name : String,
-) -> Int? {
+) -> Int32? {
   match table {
     "pdf_text_codepoint_of_arabic_glyphname" =>
       pdf_text_codepoint_of_arabic_glyphname(name)

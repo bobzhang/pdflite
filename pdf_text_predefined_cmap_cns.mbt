@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_cns1_codepoint_of_cid(cid : Int) -> Int? {
+fn pdf_text_cns1_codepoint_of_cid(cid : Int32) -> Int32? {
   guard cid >= 0 && cid < @cmapdata.pdf_text_cns1_unicode_table.length() else {
     return None
   }
@@ -12,7 +12,7 @@ fn pdf_text_cns1_codepoint_of_cid(cid : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_gb1_codepoint_of_cid(cid : Int) -> Int? {
+fn pdf_text_gb1_codepoint_of_cid(cid : Int32) -> Int32? {
   guard cid >= 0 && cid < @cmapdata.pdf_text_gb1_unicode_table.length() else {
     return None
   }
@@ -26,9 +26,9 @@ fn pdf_text_gb1_codepoint_of_cid(cid : Int) -> Int? {
 
 ///|
 fn pdf_text_predefined_cns1_codepoint(
-  ranges : Array[(Int, Int, Int)],
-  code : Int,
-) -> Int? {
+  ranges : Array[(Int32, Int32, Int32)],
+  code : Int32,
+) -> Int32? {
   match pdf_text_predefined_cid_range_lookup(ranges, code) {
     Some(cid) => pdf_text_cns1_codepoint_of_cid(cid)
     None => None
@@ -37,9 +37,9 @@ fn pdf_text_predefined_cns1_codepoint(
 
 ///|
 fn pdf_text_predefined_cns1_codepoint_unsigned(
-  ranges : Array[(Int, Int, Int)],
-  code : Int,
-) -> Int? {
+  ranges : Array[(Int32, Int32, Int32)],
+  code : Int32,
+) -> Int32? {
   match pdf_text_predefined_cid_range_lookup_unsigned(ranges, code) {
     Some(cid) => pdf_text_cns1_codepoint_of_cid(cid)
     None => None
@@ -48,9 +48,9 @@ fn pdf_text_predefined_cns1_codepoint_unsigned(
 
 ///|
 fn pdf_text_predefined_cns1_charcode(
-  ranges : Array[(Int, Int, Int)],
-  codepoint : Int,
-) -> Int? {
+  ranges : Array[(Int32, Int32, Int32)],
+  codepoint : Int32,
+) -> Int32? {
   pdf_text_predefined_unicode_table_charcode(
     @cmapdata.pdf_text_cns1_unicode_table, ranges, codepoint,
   )
@@ -59,8 +59,8 @@ fn pdf_text_predefined_cns1_charcode(
 ///|
 fn pdf_text_predefined_cns1_builtin_codepoints(
   name : @core.PdfName,
-  code : Int,
-) -> Array[Int]? {
+  code : Int32,
+) -> Array[Int32]? {
   match
     pdf_text_predefined_vertical_codepoint(
       pdf_text_predefined_cns1_vertical_codepoint_table(name),
@@ -111,8 +111,8 @@ fn pdf_text_predefined_cns1_builtin_codepoints(
 ///|
 fn pdf_text_predefined_cns1_builtin_charcode(
   name : @core.PdfName,
-  codepoint : Int,
-) -> Int? {
+  codepoint : Int32,
+) -> Int32? {
   match
     pdf_text_predefined_vertical_charcode(
       pdf_text_predefined_cns1_vertical_charcode_table(name),

@@ -13,8 +13,8 @@ fn pdf_view_starts_with_endobj(view : BytesView) -> Bool {
 /// Check whether `cursor` contains the ASCII byte sequence at an absolute position.
 pub fn pdf_cursor_matches_ascii_at(
   cursor : @core.ByteCursor,
-  position : Int,
-  values : ArrayView[Int],
+  position : Int32,
+  values : ArrayView[Int32],
 ) -> Bool {
   let view_result : Result[BytesView, Error] = try
     cursor.view_at_absolute(position, values.length())
@@ -64,11 +64,11 @@ pub fn pdf_cursor_lex_keyword(
 
 ///|
 /// Return whether a byte can start a PDF numeric token.
-pub fn pdf_is_number_start_byte(value : Int) -> Bool {
+pub fn pdf_is_number_start_byte(value : Int32) -> Bool {
   (value >= 48 && value <= 57) || value == 43 || value == 45 || value == 46
 }
 
 ///|
-fn pdf_is_lowercase_keyword_start_byte(value : Int) -> Bool {
+fn pdf_is_lowercase_keyword_start_byte(value : Int32) -> Bool {
   value >= 97 && value <= 122
 }

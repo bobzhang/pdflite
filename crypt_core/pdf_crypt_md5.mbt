@@ -1,15 +1,18 @@
 ///|
-fn pdf_md5_rotate_left(value : UInt, bits : Int) -> UInt {
+fn pdf_md5_rotate_left(value : UInt32, bits : Int32) -> UInt32 {
   (value << bits) | (value >> (32 - bits))
 }
 
 ///|
-fn pdf_md5_low_byte(value : UInt, shift : Int) -> Byte {
+fn pdf_md5_low_byte(value : UInt32, shift : Int32) -> Byte {
   ((value >> shift) & 0xff).reinterpret_as_int().to_byte()
 }
 
 ///|
-fn pdf_md5_word_from_message(message : ArrayView[Byte], offset : Int) -> UInt {
+fn pdf_md5_word_from_message(
+  message : ArrayView[Byte],
+  offset : Int32,
+) -> UInt32 {
   message[offset].to_int().reinterpret_as_uint() |
   (message[offset + 1].to_int().reinterpret_as_uint() << 8) |
   (message[offset + 2].to_int().reinterpret_as_uint() << 16) |
@@ -17,14 +20,14 @@ fn pdf_md5_word_from_message(message : ArrayView[Byte], offset : Int) -> UInt {
 }
 
 ///|
-let pdf_md5_shifts : FixedArray[Int] = [
+let pdf_md5_shifts : FixedArray[Int32] = [
   7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 5, 9, 14, 20, 5, 9,
   14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
   4, 11, 16, 23, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21,
 ]
 
 ///|
-let pdf_md5_constants : FixedArray[UInt] = [
+let pdf_md5_constants : FixedArray[UInt32] = [
   0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a, 0xa8304613,
   0xfd469501, 0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be, 0x6b901122, 0xfd987193,
   0xa679438e, 0x49b40821, 0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa, 0xd62f105d,
@@ -57,10 +60,10 @@ pub fn pdf_md5_digest(data : BytesView) -> @core.PdfBytes {
     message[length_position] = pdf_md5_low_byte(bit_length_high, shift)
     length_position += 1
   }
-  let mut a0 : UInt = 0x67452301
-  let mut b0 : UInt = 0xefcdab89
-  let mut c0 : UInt = 0x98badcfe
-  let mut d0 : UInt = 0x10325476
+  let mut a0 : UInt32 = 0x67452301
+  let mut b0 : UInt32 = 0xefcdab89
+  let mut c0 : UInt32 = 0x98badcfe
+  let mut d0 : UInt32 = 0x10325476
   for block in 0..<(message.length() / 64) {
     let offset = block * 64
     let words = FixedArray::make(16, 0U)

@@ -110,7 +110,7 @@ fn PdfDocument::pdf_remove_first_decoder_direct(
 ///|
 fn pdf_stream_replace_length(
   dictionary : @syntax.PdfObject,
-  length : Int,
+  length : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   dictionary.replace_dict_entry(pdf_codec_length_key(), PdfInteger(length))
 }

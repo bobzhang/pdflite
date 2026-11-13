@@ -1,10 +1,10 @@
 ///|
-fn ccitt_wb_bytes(values : ArrayView[Int]) -> @core.PdfBytes {
+fn ccitt_wb_bytes(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
 ///|
-fn ccitt_wb_bits(bits : ArrayView[Int]) -> @core.PdfBytes {
+fn ccitt_wb_bits(bits : ArrayView[Int32]) -> @core.PdfBytes {
   let writer = @core.bit_writer_new()
   for bit in bits {
     try! writer.put_bit(bit)
@@ -31,7 +31,7 @@ test "CCITT private helpers handle EOL spans and reference lookups" {
   let eol = @core.bitstream_of_bytes(ccitt_wb_bytes([0x00, 0x10]))
   @test.assert_eq(pdf_ccitt_read_run(eol, true), -1)
 
-  let bad_span : Result[Int, Error] = try
+  let bad_span : Result[Int32, Error] = try
     pdf_ccitt_output_span([1, 1], 1, 2, 0)
   catch {
     err => Err(err)
@@ -103,7 +103,7 @@ test "CCITT Group 3 covers alignment EOL padding EOF and invalid params" {
     pdf_ccitt_decode_g3_1d(
       @core.bitstream_of_bytes(ccitt_wb_bits([1, 0, 1, 1])),
       @core.bit_writer_new(),
-      { ..pdf_ccitt_default_params(), columns: 4, rows: 1 },
+      { ..pdf_ccitt_default_params(), columns: 4, rows: 1, },
       2,
       0,
     )
@@ -176,7 +176,7 @@ test "CCITT Group 3 encoder covers white black long runs and malformed input" {
     fail("expected invalid private CCITT run length")
   }
 
-  let bad_read : Result[(Bool, Int), Error] = try
+  let bad_read : Result[(Bool, Int32), Error] = try
     pdf_ccitt_encode_read_run(
       @core.bitstream_of_bytes(ccitt_wb_bytes([0xFF])),
       0,
@@ -225,7 +225,7 @@ test "CCITT Group 4 covers pass vertical horizontal black EOFB and unsupported m
       // row 2: vertical left one, then horizontal while current color is black
        0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1,
     ]),
-    { ..pdf_ccitt_default_params(), k: -1, columns: 4, rows: 2 },
+    { ..pdf_ccitt_default_params(), k: -1, columns: 4, rows: 2, },
   )
   @test.assert_eq(mixed, ccitt_wb_bytes([0xC0, 0xB0]))
 
@@ -236,7 +236,7 @@ test "CCITT Group 4 covers pass vertical horizontal black EOFB and unsupported m
       // row 2: vertical left one, then pass while current color is black
        0, 1, 0, 0, 0, 0, 1,
     ]),
-    { ..pdf_ccitt_default_params(), k: -1, columns: 4, rows: 2 },
+    { ..pdf_ccitt_default_params(), k: -1, columns: 4, rows: 2, },
   )
   @test.assert_eq(pass_black, ccitt_wb_bytes([0xC0, 0x80]))
 
@@ -247,7 +247,7 @@ test "CCITT Group 4 covers pass vertical horizontal black EOFB and unsupported m
       // row 2: vertical left one, vertical left one while black, vertical zero
        0, 1, 0, 0, 1, 0, 1,
     ]),
-    { ..pdf_ccitt_default_params(), k: -1, columns: 4, rows: 2 },
+    { ..pdf_ccitt_default_params(), k: -1, columns: 4, rows: 2, },
   )
   @test.assert_eq(vertical_black, ccitt_wb_bytes([0xC0, 0x90]))
 
@@ -300,7 +300,7 @@ test "CCITT Group 4 covers pass vertical horizontal black EOFB and unsupported m
     pdf_ccitt_decode_g4(
       @core.bitstream_of_bytes(ccitt_wb_bits([1])),
       @core.bit_writer_new(),
-      { ..pdf_ccitt_default_params(), k: -1, columns: 4, rows: 1 },
+      { ..pdf_ccitt_default_params(), k: -1, columns: 4, rows: 1, },
       2,
       0,
     )
@@ -415,7 +415,7 @@ test "CCITT Group 4 encoder roundtrips mixed rows and malformed input" {
     fail("expected invalid Group 4 vertical write mode")
   }
 
-  let missing_row : Result[Array[Int], Error] = try
+  let missing_row : Result[Array[Int32], Error] = try
     pdf_ccitt_line_from_data(ccitt_wb_bytes([]), 4, 0)
   catch {
     err => Err(err)

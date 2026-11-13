@@ -4,26 +4,26 @@
 /// The generation defaults to `0`, matching newly created PDF objects.
 pub fn pdf_object_entry(
   data : PdfObjectData,
-  generation? : Int = 0,
+  generation~ : Int32 = 0,
 ) -> PdfObjectEntry {
-  { data, generation }
+  { data, generation, }
 }
 
 ///|
 /// Construct an empty object-number map.
 pub fn pdf_object_map_empty() -> PdfObjectMap {
-  { entries: HashMap([]) }
+  { entries: HashMap([]), }
 }
 
 ///|
 /// Return the number of entries in the object map.
-pub fn PdfObjectMap::length(self : PdfObjectMap) -> Int {
+pub fn PdfObjectMap::length(self : PdfObjectMap) -> Int32 {
   self.entries.length()
 }
 
 ///|
 /// Return whether `number` has an entry in the object map.
-pub fn PdfObjectMap::contains(self : PdfObjectMap, number : Int) -> Bool {
+pub fn PdfObjectMap::contains(self : PdfObjectMap, number : Int32) -> Bool {
   self.entries.contains(number)
 }
 
@@ -31,7 +31,7 @@ pub fn PdfObjectMap::contains(self : PdfObjectMap, number : Int) -> Bool {
 /// Return the object-table entry for `number`, if present.
 pub fn PdfObjectMap::get_entry(
   self : PdfObjectMap,
-  number : Int,
+  number : Int32,
 ) -> PdfObjectEntry? {
   self.entries.get(number)
 }
@@ -42,7 +42,7 @@ pub fn PdfObjectMap::get_entry(
 /// This low-level map operation does not update any mutation log.
 pub fn PdfObjectMap::set_entry(
   self : PdfObjectMap,
-  number : Int,
+  number : Int32,
   entry : PdfObjectEntry,
 ) -> Unit {
   self.entries[number] = entry
@@ -52,13 +52,13 @@ pub fn PdfObjectMap::set_entry(
 /// Remove an object-number entry from the map.
 ///
 /// Missing numbers are ignored.
-pub fn PdfObjectMap::remove(self : PdfObjectMap, number : Int) -> Unit {
+pub fn PdfObjectMap::remove(self : PdfObjectMap, number : Int32) -> Unit {
   self.entries.remove(number)
 }
 
 ///|
 /// Return all object numbers in ascending order.
-pub fn PdfObjectMap::object_numbers(self : PdfObjectMap) -> Array[Int] {
+pub fn PdfObjectMap::object_numbers(self : PdfObjectMap) -> Array[Int32] {
   let numbers = self.entries.keys().to_array()
   numbers.sort()
   numbers
@@ -77,7 +77,7 @@ fn PdfObjectMap::copy(self : PdfObjectMap) -> PdfObjectMap {
       ObjectToParseFromObjectStream(reference) =>
         ObjectToParseFromObjectStream(reference)
     }
-    output.set_entry(number, { data, generation: entry.generation })
+    output.set_entry(number, { data, generation: entry.generation, })
   }
   output
 }
@@ -89,7 +89,7 @@ fn PdfObjectMap::copy(self : PdfObjectMap) -> PdfObjectMap {
 /// Deferred states such as `ObjectToParse` are treated as absent by this helper.
 pub fn PdfObjectMap::lookup_parsed_or_null(
   self : PdfObjectMap,
-  number : Int,
+  number : Int32,
 ) -> @syntax.PdfObject {
   match self.get_entry(number) {
     Some({ data: ObjectParsed(object), .. }) => object

@@ -49,7 +49,7 @@ fn PdfDocument::pdf_impose_patterns_used_with_scn(
 }
 
 ///|
-fn pdf_impose_xobject_done(done : ArrayView[Int], number : Int) -> Bool {
+fn pdf_impose_xobject_done(done : ArrayView[Int32], number : Int32) -> Bool {
   for item in done {
     if item == number {
       break true
@@ -84,7 +84,7 @@ fn PdfDocument::pdf_impose_change_pattern_matrices_resources(
   matrix : @geometry.TransformMatrix,
   resources : @syntax.PdfObject,
   names_used_with_scn : ArrayView[@core.PdfName],
-  xobjects_done : Array[Int],
+  xobjects_done : Array[Int32],
 ) -> @syntax.PdfObject raise @core.PdfError {
   match self.lookup_direct(pdf_page_xobject_key(), resources) {
     Some(PdfDictionary(entries)) =>
@@ -129,8 +129,8 @@ fn PdfDocument::pdf_impose_change_pattern_matrices_xobject(
   self : PdfDocument,
   matrix : @geometry.TransformMatrix,
   xobject : @syntax.PdfObject,
-  xobject_number : Int,
-  xobjects_done : Array[Int],
+  xobject_number : Int32,
+  xobjects_done : Array[Int32],
 ) -> Unit raise @core.PdfError {
   if pdf_impose_xobject_done(xobjects_done, xobject_number) {
     ()
@@ -179,7 +179,7 @@ fn PdfDocument::pdf_impose_change_pattern_matrices_page(
     page.content,
     page.resources,
   )
-  let xobjects_done : Array[Int] = []
+  let xobjects_done : Array[Int32] = []
   {
     ..page,
     resources: self.pdf_impose_change_pattern_matrices_resources(

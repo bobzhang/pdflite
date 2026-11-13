@@ -12,7 +12,7 @@ test "object stream number offsets parse header pairs" {
 
 ///|
 test "object stream number offsets reject malformed headers" {
-  let bad_first : Result[Array[(Int, Int)], Error] = try
+  let bad_first : Result[Array[(Int32, Int32)], Error] = try
     @reader.pdf_object_stream_number_offsets(@ascii.encode("1 0"), 4, 1)
   catch {
     err => Err(err)
@@ -23,7 +23,7 @@ test "object stream number offsets reject malformed headers" {
     fail("expected StreamDataExpected")
   }
 
-  let short_header : Result[Array[(Int, Int)], Error] = try
+  let short_header : Result[Array[(Int32, Int32)], Error] = try
     @reader.pdf_object_stream_number_offsets(@ascii.encode("2 "), 2, 1)
   catch {
     err => Err(err)
@@ -34,7 +34,7 @@ test "object stream number offsets reject malformed headers" {
     fail("expected XRefEntryExpected")
   }
 
-  let malformed_pair : Result[Array[(Int, Int)], Error] = try
+  let malformed_pair : Result[Array[(Int32, Int32)], Error] = try
     @reader.pdf_object_stream_number_offsets(@ascii.encode("/Name 0 "), 8, 1)
   catch {
     err => Err(err)
@@ -64,17 +64,17 @@ test "object stream end offsets preserve duplicate starts" {
 
 ///|
 fn reader_object_stream_xref_for_test(
-  object_number : Int,
-  object_stream_number : Int,
-  index : Int,
-  in_use? : Bool = true,
+  object_number : Int32,
+  object_stream_number : Int32,
+  index : Int32,
+  in_use~ : Bool = true,
 ) -> @reader.PdfClassicXRefEntry {
   {
     object_number,
     offset: 0,
     generation: 0,
     in_use,
-    object_stream: Some({ object_stream_number, index }),
+    object_stream: Some({ object_stream_number, index, }),
   }
 }
 

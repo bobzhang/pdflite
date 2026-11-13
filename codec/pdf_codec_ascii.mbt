@@ -1,5 +1,5 @@
 ///|
-fn pdf_ascii_hex_digit(value : Int) -> Byte {
+fn pdf_ascii_hex_digit(value : Int32) -> Byte {
   if value < 10 {
     (48 + value).to_byte()
   } else {
@@ -8,7 +8,7 @@ fn pdf_ascii_hex_digit(value : Int) -> Byte {
 }
 
 ///|
-fn pdf_ascii_hex_value(value : Int) -> Int? {
+fn pdf_ascii_hex_value(value : Int32) -> Int32? {
   match value {
     value if value >= 48 && value <= 57 => Some(value - 48)
     value if value >= 65 && value <= 70 => Some(value - 55)
@@ -50,7 +50,7 @@ pub fn pdf_ascii_hex_decode_view(
 ) -> @core.PdfBytes raise @core.PdfError {
   let output = Array::make((data.length() + 1) / 2, b'\x00')
   let mut position = 0
-  let mut high : Int? = None
+  let mut high : Int32? = None
   let mut done = false
   for byte in data {
     if !done {
@@ -105,11 +105,11 @@ let pdf_ascii85_max_word : UInt64 = 4294967295
 ///|
 fn pdf_ascii85_encode_word(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   word : UInt64,
-  output_length : Int,
+  output_length : Int32,
   compress_zero : Bool,
-) -> Int {
+) -> Int32 {
   let mut current = position
   if compress_zero && word == 0 {
     output[current] = pdf_ascii85_zero
@@ -132,8 +132,8 @@ fn pdf_ascii85_encode_word(
 ///|
 fn pdf_ascii85_word_from_view(
   data : BytesView,
-  start : Int,
-  count : Int,
+  start : Int32,
+  count : Int32,
 ) -> UInt64 {
   let mut word : UInt64 = 0
   for i in 0..<4 {
@@ -178,11 +178,11 @@ pub fn pdf_ascii85_encode(data : @core.PdfBytes) -> @core.PdfBytes {
 
 ///|
 fn pdf_ascii85_decode_group(
-  digits : ArrayView[Int],
+  digits : ArrayView[Int32],
   output : Array[Byte],
-  position : Int,
-  output_length : Int,
-) -> Int raise @core.PdfError {
+  position : Int32,
+  output_length : Int32,
+) -> Int32 raise @core.PdfError {
   let mut word : UInt64 = 0
   for digit in digits {
     word = word * 85 + digit.to_uint64()
@@ -212,10 +212,10 @@ fn pdf_ascii85_decode_group(
 
 ///|
 fn pdf_ascii85_finish_partial(
-  digits : Array[Int],
+  digits : Array[Int32],
   output : Array[Byte],
-  position : Int,
-) -> Int raise @core.PdfError {
+  position : Int32,
+) -> Int32 raise @core.PdfError {
   if digits.length() == 1 {
     raise InvalidASCII85Data
   } else if digits.length() > 1 {
@@ -239,7 +239,7 @@ pub fn pdf_ascii85_decode_view(
 ) -> @core.PdfBytes raise @core.PdfError {
   let output = Array::make(data.length() * 4, b'\x00')
   let mut position = 0
-  let mut digits : Array[Int] = Array::new(capacity=5)
+  let mut digits : Array[Int32] = Array::new(capacity=5)
   let mut done = false
   for byte in data {
     if !done {

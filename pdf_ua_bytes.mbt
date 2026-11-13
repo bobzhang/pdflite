@@ -1,15 +1,15 @@
 ///|
-fn pdf_ua_ascii_length(text : String) -> Int {
+fn pdf_ua_ascii_length(text : String) -> Int32 {
   @ascii.encode(text).length()
 }
 
 ///|
-fn pdf_ua_utf8_length(text : String) -> Int {
+fn pdf_ua_utf8_length(text : String) -> Int32 {
   @utf8.encode(text).length()
 }
 
 ///|
-fn pdf_ua_xml_escaped_utf8_length(text : String) -> Int {
+fn pdf_ua_xml_escaped_utf8_length(text : String) -> Int32 {
   let mut length = 0
   for byte in @utf8.encode(text) {
     length += match byte.to_int() {
@@ -27,9 +27,9 @@ fn pdf_ua_xml_escaped_utf8_length(text : String) -> Int {
 ///|
 fn pdf_ua_write_ascii(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   text : String,
-) -> Int {
+) -> Int32 {
   let mut current = position
   for byte in @ascii.encode(text) {
     output[current] = byte
@@ -41,9 +41,9 @@ fn pdf_ua_write_ascii(
 ///|
 fn pdf_ua_write_utf8(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   text : String,
-) -> Int {
+) -> Int32 {
   let mut current = position
   for byte in @utf8.encode(text) {
     output[current] = byte
@@ -55,9 +55,9 @@ fn pdf_ua_write_utf8(
 ///|
 fn pdf_ua_write_view(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   bytes : BytesView,
-) -> Int {
+) -> Int32 {
   let mut position = position
   for byte in bytes {
     output[position] = byte
@@ -69,9 +69,9 @@ fn pdf_ua_write_view(
 ///|
 fn pdf_ua_write_xml_escaped_utf8(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   text : String,
-) -> Int {
+) -> Int32 {
   let mut current = position
   for byte in @utf8.encode(text) {
     current = match byte.to_int() {

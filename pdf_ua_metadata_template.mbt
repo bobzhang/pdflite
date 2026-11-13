@@ -1,5 +1,5 @@
 ///|
-fn pdf_ua_metadata_length(subformat : PdfUASubformat, title : String) -> Int {
+fn pdf_ua_metadata_length(subformat : PdfUASubformat, title : String) -> Int32 {
   pdf_ua_ascii_length(
     "<?xpacket begin=\"\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>\n",
   ) +

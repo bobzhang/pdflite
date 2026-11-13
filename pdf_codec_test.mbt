@@ -1,5 +1,5 @@
 ///|
-fn codec_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn codec_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -64,8 +64,8 @@ fn codec_miniz_mixed_stored_data_for_test() -> @core.PdfBytes {
 
 ///|
 fn codec_lzw_codes_for_test(
-  codes : ArrayView[Int],
-  early_change : Int,
+  codes : ArrayView[Int32],
+  early_change : Int32,
 ) -> @core.PdfBytes {
   let writer = @core.bit_writer_new()
   let mut code_length = 9
@@ -617,7 +617,7 @@ test "@flate.pdf_flate_encode uses native miniz default level on native target" 
 #cfg(target="native")
 test "@flate.pdf_flate_encode_with_level matches native miniz byte output" {
   let small = codec_ascii_for_test("Hi")
-  let small_cases : Array[(Int, Array[Int])] = [
+  let small_cases : Array[(Int32, Array[Int32])] = [
     (0, [120, 1, 1, 2, 0, 253, 255, 72, 105, 0, 251, 0, 178]),
     (4, [120, 94, 1, 2, 0, 253, 255, 72, 105, 0, 251, 0, 178]),
     (6, [120, 156, 1, 2, 0, 253, 255, 72, 105, 0, 251, 0, 178]),
@@ -635,7 +635,7 @@ test "@flate.pdf_flate_encode_with_level matches native miniz byte output" {
     229, 194, 1, 13, 0, 0, 0, 130, 176, 108, 104, 255, 78, 4, 97, 59, 59, 37, 2,
     33, 243, 61, 225,
   ]
-  let compressed_cases : Array[(Int, Array[Int])] = [
+  let compressed_cases : Array[(Int32, Array[Int32])] = [
     (1, [120, 1] + compressed_body),
     (6, [120, 156] + compressed_body),
     (9, [120, 218] + compressed_body),
@@ -656,7 +656,7 @@ test "@flate.pdf_flate_encode_with_level matches native miniz byte output" {
     214, 251, 32, 69, 106, 143, 180, 217, 254, 35, 72, 109, 146, 183, 220, 1, 38,
     247, 237, 32, 33,
   ]
-  let mixed_stored_cases : Array[(Int, Array[Int])] = [
+  let mixed_stored_cases : Array[(Int32, Array[Int32])] = [
     (1, [120, 1] + mixed_stored_body),
     (6, [120, 156] + mixed_stored_body),
     (9, [120, 218] + mixed_stored_body),

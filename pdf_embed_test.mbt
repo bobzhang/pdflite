@@ -1,11 +1,11 @@
 ///|
 fn embed_standard_font_for_test() -> @pdflite.PdfFont {
-  PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding })
+  PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding, })
 }
 
 ///|
 fn embed_bold_font_for_test() -> @pdflite.PdfFont {
-  PdfFontStandard({ font: PdfHelveticaBold, encoding: PdfWinAnsiEncoding })
+  PdfFontStandard({ font: PdfHelveticaBold, encoding: PdfWinAnsiEncoding, })
 }
 
 ///|
@@ -14,7 +14,7 @@ fn embed_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn embed_bytes_for_test(values : Array[Int]) -> @core.PdfBytes {
+fn embed_bytes_for_test(values : Array[Int32]) -> @core.PdfBytes {
   let output : Array[Byte] = []
   for value in values {
     output.push(value.to_byte())
@@ -23,13 +23,13 @@ fn embed_bytes_for_test(values : Array[Int]) -> @core.PdfBytes {
 }
 
 ///|
-fn embed_push_u16_for_test(output : Array[Int], value : Int) -> Unit {
+fn embed_push_u16_for_test(output : Array[Int32], value : Int32) -> Unit {
   output.push((value >> 8) & 0xFF)
   output.push(value & 0xFF)
 }
 
 ///|
-fn embed_push_u32_for_test(output : Array[Int], value : Int) -> Unit {
+fn embed_push_u32_for_test(output : Array[Int32], value : Int32) -> Unit {
   output.push((value >> 24) & 0xFF)
   output.push((value >> 16) & 0xFF)
   output.push((value >> 8) & 0xFF)
@@ -37,7 +37,7 @@ fn embed_push_u32_for_test(output : Array[Int], value : Int) -> Unit {
 }
 
 ///|
-fn embed_push_i16_for_test(output : Array[Int], value : Int) -> Unit {
+fn embed_push_i16_for_test(output : Array[Int32], value : Int32) -> Unit {
   let mut normalized = value % 0x10000
   if normalized < 0 {
     normalized += 0x10000
@@ -46,7 +46,7 @@ fn embed_push_i16_for_test(output : Array[Int], value : Int) -> Unit {
 }
 
 ///|
-fn embed_push_tag_for_test(output : Array[Int], tag : String) -> Unit {
+fn embed_push_tag_for_test(output : Array[Int32], tag : String) -> Unit {
   let bytes = @ascii.encode(tag)
   for index in 0..<4 {
     output.push(if index < bytes.length() { bytes[index].to_int() } else { 32 })
@@ -54,7 +54,10 @@ fn embed_push_tag_for_test(output : Array[Int], tag : String) -> Unit {
 }
 
 ///|
-fn embed_append_for_test(output : Array[Int], values : ArrayView[Int]) -> Unit {
+fn embed_append_for_test(
+  output : Array[Int32],
+  values : ArrayView[Int32],
+) -> Unit {
   for value in values {
     output.push(value)
   }
@@ -62,10 +65,10 @@ fn embed_append_for_test(output : Array[Int], values : ArrayView[Int]) -> Unit {
 
 ///|
 fn embed_table_font_for_test(
-  tables : ArrayView[(String, Array[Int])],
+  tables : ArrayView[(String, Array[Int32])],
 ) -> @core.PdfBytes {
   let table_data_offset = 12 + tables.length() * 16
-  let output : Array[Int] = []
+  let output : Array[Int32] = []
   embed_push_u32_for_test(output, 0x00010000)
   embed_push_u16_for_test(output, tables.length())
   embed_push_u16_for_test(output, 0)
@@ -89,10 +92,10 @@ fn embed_table_font_for_test(
 
 ///|
 fn embed_cmap_table_for_test(
-  subtables : ArrayView[(Int, Int, Array[Int])],
-) -> Array[Int] {
+  subtables : ArrayView[(Int32, Int32, Array[Int32])],
+) -> Array[Int32] {
   let cmap_header_length = 4 + subtables.length() * 8
-  let cmap : Array[Int] = []
+  let cmap : Array[Int32] = []
   embed_push_u16_for_test(cmap, 0)
   embed_push_u16_for_test(cmap, subtables.length())
   let mut subtable_offset = cmap_header_length
@@ -112,10 +115,10 @@ fn embed_cmap_table_for_test(
 
 ///|
 fn embed_format6_subtable_for_test(
-  first_code : Int,
-  glyphs : ArrayView[Int],
-) -> Array[Int] {
-  let output : Array[Int] = []
+  first_code : Int32,
+  glyphs : ArrayView[Int32],
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   embed_push_u16_for_test(output, 6)
   embed_push_u16_for_test(output, 10 + glyphs.length() * 2)
   embed_push_u16_for_test(output, 0)
@@ -128,8 +131,8 @@ fn embed_format6_subtable_for_test(
 }
 
 ///|
-fn embed_head_table_for_test() -> Array[Int] {
-  let output : Array[Int] = []
+fn embed_head_table_for_test() -> Array[Int32] {
+  let output : Array[Int32] = []
   embed_push_u32_for_test(output, 0x00010000)
   embed_push_u32_for_test(output, 0)
   embed_push_u32_for_test(output, 0)
@@ -152,16 +155,16 @@ fn embed_head_table_for_test() -> Array[Int] {
 }
 
 ///|
-fn embed_maxp_table_for_test() -> Array[Int] {
-  let output : Array[Int] = []
+fn embed_maxp_table_for_test() -> Array[Int32] {
+  let output : Array[Int32] = []
   embed_push_u32_for_test(output, 0x00010000)
   embed_push_u16_for_test(output, 2)
   output
 }
 
 ///|
-fn embed_hhea_table_for_test() -> Array[Int] {
-  let output : Array[Int] = []
+fn embed_hhea_table_for_test() -> Array[Int32] {
+  let output : Array[Int32] = []
   for _ in 0..<34 {
     output.push(0)
   }
@@ -170,8 +173,8 @@ fn embed_hhea_table_for_test() -> Array[Int] {
 }
 
 ///|
-fn embed_hmtx_table_for_test() -> Array[Int] {
-  let output : Array[Int] = []
+fn embed_hmtx_table_for_test() -> Array[Int32] {
+  let output : Array[Int32] = []
   for width in [1000, 1500] {
     embed_push_u16_for_test(output, width)
     embed_push_i16_for_test(output, 0)
@@ -180,8 +183,8 @@ fn embed_hmtx_table_for_test() -> Array[Int] {
 }
 
 ///|
-fn embed_os2_table_for_test() -> Array[Int] {
-  let output : Array[Int] = []
+fn embed_os2_table_for_test() -> Array[Int32] {
+  let output : Array[Int32] = []
   embed_push_u16_for_test(output, 2)
   embed_push_i16_for_test(output, 500)
   for _ in 0..<64 {
@@ -198,8 +201,8 @@ fn embed_os2_table_for_test() -> Array[Int] {
 }
 
 ///|
-fn embed_post_table_for_test() -> Array[Int] {
-  let output : Array[Int] = []
+fn embed_post_table_for_test() -> Array[Int32] {
+  let output : Array[Int32] = []
   embed_push_u32_for_test(output, 0x00020000)
   embed_push_i16_for_test(output, 11)
   embed_push_u16_for_test(output, 0)
@@ -207,8 +210,8 @@ fn embed_post_table_for_test() -> Array[Int] {
 }
 
 ///|
-fn embed_simple_glyph_for_test() -> Array[Int] {
-  let output : Array[Int] = []
+fn embed_simple_glyph_for_test() -> Array[Int32] {
+  let output : Array[Int32] = []
   embed_push_i16_for_test(output, 1)
   for _ in 0..<8 {
     output.push(0)
@@ -218,10 +221,10 @@ fn embed_simple_glyph_for_test() -> Array[Int] {
 
 ///|
 fn embed_glyf_table_for_test(
-  glyphs : ArrayView[Array[Int]],
-) -> (Array[Int], Array[Int]) {
-  let glyf : Array[Int] = []
-  let offsets : Array[Int] = [0]
+  glyphs : ArrayView[Array[Int32]],
+) -> (Array[Int32], Array[Int32]) {
+  let glyf : Array[Int32] = []
+  let offsets : Array[Int32] = [0]
   let mut offset = 0
   for glyph in glyphs {
     embed_append_for_test(glyf, glyph)
@@ -232,8 +235,8 @@ fn embed_glyf_table_for_test(
 }
 
 ///|
-fn embed_loca_long_table_for_test(offsets : ArrayView[Int]) -> Array[Int] {
-  let output : Array[Int] = []
+fn embed_loca_long_table_for_test(offsets : ArrayView[Int32]) -> Array[Int32] {
+  let output : Array[Int32] = []
   for offset in offsets {
     embed_push_u32_for_test(output, offset)
   }
@@ -241,8 +244,8 @@ fn embed_loca_long_table_for_test(offsets : ArrayView[Int]) -> Array[Int] {
 }
 
 ///|
-fn embed_cmap_for_test() -> Array[Int] {
-  let glyphs : Array[Int] = []
+fn embed_cmap_for_test() -> Array[Int32] {
+  let glyphs : Array[Int32] = []
   for code in 65..<=0x0100 {
     glyphs.push(if code == 65 || code == 0x0100 { 1 } else { 0 })
   }
@@ -273,7 +276,7 @@ fn embed_truetype_font_for_test() -> @core.PdfBytes {
 ///|
 fn embed_assert_fontfile_stream_for_test(
   document : @pdflite.PdfDocument,
-  number : Int,
+  number : Int32,
 ) -> Unit raise {
   guard document.lookup_object_or_null(number) is PdfStreamObject(stream) else {
     fail("expected embedded font stream")
@@ -315,10 +318,10 @@ test "PdfFontPack::get_char follows cpdf duplicate and missing semantics" {
   let pack : @pdflite.PdfFontPack = {
     fonts: [first, second],
     entries: [
-      { codepoint: 65, font_index: 0, charcode: 41 },
-      { codepoint: 66, font_index: 7, charcode: 42 },
-      { codepoint: 65, font_index: 1, charcode: 43 },
-      { codepoint: 67, font_index: -1, charcode: 44 },
+      { codepoint: 65, font_index: 0, charcode: 41, },
+      { codepoint: 66, font_index: 7, charcode: 42, },
+      { codepoint: 65, font_index: 1, charcode: 43, },
+      { codepoint: 67, font_index: -1, charcode: 44, },
     ],
   }
   @test.assert_eq(pack.get_char(65), Some((43, 1, second)))
@@ -354,8 +357,8 @@ test "pdf_embed_truetype builds font pack and embedded font streams" {
   )
   @test.assert_eq(pack.fonts.length(), 2)
   @test.assert_eq(pack.entries, [
-    { codepoint: 65, font_index: 0, charcode: 65 },
-    { codepoint: 0x0100, font_index: 1, charcode: 33 },
+    { codepoint: 65, font_index: 0, charcode: 65, },
+    { codepoint: 0x0100, font_index: 1, charcode: 33, },
   ])
   @test.assert_eq(pack.get_char(65), Some((65, 0, pack.fonts[0])))
   @test.assert_eq(pack.get_char(0x0100), Some((33, 1, pack.fonts[1])))
@@ -433,7 +436,7 @@ test "pdf_embed_truetype builds font pack and embedded font streams" {
 test "pdf_fontpack_collate_runs groups consecutive equal font numbers" {
   let first = embed_standard_font_for_test()
   let second = embed_bold_font_for_test()
-  let runs : ReadOnlyArray[(Int, Int, @pdflite.PdfFont)] = [
+  let runs : ReadOnlyArray[(Int32, Int32, @pdflite.PdfFont)] = [
     (65, 0, first),
     (66, 0, first),
     (67, 1, second),

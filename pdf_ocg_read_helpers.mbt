@@ -30,10 +30,10 @@ fn PdfDocument::pdf_ocg_name_array(
 fn PdfDocument::pdf_ocg_indirect_numbers(
   self : PdfDocument,
   object : @syntax.PdfObject,
-) -> Array[Int] {
+) -> Array[Int32] {
   match self.direct(object) {
     PdfArray(values) => {
-      let numbers : Array[Int] = []
+      let numbers : Array[Int32] = []
       for value in values {
         match value {
           PdfIndirect(number) => numbers.push(number)

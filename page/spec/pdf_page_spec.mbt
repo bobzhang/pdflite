@@ -1,6 +1,6 @@
 ///|
 priv enum PdfPageSpecToken {
-  PageSpecNumber(Int)
+  PageSpecNumber(Int32)
   PageSpecWord(String)
   PageSpecDash
   PageSpecComma
@@ -8,7 +8,7 @@ priv enum PdfPageSpecToken {
 
 ///|
 priv struct PdfPageSpecContext {
-  end_page : Int
+  end_page : Int32
   selectors : PdfPageSpecSelectors?
   source : String
 }
@@ -25,8 +25,8 @@ fn PdfPageSpecContext::bad(self : PdfPageSpecContext) -> Unit raise PdfError {
 /// selectors for page labels, orientation filters, and annotation filters.
 pub(all) struct PdfPageSpecSelectors {
   resolve_references : (BytesView) -> Bytes raise PdfError
-  select_dimensions : (ArrayView[Int], Bool) -> Array[Int] raise PdfError
-  select_annotated : (ArrayView[Int]) -> Array[Int] raise PdfError
+  select_dimensions : (ArrayView[Int32], Bool) -> Array[Int32] raise PdfError
+  select_annotated : (ArrayView[Int32]) -> Array[Int32] raise PdfError
 }
 
 ///|
@@ -43,9 +43,9 @@ fn PdfPageSpecContext::resolve_references(
 ///|
 fn PdfPageSpecContext::select_dimensions(
   self : PdfPageSpecContext,
-  candidates : ArrayView[Int],
+  candidates : ArrayView[Int32],
   portrait : Bool,
-) -> Array[Int] raise PdfError {
+) -> Array[Int32] raise PdfError {
   match self.selectors {
     Some(selectors) => (selectors.select_dimensions)(candidates, portrait)
     None => {
@@ -58,8 +58,8 @@ fn PdfPageSpecContext::select_dimensions(
 ///|
 fn PdfPageSpecContext::select_annotated(
   self : PdfPageSpecContext,
-  candidates : ArrayView[Int],
-) -> Array[Int] raise PdfError {
+  candidates : ArrayView[Int32],
+) -> Array[Int32] raise PdfError {
   match self.selectors {
     Some(selectors) => (selectors.select_annotated)(candidates)
     None => {

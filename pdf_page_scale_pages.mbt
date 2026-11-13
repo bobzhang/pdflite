@@ -6,9 +6,9 @@
 /// by a scale matrix around the origin.
 pub fn PdfDocument::scale_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   scales : ArrayView[(Double, Double)],
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   pdf_page_box_validate_page_numbers(
     page_numbers,
@@ -19,7 +19,7 @@ pub fn PdfDocument::scale_pages(
   let pages = self.pages_of_pagetree()
   let page_indexes = pdf_page_scale_pair_index_map(page_numbers)
   let rewritten : Array[@page.PdfPage] = Array::new(capacity=pages.length())
-  let matrices : Array[(Int, @geometry.TransformMatrix)] = Array::new(
+  let matrices : Array[(Int32, @geometry.TransformMatrix)] = Array::new(
     capacity=page_numbers.length(),
   )
   for index in 0..<pages.length() {
@@ -47,9 +47,9 @@ pub fn PdfDocument::scale_pages(
 /// Compatibility wrapper for `PdfDocument::scale_pages`.
 pub fn pdf_scale_pages(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   scales : ArrayView[(Double, Double)],
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.scale_pages(page_numbers, scales, fast~)
 }
@@ -61,9 +61,9 @@ pub fn pdf_scale_pages(
 /// selected page, and unselected pages are left untouched.
 pub fn PdfDocument::scale_pdf(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   scales : ArrayView[(Double, Double)],
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(page_numbers, pages.length(), "scale_pdf")
@@ -85,8 +85,8 @@ pub fn PdfDocument::scale_pdf(
 pub fn pdf_scale_pdf(
   scales : ArrayView[(Double, Double)],
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.scale_pdf(page_numbers, scales, fast~)
 }

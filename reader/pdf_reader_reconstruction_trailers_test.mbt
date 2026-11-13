@@ -1,7 +1,7 @@
 ///|
 fn reader_reconstruction_trailer_parser_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
+  position : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   cursor.seek_absolute(position)
   if position == 3 {
@@ -14,7 +14,7 @@ fn reader_reconstruction_trailer_parser_for_test(
 ///|
 fn reader_reconstruction_xref_stream_trailer_parser_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
+  position : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   cursor.seek_absolute(position)
   if position == 0 {

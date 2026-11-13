@@ -3,7 +3,7 @@ fn PdfDocument::pdf_page_prefix_content_streams(
   self : PdfDocument,
   prefix : String,
   page_object : @syntax.PdfObject,
-  fixed_streams : @hashmap.HashMap[Int, Bool],
+  fixed_streams : @hashmap.HashMap[Int32, Bool],
 ) -> Unit raise @core.PdfError {
   let resources = match
     self.lookup_direct(pdf_page_resources_key(), page_object) {
@@ -166,7 +166,7 @@ fn PdfDocument::pdf_page_add_prefix(
   self : PdfDocument,
   prefix : String,
 ) -> Unit raise @core.PdfError {
-  let fixed_streams : @hashmap.HashMap[Int, Bool] = HashMap([])
+  let fixed_streams : @hashmap.HashMap[Int32, Bool] = HashMap([])
   for number in self.object_numbers() {
     let object = self.lookup_object_or_null(number)
     if self.pdf_page_object_uses_page_resources(object) {

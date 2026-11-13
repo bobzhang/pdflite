@@ -27,8 +27,8 @@ fn PdfDocument::pdf_page_transform_action_object_with_lookup(
 ///|
 fn PdfDocument::pdf_page_transform_bookmarks_for_matrices(
   self : PdfDocument,
-  matrices : ArrayView[(Int, @geometry.TransformMatrix)],
-  page_reference_numbers : ArrayView[Int],
+  matrices : ArrayView[(Int32, @geometry.TransformMatrix)],
+  page_reference_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   let bookmarks = self.read_bookmarks(preserve_actions=true)
   let lookup = pdf_page_matrix_lookup(matrices, page_reference_numbers)
@@ -93,8 +93,8 @@ fn PdfDocument::pdf_page_transform_link_annotation_object_with_lookup(
 ///|
 fn PdfDocument::pdf_page_transform_link_annotations_for_matrices(
   self : PdfDocument,
-  matrices : ArrayView[(Int, @geometry.TransformMatrix)],
-  page_reference_numbers : ArrayView[Int],
+  matrices : ArrayView[(Int32, @geometry.TransformMatrix)],
+  page_reference_numbers : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   let lookup = pdf_page_matrix_lookup(matrices, page_reference_numbers)
   for page_number in self.page_reference_numbers() {
@@ -140,8 +140,8 @@ fn PdfDocument::pdf_page_transform_link_annotations_for_matrices(
 ///|
 fn PdfDocument::pdf_page_transform_open_action_for_matrices(
   self : PdfDocument,
-  matrices : ArrayView[(Int, @geometry.TransformMatrix)],
-  page_reference_numbers : ArrayView[Int],
+  matrices : ArrayView[(Int32, @geometry.TransformMatrix)],
+  page_reference_numbers : ArrayView[Int32],
 ) -> Unit {
   let lookup = pdf_page_matrix_lookup(matrices, page_reference_numbers)
   match self.pdf_page_active_catalog() {

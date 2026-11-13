@@ -99,8 +99,8 @@ fn PdfDocument::pdf_ua_matterhorn_check_31_027(self : PdfDocument) -> Json? {
 ///|
 fn PdfDocument::pdf_ua_matterhorn_tounicode_numbers(
   self : PdfDocument,
-) -> Array[Int] {
-  let numbers : Array[Int] = []
+) -> Array[Int32] {
+  let numbers : Array[Int32] = []
   for entry in self.parsed_object_entries() {
     match self.indirect_number(pdf_text_tounicode_key_name, entry.2) {
       Some(number) if !pdf_ua_matterhorn_int_array_contains(numbers, number) =>
@@ -113,8 +113,8 @@ fn PdfDocument::pdf_ua_matterhorn_tounicode_numbers(
 
 ///|
 fn pdf_ua_matterhorn_tounicode_has_codepoint(
-  map : ArrayView[(Int, @core.PdfBytes)],
-  codepoint : Int,
+  map : ArrayView[(Int32, @core.PdfBytes)],
+  codepoint : Int32,
 ) -> Bool raise @core.PdfError {
   for entry in map {
     for parsed_codepoint in pdf_codepoints_of_utf16be(entry.1) {

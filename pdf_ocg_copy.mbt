@@ -31,15 +31,15 @@ fn pdf_ocg_copy_ocg(ocg : @ocg.PdfOcg) -> @ocg.PdfOcg {
 
 ///|
 fn pdf_ocg_copy_order(
-  order : ArrayView[(@core.PdfBytes?, Array[Int])],
-) -> Array[(@core.PdfBytes?, Array[Int])] {
+  order : ArrayView[(@core.PdfBytes?, Array[Int32])],
+) -> Array[(@core.PdfBytes?, Array[Int32])] {
   [
     for item in order => (item.0, item.1.copy())
   ]
 }
 
 ///|
-fn pdf_ocg_copy_groups(groups : ArrayView[Array[Int]]) -> Array[Array[Int]] {
+fn pdf_ocg_copy_groups(groups : ArrayView[Array[Int32]]) -> Array[Array[Int32]] {
   [
     for group in groups => group.copy()
   ]

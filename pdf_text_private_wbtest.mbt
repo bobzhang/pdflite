@@ -2,7 +2,7 @@
 // Public text behavior belongs in `_test.mbt` files.
 
 ///|
-fn wbtest_text_bytes(values : ArrayView[Int]) -> @core.PdfBytes {
+fn wbtest_text_bytes(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -53,7 +53,7 @@ test "private text glyph helpers cover fallback and CID ToUnicode branches" {
 
   let fallback_font = wbtest_text_simple_font(
     PdfCustomEncoding(PdfImplicitInFontFile, [
-      { name: wbtest_text_name("/unknown"), code: 65 },
+      { name: wbtest_text_name("/unknown"), code: 65, },
     ]),
     None,
   )
