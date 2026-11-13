@@ -18,8 +18,8 @@ fn pdf_xref_marker_token(token : BytesView) -> Bool {
 ///|
 fn pdf_xref_fixed_width_digits(
   line : BytesView,
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
 ) -> Bool {
   for i in start..<end {
     if !@core.pdf_is_digit_byte(line[i].to_int()) {
@@ -33,7 +33,7 @@ fn pdf_xref_fixed_width_digits(
 ///|
 fn pdf_xref_fixed_width_entry(
   line : BytesView,
-  object_number : Int,
+  object_number : Int32,
 ) -> PdfClassicXRefEntry? raise @core.PdfError {
   if line.length() >= 18 &&
     pdf_xref_fixed_width_digits(line, 0, 10) &&
@@ -59,7 +59,7 @@ fn pdf_xref_fixed_width_entry(
 /// Read the numeric byte offset following the final `startxref` marker.
 pub fn pdf_read_startxref_position(
   data : BytesView,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let search = @core.pdf_startxref_search_view(data)
   let start = @core.pdf_find_last_ascii(search, [
     115, 116, 97, 114, 116, 120, 114, 101, 102,

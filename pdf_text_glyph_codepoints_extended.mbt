@@ -14,7 +14,7 @@ fn pdf_text_glyphname_base_bytes(name : @core.PdfName) -> BytesView {
 }
 
 ///|
-fn pdf_text_valid_unicode_scalar(codepoint : Int) -> Bool {
+fn pdf_text_valid_unicode_scalar(codepoint : Int32) -> Bool {
   codepoint >= 0 &&
   codepoint <= 0x10FFFF &&
   !(codepoint >= 0xD800 && codepoint <= 0xDFFF)
@@ -23,9 +23,9 @@ fn pdf_text_valid_unicode_scalar(codepoint : Int) -> Bool {
 ///|
 fn pdf_text_parse_hex_codepoint(
   bytes : BytesView,
-  start : Int,
-  stop : Int,
-) -> Int? {
+  start : Int32,
+  stop : Int32,
+) -> Int32? {
   guard stop > start else { return None }
   let mut value = 0
   for index in start..<stop {
@@ -42,7 +42,7 @@ fn pdf_text_parse_hex_codepoint(
 }
 
 ///|
-fn pdf_text_uni_glyphname_codepoints(base : BytesView) -> Array[Int]? {
+fn pdf_text_uni_glyphname_codepoints(base : BytesView) -> Array[Int32]? {
   guard base.length() > 4 &&
     base[0].to_int() == 47 &&
     base[1].to_int() == 117 &&
@@ -51,7 +51,7 @@ fn pdf_text_uni_glyphname_codepoints(base : BytesView) -> Array[Int]? {
     (base.length() - 4) % 4 == 0 else {
     return None
   }
-  let output : Array[Int] = Array::new(capacity=(base.length() - 4) / 4)
+  let output : Array[Int32] = Array::new(capacity=(base.length() - 4) / 4)
   let mut index = 4
   while index < base.length() {
     match pdf_text_parse_hex_codepoint(base, index, index + 4) {
@@ -64,7 +64,7 @@ fn pdf_text_uni_glyphname_codepoints(base : BytesView) -> Array[Int]? {
 }
 
 ///|
-fn pdf_text_u_glyphname_codepoints(base : BytesView) -> Array[Int]? {
+fn pdf_text_u_glyphname_codepoints(base : BytesView) -> Array[Int32]? {
   guard base.length() >= 6 &&
     base.length() <= 8 &&
     base[0].to_int() == 47 &&
@@ -84,7 +84,7 @@ fn pdf_text_upper_hex_letter(byte : Byte) -> Bool {
 }
 
 ///|
-fn pdf_text_truetype_control_high_byte(value : Int) -> Bool {
+fn pdf_text_truetype_control_high_byte(value : Int32) -> Bool {
   value == 0x8A ||
   value == 0x8B ||
   value == 0x8C ||
@@ -94,7 +94,7 @@ fn pdf_text_truetype_control_high_byte(value : Int) -> Bool {
 }
 
 ///|
-fn pdf_text_truetype_windows_high_byte_table() -> Array[(Int, Int)] {
+fn pdf_text_truetype_windows_high_byte_table() -> Array[(Int32, Int32)] {
   [
     (0x82, 0x201A),
     (0x83, 0x0192),
@@ -124,7 +124,10 @@ fn pdf_text_truetype_windows_high_byte_table() -> Array[(Int, Int)] {
 }
 
 ///|
-fn pdf_text_truetype_high_byte_codepoint(value : Int, low_hex : Byte) -> Int? {
+fn pdf_text_truetype_high_byte_codepoint(
+  value : Int32,
+  low_hex : Byte,
+) -> Int32? {
   if pdf_text_upper_hex_letter(low_hex) &&
     pdf_text_truetype_control_high_byte(value) {
     Some(value)
@@ -140,7 +143,7 @@ fn pdf_text_truetype_high_byte_codepoint(value : Int, low_hex : Byte) -> Int? {
 }
 
 ///|
-fn pdf_text_truetype_glyphname_codepoints(base : BytesView) -> Array[Int]? {
+fn pdf_text_truetype_glyphname_codepoints(base : BytesView) -> Array[Int32]? {
   guard base.length() == 4 && base[0].to_int() == 47 && base[1].to_int() == 71 else {
     return None
   }

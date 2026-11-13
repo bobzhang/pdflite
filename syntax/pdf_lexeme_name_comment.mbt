@@ -1,5 +1,5 @@
 ///|
-fn pdf_cursor_name_output_capacity(cursor : @core.ByteCursor) -> Int {
+fn pdf_cursor_name_output_capacity(cursor : @core.ByteCursor) -> Int32 {
   let mut index = cursor.absolute_position()
   let mut capacity = 1
   let mut done = false

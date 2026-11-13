@@ -2,9 +2,9 @@
 fn pdf_truetype_hmtx_widths(
   data : BytesView,
   hmtx : @truetype.PdfTrueTypeTableRecord,
-  count : Int,
-) -> Array[Int] raise @core.PdfError {
-  let widths : Array[Int] = []
+  count : Int32,
+) -> Array[Int32] raise @core.PdfError {
+  let widths : Array[Int32] = []
   for index in 0..<count {
     let offset = hmtx.offset + index * 4
     widths.push(pdf_truetype_required_u16(data, offset, "hmtx table"))
@@ -14,9 +14,9 @@ fn pdf_truetype_hmtx_widths(
 
 ///|
 fn pdf_truetype_max_pdf_width(
-  units_per_em : Int,
-  widths : ArrayView[Int],
-) -> Int {
+  units_per_em : Int32,
+  widths : ArrayView[Int32],
+) -> Int32 {
   let mut max_width = 0
   for width in widths {
     if width > max_width {
@@ -27,7 +27,7 @@ fn pdf_truetype_max_pdf_width(
 }
 
 ///|
-fn pdf_truetype_flags(symbolic : Bool, italic_angle : Int) -> Int {
+fn pdf_truetype_flags(symbolic : Bool, italic_angle : Int32) -> Int32 {
   let italic = if italic_angle != 0 { 1 } else { 0 }
   let symbolic_bit = if symbolic { 1 } else { 0 }
   let nonsymbolic_bit = if symbolic { 0 } else { 1 }

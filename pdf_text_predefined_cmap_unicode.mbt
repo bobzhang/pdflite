@@ -1,12 +1,12 @@
 ///|
-fn pdf_text_valid_unicode_codepoint(codepoint : Int) -> Bool {
+fn pdf_text_valid_unicode_codepoint(codepoint : Int32) -> Bool {
   codepoint >= 0 &&
   codepoint <= 0x10FFFF &&
   !(codepoint >= 0xD800 && codepoint <= 0xDFFF)
 }
 
 ///|
-fn pdf_text_packed_charcode_length(code : Int) -> Int {
+fn pdf_text_packed_charcode_length(code : Int32) -> Int32 {
   if code >= 0 && code <= 0xFF {
     1
   } else if code >= 0 && code <= 0xFFFF {
@@ -19,29 +19,29 @@ fn pdf_text_packed_charcode_length(code : Int) -> Int {
 }
 
 ///|
-fn pdf_text_packed_charcode_bytes(code : Int, length : Int) -> Bytes {
+fn pdf_text_packed_charcode_bytes(code : Int32, length : Int32) -> Bytes {
   Bytes::makei(length, fn(index) {
     ((code >> ((length - index - 1) * 8)) & 0xFF).to_byte()
   })
 }
 
 ///|
-fn pdf_text_pack_two_bytes(first : Int, second : Int) -> Int {
+fn pdf_text_pack_two_bytes(first : Int32, second : Int32) -> Int32 {
   (first << 8) | second
 }
 
 ///|
 fn pdf_text_pack_four_bytes(
-  first : Int,
-  second : Int,
-  third : Int,
-  fourth : Int,
-) -> Int {
+  first : Int32,
+  second : Int32,
+  third : Int32,
+  fourth : Int32,
+) -> Int32 {
   (((((first << 8) | second) << 8) | third) << 8) | fourth
 }
 
 ///|
-fn pdf_text_pack_bytes_as_charcode(bytes : BytesView) -> Int {
+fn pdf_text_pack_bytes_as_charcode(bytes : BytesView) -> Int32 {
   let mut code = 0
   for byte in bytes {
     code = (code << 8) | byte.to_int()
@@ -50,7 +50,7 @@ fn pdf_text_pack_bytes_as_charcode(bytes : BytesView) -> Int {
 }
 
 ///|
-fn pdf_text_predefined_utf8_codepoints(code : Int) -> Array[Int]? {
+fn pdf_text_predefined_utf8_codepoints(code : Int32) -> Array[Int32]? {
   let bytes = pdf_text_packed_charcode_bytes(
     code,
     pdf_text_packed_charcode_length(code),
@@ -63,7 +63,7 @@ fn pdf_text_predefined_utf8_codepoints(code : Int) -> Array[Int]? {
 }
 
 ///|
-fn pdf_text_predefined_utf8_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_utf8_charcode(codepoint : Int32) -> Int32? {
   guard pdf_text_valid_unicode_codepoint(codepoint) else { return None }
   if codepoint <= 0x7F {
     Some(codepoint)
@@ -99,7 +99,7 @@ fn pdf_text_predefined_utf8_charcode(codepoint : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_predefined_utf16_codepoints(code : Int) -> Array[Int]? {
+fn pdf_text_predefined_utf16_codepoints(code : Int32) -> Array[Int32]? {
   if code >= 0 && code <= 0xFFFF {
     if pdf_text_valid_unicode_codepoint(code) {
       Some([code])
@@ -119,7 +119,7 @@ fn pdf_text_predefined_utf16_codepoints(code : Int) -> Array[Int]? {
 }
 
 ///|
-fn pdf_text_predefined_utf16_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_utf16_charcode(codepoint : Int32) -> Int32? {
   guard pdf_text_valid_unicode_codepoint(codepoint) else { return None }
   if codepoint <= 0xFFFF {
     Some(codepoint)
@@ -132,7 +132,7 @@ fn pdf_text_predefined_utf16_charcode(codepoint : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_predefined_utf32_codepoints(code : Int) -> Array[Int]? {
+fn pdf_text_predefined_utf32_codepoints(code : Int32) -> Array[Int32]? {
   if pdf_text_valid_unicode_codepoint(code) {
     Some([code])
   } else {
@@ -141,7 +141,7 @@ fn pdf_text_predefined_utf32_codepoints(code : Int) -> Array[Int]? {
 }
 
 ///|
-fn pdf_text_predefined_utf32_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_utf32_charcode(codepoint : Int32) -> Int32? {
   if pdf_text_valid_unicode_codepoint(codepoint) {
     Some(codepoint)
   } else {
@@ -152,8 +152,8 @@ fn pdf_text_predefined_utf32_charcode(codepoint : Int) -> Int? {
 ///|
 fn pdf_text_predefined_direct_unicode_codepoints(
   name : @core.PdfName,
-  code : Int,
-) -> Array[Int]? {
+  code : Int32,
+) -> Array[Int32]? {
   if pdf_text_predefined_cmap_uses_utf8_charcodes(name) {
     pdf_text_predefined_utf8_codepoints(code)
   } else if pdf_text_predefined_cmap_uses_utf16_charcodes(name) {
@@ -170,8 +170,8 @@ fn pdf_text_predefined_direct_unicode_codepoints(
 ///|
 fn pdf_text_predefined_direct_unicode_charcode(
   name : @core.PdfName,
-  codepoint : Int,
-) -> Int? {
+  codepoint : Int32,
+) -> Int32? {
   if pdf_text_predefined_cmap_uses_utf8_charcodes(name) {
     pdf_text_predefined_utf8_charcode(codepoint)
   } else if pdf_text_predefined_cmap_uses_utf16_charcodes(name) {

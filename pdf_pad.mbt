@@ -13,11 +13,11 @@ fn pdf_pad_annots_key() -> @core.PdfName {
 
 ///|
 fn pdf_pad_sorted_page_numbers(
-  page_numbers : ArrayView[Int],
-  end_page : Int,
+  page_numbers : ArrayView[Int32],
+  end_page : Int32,
   context : String,
-) -> Array[Int] raise @core.PdfError {
-  let sorted : Array[Int] = Array::new(capacity=page_numbers.length())
+) -> Array[Int32] raise @core.PdfError {
+  let sorted : Array[Int32] = Array::new(capacity=page_numbers.length())
   for page_number in page_numbers {
     sorted.push(page_number)
   }
@@ -34,12 +34,12 @@ fn pdf_pad_sorted_page_numbers(
 
 ///|
 fn pdf_pad_unique_sorted_page_numbers(
-  page_numbers : ArrayView[Int],
-  end_page : Int,
+  page_numbers : ArrayView[Int32],
+  end_page : Int32,
   context : String,
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   let sorted = pdf_pad_sorted_page_numbers(page_numbers, end_page, context)
-  let unique : Array[Int] = Array::new(capacity=sorted.length())
+  let unique : Array[Int32] = Array::new(capacity=sorted.length())
   for page_number in sorted {
     if unique.length() == 0 || unique[unique.length() - 1] != page_number {
       unique.push(page_number)
@@ -50,10 +50,10 @@ fn pdf_pad_unique_sorted_page_numbers(
 
 ///|
 fn pdf_pad_insert_positions(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   before : Bool,
-) -> Array[Int] {
-  let output : Array[Int] = Array::new(capacity=page_numbers.length())
+) -> Array[Int32] {
+  let output : Array[Int32] = Array::new(capacity=page_numbers.length())
   for page_number in page_numbers {
     output.push(if before { page_number - 1 } else { page_number })
   }
@@ -76,7 +76,7 @@ fn pdf_pad_blank_page(
 ///|
 fn pdf_pad_blank_pages(
   pages : ArrayView[@page.PdfPage],
-  positions : ArrayView[Int],
+  positions : ArrayView[Int32],
   before : Bool,
 ) -> Array[@page.PdfPage] raise @core.PdfError {
   let output : Array[@page.PdfPage] = Array::new(capacity=positions.length())
@@ -90,7 +90,7 @@ fn pdf_pad_blank_pages(
 ///|
 fn pdf_pad_inserted_page_count(
   inserted_pages : ArrayView[Array[@page.PdfPage]],
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for inserted in inserted_pages {
     count += inserted.length()
@@ -101,7 +101,7 @@ fn pdf_pad_inserted_page_count(
 ///|
 fn pdf_pad_insert_pages(
   pages : ArrayView[@page.PdfPage],
-  positions : ArrayView[Int],
+  positions : ArrayView[Int32],
   inserted_pages : ArrayView[Array[@page.PdfPage]],
 ) -> Array[@page.PdfPage] {
   let output : Array[@page.PdfPage] = Array::new(
@@ -129,10 +129,10 @@ fn pdf_pad_insert_pages(
 
 ///|
 fn pdf_pad_change_table(
-  original_count : Int,
-  positions : ArrayView[Int],
-) -> Array[(Int, Int)] {
-  let changes : Array[(Int, Int)] = Array::new(capacity=original_count)
+  original_count : Int32,
+  positions : ArrayView[Int32],
+) -> Array[(Int32, Int32)] {
+  let changes : Array[(Int32, Int32)] = Array::new(capacity=original_count)
   let mut insertion = 0
   for old_page in 1..<=original_count {
     while insertion < positions.length() && positions[insertion] < old_page {
@@ -144,8 +144,8 @@ fn pdf_pad_change_table(
 }
 
 ///|
-fn pdf_pad_page_number_range(count : Int) -> Array[Int] {
-  let output : Array[Int] = Array::new(
+fn pdf_pad_page_number_range(count : Int32) -> Array[Int32] {
+  let output : Array[Int32] = Array::new(
     capacity=if count > 0 { count } else { 0 },
   )
   for page_number in 1..<=count {
@@ -157,7 +157,7 @@ fn pdf_pad_page_number_range(count : Int) -> Array[Int] {
 ///|
 fn PdfDocument::pdf_pad_with_blank_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   before : Bool,
   context : String,
 ) -> PdfDocument raise @core.PdfError {
@@ -184,7 +184,7 @@ fn PdfDocument::pdf_pad_with_blank_pages(
 ///|
 fn PdfDocument::pdf_pad_with_document(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   before : Bool,
   pad_document : PdfDocument,
   context : String,
@@ -225,7 +225,7 @@ fn PdfDocument::pdf_pad_with_document(
 ///|
 fn PdfDocument::pdf_pad_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   before : Bool,
   pad_with : PdfDocument?,
   context : String,
@@ -241,8 +241,8 @@ fn PdfDocument::pdf_pad_pages(
 /// Insert blank pages or pages from `pad_with` after selected one-based pages.
 pub fn PdfDocument::pad_after(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  pad_with? : PdfDocument? = None,
+  page_numbers : ArrayView[Int32],
+  pad_with~ : PdfDocument? = None,
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_pad_pages(page_numbers, false, pad_with, "padafter")
 }
@@ -251,8 +251,8 @@ pub fn PdfDocument::pad_after(
 /// Compatibility wrapper for `PdfDocument::pad_after`.
 pub fn pdf_pad_after(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  pad_with? : PdfDocument? = None,
+  page_numbers : ArrayView[Int32],
+  pad_with~ : PdfDocument? = None,
 ) -> PdfDocument raise @core.PdfError {
   document.pad_after(page_numbers, pad_with~)
 }
@@ -260,9 +260,9 @@ pub fn pdf_pad_after(
 ///|
 /// Source-spelled cpdfpad `padafter` wrapper with cpdf argument order.
 pub fn pdf_padafter(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
-  pad_with? : PdfDocument? = None,
+  pad_with~ : PdfDocument? = None,
 ) -> PdfDocument raise @core.PdfError {
   document.pad_after(page_numbers, pad_with~)
 }
@@ -271,8 +271,8 @@ pub fn pdf_padafter(
 /// Insert blank pages or pages from `pad_with` before selected one-based pages.
 pub fn PdfDocument::pad_before(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  pad_with? : PdfDocument? = None,
+  page_numbers : ArrayView[Int32],
+  pad_with~ : PdfDocument? = None,
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_pad_pages(page_numbers, true, pad_with, "padbefore")
 }
@@ -281,8 +281,8 @@ pub fn PdfDocument::pad_before(
 /// Compatibility wrapper for `PdfDocument::pad_before`.
 pub fn pdf_pad_before(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  pad_with? : PdfDocument? = None,
+  page_numbers : ArrayView[Int32],
+  pad_with~ : PdfDocument? = None,
 ) -> PdfDocument raise @core.PdfError {
   document.pad_before(page_numbers, pad_with~)
 }
@@ -290,9 +290,9 @@ pub fn pdf_pad_before(
 ///|
 /// Source-spelled cpdfpad `padbefore` wrapper with cpdf argument order.
 pub fn pdf_padbefore(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
-  pad_with? : PdfDocument? = None,
+  pad_with~ : PdfDocument? = None,
 ) -> PdfDocument raise @core.PdfError {
   document.pad_before(page_numbers, pad_with~)
 }
@@ -315,7 +315,7 @@ fn pdf_pad_multiple_blank_page(page : @page.PdfPage) -> @page.PdfPage {
 /// multiple of zero is invalid.
 pub fn PdfDocument::pad_to_multiple(
   self : PdfDocument,
-  multiple : Int,
+  multiple : Int32,
 ) -> PdfDocument raise @core.PdfError {
   if multiple == 0 {
     raise BadNumberArgument("pad_to_multiple: zero multiple")
@@ -354,7 +354,7 @@ pub fn PdfDocument::pad_to_multiple(
           padded.push(page)
         }
       }
-      let changes : Array[(Int, Int)] = Array::new(capacity=pages.length())
+      let changes : Array[(Int32, Int32)] = Array::new(capacity=pages.length())
       if prepend {
         for old_page in 1..<=pages.length() {
           changes.push((old_page, old_page + pages_to_add))
@@ -373,7 +373,7 @@ pub fn PdfDocument::pad_to_multiple(
 /// Compatibility wrapper for `PdfDocument::pad_to_multiple`.
 pub fn pdf_pad_to_multiple(
   document : PdfDocument,
-  multiple : Int,
+  multiple : Int32,
 ) -> PdfDocument raise @core.PdfError {
   document.pad_to_multiple(multiple)
 }
@@ -381,7 +381,7 @@ pub fn pdf_pad_to_multiple(
 ///|
 /// Source-spelled cpdfpad `padmultiple` wrapper with cpdf argument order.
 pub fn pdf_padmultiple(
-  multiple : Int,
+  multiple : Int32,
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.pad_to_multiple(multiple)

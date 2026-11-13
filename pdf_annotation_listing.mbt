@@ -13,9 +13,9 @@ fn PdfDocument::pdf_annotation_contents_text(
 ///|
 fn pdf_annotation_write_listing_view(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   data : BytesView,
-) -> Int {
+) -> Int32 {
   let mut current = position
   for byte in data {
     output[current] = byte
@@ -27,19 +27,19 @@ fn pdf_annotation_write_listing_view(
 ///|
 fn pdf_annotation_write_listing_ascii(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   text : String,
-) -> Int {
+) -> Int32 {
   pdf_annotation_write_listing_view(output, position, @ascii.encode(text))
 }
 
 ///|
 fn pdf_annotation_write_listing_line(
   output : Array[Byte],
-  position : Int,
-  page_number : Int,
+  position : Int32,
+  page_number : Int32,
   contents : BytesView,
-) -> Int {
+) -> Int32 {
   let mut current = pdf_annotation_write_listing_ascii(
     output, position, "Page ",
   )
@@ -56,9 +56,9 @@ fn pdf_annotation_write_listing_line(
 
 ///|
 fn pdf_annotation_listing_line_length(
-  page_number : Int,
+  page_number : Int32,
   contents : BytesView,
-) -> Int {
+) -> Int32 {
   @ascii.encode("Page ").length() +
   @ascii.encode(page_number.to_string()).length() +
   @ascii.encode(": ").length() +
@@ -73,10 +73,10 @@ fn pdf_annotation_listing_line_length(
 /// contribute an empty byte string, matching cpdf's old list behavior.
 pub fn PdfDocument::get_annotations(
   self : PdfDocument,
-  encoding? : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
-) -> Array[(Int, @core.PdfBytes)] raise @core.PdfError {
+  encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
+) -> Array[(Int32, @core.PdfBytes)] raise @core.PdfError {
   let pages = self.pages_of_pagetree()
-  let output : Array[(Int, @core.PdfBytes)] = Array::new(
+  let output : Array[(Int32, @core.PdfBytes)] = Array::new(
     capacity=pages.length(),
   )
   for index, page in pages {
@@ -98,7 +98,7 @@ pub fn PdfDocument::get_annotations(
 pub fn pdf_get_annotations(
   encoding : @metadata.PdfMetadataEncoding,
   document : PdfDocument,
-) -> Array[(Int, @core.PdfBytes)] raise @core.PdfError {
+) -> Array[(Int32, @core.PdfBytes)] raise @core.PdfError {
   document.get_annotations(encoding~)
 }
 
@@ -109,8 +109,8 @@ pub fn pdf_get_annotations(
 /// returns the bytes cpdf would print instead of writing to stdout.
 pub fn PdfDocument::list_annotations(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  encoding? : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
+  page_numbers : ArrayView[Int32],
+  encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
 ) -> @core.PdfBytes raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(
@@ -119,7 +119,7 @@ pub fn PdfDocument::list_annotations(
     "list_annotations",
   )
   let selected_pages = @core.pdf_number_set(page_numbers)
-  let rows : Array[(Int, @core.PdfBytes)] = Array::new(
+  let rows : Array[(Int32, @core.PdfBytes)] = Array::new(
     capacity=page_numbers.length(),
   )
   let mut output_length = 0
@@ -154,7 +154,7 @@ pub fn PdfDocument::list_annotations(
 ///|
 /// Compatibility wrapper for `PdfDocument::list_annotations`.
 pub fn pdf_list_annotations(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   encoding : @metadata.PdfMetadataEncoding,
   document : PdfDocument,
 ) -> @core.PdfBytes raise @core.PdfError {

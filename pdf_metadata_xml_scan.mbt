@@ -28,7 +28,11 @@ fn pdf_metadata_trim_xml_text(value : BytesView) -> BytesView {
 }
 
 ///|
-fn pdf_metadata_find_byte(data : BytesView, start : Int, byte : Int) -> Int {
+fn pdf_metadata_find_byte(
+  data : BytesView,
+  start : Int32,
+  byte : Int32,
+) -> Int32 {
   for position in start..<data.length() {
     if data[position].to_int() == byte {
       break position
@@ -41,7 +45,7 @@ fn pdf_metadata_find_byte(data : BytesView, start : Int, byte : Int) -> Int {
 ///|
 fn pdf_metadata_view_matches_at(
   data : BytesView,
-  position : Int,
+  position : Int32,
   pattern : BytesView,
 ) -> Bool {
   if position < 0 || position + pattern.length() > data.length() {
@@ -60,9 +64,9 @@ fn pdf_metadata_view_matches_at(
 ///|
 fn pdf_metadata_find_bytes_from(
   data : BytesView,
-  start : Int,
+  start : Int32,
   pattern : BytesView,
-) -> Int {
+) -> Int32 {
   if pattern.length() == 0 {
     start
   } else if data.length() < pattern.length() ||

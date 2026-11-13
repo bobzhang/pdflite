@@ -30,7 +30,7 @@ fn PdfDocument::pdf_pages_of_branch(
   inherited_cropbox : @syntax.PdfObject?,
   inherited_rotate : @page.PdfPageRotation,
   last_mediabox : Ref[@syntax.PdfObject],
-  depth : Int,
+  depth : Int32,
 ) -> Array[@page.PdfPage] raise @core.PdfError {
   let resources = pdf_page_inherited_object(
     self.lookup_direct(pdf_page_resources_key(), node),
@@ -175,7 +175,7 @@ fn PdfDocument::pdf_pages_of_node(
   inherited_cropbox : @syntax.PdfObject?,
   inherited_rotate : @page.PdfPageRotation,
   last_mediabox : Ref[@syntax.PdfObject],
-  depth : Int,
+  depth : Int32,
 ) -> Array[@page.PdfPage] raise @core.PdfError {
   if depth > 10000 {
     raise PageTreeExpected

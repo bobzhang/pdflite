@@ -1,7 +1,7 @@
 ///|
 fn pdf_reader_reconstruction_xref_stream_entry_capacity(
   sections : ArrayView[PdfXRefSection],
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for section in sections {
     count += section.entries.length()
@@ -11,8 +11,8 @@ fn pdf_reader_reconstruction_xref_stream_entry_capacity(
 
 ///|
 fn pdf_reader_reconstruction_classic_xref_entry_capacity(
-  sections : ArrayView[(Int, PdfXRefSection)],
-) -> Int {
+  sections : ArrayView[(Int32, PdfXRefSection)],
+) -> Int32 {
   let mut count = 0
   for section in sections {
     count += section.1.entries.length()
@@ -43,7 +43,7 @@ pub fn pdf_reader_reconstruction_xref_stream_entries(
 ///|
 /// Merge reconstructed classic xref entries, newest section first.
 pub fn pdf_reader_reconstruction_classic_xref_entries(
-  sections : ArrayView[(Int, PdfXRefSection)],
+  sections : ArrayView[(Int32, PdfXRefSection)],
 ) -> Array[PdfClassicXRefEntry] {
   let xrefs : Array[PdfClassicXRefEntry] = Array::new(
     capacity=pdf_reader_reconstruction_classic_xref_entry_capacity(sections),
@@ -64,8 +64,8 @@ pub fn pdf_reader_reconstruction_classic_xref_entries(
 /// Return object-number and offset refs for reconstructed xref-stream sections.
 pub fn pdf_reader_reconstruction_xref_stream_refs(
   sections : ArrayView[PdfXRefSection],
-) -> Array[(Int, Int)] {
-  let refs : Array[(Int, Int)] = Array::new(capacity=sections.length())
+) -> Array[(Int32, Int32)] {
+  let refs : Array[(Int32, Int32)] = Array::new(capacity=sections.length())
   for section in sections {
     refs.push(
       (
@@ -87,10 +87,10 @@ pub fn pdf_reader_reconstruction_object_xrefs(
   data : BytesView,
   read_xref_at_current : (
     @core.ByteCursor,
-    Int,
+    Int32,
     ArrayView[PdfClassicXRefEntry],
     PdfClassicXRefIndex,
-  ) -> (PdfClassicXRefEntry?, Int?) raise @core.PdfError,
+  ) -> (PdfClassicXRefEntry?, Int32?) raise @core.PdfError,
 ) -> Array[PdfClassicXRefEntry] raise @core.PdfError {
   let xrefs : Array[PdfClassicXRefEntry] = Array::new(capacity=16)
   let cursor = @core.byte_cursor_of_view(data)
@@ -99,7 +99,7 @@ pub fn pdf_reader_reconstruction_object_xrefs(
   while position < data.length() {
     if pdf_reader_reconstruction_indirect_header_at(data, position) {
       cursor.seek_absolute(position)
-      let parsed : Result[(PdfClassicXRefEntry?, Int?), Error] = try
+      let parsed : Result[(PdfClassicXRefEntry?, Int32?), Error] = try
         read_xref_at_current(cursor, position, xrefs, xref_index)
       catch {
         err => Err(err)
@@ -137,12 +137,12 @@ pub fn pdf_reader_reconstruction_object_xrefs(
 ///|
 /// Coverage map used to avoid loading objects already owned by reconstructed xref sections.
 pub(all) struct PdfReconstructedXRefCoverage {
-  sections : Array[(Int, @core.PdfNumberSet)]
+  sections : Array[(Int32, @core.PdfNumberSet)]
 }
 
 ///|
 fn pdf_reader_reconstruction_trailer_root_numbers(
-  classic_sections : ArrayView[(Int, PdfXRefSection)],
+  classic_sections : ArrayView[(Int32, PdfXRefSection)],
   xref_stream_sections : ArrayView[PdfXRefSection],
 ) -> @core.PdfNumberSet {
   let roots = @core.pdf_number_set([])
@@ -169,7 +169,7 @@ fn pdf_reader_reconstruction_trailer_root_numbers(
 /// reader package.
 pub fn pdf_reader_reconstruction_xref_coverage(
   data : BytesView,
-  classic_sections : ArrayView[(Int, PdfXRefSection)],
+  classic_sections : ArrayView[(Int32, PdfXRefSection)],
   xref_stream_sections : ArrayView[PdfXRefSection],
   classic_entry_is_verified : (
     BytesView,
@@ -178,7 +178,7 @@ pub fn pdf_reader_reconstruction_xref_coverage(
     PdfClassicXRefEntry,
   ) -> Bool,
 ) -> PdfReconstructedXRefCoverage {
-  let covered : Array[(Int, @core.PdfNumberSet)] = Array::new(
+  let covered : Array[(Int32, @core.PdfNumberSet)] = Array::new(
     capacity=classic_sections.length() + xref_stream_sections.length(),
   )
   let trailer_roots = pdf_reader_reconstruction_trailer_root_numbers(
@@ -212,15 +212,15 @@ pub fn pdf_reader_reconstruction_xref_coverage(
       None => ()
     }
   }
-  { sections: covered }
+  { sections: covered, }
 }
 
 ///|
 /// Return whether an object offset is covered by a reconstructed xref section.
 pub fn PdfReconstructedXRefCoverage::contains(
   self : PdfReconstructedXRefCoverage,
-  object_number : Int,
-  object_offset : Int,
+  object_number : Int32,
+  object_offset : Int32,
 ) -> Bool {
   for section in self.sections {
     let (section_offset, object_numbers) = section

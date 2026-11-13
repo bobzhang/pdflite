@@ -1,5 +1,5 @@
 ///|
-fn pdf_content_ascii_hex_encoded_length(data : BytesView) -> Int? {
+fn pdf_content_ascii_hex_encoded_length(data : BytesView) -> Int32? {
   for index in 0..<data.length() {
     if data[index].to_int() == 62 {
       return Some(index + 1)
@@ -9,7 +9,7 @@ fn pdf_content_ascii_hex_encoded_length(data : BytesView) -> Int? {
 }
 
 ///|
-fn pdf_content_ascii85_encoded_length(data : BytesView) -> Int? {
+fn pdf_content_ascii85_encoded_length(data : BytesView) -> Int32? {
   let mut index = 0
   while index + 1 < data.length() {
     if data[index].to_int() == 126 && data[index + 1].to_int() == 62 {
@@ -24,7 +24,7 @@ fn pdf_content_ascii85_encoded_length(data : BytesView) -> Int? {
 fn pdf_content_text_encoded_inline_image_length(
   data : BytesView,
   filter : PdfContentInlineTextFilter,
-) -> Int? {
+) -> Int32? {
   match filter {
     PdfContentInlineAsciiHex => pdf_content_ascii_hex_encoded_length(data)
     PdfContentInlineAscii85 => pdf_content_ascii85_encoded_length(data)

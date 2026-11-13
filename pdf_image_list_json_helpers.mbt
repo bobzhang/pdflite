@@ -1,10 +1,10 @@
 ///|
-fn pdf_image_json_int(value : Int) -> Json {
+fn pdf_image_json_int(value : Int32) -> Json {
   Json::number(value.to_double(), repr=value.to_string())
 }
 
 ///|
-fn pdf_image_json_int_or_null(value : Int?) -> Json {
+fn pdf_image_json_int_or_null(value : Int32?) -> Json {
   match value {
     Some(value) => pdf_image_json_int(value)
     None => Json::null()

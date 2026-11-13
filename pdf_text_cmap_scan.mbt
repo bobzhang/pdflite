@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_hex_digit_value(byte : Byte) -> Int? {
+fn pdf_text_hex_digit_value(byte : Byte) -> Int32? {
   let value = byte.to_int()
   if value >= 48 && value <= 57 {
     Some(value - 48)
@@ -15,8 +15,8 @@ fn pdf_text_hex_digit_value(byte : Byte) -> Int? {
 ///|
 fn pdf_text_parse_hex_bytes(
   line : BytesView,
-  start : Int,
-  stop : Int,
+  start : Int32,
+  stop : Int32,
 ) -> @core.PdfBytes? {
   guard stop >= start else { return None }
   let mut digit_count = 0
@@ -34,7 +34,7 @@ fn pdf_text_parse_hex_bytes(
     scan += 1
   }
   let output = Array::make((digit_count + 1) / 2, b'\x00')
-  let mut high : Int? = None
+  let mut high : Int32? = None
   let mut position = 0
   let mut index = start
   while index < stop {
@@ -64,7 +64,7 @@ fn pdf_text_parse_hex_bytes(
 }
 
 ///|
-fn pdf_text_skip_cmap_whitespace(line : BytesView, start : Int) -> Int {
+fn pdf_text_skip_cmap_whitespace(line : BytesView, start : Int32) -> Int32 {
   let mut index = start
   while index < line.length() &&
         @core.pdf_is_whitespace_byte(line[index].to_int()) {
@@ -79,7 +79,7 @@ fn pdf_text_line_contains_ascii(line : BytesView, word : String) -> Bool {
 }
 
 ///|
-fn pdf_text_index_of_ascii(line : BytesView, word : String) -> Int? {
+fn pdf_text_index_of_ascii(line : BytesView, word : String) -> Int32? {
   let needle = @ascii.encode(word)
   guard needle.length() > 0 && line.length() >= needle.length() else {
     return None
@@ -103,8 +103,8 @@ fn pdf_text_index_of_ascii(line : BytesView, word : String) -> Int? {
 fn pdf_text_index_of_ascii_from(
   line : BytesView,
   word : String,
-  start : Int,
-) -> Int? {
+  start : Int32,
+) -> Int32? {
   guard start < line.length() else { return None }
   match pdf_text_index_of_ascii(line[start:], word) {
     Some(index) => Some(start + index)
@@ -137,12 +137,12 @@ fn pdf_text_view_equals_ascii(view : BytesView, text : String) -> Bool {
 }
 
 ///|
-fn pdf_text_cmap_end_marker(line : BytesView, start : Int) -> (Int, Int)? {
+fn pdf_text_cmap_end_marker(line : BytesView, start : Int32) -> (Int32, Int32)? {
   let markers = [
     "endbfchar", "endbfrange", "endcidchar", "endcidrange", "endnotdefchar", "endnotdefrange",
     "endcodespacerange",
   ]
-  let mut best : (Int, Int)? = None
+  let mut best : (Int32, Int32)? = None
   for marker in markers {
     match pdf_text_index_of_ascii_from(line, marker, start) {
       Some(index) => {
@@ -179,7 +179,7 @@ fn pdf_text_cmap_section_line_views(line : BytesView) -> Array[BytesView] {
 }
 
 ///|
-fn pdf_text_cmap_comment_start(line : BytesView) -> Int {
+fn pdf_text_cmap_comment_start(line : BytesView) -> Int32 {
   let mut in_literal = false
   let mut escaped = false
   let mut literal_depth = 0
@@ -254,8 +254,8 @@ fn pdf_text_parse_cmap_hex_groups(line : BytesView) -> Array[@core.PdfBytes]? {
 ///|
 fn pdf_text_parse_cmap_hex_group_at(
   line : BytesView,
-  start : Int,
-) -> (@core.PdfBytes, Int)? {
+  start : Int32,
+) -> (@core.PdfBytes, Int32)? {
   let index = pdf_text_skip_cmap_whitespace(line, start)
   guard index < line.length() && line[index].to_int() == 60 else { return None }
   let body_start = index + 1
@@ -271,7 +271,7 @@ fn pdf_text_parse_cmap_hex_group_at(
 }
 
 ///|
-fn pdf_text_bytes_to_int(bytes : BytesView) -> Int? {
+fn pdf_text_bytes_to_int(bytes : BytesView) -> Int32? {
   guard bytes.length() > 0 else { return None }
   let mut value = 0
   for byte in bytes {
@@ -283,8 +283,8 @@ fn pdf_text_bytes_to_int(bytes : BytesView) -> Int? {
 ///|
 fn pdf_text_parse_cmap_ascii_int_at(
   line : BytesView,
-  start : Int,
-) -> (Int, Int)? {
+  start : Int32,
+) -> (Int32, Int32)? {
   let index = pdf_text_skip_cmap_whitespace(line, start)
   guard index < line.length() else { return None }
   let mut stop = index
@@ -309,7 +309,11 @@ fn pdf_text_parse_cmap_ascii_int_at(
 }
 
 ///|
-fn pdf_text_index_of_byte(line : BytesView, target : Int, start : Int) -> Int? {
+fn pdf_text_index_of_byte(
+  line : BytesView,
+  target : Int32,
+  start : Int32,
+) -> Int32? {
   let mut index = start
   while index < line.length() {
     if line[index].to_int() == target {
@@ -366,7 +370,7 @@ let pdf_text_cmap_split_suffixes : ReadOnlyArray[@core.PdfBytes] = [
 ///|
 fn pdf_text_cmap_starts_with_at(
   data : BytesView,
-  start : Int,
+  start : Int32,
   expected : BytesView,
 ) -> Bool {
   if start < 0 || start + expected.length() > data.length() {
@@ -385,7 +389,7 @@ fn pdf_text_cmap_starts_with_at(
 ///|
 fn pdf_text_cmap_has_split_marker_at(
   data : BytesView,
-  start : Int,
+  start : Int32,
   prefix : BytesView,
 ) -> Bool {
   guard pdf_text_cmap_starts_with_at(data, start, prefix) else { return false }

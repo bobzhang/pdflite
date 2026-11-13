@@ -26,7 +26,7 @@ fn pdf_metadata_xml_is_name_boundary(byte : Byte) -> Bool {
 }
 
 ///|
-fn pdf_metadata_xml_skip_space(data : BytesView, start : Int) -> Int {
+fn pdf_metadata_xml_skip_space(data : BytesView, start : Int32) -> Int32 {
   let mut index = start
   while index < data.length() && pdf_metadata_is_xml_space(data[index]) {
     index += 1
@@ -37,8 +37,8 @@ fn pdf_metadata_xml_skip_space(data : BytesView, start : Int) -> Int {
 ///|
 fn pdf_metadata_xml_read_name(
   data : BytesView,
-  start : Int,
-) -> (Bytes, Int) raise @core.PdfError {
+  start : Int32,
+) -> (Bytes, Int32) raise @core.PdfError {
   let mut index = start
   while index < data.length() && !pdf_metadata_xml_is_name_boundary(data[index]) {
     index += 1
@@ -82,7 +82,7 @@ fn pdf_metadata_xml_resolve_name(
         None => raise BadText
       }
     }
-    { uri, local_name, prefix: Some(prefix) }
+    { uri, local_name, prefix: Some(prefix), }
   } else {
     let local_name = pdf_metadata_xml_decode_name(qname)
     let uri = if is_attribute {
@@ -97,14 +97,14 @@ fn pdf_metadata_xml_resolve_name(
         None => ""
       }
     }
-    { uri, local_name, prefix: None }
+    { uri, local_name, prefix: None, }
   }
 }
 
 ///|
 fn pdf_metadata_xml_parse_raw_attributes(
   data : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Array[(Bytes, String)] raise @core.PdfError {
   let attributes : Array[(Bytes, String)] = []
   let mut index = start

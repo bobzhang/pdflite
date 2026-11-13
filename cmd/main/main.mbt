@@ -14,8 +14,8 @@ let pdflite_cmd_exit_usage_error = 2
 priv struct PdfliteCmdInfoReport {
   path : String
   version : String
-  pages : Int
-  objects : Int
+  pages : Int32
+  objects : Int32
   encrypted : Bool
 }
 
@@ -122,7 +122,7 @@ async fn main {
 }
 
 ///|
-async fn pdflite_cmd_run(args : ArrayView[String]) -> Int {
+async fn pdflite_cmd_run(args : ArrayView[String]) -> Int32 {
   let command = pdflite_cmd_parse_args(args) catch {
     err => {
       @stdio.stderr.write(err.to_string() + "\n")
@@ -200,7 +200,7 @@ fn pdflite_cmd_info_text(report : PdfliteCmdInfoReport) -> String {
 }
 
 ///|
-fn pdflite_cmd_json_number(value : Int) -> Json {
+fn pdflite_cmd_json_number(value : Int32) -> Json {
   Json::number(value.to_double(), repr=value.to_string())
 }
 

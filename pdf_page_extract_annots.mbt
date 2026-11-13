@@ -2,7 +2,7 @@
 fn PdfDocument::pdf_page_annotation_numbers(
   self : PdfDocument,
   page_object : @syntax.PdfObject,
-) -> Array[Int] {
+) -> Array[Int32] {
   let annots_object = match
     page_object.lookup_immediate(pdf_page_annots_key()) {
     Some(PdfIndirect(number)) => self.lookup_object_or_null(number)
@@ -11,7 +11,7 @@ fn PdfDocument::pdf_page_annotation_numbers(
   }
   match annots_object {
     PdfArray(items) => {
-      let numbers : Array[Int] = Array::new(capacity=items.length())
+      let numbers : Array[Int32] = Array::new(capacity=items.length())
       for item in items {
         match item {
           PdfIndirect(number) => numbers.push(number)
@@ -28,8 +28,8 @@ fn PdfDocument::pdf_page_annotation_numbers(
 fn pdf_page_fixup_annotation_link(
   object : @syntax.PdfObject,
   key : @core.PdfName,
-  old_numbers : ArrayView[Int],
-  new_numbers : ArrayView[Int],
+  old_numbers : ArrayView[Int32],
+  new_numbers : ArrayView[Int32],
 ) -> @syntax.PdfObject raise @core.PdfError {
   match object.lookup_immediate(key) {
     Some(PdfIndirect(old_number)) =>
@@ -45,8 +45,8 @@ fn pdf_page_fixup_annotation_link(
 ///|
 fn PdfDocument::pdf_page_fixup_annotation_links(
   self : PdfDocument,
-  old_numbers : ArrayView[Int],
-  new_numbers : ArrayView[Int],
+  old_numbers : ArrayView[Int32],
+  new_numbers : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   for number in new_numbers {
     let object = self.lookup_object_or_null(number)
@@ -73,7 +73,7 @@ fn PdfDocument::pdf_page_fixup_duplicate_annots(
   self : PdfDocument,
 ) -> Unit raise @core.PdfError {
   let page_numbers = self.page_reference_numbers()
-  let existing_annots : Array[Array[Int]] = Array::new(
+  let existing_annots : Array[Array[Int32]] = Array::new(
     capacity=page_numbers.length(),
   )
   for page_number in page_numbers {
@@ -82,11 +82,11 @@ fn PdfDocument::pdf_page_fixup_duplicate_annots(
     )
   }
   let seen = @core.pdf_number_set([])
-  let new_annots : Array[Array[Int]] = Array::new(
+  let new_annots : Array[Array[Int32]] = Array::new(
     capacity=existing_annots.length(),
   )
   for annots in existing_annots {
-    let page_annots : Array[Int] = Array::new(capacity=annots.length())
+    let page_annots : Array[Int32] = Array::new(capacity=annots.length())
     for annotation_number in annots {
       if seen.contains(annotation_number) {
         page_annots.push(

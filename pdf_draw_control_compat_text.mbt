@@ -56,7 +56,7 @@ pub fn pdf_addtextscale(
 /// Source-spelled cpdfdrawcontrol `addrendermode` over explicit draw state.
 pub fn pdf_addrendermode(
   control : PdfDrawControl,
-  mode : Int,
+  mode : Int32,
 ) -> Unit raise @core.PdfError {
   control.add_render_mode(mode)
 }

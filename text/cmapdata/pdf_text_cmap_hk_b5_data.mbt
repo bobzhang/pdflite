@@ -4,7 +4,7 @@
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_cns1_unicode_table : Array[Int] = [
+pub let pdf_text_cns1_unicode_table : Array[Int32] = [
   0x0000, 0x0020, 0x0021, 0x0022, 0x0023, 0x0024, 0x0025, 0x0026, 0x0027, 0x0028,
   0x0029, 0x002A, 0x002B, 0x002C, 0x002D, 0x002E, 0x002F, 0x0030, 0x0031, 0x0032,
   0x0033, 0x0034, 0x0035, 0x0036, 0x0037, 0x0038, 0x0039, 0x003A, 0x003B, 0x003C,
@@ -1931,7 +1931,7 @@ pub let pdf_text_cns1_unicode_table : Array[Int] = [
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_hkdla_b5_cid_ranges : Array[(Int, Int, Int)] = [
+pub let pdf_text_hkdla_b5_cid_ranges : Array[(Int32, Int32, Int32)] = [
   (0x0020, 0x007E, 1),
   (0xA140, 0xA158, 99),
   (0xA159, 0xA15C, 13743),
@@ -2961,7 +2961,7 @@ pub let pdf_text_hkdla_b5_cid_ranges : Array[(Int, Int, Int)] = [
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_hkdlb_b5_cid_ranges : Array[(Int, Int, Int)] = [
+pub let pdf_text_hkdlb_b5_cid_ranges : Array[(Int32, Int32, Int32)] = [
   (0x0020, 0x007E, 1),
   (0x8E40, 0x8E40, 15735),
   (0x8E41, 0x8E41, 15724),
@@ -3876,7 +3876,7 @@ pub let pdf_text_hkdlb_b5_cid_ranges : Array[(Int, Int, Int)] = [
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_hkgccs_b5_cid_ranges : Array[(Int, Int, Int)] = [
+pub let pdf_text_hkgccs_b5_cid_ranges : Array[(Int32, Int32, Int32)] = [
   (0x0020, 0x007E, 1),
   (0x8A40, 0x8A7E, 17160),
   (0x8AA1, 0x8AE5, 17223),
@@ -4436,7 +4436,7 @@ pub let pdf_text_hkgccs_b5_cid_ranges : Array[(Int, Int, Int)] = [
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_hkm314_b5_cid_ranges : Array[(Int, Int, Int)] = [
+pub let pdf_text_hkm314_b5_cid_ranges : Array[(Int32, Int32, Int32)] = [
   (0x0020, 0x007E, 1),
   (0xA140, 0xA158, 99),
   (0xA159, 0xA15C, 13743),
@@ -4986,7 +4986,7 @@ pub let pdf_text_hkm314_b5_cid_ranges : Array[(Int, Int, Int)] = [
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_hkm471_b5_cid_ranges : Array[(Int, Int, Int)] = [
+pub let pdf_text_hkm471_b5_cid_ranges : Array[(Int32, Int32, Int32)] = [
   (0x0020, 0x007E, 1),
   (0xA140, 0xA158, 99),
   (0xA159, 0xA15C, 13743),

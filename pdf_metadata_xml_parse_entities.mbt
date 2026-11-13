@@ -1,5 +1,5 @@
 ///|
-fn pdf_metadata_xml_entity_digit(byte : Byte, base : Int) -> Int? {
+fn pdf_metadata_xml_entity_digit(byte : Byte, base : Int32) -> Int32? {
   let value = byte.to_int()
   if value >= 48 && value <= 57 {
     let digit = value - 48
@@ -18,7 +18,7 @@ fn pdf_metadata_xml_entity_digit(byte : Byte, base : Int) -> Int? {
 }
 
 ///|
-fn pdf_metadata_xml_entity_codepoint(entity : BytesView) -> Int? {
+fn pdf_metadata_xml_entity_codepoint(entity : BytesView) -> Int32? {
   if entity.length() == 3 && pdf_metadata_view_matches_at(entity, 0, b"amp") {
     Some(38)
   } else if entity.length() == 2 &&
@@ -68,9 +68,9 @@ fn pdf_metadata_xml_entity_codepoint(entity : BytesView) -> Int? {
 ///|
 fn pdf_metadata_write_xml_codepoint(
   output : Array[Byte],
-  position : Int,
-  codepoint : Int,
-) -> Int? {
+  position : Int32,
+  codepoint : Int32,
+) -> Int32? {
   let encoded = pdf_utf8_of_codepoints([codepoint]) catch { _ => return None }
   let mut current = position
   for byte in encoded {
@@ -81,7 +81,7 @@ fn pdf_metadata_write_xml_codepoint(
 }
 
 ///|
-fn pdf_metadata_xml_codepoint_is_space(codepoint : Int) -> Bool {
+fn pdf_metadata_xml_codepoint_is_space(codepoint : Int32) -> Bool {
   codepoint == 9 || codepoint == 10 || codepoint == 13 || codepoint == 32
 }
 

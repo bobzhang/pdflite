@@ -1,7 +1,7 @@
 ///|
 fn pdf_addtext_append_unique_codepoints(
-  used : Array[Int],
-  codepoints : ArrayView[Int],
+  used : Array[Int32],
+  codepoints : ArrayView[Int32],
 ) -> Unit {
   for codepoint in codepoints {
     if !pdf_addtext_codepoints_contains(used, codepoint) {
@@ -14,15 +14,15 @@ fn pdf_addtext_append_unique_codepoints(
 fn PdfDocument::pdf_addtext_used_codepoints_for_pages(
   self : PdfDocument,
   pages : ArrayView[@page.PdfPage],
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   lines : ArrayView[String],
   time : @date.PdfStrftimeTime,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
   filename : String,
-  bates : Int,
-  bates_pad : Int?,
-) -> Array[Int] raise @core.PdfError {
-  let used : Array[Int] = Array::new(
+  bates : Int32,
+  bates_pad : Int32?,
+) -> Array[Int32] raise @core.PdfError {
+  let used : Array[Int32] = Array::new(
     capacity=page_numbers.length() * lines.length(),
   )
   for page_number in page_numbers {
@@ -50,8 +50,8 @@ fn PdfDocument::pdf_addtext_used_codepoints_for_pages(
 fn PdfDocument::pdf_addtext_write_fontpack_objects(
   self : PdfDocument,
   fontpack : PdfFontPack?,
-) -> Array[Int] raise @core.PdfError {
-  let objects : Array[Int] = match fontpack {
+) -> Array[Int32] raise @core.PdfError {
+  let objects : Array[Int32] = match fontpack {
     Some(pack) => Array::new(capacity=pack.fonts.length())
     None => []
   }
@@ -75,7 +75,7 @@ fn PdfDocument::pdf_addtext_write_fontpack_objects(
 /// `addtext_pages_with_font`.
 pub fn PdfDocument::addtexts_with_font(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   text : String,
   time : @date.PdfStrftimeTime,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
@@ -86,22 +86,22 @@ pub fn PdfDocument::addtexts_with_font(
   line_spacing : Double,
   colour : @colour.PdfContentColour,
   position : @geometry.PdfPosition,
-  filename? : String = "",
-  bates? : Int = 1,
-  bates_pad? : Int? = None,
-  relative_to_box? : @core.PdfName = pdf_page_mediabox_key(),
-  shift? : String = "0 0",
-  opacity? : Double = 1.0,
-  justification? : @addtext.PdfAddTextJustification = PdfAddTextLeftJustify,
-  rotation? : @addtext.PdfAddTextRotation = PdfAddTextRot0,
-  midline? : Bool = false,
-  topline? : Bool = false,
-  outline? : Bool = false,
-  line_width? : Double = 1.0,
-  underneath? : Bool = false,
-  fast? : Bool = false,
-  raw? : Bool = false,
-  url_border? : Bool = false,
+  filename~ : String = "",
+  bates~ : Int32 = 1,
+  bates_pad~ : Int32? = None,
+  relative_to_box~ : @core.PdfName = pdf_page_mediabox_key(),
+  shift~ : String = "0 0",
+  opacity~ : Double = 1.0,
+  justification~ : @addtext.PdfAddTextJustification = PdfAddTextLeftJustify,
+  rotation~ : @addtext.PdfAddTextRotation = PdfAddTextRot0,
+  midline~ : Bool = false,
+  topline~ : Bool = false,
+  outline~ : Bool = false,
+  line_width~ : Double = 1.0,
+  underneath~ : Bool = false,
+  fast~ : Bool = false,
+  raw~ : Bool = false,
+  url_border~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   if page_numbers.length() == 0 {
     self
@@ -165,7 +165,7 @@ pub fn PdfDocument::addtexts_with_font(
 /// Compatibility wrapper for `PdfDocument::addtexts_with_font`.
 pub fn pdf_addtexts_with_font(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   text : String,
   time : @date.PdfStrftimeTime,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
@@ -176,22 +176,22 @@ pub fn pdf_addtexts_with_font(
   line_spacing : Double,
   colour : @colour.PdfContentColour,
   position : @geometry.PdfPosition,
-  filename? : String = "",
-  bates? : Int = 1,
-  bates_pad? : Int? = None,
-  relative_to_box? : @core.PdfName = pdf_page_mediabox_key(),
-  shift? : String = "0 0",
-  opacity? : Double = 1.0,
-  justification? : @addtext.PdfAddTextJustification = PdfAddTextLeftJustify,
-  rotation? : @addtext.PdfAddTextRotation = PdfAddTextRot0,
-  midline? : Bool = false,
-  topline? : Bool = false,
-  outline? : Bool = false,
-  line_width? : Double = 1.0,
-  underneath? : Bool = false,
-  fast? : Bool = false,
-  raw? : Bool = false,
-  url_border? : Bool = false,
+  filename~ : String = "",
+  bates~ : Int32 = 1,
+  bates_pad~ : Int32? = None,
+  relative_to_box~ : @core.PdfName = pdf_page_mediabox_key(),
+  shift~ : String = "0 0",
+  opacity~ : Double = 1.0,
+  justification~ : @addtext.PdfAddTextJustification = PdfAddTextLeftJustify,
+  rotation~ : @addtext.PdfAddTextRotation = PdfAddTextRot0,
+  midline~ : Bool = false,
+  topline~ : Bool = false,
+  outline~ : Bool = false,
+  line_width~ : Double = 1.0,
+  underneath~ : Bool = false,
+  fast~ : Bool = false,
+  raw~ : Bool = false,
+  url_border~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.addtexts_with_font(
     page_numbers,

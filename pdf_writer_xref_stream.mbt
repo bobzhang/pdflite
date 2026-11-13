@@ -1,8 +1,8 @@
 ///|
 fn pdf_writer_push_big_endian_field(
   output : Array[Byte],
-  value : Int,
-  width : Int,
+  value : Int32,
+  width : Int32,
 ) -> Unit {
   let mut divisor = 1
   if width > 1 {
@@ -20,9 +20,9 @@ fn pdf_writer_push_big_endian_field(
 ///|
 fn pdf_writer_push_xref_stream_entry(
   output : Array[Byte],
-  kind : Int,
-  field2 : Int,
-  field3 : Int,
+  kind : Int32,
+  field2 : Int32,
+  field3 : Int32,
 ) -> Unit {
   pdf_writer_push_big_endian_field(output, kind, 1)
   pdf_writer_push_big_endian_field(output, field2, 4)
@@ -31,10 +31,10 @@ fn pdf_writer_push_xref_stream_entry(
 
 ///|
 fn pdf_writer_xref_stream_data(
-  xrefs : ArrayView[(Int, Int, Int)],
-  size : Int,
-  xref_stream_number : Int,
-  xref_stream_offset : Int,
+  xrefs : ArrayView[(Int32, Int32, Int32)],
+  size : Int32,
+  xref_stream_number : Int32,
+  xref_stream_offset : Int32,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = Array::new(capacity=size * 7)
   let mut xref_index = 0
@@ -61,8 +61,8 @@ fn pdf_writer_xref_stream_data(
 ///|
 fn pdf_writer_xref_stream_entry_numbers(
   document : PdfDocument,
-  xref_stream_number : Int,
-) -> Array[Int] {
+  xref_stream_number : Int32,
+) -> Array[Int32] {
   let numbers = pdf_writer_changed_object_numbers(document)
   if !pdf_writer_int_array_contains(numbers, xref_stream_number) {
     numbers.push(xref_stream_number)
@@ -73,10 +73,10 @@ fn pdf_writer_xref_stream_entry_numbers(
 
 ///|
 fn pdf_writer_xref_stream_data_for_numbers(
-  xrefs : ArrayView[(Int, Int, Int)],
-  entry_numbers : ArrayView[Int],
-  xref_stream_number : Int,
-  xref_stream_offset : Int,
+  xrefs : ArrayView[(Int32, Int32, Int32)],
+  entry_numbers : ArrayView[Int32],
+  xref_stream_number : Int32,
+  xref_stream_offset : Int32,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = Array::new(capacity=entry_numbers.length() * 7)
   let mut xref_index = 0
@@ -102,9 +102,11 @@ fn pdf_writer_xref_stream_data_for_numbers(
 
 ///|
 fn pdf_writer_xref_stream_index_pairs(
-  entry_numbers : ArrayView[Int],
-) -> Array[(Int, Int)] {
-  let pairs : Array[(Int, Int)] = Array::new(capacity=entry_numbers.length())
+  entry_numbers : ArrayView[Int32],
+) -> Array[(Int32, Int32)] {
+  let pairs : Array[(Int32, Int32)] = Array::new(
+    capacity=entry_numbers.length(),
+  )
   let mut run_start = -1
   let mut run_length = 0
   for number in entry_numbers {
@@ -127,7 +129,7 @@ fn pdf_writer_xref_stream_index_pairs(
 
 ///|
 fn pdf_writer_xref_stream_index_object(
-  pairs : ArrayView[(Int, Int)],
+  pairs : ArrayView[(Int32, Int32)],
 ) -> @syntax.PdfObject {
   let values : Array[@syntax.PdfObject] = Array::new(
     capacity=pairs.length() * 2,
@@ -143,8 +145,8 @@ fn pdf_writer_xref_stream_index_object(
 ///|
 fn pdf_writer_xref_stream_trailer(
   document : PdfDocument,
-  size : Int,
-  previous_xref : Int?,
+  size : Int32,
+  previous_xref : Int32?,
 ) -> @syntax.PdfObject raise @core.PdfError {
   let trailer = pdf_writer_trailer_dictionary(document)
     .add_dict_entry(

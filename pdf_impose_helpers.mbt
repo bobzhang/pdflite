@@ -1,7 +1,7 @@
 ///|
 fn pdf_impose_split_pages(
   pages : ArrayView[@page.PdfPage],
-  chunk_size : Int,
+  chunk_size : Int32,
 ) -> Array[Array[@page.PdfPage]] {
   let chunks : Array[Array[@page.PdfPage]] = []
   let mut index = 0
@@ -23,10 +23,10 @@ fn pdf_impose_split_pages(
 
 ///|
 fn pdf_impose_page_reference_changes(
-  page_count : Int,
-  pages_per_sheet : Int,
-) -> Array[(Int, Int)] {
-  let changes : Array[(Int, Int)] = []
+  page_count : Int32,
+  pages_per_sheet : Int32,
+) -> Array[(Int32, Int32)] {
+  let changes : Array[(Int32, Int32)] = []
   for page_number in 1..<=page_count {
     changes.push(
       (page_number, (page_number + pages_per_sheet - 1) / pages_per_sheet),
@@ -84,8 +84,8 @@ fn pdf_impose_push_objects(
 }
 
 ///|
-fn pdf_impose_all_pages(end_page : Int) -> Array[Int] {
-  let pages : Array[Int] = []
+fn pdf_impose_all_pages(end_page : Int32) -> Array[Int32] {
+  let pages : Array[Int32] = []
   for page_number in 1..<=end_page {
     pages.push(page_number)
   }
@@ -94,7 +94,7 @@ fn pdf_impose_all_pages(end_page : Int) -> Array[Int] {
 
 ///|
 fn pdf_impose_repeated_offsets(
-  count : Int,
+  count : Int32,
   offset : (Double, Double),
 ) -> Array[(Double, Double)] {
   let offsets : Array[(Double, Double)] = []
@@ -106,7 +106,7 @@ fn pdf_impose_repeated_offsets(
 
 ///|
 fn pdf_impose_repeated_scales(
-  count : Int,
+  count : Int32,
   scale : (Double, Double),
 ) -> Array[(Double, Double)] {
   let scales : Array[(Double, Double)] = []
@@ -118,7 +118,7 @@ fn pdf_impose_repeated_scales(
 
 ///|
 fn pdf_impose_repeated_boxes(
-  count : Int,
+  count : Int32,
   box : (Double, Double, Double, Double),
 ) -> Array[(Double, Double, Double, Double)] {
   let boxes : Array[(Double, Double, Double, Double)] = []

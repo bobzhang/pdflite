@@ -1,8 +1,8 @@
 ///|
 fn pdf_impose_validate_transform_inputs(
-  x : Int,
-  y : Int,
-  count : Int,
+  x : Int32,
+  y : Int32,
+  count : Int32,
 ) -> Unit raise @core.PdfError {
   if x <= 0 || y <= 0 {
     raise BadNumberArgument("impose: x and y must be positive")
@@ -14,24 +14,24 @@ fn pdf_impose_validate_transform_inputs(
 
 ///|
 fn pdf_impose_order(
-  row : Int,
-  col : Int,
-  x : Int,
-  y : Int,
+  row : Int32,
+  col : Int32,
+  x : Int32,
+  y : Int32,
   rtl : Bool,
   btt : Bool,
-) -> (Int, Int) {
+) -> (Int32, Int32) {
   (if btt { y - row - 1 } else { row }, if rtl { x - col - 1 } else { col })
 }
 
 ///|
 fn pdf_impose_adjusted_row(
-  original_row : Int,
-  y : Int,
-  final_full_rows : Int,
-  remaining : Int,
+  original_row : Int32,
+  y : Int32,
+  final_full_rows : Int32,
+  remaining : Int32,
   center : Bool,
-) -> Int {
+) -> Int32 {
   if center && remaining <= final_full_rows {
     let final_empty_rows = y - final_full_rows
     original_row + (y - 1 - 1 - final_empty_rows / 2)
@@ -42,12 +42,12 @@ fn pdf_impose_adjusted_row(
 
 ///|
 fn pdf_impose_adjusted_col(
-  original_col : Int,
-  x : Int,
-  final_full_cols : Int,
-  remaining : Int,
+  original_col : Int32,
+  x : Int32,
+  final_full_cols : Int32,
+  remaining : Int32,
   center : Bool,
-) -> Int {
+) -> Int32 {
   if center && remaining <= final_full_cols {
     let final_empty_cols = x - final_full_cols
     original_col + (x - 1 - 1 - final_empty_cols / 2)
@@ -58,15 +58,15 @@ fn pdf_impose_adjusted_col(
 
 ///|
 fn pdf_impose_translate(
-  x : Int,
+  x : Int32,
   rtl : Bool,
   btt : Bool,
   cent_extra_x : Double,
   cent_extra_y : Double,
   fit_extra_hspace : Double,
   fit_extra_vspace : Double,
-  row : Int,
-  col : Int,
+  row : Int32,
+  col : Int32,
   px : Double,
   py : Double,
 ) -> @geometry.TransformMatrix {
@@ -120,7 +120,7 @@ fn PdfDocument::pdf_impose_make_margin(
 fn PdfDocument::pdf_impose_transform_for_slot(
   self : PdfDocument,
   fit : Bool,
-  x : Int,
+  x : Int32,
   rtl : Bool,
   btt : Bool,
   margin : Double,
@@ -129,8 +129,8 @@ fn PdfDocument::pdf_impose_transform_for_slot(
   fit_extra_vspace : Double,
   cent_extra_x : Double,
   cent_extra_y : Double,
-  row : Int,
-  col : Int,
+  row : Int32,
+  col : Int32,
   px : Double,
   py : Double,
 ) -> @geometry.TransformMatrix raise @core.PdfError {
@@ -148,9 +148,9 @@ fn PdfDocument::pdf_impose_transform_for_slot(
 ///|
 #warnings("-unused_field")
 priv struct PdfImposeLayout {
-  pages_per_sheet : Int
-  x_slots : Int
-  y_slots : Int
+  pages_per_sheet : Int32
+  x_slots : Int32
+  y_slots : Int32
   output_mediabox : @syntax.PdfObject
   fit_extra_hspace : Double
   fit_extra_vspace : Double
@@ -193,7 +193,7 @@ fn PdfDocument::pdf_impose_xy_layout(
   x : Double,
   y : Double,
   margin : Double,
-  page_count : Int,
+  page_count : Int32,
   page_width : Double,
   page_height : Double,
 ) -> PdfImposeLayout raise @core.PdfError {
@@ -242,7 +242,7 @@ fn PdfDocument::pdf_impose_layout(
   x : Double,
   y : Double,
   margin : Double,
-  page_count : Int,
+  page_count : Int32,
   mediabox : @syntax.PdfObject,
 ) -> PdfImposeLayout raise @core.PdfError {
   let bounds = self.parse_rectangle(mediabox)
@@ -260,8 +260,8 @@ fn PdfDocument::pdf_impose_layout(
 fn PdfDocument::pdf_impose_transforms(
   self : PdfDocument,
   fit : Bool,
-  x : Int,
-  y : Int,
+  x : Int32,
+  y : Int32,
   columns : Bool,
   rtl : Bool,
   btt : Bool,
@@ -271,7 +271,7 @@ fn PdfDocument::pdf_impose_transforms(
   output_mediabox : @syntax.PdfObject,
   fit_extra_hspace : Double,
   fit_extra_vspace : Double,
-  count : Int,
+  count : Int32,
 ) -> Array[@geometry.TransformMatrix] raise @core.PdfError {
   pdf_impose_validate_transform_inputs(x, y, count)
   let page_box = self.parse_rectangle(mediabox)

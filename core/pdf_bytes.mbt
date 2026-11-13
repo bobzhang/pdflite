@@ -10,7 +10,7 @@ pub type PdfBytes = Bytes
 /// Converts an integer to a byte.
 ///
 /// Raises `PdfError::InvalidByte` when `value` is outside `0..=255`.
-pub fn pdf_byte_of_int(value : Int) -> Byte raise PdfError {
+pub fn pdf_byte_of_int(value : Int32) -> Byte raise PdfError {
   if value < 0 || value > 255 {
     raise InvalidByte(value)
   }
@@ -43,8 +43,8 @@ pub fn pdf_bytes_copy(values : BytesView) -> PdfBytes {
 /// The default value is zero. Raises `PdfError::InvalidReadLength` for negative
 /// lengths and `PdfError::InvalidByte` for values outside `0..=255`.
 pub fn pdf_bytes_make(
-  length : Int,
-  value? : Int = 0,
+  length : Int32,
+  value~ : Int32 = 0,
 ) -> PdfBytes raise PdfError {
   if length < 0 {
     raise InvalidReadLength(length)
@@ -79,7 +79,7 @@ pub fn pdf_bytes_concat_views(parts : ArrayView[BytesView]) -> PdfBytes {
 ///
 /// Raises `PdfError::InvalidByte` if any value is outside `0..=255`.
 pub fn pdf_bytes_of_int_array(
-  values : ArrayView[Int],
+  values : ArrayView[Int32],
 ) -> PdfBytes raise PdfError {
   Bytes::makei(values.length(), i => pdf_byte_of_int(values[i]))
 }
@@ -89,7 +89,7 @@ pub fn pdf_bytes_of_int_array(
 ///
 /// Raises `PdfError::InvalidByte` if any value is outside `0..=255`.
 pub fn pdf_bytes_of_int_arrays(
-  values : ArrayView[ArrayView[Int]],
+  values : ArrayView[ArrayView[Int32]],
 ) -> PdfBytes raise PdfError {
   let mut length = 0
   for array in values {
@@ -113,7 +113,7 @@ pub fn pdf_bytes_of_int_arrays(
 /// `PdfError::InvalidByte` if a mapped value is outside `0..=255`.
 pub fn pdf_bytes_map_int(
   bytes : BytesView,
-  f : (Int) -> Int,
+  f : (Int32) -> Int32,
 ) -> PdfBytes raise PdfError {
   let output = Array::make(bytes.length(), b'\x00')
   for index in 0..<bytes.length() {
@@ -124,7 +124,7 @@ pub fn pdf_bytes_map_int(
 
 ///|
 /// Converts bytes to an array of integer byte values.
-pub fn pdf_int_array_of_bytes(bytes : BytesView) -> Array[Int] {
+pub fn pdf_int_array_of_bytes(bytes : BytesView) -> Array[Int32] {
   [
     for byte in bytes => byte.to_int()
   ]
@@ -136,7 +136,7 @@ pub fn pdf_int_array_of_bytes(bytes : BytesView) -> Array[Int] {
 /// CamlPDF models many byte strings as integer lists; this helper preserves
 /// that shape for callers ported from OCaml.
 pub fn pdf_string_of_int_arrays(
-  values : ArrayView[ArrayView[Int]],
+  values : ArrayView[ArrayView[Int32]],
 ) -> PdfBytes raise PdfError {
   pdf_bytes_of_int_arrays(values)
 }
@@ -144,20 +144,20 @@ pub fn pdf_string_of_int_arrays(
 ///|
 /// Compatibility alias for converting one integer byte array to PDF bytes.
 pub fn pdf_string_of_int_array(
-  values : ArrayView[Int],
+  values : ArrayView[Int32],
 ) -> PdfBytes raise PdfError {
   pdf_bytes_of_int_arrays([values])
 }
 
 ///|
 /// Returns the length of a PDF byte sequence.
-pub fn pdf_bytes_length(bytes : PdfBytes) -> Int {
+pub fn pdf_bytes_length(bytes : PdfBytes) -> Int32 {
   bytes.length()
 }
 
 ///|
 /// Returns the byte at `index`, or `None` when the index is out of bounds.
-pub fn pdf_bytes_get(bytes : PdfBytes, index : Int) -> Byte? {
+pub fn pdf_bytes_get(bytes : PdfBytes, index : Int32) -> Byte? {
   bytes.get(index)
 }
 

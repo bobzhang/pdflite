@@ -1,12 +1,17 @@
 ///|
-fn pdf_image_cmyk_component(channel : Int, black : Int) -> Int {
+fn pdf_image_cmyk_component(channel : Int32, black : Int32) -> Int32 {
   let channel = channel.to_double()
   let black = black.to_double()
   (255.0 - double_min(255.0, channel / 255.0 * (255.0 - black) + black)).to_int()
 }
 
 ///|
-fn pdf_image_rgb_of_cmyk(c : Int, m : Int, y : Int, k : Int) -> (Int, Int, Int) {
+fn pdf_image_rgb_of_cmyk(
+  c : Int32,
+  m : Int32,
+  y : Int32,
+  k : Int32,
+) -> (Int32, Int32, Int32) {
   (
     pdf_image_cmyk_component(c, k),
     pdf_image_cmyk_component(m, k),
@@ -16,8 +21,8 @@ fn pdf_image_rgb_of_cmyk(c : Int, m : Int, y : Int, k : Int) -> (Int, Int, Int) 
 
 ///|
 fn pdf_image_gray_8bpp_as_rgb24(
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let pixels = width * height
@@ -36,8 +41,8 @@ fn pdf_image_gray_8bpp_as_rgb24(
 
 ///|
 fn pdf_image_cmyk_8bpp_as_rgb24(
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let pixels = width * height
@@ -62,8 +67,8 @@ fn pdf_image_cmyk_8bpp_as_rgb24(
 
 ///|
 fn pdf_image_1bpp_as_rgb24(
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let bytes_per_row = (width + 7) / 8
@@ -86,7 +91,10 @@ fn pdf_image_1bpp_as_rgb24(
 }
 
 ///|
-fn pdf_image_packed_bytes_per_row(width : Int, bits_per_component : Int) -> Int {
+fn pdf_image_packed_bytes_per_row(
+  width : Int32,
+  bits_per_component : Int32,
+) -> Int32 {
   let row_bits = width * bits_per_component
   if row_bits % 8 == 0 {
     row_bits / 8
@@ -98,10 +106,10 @@ fn pdf_image_packed_bytes_per_row(width : Int, bits_per_component : Int) -> Int 
 ///|
 fn pdf_image_packed_sample(
   data : BytesView,
-  row_offset : Int,
-  column : Int,
-  bits_per_component : Int,
-) -> Int {
+  row_offset : Int32,
+  column : Int32,
+  bits_per_component : Int32,
+) -> Int32 {
   let bit_offset = column * bits_per_component
   let byte = data[row_offset + bit_offset / 8].to_int()
   let shift = 8 - bits_per_component - bit_offset % 8
@@ -111,9 +119,9 @@ fn pdf_image_packed_sample(
 
 ///|
 fn pdf_image_gray_packed_bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  bits_per_component : Int,
+  width : Int32,
+  height : Int32,
+  bits_per_component : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let bytes_per_row = pdf_image_packed_bytes_per_row(width, bits_per_component)
@@ -139,8 +147,8 @@ fn pdf_image_gray_packed_bpp_as_rgb24(
 
 ///|
 fn pdf_image_gray_2bpp_as_rgb24(
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_gray_packed_bpp_as_rgb24(width, height, 2, data)
@@ -148,8 +156,8 @@ fn pdf_image_gray_2bpp_as_rgb24(
 
 ///|
 fn pdf_image_gray_4bpp_as_rgb24(
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_gray_packed_bpp_as_rgb24(width, height, 4, data)
@@ -157,9 +165,9 @@ fn pdf_image_gray_4bpp_as_rgb24(
 
 ///|
 fn pdf_image_rgb_packed_bpp_as_rgb24(
-  width : Int,
-  height : Int,
-  bits_per_component : Int,
+  width : Int32,
+  height : Int32,
+  bits_per_component : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let samples_per_row = width * 3
@@ -190,8 +198,8 @@ fn pdf_image_rgb_packed_bpp_as_rgb24(
 
 ///|
 fn pdf_image_rgb_1bpp_as_rgb24(
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_rgb_packed_bpp_as_rgb24(width, height, 1, data)
@@ -199,8 +207,8 @@ fn pdf_image_rgb_1bpp_as_rgb24(
 
 ///|
 fn pdf_image_rgb_2bpp_as_rgb24(
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_rgb_packed_bpp_as_rgb24(width, height, 2, data)
@@ -208,8 +216,8 @@ fn pdf_image_rgb_2bpp_as_rgb24(
 
 ///|
 fn pdf_image_rgb_4bpp_as_rgb24(
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_image_rgb_packed_bpp_as_rgb24(width, height, 4, data)

@@ -1,7 +1,7 @@
 ///|
 fn pdf_text_difference_glyphname(
   differences : ArrayView[PdfEncodingDifference],
-  code : Int,
+  code : Int32,
 ) -> @core.PdfName? {
   let mut found : @core.PdfName? = None
   for difference in differences {
@@ -15,7 +15,7 @@ fn pdf_text_difference_glyphname(
 ///|
 fn PdfEncoding::pdf_text_glyphname_of_charcode(
   self : PdfEncoding,
-  code : Int,
+  code : Int32,
 ) -> @core.PdfName? {
   match self {
     PdfImplicitInFontFile => None
@@ -41,8 +41,8 @@ fn PdfEncoding::pdf_text_glyphname_of_charcode(
 ///
 /// Only codes with a known glyph name are emitted. The table is ordered by
 /// increasing one-byte character code.
-pub fn PdfEncoding::table(self : PdfEncoding) -> Array[(Int, @core.PdfName)] {
-  let output : Array[(Int, @core.PdfName)] = Array::new(capacity=256)
+pub fn PdfEncoding::table(self : PdfEncoding) -> Array[(Int32, @core.PdfName)] {
+  let output : Array[(Int32, @core.PdfName)] = Array::new(capacity=256)
   for code in 0..<256 {
     match self.pdf_text_glyphname_of_charcode(code) {
       Some(name) => output.push((code, name))
@@ -59,7 +59,7 @@ pub fn PdfEncoding::table(self : PdfEncoding) -> Array[(Int, @core.PdfName)] {
 /// collapsed.
 pub fn PdfEncoding::reverse_table(
   self : PdfEncoding,
-) -> Array[(@core.PdfName, Int)] {
+) -> Array[(@core.PdfName, Int32)] {
   [
     for entry in self.table() => (entry.1, entry.0)
   ]
@@ -69,7 +69,7 @@ pub fn PdfEncoding::reverse_table(
 /// Compatibility wrapper for `PdfEncoding::table`.
 pub fn pdf_table_of_encoding(
   encoding : PdfEncoding,
-) -> Array[(Int, @core.PdfName)] {
+) -> Array[(Int32, @core.PdfName)] {
   encoding.table()
 }
 
@@ -77,14 +77,14 @@ pub fn pdf_table_of_encoding(
 /// Compatibility wrapper for `PdfEncoding::reverse_table`.
 pub fn pdf_reverse_table_of_encoding(
   encoding : PdfEncoding,
-) -> Array[(@core.PdfName, Int)] {
+) -> Array[(@core.PdfName, Int32)] {
   encoding.reverse_table()
 }
 
 ///|
 fn PdfStandardFontData::pdf_text_glyphname_of_charcode(
   self : PdfStandardFontData,
-  code : Int,
+  code : Int32,
 ) -> @core.PdfName? {
   match self.encoding {
     PdfImplicitInFontFile =>
@@ -100,7 +100,7 @@ fn PdfStandardFontData::pdf_text_glyphname_of_charcode(
 ///|
 fn PdfFont::pdf_text_glyphname_of_charcode(
   self : PdfFont,
-  code : Int,
+  code : Int32,
 ) -> @core.PdfName? {
   match self {
     PdfFontStandard(data) => data.pdf_text_glyphname_of_charcode(code)

@@ -226,8 +226,8 @@ fn PdfDocument::pdf_page_trim_marks_page(
 /// rectangles when present.
 pub fn PdfDocument::show_page_boxes(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_page_box_rewrite_pages(page_numbers, "show_page_boxes", (_, _, page) => {
     self.postpend_operators(page, self.pdf_page_show_boxes_ops(page), fast~)
@@ -238,8 +238,8 @@ pub fn PdfDocument::show_page_boxes(
 /// Compatibility wrapper for `PdfDocument::show_page_boxes`.
 pub fn pdf_show_boxes(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.show_page_boxes(page_numbers, fast~)
 }
@@ -251,8 +251,8 @@ pub fn pdf_show_boxes(
 /// `trim_marks`.
 pub fn PdfDocument::trim_marks(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_page_box_rewrite_pages(page_numbers, "trim_marks", (_, _, page) => {
     self.pdf_page_trim_marks_page(page, fast)
@@ -263,8 +263,8 @@ pub fn PdfDocument::trim_marks(
 /// Compatibility wrapper for `PdfDocument::trim_marks`.
 pub fn pdf_trim_marks(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.trim_marks(page_numbers, fast~)
 }

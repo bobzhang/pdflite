@@ -5,7 +5,7 @@ fn text_cmap_predefined_name_for_test(text : String) -> @core.PdfName {
 
 ///|
 fn text_cmap_predefined_bytes_for_test(
-  values : ArrayView[Int],
+  values : ArrayView[Int32],
 ) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
@@ -18,7 +18,7 @@ fn text_cmap_predefined_font_descriptor_for_test() -> @pdflite.PdfFontDescriptor
     avgwidth: 0.0,
     maxwidth: 0.0,
     flags: 0,
-    fontbbox: { min_x: 0.0, min_y: 0.0, max_x: 0.0, max_y: 0.0 },
+    fontbbox: { min_x: 0.0, min_y: 0.0, max_x: 0.0, max_y: 0.0, },
     italicangle: 0.0,
     capheight: 0.0,
     xheight: 0.0,
@@ -265,7 +265,7 @@ test "PdfTextExtractor reads identity CMap text as two-byte character codes" {
   }
   let utf8_tounicode_font : @pdflite.PdfFont = PdfFontCIDKeyed({
     basefont: text_cmap_predefined_name_for_test("/TopUTF8ToUnicode"),
-    composite: { ..composite, cid_fontdescriptor: utf8_tounicode_descriptor },
+    composite: { ..composite, cid_fontdescriptor: utf8_tounicode_descriptor, },
     encoding: PdfPredefinedCMap(
       text_cmap_predefined_name_for_test("/UniJIS-UTF8-H"),
     ),
@@ -324,7 +324,7 @@ test "PdfTextExtractor reads identity CMap text as two-byte character codes" {
     fail("expected malformed UTF32 predefined CMap text error")
   }
   let direct_unicode_predefined_cases : Array[
-    (String, Array[Int], Array[Int], Int, Int),
+    (String, Array[Int32], Array[Int32], Int32, Int32),
   ] = [
     (
       "/UniAKR-UTF8-H",
@@ -383,7 +383,7 @@ test "PdfTextExtractor reads identity CMap text as two-byte character codes" {
   }
   let gb_euc_tounicode_font : @pdflite.PdfFont = PdfFontCIDKeyed({
     basefont: text_cmap_predefined_name_for_test("/TopGBEUCToUnicode"),
-    composite: { ..composite, cid_fontdescriptor: gb_euc_tounicode_descriptor },
+    composite: { ..composite, cid_fontdescriptor: gb_euc_tounicode_descriptor, },
     encoding: PdfPredefinedCMap(text_cmap_predefined_name_for_test("/GB-EUC-H")),
   })
   @test.assert_eq(
@@ -757,7 +757,7 @@ test "PdfTextExtractor reads identity CMap text as two-byte character codes" {
   guard etenms_b5_truncated is Err(BadText) else {
     fail("expected @core.PdfError::BadText for truncated ETenms-B5 charcode")
   }
-  let hk_b5_cases : Array[(String, Array[Int], Array[Int], Int, Int)] = [
+  let hk_b5_cases : Array[(String, Array[Int32], Array[Int32], Int32, Int32)] = [
     (
       "/HKdla-B5-H",
       [0x41, 0xFA, 0x41, 0x80],
@@ -1286,7 +1286,9 @@ test "PdfTextExtractor reads identity CMap text as two-byte character codes" {
   guard kscpc_euc_truncated is Err(BadText) else {
     fail("expected @core.PdfError::BadText for truncated KSCpc-EUC charcode")
   }
-  let vertical_builtin_cases : Array[(String, Array[Int], Array[Int], Int, Int)] = [
+  let vertical_builtin_cases : Array[
+    (String, Array[Int32], Array[Int32], Int32, Int32),
+  ] = [
     ("/GB-EUC-V", [0xA1, 0xA2], [0x3001], 0x3001, 0xA1A2),
     ("/GBpc-EUC-V", [0xA1, 0xA2], [0x3001], 0x3001, 0xA1A2),
     ("/GBK-EUC-V", [0xA1, 0xA2], [0x3001], 0x3001, 0xA1A2),
@@ -1334,7 +1336,7 @@ test "PdfTextExtractor reads identity CMap text as two-byte character codes" {
   }
   let rksj_tounicode_font : @pdflite.PdfFont = PdfFontCIDKeyed({
     basefont: text_cmap_predefined_name_for_test("/TopRKSJToUnicode"),
-    composite: { ..composite, cid_fontdescriptor: rksj_tounicode_descriptor },
+    composite: { ..composite, cid_fontdescriptor: rksj_tounicode_descriptor, },
     encoding: PdfPredefinedCMap(
       text_cmap_predefined_name_for_test("/90ms-RKSJ-H"),
     ),

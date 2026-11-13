@@ -1,10 +1,10 @@
 ///|
-fn pdf_bytes_for_bitstream_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn pdf_bytes_for_bitstream_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
 ///|
-fn pdf_bytes_to_ints_for_bitstream_test(bytes : @core.PdfBytes) -> Array[Int] {
+fn pdf_bytes_to_ints_for_bitstream_test(bytes : @core.PdfBytes) -> Array[Int32] {
   @core.pdf_bytes_to_array(bytes).map(byte => byte.to_int())
 }
 
@@ -71,7 +71,7 @@ test "BitStream reports checked read errors" {
   guard eof is Err(@core.PdfError::EndOfInput) else {
     fail("expected @core.PdfError::EndOfInput after all bits are consumed")
   }
-  let bad_count : Result[Int, Error] = try stream.get_value_int(32) catch {
+  let bad_count : Result[Int32, Error] = try stream.get_value_int(32) catch {
     err => Err(err)
   } noraise {
     value => Ok(value)

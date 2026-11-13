@@ -1,9 +1,9 @@
 ///|
 fn pdf_page_label_copy_bytes(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   bytes : PdfBytes,
-) -> Int {
+) -> Int32 {
   let mut position = position
   for byte in bytes {
     output[position] = byte
@@ -18,7 +18,7 @@ fn pdf_page_label_ascii_bytes(text : String) -> PdfBytes {
 }
 
 ///|
-fn pdf_page_label_roman_pair(pair_index : Int) -> (Int, Byte, Byte?) {
+fn pdf_page_label_roman_pair(pair_index : Int32) -> (Int32, Byte, Byte?) {
   match pair_index {
     0 => (900, b'C', Some(b'M'))
     1 => (500, b'D', None)
@@ -36,7 +36,7 @@ fn pdf_page_label_roman_pair(pair_index : Int) -> (Int, Byte, Byte?) {
 }
 
 ///|
-fn pdf_page_label_roman_pair_length(pair_index : Int) -> Int {
+fn pdf_page_label_roman_pair_length(pair_index : Int32) -> Int32 {
   let (_, _, suffix) = pdf_page_label_roman_pair(pair_index)
   match suffix {
     Some(_) => 2
@@ -47,9 +47,9 @@ fn pdf_page_label_roman_pair_length(pair_index : Int) -> Int {
 ///|
 fn pdf_page_label_copy_roman_pair(
   output : Array[Byte],
-  position : Int,
-  pair_index : Int,
-) -> Int {
+  position : Int32,
+  pair_index : Int32,
+) -> Int32 {
   let (_, prefix, suffix) = pdf_page_label_roman_pair(pair_index)
   output[position] = prefix
   match suffix {
@@ -62,7 +62,7 @@ fn pdf_page_label_copy_roman_pair(
 }
 
 ///|
-fn pdf_page_label_roman_upper_length(number : Int) -> Int {
+fn pdf_page_label_roman_upper_length(number : Int32) -> Int32 {
   let mut length = 0
   let mut remaining = number
   if remaining >= 1000 {
@@ -89,7 +89,7 @@ fn pdf_page_label_roman_upper_length(number : Int) -> Int {
 ///
 /// Values less than or equal to zero produce an empty byte string, matching
 /// cpdf's page-label formatter behavior.
-pub fn pdf_page_label_roman_upper(number : Int) -> PdfBytes {
+pub fn pdf_page_label_roman_upper(number : Int32) -> PdfBytes {
   let output = Array::make(pdf_page_label_roman_upper_length(number), b'\x00')
   let mut position = 0
   let mut remaining = number
@@ -132,7 +132,7 @@ pub fn pdf_page_label_lowercase(bytes : PdfBytes) -> PdfBytes {
 }
 
 ///|
-fn pdf_page_label_letters(number : Int, lowercase : Bool) -> PdfBytes {
+fn pdf_page_label_letters(number : Int32, lowercase : Bool) -> PdfBytes {
   if number > 0 {
     let letter = (number - 1) % 26
     let count = (number - 1) / 26 + 1
@@ -149,7 +149,7 @@ fn pdf_page_label_letters(number : Int, lowercase : Bool) -> PdfBytes {
 ///
 /// Prefix-only labels return an empty byte string.
 pub fn pdf_page_label_number_bytes(
-  number : Int,
+  number : Int32,
   style : PdfPageLabelStyle,
 ) -> PdfBytes {
   match style {
@@ -170,7 +170,7 @@ pub fn pdf_page_label_number_bytes(
 /// from the range's 1-based `start_page` and `start_value`, then formatted with
 /// the range style.
 pub fn pdf_page_label_text_of_single(
-  page_number : Int,
+  page_number : Int32,
   label : PdfPageLabel,
 ) -> PdfBytes {
   let real_number = page_number - (label.start_page - label.start_value)
@@ -202,11 +202,11 @@ pub fn pdf_page_label_text_of_single(
 /// The returned range keeps the style and prefix, but normalizes `start_page`
 /// and `start_value` to the numeric value displayed on `page_number`.
 pub fn pdf_page_label_of_single(
-  page_number : Int,
+  page_number : Int32,
   label : PdfPageLabel,
 ) -> PdfPageLabel {
   let real_number = page_number - (label.start_page - label.start_value)
-  { ..label, start_page: real_number, start_value: real_number }
+  { ..label, start_page: real_number, start_value: real_number, }
 }
 
 ///|
@@ -215,7 +215,7 @@ pub fn pdf_page_label_of_single(
 /// The input ranges are expected in document order. Returns `None` when the
 /// document has no page-label ranges.
 pub fn pdf_page_label_of_page_number(
-  page_number : Int,
+  page_number : Int32,
   labels : ArrayView[PdfPageLabel],
 ) -> PdfPageLabel? {
   if labels.length() == 0 {
@@ -239,7 +239,7 @@ pub fn pdf_page_label_of_page_number(
 /// Returns `None` when there are no label ranges. Label prefixes are returned as
 /// raw PDF bytes, preserving the encoding stored in the PDF string.
 pub fn pdf_page_label_text_of_page_number(
-  page_number : Int,
+  page_number : Int32,
   labels : ArrayView[PdfPageLabel],
 ) -> PdfBytes? {
   if labels.length() == 0 {

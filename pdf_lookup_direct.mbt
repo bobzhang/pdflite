@@ -2,7 +2,7 @@
 fn PdfDocument::direct_depth(
   self : PdfDocument,
   object : @syntax.PdfObject,
-  depth : Int,
+  depth : Int32,
 ) -> @syntax.PdfObject {
   if depth > 1024 {
     PdfNull
@@ -104,7 +104,7 @@ pub fn PdfDocument::lookup_direct_or_else(
 }
 
 ///|
-fn pdf_lookup_array_index_name(name : @core.PdfName) -> Int? {
+fn pdf_lookup_array_index_name(name : @core.PdfName) -> Int32? {
   let bytes = name.bytes()
   guard bytes.length() >= 3 &&
     bytes[0].to_int() == 47 &&
@@ -161,7 +161,7 @@ pub fn PdfDocument::indirect_number(
   self : PdfDocument,
   key : @core.PdfName,
   object : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match self.direct(object).dictionary_view() {
     Some(entries) =>
       for entry in entries {

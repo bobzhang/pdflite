@@ -1,5 +1,8 @@
 ///|
-fn pdf_util_int_array_contains(values : ArrayView[Int], value : Int) -> Bool {
+fn pdf_util_int_array_contains(
+  values : ArrayView[Int32],
+  value : Int32,
+) -> Bool {
   for item in values {
     if item == value {
       break true
@@ -10,7 +13,7 @@ fn pdf_util_int_array_contains(values : ArrayView[Int], value : Int) -> Bool {
 }
 
 ///|
-fn pdf_util_push_unique_int(values : Array[Int], value : Int) -> Unit {
+fn pdf_util_push_unique_int(values : Array[Int32], value : Int32) -> Unit {
   if !pdf_util_int_array_contains(values, value) {
     values.push(value)
   }
@@ -20,7 +23,7 @@ fn pdf_util_push_unique_int(values : Array[Int], value : Int) -> Unit {
 fn PdfDocument::pdf_util_mark_contents_value(
   self : PdfDocument,
   value : @syntax.PdfObject,
-  numbers : Array[Int],
+  numbers : Array[Int32],
 ) -> Unit {
   match value {
     PdfIndirect(number) =>
@@ -49,7 +52,7 @@ fn PdfDocument::pdf_util_mark_contents_value(
 ///|
 fn PdfDocument::pdf_util_indirect_marks_content_stream(
   self : PdfDocument,
-  number : Int,
+  number : Int32,
 ) -> Bool {
   match self.lookup_object_or_null(number) {
     PdfStreamObject(stream) =>
@@ -78,7 +81,7 @@ fn PdfDocument::pdf_util_indirect_marks_content_stream(
 fn PdfDocument::pdf_util_collect_content_stream_numbers(
   self : PdfDocument,
   object : @syntax.PdfObject,
-  numbers : Array[Int],
+  numbers : Array[Int32],
 ) -> Unit {
   match object {
     PdfDictionary(entries) =>
@@ -105,9 +108,9 @@ fn PdfDocument::pdf_util_collect_content_stream_numbers(
 ///|
 fn PdfDocument::pdf_util_content_stream_numbers(
   self : PdfDocument,
-) -> Array[Int] {
+) -> Array[Int32] {
   let object_numbers = self.object_numbers()
-  let numbers : Array[Int] = Array::new(capacity=object_numbers.length())
+  let numbers : Array[Int32] = Array::new(capacity=object_numbers.length())
   self.pdf_util_collect_content_stream_numbers(self.trailer_dict(), numbers)
   for number in object_numbers {
     self.pdf_util_collect_content_stream_numbers(

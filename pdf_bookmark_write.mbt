@@ -38,10 +38,10 @@ fn pdf_bookmark_node_object(
 ///|
 fn pdf_bookmark_child_stop(
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  start : Int,
-  stop : Int,
-  level : Int,
-) -> Int {
+  start : Int32,
+  stop : Int32,
+  level : Int32,
+) -> Int32 {
   let mut index = start
   while index < stop && bookmarks[index].level > level {
     index += 1
@@ -52,10 +52,10 @@ fn pdf_bookmark_child_stop(
 ///|
 fn pdf_bookmark_make_nodes(
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  start : Int,
-  stop : Int,
-  base_object_number : Int,
-  source : Ref[Int],
+  start : Int32,
+  stop : Int32,
+  base_object_number : Int32,
+  source : Ref[Int32],
 ) -> Array[PdfBookmarkNode] {
   let nodes : Array[PdfBookmarkNode] = []
   let mut index = start
@@ -95,7 +95,7 @@ fn pdf_bookmark_any_open(nodes : ArrayView[PdfBookmarkNode]) -> Bool {
 }
 
 ///|
-fn pdf_bookmark_total_visible(nodes : ArrayView[PdfBookmarkNode]) -> Int {
+fn pdf_bookmark_total_visible(nodes : ArrayView[PdfBookmarkNode]) -> Int32 {
   let mut total = 0
   for node in nodes {
     total += 1
@@ -126,7 +126,7 @@ fn pdf_bookmark_add_count(
 ///|
 fn pdf_bookmark_finalize_nodes(
   nodes : ArrayView[PdfBookmarkNode],
-  parent_number : Int,
+  parent_number : Int32,
 ) -> Array[PdfBookmarkNode] raise @core.PdfError {
   let output : Array[PdfBookmarkNode] = []
   for index in 0..<nodes.length() {
@@ -160,7 +160,7 @@ fn pdf_bookmark_finalize_nodes(
         PdfIndirect(nodes[index + 1].number),
       )
     }
-    output.push({ ..node, object, children })
+    output.push({ ..node, object, children, })
   }
   output
 }
@@ -168,7 +168,7 @@ fn pdf_bookmark_finalize_nodes(
 ///|
 fn pdf_bookmark_flatten_nodes(
   nodes : ArrayView[PdfBookmarkNode],
-  output : Array[(Int, @syntax.PdfObject)],
+  output : Array[(Int32, @syntax.PdfObject)],
 ) -> Unit {
   for node in nodes {
     output.push((node.number, node.object))
@@ -239,7 +239,7 @@ pub fn PdfDocument::add_bookmarks(
     let root = self.pdf_bookmark_catalog()
     let pdf = self.copy()
     let base_object_number = self.objects.max_object_number()
-    let source : Ref[Int] = { val: 0 }
+    let source : Ref[Int32] = { val: 0, }
     let nodes = pdf_bookmark_make_nodes(
       bookmarks,
       0,
@@ -253,7 +253,7 @@ pub fn PdfDocument::add_bookmarks(
       outline_root_number,
       pdf_bookmark_outline_root_object(nodes),
     )
-    let pairs : Array[(Int, @syntax.PdfObject)] = []
+    let pairs : Array[(Int32, @syntax.PdfObject)] = []
     pdf_bookmark_flatten_nodes(nodes, pairs)
     for pair in pairs {
       let (number, object) = pair

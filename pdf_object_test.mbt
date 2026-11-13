@@ -1,5 +1,5 @@
 ///|
-fn object_name_for_test(values : ArrayView[Int]) -> @core.PdfName {
+fn object_name_for_test(values : ArrayView[Int32]) -> @core.PdfName {
   @core.pdf_name_of_bytes(try! @core.pdf_bytes_of_int_array(values))
 }
 
@@ -125,7 +125,7 @@ test "@syntax.PdfObject find_indirect reads immediate dictionary references" {
     @syntax.pdf_dictionary([(name_a, PdfIndirect(9))]),
     StreamGot(try! @core.pdf_bytes_of_int_array([65])),
   )
-  let stream_result : Result[Int?, Error] = try
+  let stream_result : Result[Int32?, Error] = try
     stream.find_indirect(name_a)
   catch {
     err => Err(err)

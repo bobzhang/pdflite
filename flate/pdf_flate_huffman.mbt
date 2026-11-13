@@ -1,21 +1,21 @@
 ///|
 priv struct FlateHuffmanTable {
-  max_bits : Int
-  sym : Array[Int]
-  len : Array[Int]
+  max_bits : Int32
+  sym : Array[Int32]
+  len : Array[Int32]
 }
 
 ///|
 priv struct FlateHuffmanTreeNode {
-  weight : Int
-  symbol : Int
-  left : Int
-  right : Int
+  weight : Int32
+  symbol : Int32
+  left : Int32
+  right : Int32
   mut active : Bool
 }
 
 ///|
-fn pdf_flate_pick_huffman_node(nodes : Array[FlateHuffmanTreeNode]) -> Int {
+fn pdf_flate_pick_huffman_node(nodes : Array[FlateHuffmanTreeNode]) -> Int32 {
   let mut picked = -1
   for index, node in nodes {
     if node.active &&
@@ -35,10 +35,10 @@ fn pdf_flate_pick_huffman_node(nodes : Array[FlateHuffmanTreeNode]) -> Int {
 
 ///|
 fn pdf_flate_huffman_code_lengths(
-  frequencies : ArrayView[Int],
-  max_bits : Int,
-) -> Array[Int] raise @core.PdfError {
-  let lengths : Array[Int] = Array::make(frequencies.length(), 0)
+  frequencies : ArrayView[Int32],
+  max_bits : Int32,
+) -> Array[Int32] raise @core.PdfError {
+  let lengths : Array[Int32] = Array::make(frequencies.length(), 0)
   let nodes : Array[FlateHuffmanTreeNode] = Array::new(
     capacity=frequencies.length() * 2,
   )
@@ -83,7 +83,7 @@ fn pdf_flate_huffman_code_lengths(
     active -= 1
   }
   let root = pdf_flate_pick_huffman_node(nodes)
-  let stack : Array[(Int, Int)] = Array::new(capacity=nodes.length())
+  let stack : Array[(Int32, Int32)] = Array::new(capacity=nodes.length())
   stack.push((root, 0))
   while stack.length() > 0 {
     let (node_index, depth) = stack.pop().unwrap()
@@ -106,26 +106,26 @@ fn pdf_flate_huffman_code_lengths(
 }
 
 ///|
-fn pdf_flate_canonical_codes(lengths : ArrayView[Int]) -> Array[Int] {
+fn pdf_flate_canonical_codes(lengths : ArrayView[Int32]) -> Array[Int32] {
   let mut max_bits = 0
   for length in lengths {
     if length > max_bits {
       max_bits = length
     }
   }
-  let counts : Array[Int] = Array::make(max_bits + 1, 0)
+  let counts : Array[Int32] = Array::make(max_bits + 1, 0)
   for length in lengths {
     if length > 0 {
       counts[length] += 1
     }
   }
-  let next_code : Array[Int] = Array::make(max_bits + 1, 0)
+  let next_code : Array[Int32] = Array::make(max_bits + 1, 0)
   let mut code = 0
   for bits in 1..<=max_bits {
     code = (code + counts[bits - 1]) << 1
     next_code[bits] = code
   }
-  let codes : Array[Int] = Array::make(lengths.length(), 0)
+  let codes : Array[Int32] = Array::make(lengths.length(), 0)
   for symbol, length in lengths {
     if length > 0 {
       codes[symbol] = next_code[length]
@@ -137,7 +137,7 @@ fn pdf_flate_canonical_codes(lengths : ArrayView[Int]) -> Array[Int] {
 
 ///|
 fn pdf_flate_build_huffman(
-  lengths : ArrayView[Int],
+  lengths : ArrayView[Int32],
 ) -> FlateHuffmanTable raise @core.PdfError {
   let mut max_bits = 0
   for length in lengths {
@@ -151,21 +151,21 @@ fn pdf_flate_build_huffman(
   if max_bits == 0 {
     raise InvalidFlateData
   }
-  let counts : Array[Int] = Array::make(max_bits + 1, 0)
+  let counts : Array[Int32] = Array::make(max_bits + 1, 0)
   for length in lengths {
     if length > 0 {
       counts[length] += 1
     }
   }
-  let next_code : Array[Int] = Array::make(max_bits + 1, 0)
+  let next_code : Array[Int32] = Array::make(max_bits + 1, 0)
   let mut code = 0
   for bits in 1..<=max_bits {
     code = (code + counts[bits - 1]) << 1
     next_code[bits] = code
   }
   let size = 1 << max_bits
-  let sym : Array[Int] = Array::make(size, -1)
-  let len_table : Array[Int] = Array::make(size, 0)
+  let sym : Array[Int32] = Array::make(size, -1)
+  let len_table : Array[Int32] = Array::make(size, 0)
   for symbol, length in lengths {
     if length == 0 {
       continue
@@ -180,14 +180,14 @@ fn pdf_flate_build_huffman(
       len_table[index] = length
     }
   }
-  { max_bits, sym, len: len_table }
+  { max_bits, sym, len: len_table, }
 }
 
 ///|
 fn pdf_flate_decode_symbol(
   reader : FlateBitReader,
   table : FlateHuffmanTable,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match reader.peek_bits(table.max_bits) {
     Some(bits) => {
       let index = bits.reinterpret_as_int()
@@ -199,7 +199,7 @@ fn pdf_flate_decode_symbol(
     }
     None => ()
   }
-  let mut code : UInt = 0
+  let mut code : UInt32 = 0
   for length in 1..<=table.max_bits {
     let bit = reader.read_bits(1)
     code = code | (bit << (length - 1))
@@ -212,8 +212,8 @@ fn pdf_flate_decode_symbol(
 }
 
 ///|
-fn pdf_flate_fixed_literal_lengths() -> Array[Int] {
-  let lengths : Array[Int] = Array::new(capacity=288)
+fn pdf_flate_fixed_literal_lengths() -> Array[Int32] {
+  let lengths : Array[Int32] = Array::new(capacity=288)
   for i in 0..<=287 {
     if i <= 143 {
       lengths.push(8)
@@ -229,8 +229,8 @@ fn pdf_flate_fixed_literal_lengths() -> Array[Int] {
 }
 
 ///|
-fn pdf_flate_fixed_distance_lengths() -> Array[Int] {
-  let lengths : Array[Int] = Array::new(capacity=32)
+fn pdf_flate_fixed_distance_lengths() -> Array[Int32] {
+  let lengths : Array[Int32] = Array::new(capacity=32)
   for _ in 0..<=31 {
     lengths.push(5)
   }

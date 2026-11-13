@@ -1,11 +1,11 @@
 ///|
 fn PdfDocumentPageSpecContext::select_dimensions(
   self : PdfDocumentPageSpecContext,
-  candidates : ArrayView[Int],
+  candidates : ArrayView[Int32],
   portrait : Bool,
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   let pages = self.document.pages_of_pagetree()
-  let output : Array[Int] = Array::new(capacity=candidates.length())
+  let output : Array[Int32] = Array::new(capacity=candidates.length())
   for page_number in candidates {
     if page_number >= 1 && page_number <= pages.length() {
       let page = pages[page_number - 1]
@@ -23,10 +23,10 @@ fn PdfDocumentPageSpecContext::select_dimensions(
 ///|
 fn PdfDocumentPageSpecContext::select_annotated(
   self : PdfDocumentPageSpecContext,
-  candidates : ArrayView[Int],
-) -> Array[Int] raise @core.PdfError {
+  candidates : ArrayView[Int32],
+) -> Array[Int32] raise @core.PdfError {
   let pages = self.document.pages_of_pagetree()
-  let output : Array[Int] = Array::new(capacity=candidates.length())
+  let output : Array[Int32] = Array::new(capacity=candidates.length())
   for page_number in candidates {
     if page_number >= 1 && page_number <= pages.length() {
       let page = pages[page_number - 1]

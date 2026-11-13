@@ -2,9 +2,9 @@
 fn pdf_page_reference_numbers_inner(
   pdf : PdfDocument,
   pages_node : @syntax.PdfObject,
-  node_number : Int,
-  depth : Int,
-) -> Array[Int] raise @core.PdfError {
+  node_number : Int32,
+  depth : Int32,
+) -> Array[Int32] raise @core.PdfError {
   if depth > 10000 {
     raise PageTreeExpected
   }
@@ -13,7 +13,7 @@ fn pdf_page_reference_numbers_inner(
     _ =>
       match pdf.lookup_direct(pdf_page_kids_key(), pages_node) {
         Some(PdfArray(kids)) => {
-          let output : Array[Int] = []
+          let output : Array[Int32] = []
           for kid in kids {
             match kid {
               PdfIndirect(number) => {
@@ -44,8 +44,8 @@ fn pdf_page_reference_numbers_inner(
 fn PdfDocument::pdf_pages_of_pagetree_quick_node(
   self : PdfDocument,
   node : @syntax.PdfObject,
-  depth : Int,
-) -> Int raise @core.PdfError {
+  depth : Int32,
+) -> Int32 raise @core.PdfError {
   if depth > 10000 {
     raise PageTreeExpected
   }
@@ -101,7 +101,7 @@ fn pdf_page_root_pages_node(
 /// Return page object numbers in page-tree order.
 pub fn PdfDocument::page_reference_numbers(
   self : PdfDocument,
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   pdf_page_reference_numbers_inner(self, pdf_page_root_pages_node(self), -1, 0)
 }
 
@@ -109,7 +109,7 @@ pub fn PdfDocument::page_reference_numbers(
 /// Compatibility wrapper for `PdfDocument::page_reference_numbers`.
 pub fn pdf_page_reference_numbers(
   document : PdfDocument,
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   document.page_reference_numbers()
 }
 
@@ -117,7 +117,7 @@ pub fn pdf_page_reference_numbers(
 /// Count pages by walking the page tree without materializing `@page.PdfPage` records.
 pub fn PdfDocument::pages_of_pagetree_quick(
   self : PdfDocument,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   self.pdf_pages_of_pagetree_quick_node(pdf_page_root_pages_node(self), 0)
 }
 
@@ -127,8 +127,8 @@ pub fn PdfDocument::pages_of_pagetree_quick(
 /// Out-of-range page numbers return `None`.
 pub fn PdfDocument::page_object_number(
   self : PdfDocument,
-  page_number : Int,
-) -> Int? raise @core.PdfError {
+  page_number : Int32,
+) -> Int32? raise @core.PdfError {
   let references = self.page_reference_numbers()
   if page_number < 1 || page_number > references.length() {
     None
@@ -141,8 +141,8 @@ pub fn PdfDocument::page_object_number(
 /// Compatibility wrapper for `PdfDocument::page_object_number`.
 pub fn pdf_page_object_number(
   document : PdfDocument,
-  page_number : Int,
-) -> Int? raise @core.PdfError {
+  page_number : Int32,
+) -> Int32? raise @core.PdfError {
   document.page_object_number(page_number)
 }
 
@@ -151,7 +151,7 @@ pub fn pdf_page_object_number(
 pub fn PdfDocument::page_number_of_target(
   self : PdfDocument,
   destination : @destination.PdfDestination,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   self.pdf_destination_page_number(destination, self.page_reference_numbers())
 }
 
@@ -160,7 +160,7 @@ pub fn PdfDocument::page_number_of_target(
 pub fn pdf_pagenumber_of_target(
   document : PdfDocument,
   destination : @destination.PdfDestination,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   document.page_number_of_target(destination)
 }
 
@@ -170,7 +170,7 @@ pub fn pdf_pagenumber_of_target(
 /// Out-of-range page numbers return `DestNull`.
 pub fn PdfDocument::target_of_page_number(
   self : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
 ) -> @destination.PdfDestination raise @core.PdfError {
   match self.page_object_number(page_number) {
     Some(object_number) => DestFit(TargetPageObject(object_number))
@@ -182,20 +182,20 @@ pub fn PdfDocument::target_of_page_number(
 /// Compatibility wrapper for `PdfDocument::target_of_page_number`.
 pub fn pdf_target_of_pagenumber(
   document : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
 ) -> @destination.PdfDestination raise @core.PdfError {
   document.target_of_page_number(page_number)
 }
 
 ///|
 /// Return the number of pages by walking the page tree.
-pub fn PdfDocument::endpage(self : PdfDocument) -> Int raise @core.PdfError {
+pub fn PdfDocument::endpage(self : PdfDocument) -> Int32 raise @core.PdfError {
   self.pages_of_pagetree_quick()
 }
 
 ///|
 /// Compatibility wrapper for `PdfDocument::endpage`.
-pub fn pdf_endpage(document : PdfDocument) -> Int raise @core.PdfError {
+pub fn pdf_endpage(document : PdfDocument) -> Int32 raise @core.PdfError {
   document.endpage()
 }
 
@@ -205,7 +205,7 @@ pub fn pdf_endpage(document : PdfDocument) -> Int raise @core.PdfError {
 /// Missing or malformed counts return `0`.
 pub fn PdfDocument::endpage_fast(
   self : PdfDocument,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match
     self.lookup_direct(pdf_page_count_key(), pdf_page_root_pages_node(self)) {
     Some(PdfInteger(count)) => count
@@ -215,6 +215,6 @@ pub fn PdfDocument::endpage_fast(
 
 ///|
 /// Compatibility wrapper for `PdfDocument::endpage_fast`.
-pub fn pdf_endpage_fast(document : PdfDocument) -> Int raise @core.PdfError {
+pub fn pdf_endpage_fast(document : PdfDocument) -> Int32 raise @core.PdfError {
   document.endpage_fast()
 }

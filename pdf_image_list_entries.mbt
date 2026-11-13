@@ -1,5 +1,5 @@
 ///|
-fn pdf_image_add_unique_page(pages : Array[Int], page_number : Int) -> Unit {
+fn pdf_image_add_unique_page(pages : Array[Int32], page_number : Int32) -> Unit {
   if !pages.contains(page_number) {
     pages.push(page_number)
   }
@@ -8,8 +8,8 @@ fn pdf_image_add_unique_page(pages : Array[Int], page_number : Int) -> Unit {
 ///|
 fn pdf_image_list_find_entry(
   entries : ArrayView[PdfImageListEntry],
-  object_number : Int,
-) -> Int {
+  object_number : Int32,
+) -> Int32 {
   if object_number <= 0 {
     -1
   } else {
@@ -27,14 +27,14 @@ fn pdf_image_list_find_entry(
 fn PdfDocument::pdf_image_list_add_image(
   self : PdfDocument,
   resources : @syntax.PdfObject,
-  page_number : Int,
+  page_number : Int32,
   name : @core.PdfName,
   image : @syntax.PdfObject,
-  object_number : Int,
-  data_length : Int,
+  object_number : Int32,
+  data_length : Int32,
   inline : Bool,
   entries : Array[PdfImageListEntry],
-  form_numbers : @hashmap.HashMap[Int, Bool],
+  form_numbers : @hashmap.HashMap[Int32, Bool],
 ) -> Unit raise @core.PdfError {
   let existing = pdf_image_list_find_entry(entries, object_number)
   if existing >= 0 {

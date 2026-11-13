@@ -8,7 +8,7 @@ fn PdfDrawRenderState::fresh_name(
 }
 
 ///|
-fn PdfDrawRenderState::fresh_mcid(self : PdfDrawRenderState) -> Int {
+fn PdfDrawRenderState::fresh_mcid(self : PdfDrawRenderState) -> Int32 {
   self.marked_content_id += 1
   self.marked_content_id
 }
@@ -16,7 +16,7 @@ fn PdfDrawRenderState::fresh_mcid(self : PdfDrawRenderState) -> Int {
 ///|
 fn PdfDrawRenderState::set_minimum_resource_number(
   self : PdfDrawRenderState,
-  minimum : Int,
+  minimum : Int32,
 ) -> Unit {
   if self.resource_number < minimum {
     self.resource_number = minimum
@@ -40,7 +40,7 @@ fn PdfDrawRenderState::set_structure_tree_enabled(
 ///|
 fn PdfDrawRenderState::set_structure_page_number(
   self : PdfDrawRenderState,
-  page_number : Int,
+  page_number : Int32,
 ) -> Unit {
   self.structure_page_number = page_number
 }

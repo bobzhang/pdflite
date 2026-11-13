@@ -4,7 +4,7 @@ fn pdf_fun_number_array_object(values : ArrayView[Double]) -> @syntax.PdfObject 
 }
 
 ///|
-fn PdfFunction::pdf_fun_function_type(self : PdfFunction) -> Int {
+fn PdfFunction::pdf_fun_function_type(self : PdfFunction) -> Int32 {
   match self.func {
     PdfFunctionSampled(_) => 0
     PdfFunctionInterpolation(_) => 2

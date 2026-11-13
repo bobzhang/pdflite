@@ -1,6 +1,6 @@
 ///|
 priv enum PdfCalculatorValue {
-  PdfCalculatorInt(Int)
+  PdfCalculatorInt(Int32)
   PdfCalculatorFloat(Double)
   PdfCalculatorBoolean(Bool)
 }
@@ -30,7 +30,7 @@ fn pdf_fun_calculator_pop_number(
 ///|
 fn pdf_fun_calculator_pop_int(
   stack : Array[PdfCalculatorValue],
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match pdf_fun_calculator_pop_value(stack) {
     PdfCalculatorInt(value) => value
     _ => raise BadFunctionEvaluation("calculator integer operand expected")

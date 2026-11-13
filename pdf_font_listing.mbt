@@ -1,7 +1,7 @@
 ///|
 fn PdfDocument::pdf_font_list_entry(
   self : PdfDocument,
-  page : Int,
+  page : Int32,
   name : String,
   font : @syntax.PdfObject,
 ) -> @font.PdfFontListEntry raise @core.PdfError {
@@ -19,7 +19,7 @@ fn PdfDocument::pdf_font_list_entry(
 ///|
 fn PdfDocument::pdf_font_list_fonts_dictionary(
   self : PdfDocument,
-  page : Int,
+  page : Int32,
   prefix : String,
   fonts : ArrayView[(@core.PdfName, @syntax.PdfObject)],
 ) -> Array[@font.PdfFontListEntry] raise @core.PdfError {
@@ -41,10 +41,10 @@ fn PdfDocument::pdf_font_list_fonts_dictionary(
 ///|
 fn PdfDocument::pdf_font_list_xobjects(
   self : PdfDocument,
-  page : Int,
+  page : Int32,
   prefix : String,
   xobjects : ArrayView[(@core.PdfName, @syntax.PdfObject)],
-  seen : Array[Int],
+  seen : Array[Int32],
 ) -> Array[@font.PdfFontListEntry] raise @core.PdfError {
   let output : Array[@font.PdfFontListEntry] = Array::new(
     capacity=xobjects.length(),
@@ -69,10 +69,10 @@ fn PdfDocument::pdf_font_list_xobjects(
 ///|
 fn PdfDocument::pdf_font_list_resources(
   self : PdfDocument,
-  page : Int,
+  page : Int32,
   prefix : String,
   resources : @syntax.PdfObject,
-  seen : Array[Int],
+  seen : Array[Int32],
 ) -> Array[@font.PdfFontListEntry] raise @core.PdfError {
   let output : Array[@font.PdfFontListEntry] = []
   match self.lookup_direct(pdf_page_font_resource_name, resources) {
@@ -91,10 +91,10 @@ fn PdfDocument::pdf_font_list_resources(
 ///|
 fn PdfDocument::pdf_font_list_xobject(
   self : PdfDocument,
-  page : Int,
+  page : Int32,
   prefix : String,
-  xobject_number : Int,
-  seen : Array[Int],
+  xobject_number : Int32,
+  seen : Array[Int32],
 ) -> Array[@font.PdfFontListEntry] raise @core.PdfError {
   if seen.contains(xobject_number) {
     []
@@ -117,7 +117,7 @@ fn PdfDocument::pdf_font_list_xobject(
 /// cpdf's intended "do not process an xobject twice" behavior.
 pub fn PdfDocument::list_fonts(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Array[@font.PdfFontListEntry] raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(page_numbers, pages.length(), "list_fonts")
@@ -125,7 +125,7 @@ pub fn PdfDocument::list_fonts(
   let output : Array[@font.PdfFontListEntry] = Array::new(
     capacity=page_numbers.length(),
   )
-  let seen_xobjects : Array[Int] = Array::new(capacity=page_numbers.length())
+  let seen_xobjects : Array[Int32] = Array::new(capacity=page_numbers.length())
   for index, page in pages {
     let page_number = index + 1
     if selected_pages.contains(page_number) {
@@ -146,7 +146,7 @@ pub fn PdfDocument::list_fonts(
 /// Compatibility wrapper for `PdfDocument::list_fonts`.
 pub fn pdf_list_fonts(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Array[@font.PdfFontListEntry] raise @core.PdfError {
   document.list_fonts(page_numbers)
 }
@@ -154,9 +154,9 @@ pub fn pdf_list_fonts(
 ///|
 fn pdf_font_write_listing_line(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   entry : @font.PdfFontListEntry,
-) -> Int {
+) -> Int32 {
   let mut current = pdf_font_write_utf8(
     output,
     position,
@@ -179,7 +179,7 @@ fn pdf_font_write_listing_line(
 }
 
 ///|
-fn pdf_font_listing_line_length(entry : @font.PdfFontListEntry) -> Int {
+fn pdf_font_listing_line_length(entry : @font.PdfFontListEntry) -> Int32 {
   pdf_font_utf8_length(entry.page.to_string()) +
   pdf_font_utf8_length(entry.name) +
   pdf_font_utf8_length(entry.subtype) +
@@ -191,7 +191,7 @@ fn pdf_font_listing_line_length(entry : @font.PdfFontListEntry) -> Int {
 ///|
 fn pdf_font_listing_text_length(
   entries : ArrayView[@font.PdfFontListEntry],
-) -> Int {
+) -> Int32 {
   let mut length = 0
   for entry in entries {
     length += pdf_font_listing_line_length(entry)
@@ -203,7 +203,7 @@ fn pdf_font_listing_text_length(
 /// Render cpdf's plain-text font listing for selected pages.
 pub fn PdfDocument::list_fonts_text(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   let entries = self.list_fonts(page_numbers)
   let output = Array::make(pdf_font_listing_text_length(entries), b'\x00')
@@ -218,7 +218,7 @@ pub fn PdfDocument::list_fonts_text(
 /// Compatibility wrapper for `PdfDocument::list_fonts_text`.
 pub fn pdf_list_fonts_text(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   document.list_fonts_text(page_numbers)
 }
@@ -227,8 +227,8 @@ pub fn pdf_list_fonts_text(
 /// Return the bytes cpdf's `print_fonts` would print.
 pub fn PdfDocument::print_fonts(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  json? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  json~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   if json {
     self.fonts_json_blob(page_numbers)
@@ -241,8 +241,8 @@ pub fn PdfDocument::print_fonts(
 /// Compatibility wrapper matching cpdffont's `print_fonts`.
 pub fn pdf_print_fonts(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  json? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  json~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.print_fonts(page_numbers, json~)
 }
@@ -273,7 +273,7 @@ fn pdf_font_entry_json(entry : @font.PdfFontListEntry) -> Json {
 /// Return cpdf's JSON font listing for selected pages.
 pub fn PdfDocument::fonts_json(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Json raise @core.PdfError {
   Json::array(
     [
@@ -286,7 +286,7 @@ pub fn PdfDocument::fonts_json(
 /// Compatibility wrapper for `PdfDocument::fonts_json`.
 pub fn pdf_fonts_json(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Json raise @core.PdfError {
   document.fonts_json(page_numbers)
 }
@@ -295,7 +295,7 @@ pub fn pdf_fonts_json(
 /// Compatibility wrapper matching cpdffont's `json_fonts`.
 pub fn pdf_json_fonts(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Json raise @core.PdfError {
   document.fonts_json(page_numbers)
 }
@@ -304,7 +304,7 @@ pub fn pdf_json_fonts(
 /// Return cpdf's JSON font listing as UTF-8 JSON bytes.
 pub fn PdfDocument::fonts_json_blob(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   @utf8.encode(self.fonts_json(page_numbers).stringify())
 }
@@ -313,7 +313,7 @@ pub fn PdfDocument::fonts_json_blob(
 /// Compatibility wrapper for `PdfDocument::fonts_json_blob`.
 pub fn pdf_fonts_json_blob(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   document.fonts_json_blob(page_numbers)
 }

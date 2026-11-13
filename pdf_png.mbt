@@ -1,8 +1,8 @@
 ///|
-let pdf_png_ihdr_chunk_type : UInt = 0x49484452U
+let pdf_png_ihdr_chunk_type : UInt32 = 0x49484452U
 
 ///|
-let pdf_png_idat_chunk_type : UInt = 0x49444154U
+let pdf_png_idat_chunk_type : UInt32 = 0x49444154U
 
 ///|
 let pdf_png_max_int64 : Int64 = 2147483647L
@@ -12,19 +12,20 @@ let pdf_png_max_int64 : Int64 = 2147483647L
 ///
 /// This mirrors the small `Cpdfpng` surface needed for image insertion:
 /// non-palette, non-interlaced PNGs with their compressed IDAT bytes preserved.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfPNG {
-  width : Int
-  height : Int
-  bit_depth : Int
-  color_type : Int
+  width : Int32
+  height : Int32
+  bit_depth : Int32
+  color_type : Int32
   idat : @core.PdfBytes
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 fn pdf_png_u32_to_int(
-  value : UInt,
+  value : UInt32,
   context : String,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let wide = value.to_int64()
   if wide > pdf_png_max_int64 {
     raise BadPNG(context)
@@ -35,7 +36,7 @@ fn pdf_png_u32_to_int(
 ///|
 fn pdf_png_read_chunk(
   cursor : @core.ByteCursor,
-) -> (UInt, @core.PdfBytes) raise @core.PdfError {
+) -> (UInt32, @core.PdfBytes) raise @core.PdfError {
   let length = pdf_png_u32_to_int(
     byte_cursor_read_u32_be(cursor),
     "read_png: chunk too large",
@@ -118,7 +119,7 @@ fn pdf_read_png_view_inner(data : BytesView) -> PdfPNG raise @core.PdfError {
         }
     }
   }
-  { width, height, bit_depth, color_type, idat: pdf_png_concat(idat_chunks) }
+  { width, height, bit_depth, color_type, idat: pdf_png_concat(idat_chunks), }
 }
 
 ///|

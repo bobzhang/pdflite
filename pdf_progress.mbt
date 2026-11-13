@@ -1,8 +1,8 @@
 ///|
-let pdf_progress_enabled : Ref[Bool] = { val: false }
+let pdf_progress_enabled : Ref[Bool] = { val: false, }
 
 ///|
-let pdf_progress_fragments : Ref[Array[String]] = { val: [] }
+let pdf_progress_fragments : Ref[Array[String]] = { val: [], }
 
 ///|
 /// Return whether progress output capture is enabled.
@@ -49,7 +49,7 @@ pub fn pdf_progress_line_no_end(text : String) -> Unit {
 
 ///|
 /// Emit a page number fragment when progress is enabled.
-pub fn pdf_progress_page(page : Int) -> Unit {
+pub fn pdf_progress_page(page : Int32) -> Unit {
   pdf_progress_emit(page.to_string())
 }
 

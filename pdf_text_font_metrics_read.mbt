@@ -15,7 +15,7 @@ fn PdfDocument::pdf_text_font_char_bound(
   font : @syntax.PdfObject,
   key : @core.PdfName,
   error : @core.PdfError,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match self.lookup_direct(key, font) {
     Some(PdfInteger(value)) if value >= 0 && value <= 255 => value
     _ => raise error

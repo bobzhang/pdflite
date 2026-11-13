@@ -1,7 +1,7 @@
 ///|
 fn pdf_bookmark_name_spec_padded_number(
-  width : Int,
-  value : Int,
+  width : Int32,
+  value : Int32,
 ) -> String raise @core.PdfError {
   if width > 8 {
     raise SoftError("width of field too broad")
@@ -15,7 +15,10 @@ fn pdf_bookmark_name_spec_padded_number(
 }
 
 ///|
-fn pdf_bookmark_name_spec_percent_number(width : Int, value : Int) -> String {
+fn pdf_bookmark_name_spec_percent_number(
+  width : Int32,
+  value : Int32,
+) -> String {
   let text = value.to_string()
   if text.length() > width {
     text[text.length() - width:].to_owned()
@@ -27,7 +30,7 @@ fn pdf_bookmark_name_spec_percent_number(width : Int, value : Int) -> String {
 ///|
 fn pdf_bookmark_name_spec_expand_percent(
   spec : String,
-  sequence : Int,
+  sequence : Int32,
 ) -> String {
   let bytes = @utf8.encode(spec)
   let mut first = -1
@@ -55,7 +58,7 @@ fn pdf_bookmark_name_spec_expand_percent(
 ///|
 fn pdf_bookmark_name_spec_utf8_prefix(
   text : String,
-  byte_length : Int,
+  byte_length : Int32,
 ) -> String {
   let bytes = @utf8.encode(text)
   let mut end = if byte_length < bytes.length() {
@@ -76,9 +79,9 @@ fn pdf_bookmark_name_spec_utf8_prefix(
 ///|
 fn pdf_bookmark_name_spec_decimal(
   bytes : BytesView,
-  start : Int,
-  end : Int,
-) -> Int raise @core.PdfError {
+  start : Int32,
+  end : Int32,
+) -> Int32 raise @core.PdfError {
   if start == end {
     raise SoftError("Bad @b spec")
   }

@@ -2,7 +2,7 @@
 /// Paint text on selected one-based pages and Form XObjects with `colour`.
 pub fn PdfDocument::black_text(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   colour : @colour.PdfContentColour,
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
@@ -32,7 +32,7 @@ pub fn PdfDocument::black_text(
 /// Compatibility wrapper for `PdfDocument::black_text`.
 pub fn pdf_black_text(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   colour : @colour.PdfContentColour,
 ) -> PdfDocument raise @core.PdfError {
   document.black_text(page_numbers, colour)
@@ -42,7 +42,7 @@ pub fn pdf_black_text(
 /// Compatibility wrapper matching cpdftweak's `blacktext` name and order.
 pub fn pdf_blacktext(
   colour : @colour.PdfContentColour,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.black_text(page_numbers, colour)
@@ -52,7 +52,7 @@ pub fn pdf_blacktext(
 /// Paint line strokes on selected one-based pages and Form XObjects with `colour`.
 pub fn PdfDocument::black_lines(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   colour : @colour.PdfContentColour,
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
@@ -82,7 +82,7 @@ pub fn PdfDocument::black_lines(
 /// Compatibility wrapper for `PdfDocument::black_lines`.
 pub fn pdf_black_lines(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   colour : @colour.PdfContentColour,
 ) -> PdfDocument raise @core.PdfError {
   document.black_lines(page_numbers, colour)
@@ -92,7 +92,7 @@ pub fn pdf_black_lines(
 /// Compatibility wrapper matching cpdftweak's `blacklines` name and order.
 pub fn pdf_blacklines(
   colour : @colour.PdfContentColour,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.black_lines(page_numbers, colour)
@@ -102,7 +102,7 @@ pub fn pdf_blacklines(
 /// Paint fills on selected one-based pages and Form XObjects with `colour`.
 pub fn PdfDocument::black_fills(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   colour : @colour.PdfContentColour,
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
@@ -132,7 +132,7 @@ pub fn PdfDocument::black_fills(
 /// Compatibility wrapper for `PdfDocument::black_fills`.
 pub fn pdf_black_fills(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   colour : @colour.PdfContentColour,
 ) -> PdfDocument raise @core.PdfError {
   document.black_fills(page_numbers, colour)
@@ -142,7 +142,7 @@ pub fn pdf_black_fills(
 /// Compatibility wrapper matching cpdftweak's `blackfills` name and order.
 pub fn pdf_blackfills(
   colour : @colour.PdfContentColour,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.black_fills(page_numbers, colour)

@@ -78,7 +78,7 @@ fn PdfDocument::pdf_attach_existing_document_entries(
 fn PdfDocument::pdf_attach_add_document_file(
   self : PdfDocument,
   basename_bytes : @core.PdfBytes,
-  file_spec_number : Int,
+  file_spec_number : Int32,
 ) -> Unit raise @core.PdfError {
   let entries = self.pdf_attach_existing_document_entries()
   entries.push((basename_bytes, PdfIndirect(file_spec_number)))
@@ -108,9 +108,9 @@ fn pdf_attach_annotation_rect(
 ///|
 fn PdfDocument::pdf_attach_add_page_file(
   self : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   basename_bytes : @core.PdfBytes,
-  file_spec_number : Int,
+  file_spec_number : Int32,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   if page_number < 1 || page_number > pages.length() {
@@ -161,10 +161,10 @@ pub fn PdfDocument::attach_file(
   self : PdfDocument,
   filename : String,
   data : BytesView,
-  keep_version? : Bool = false,
-  page_number? : Int? = None,
-  relationship? : String? = None,
-  description? : String? = None,
+  keep_version~ : Bool = false,
+  page_number~ : Int32? = None,
+  relationship~ : String? = None,
+  description~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   ignore(self.catalog())
   let document = self.copy()
@@ -193,10 +193,10 @@ pub fn pdf_attach_file(
   document : PdfDocument,
   filename : String,
   data : BytesView,
-  keep_version? : Bool = false,
-  page_number? : Int? = None,
-  relationship? : String? = None,
-  description? : String? = None,
+  keep_version~ : Bool = false,
+  page_number~ : Int32? = None,
+  relationship~ : String? = None,
+  description~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   document.attach_file(
     filename,
@@ -215,7 +215,7 @@ pub fn pdf_attach_file(
 /// live in `async_io/pdf_attach_file_from_path`.
 pub fn pdf_attach_file_cpdf_order(
   keep_version : Bool,
-  page_number : Int?,
+  page_number : Int32?,
   document : PdfDocument,
   relationship : String?,
   description : String?,

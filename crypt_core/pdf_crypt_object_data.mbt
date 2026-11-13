@@ -4,10 +4,10 @@
 /// `data` must include the leading CBC IV as stored in encrypted PDF strings
 /// and streams.
 pub fn pdf_aesv2_decrypt_object_data(
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   file_key : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let object_key = pdf_encryption_object_key(
@@ -26,10 +26,10 @@ pub fn pdf_aesv2_decrypt_object_data(
 /// The returned bytes include the IV prefix expected by PDF AESV2 strings and
 /// streams.
 pub fn pdf_aesv2_encrypt_object_data(
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   file_key : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
   data : BytesView,
   iv : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {

@@ -12,8 +12,8 @@ fn pdf_ua_marker_description_length(
   rdf_description : String,
   rdf_about : String,
   part : String,
-  revision : Int?,
-) -> Int {
+  revision : Int32?,
+) -> Int32 {
   pdf_ua_ascii_length("<") +
   pdf_ua_ascii_length(rdf_description) +
   pdf_ua_ascii_length(" ") +
@@ -32,7 +32,7 @@ fn pdf_ua_marker_description_length(
 fn pdf_ua_marker_description_bytes(
   rdf_prefix : String,
   part : String,
-  revision : Int?,
+  revision : Int32?,
 ) -> @core.PdfBytes {
   let rdf_description = pdf_ua_qualified_name(rdf_prefix, "Description")
   let rdf_about = pdf_ua_qualified_name(rdf_prefix, "about")

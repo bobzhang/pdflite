@@ -1,7 +1,7 @@
 ///|
 fn pdf_bookmark_listing_is_all_pages(
-  page_numbers : ArrayView[Int],
-  end_page : Int,
+  page_numbers : ArrayView[Int32],
+  end_page : Int32,
 ) -> Bool {
   if page_numbers.length() != end_page {
     false
@@ -19,7 +19,7 @@ fn pdf_bookmark_listing_is_all_pages(
 ///|
 fn pdf_bookmark_listing_target_object(
   target : @destination.PdfDestination,
-  page_number : Int,
+  page_number : Int32,
 ) -> @syntax.PdfObject {
   let object = pdf_object_of_destination(target)
   match object {
@@ -57,7 +57,7 @@ fn PdfDocument::pdf_bookmark_listing_in_range(
 ///|
 fn PdfDocument::pdf_bookmark_listing_bookmarks(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   preserve_actions : Bool,
 ) -> Array[@bookmark.PdfBookmark] raise @core.PdfError {
   let end_page = self.endpage()

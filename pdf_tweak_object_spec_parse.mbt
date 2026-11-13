@@ -6,10 +6,10 @@ fn pdf_tweak_is_digit_byte(byte : Byte) -> Bool {
 ///|
 fn pdf_tweak_parse_digits(
   bytes : BytesView,
-  start : Int,
-  finish : Int,
+  start : Int32,
+  finish : Int32,
   source : String,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   if start >= finish {
     raise BadPageSpecification(source)
   }
@@ -21,7 +21,7 @@ fn pdf_tweak_parse_digits(
 }
 
 ///|
-fn pdf_tweak_digit_end(bytes : BytesView, start : Int) -> Int {
+fn pdf_tweak_digit_end(bytes : BytesView, start : Int32) -> Int32 {
   let mut index = start
   while index < bytes.length() && pdf_tweak_is_digit_byte(bytes[index]) {
     index += 1
@@ -32,7 +32,7 @@ fn pdf_tweak_digit_end(bytes : BytesView, start : Int) -> Int {
 ///|
 fn pdf_tweak_split_chain(
   bytes : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Array[@core.PdfName] {
   let output : Array[@core.PdfName] = []
   let mut index = start
@@ -54,7 +54,7 @@ fn pdf_tweak_split_chain(
 }
 
 ///|
-fn pdf_tweak_number_spec(spec : String) -> Int raise @core.PdfError {
+fn pdf_tweak_number_spec(spec : String) -> Int32 raise @core.PdfError {
   let bytes = @ascii.encode(spec)
   if bytes.length() == 0 {
     raise BadPageSpecification(spec)

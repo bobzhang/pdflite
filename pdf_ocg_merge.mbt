@@ -17,12 +17,12 @@ pub fn pdf_optional_content_merge(
   if contents.length() == 0 {
     None
   } else {
-    let ocgs : Array[(Int, @ocg.PdfOcg)] = []
+    let ocgs : Array[(Int32, @ocg.PdfOcg)] = []
     let configs : Array[@ocg.PdfOcgConfig] = []
-    let on : Array[Int] = []
-    let off : Array[Int] = []
-    let order : Array[(@core.PdfBytes?, Array[Int])] = []
-    let radio_button_groups : Array[Array[Int]] = []
+    let on : Array[Int32] = []
+    let off : Array[Int32] = []
+    let order : Array[(@core.PdfBytes?, Array[Int32])] = []
+    let radio_button_groups : Array[Array[Int32]] = []
     let mut has_order = false
     let mut has_radio_button_groups = false
     let mut name : @core.PdfBytes? = None
@@ -31,7 +31,7 @@ pub fn pdf_optional_content_merge(
     let mut intent : Array[@core.PdfName] = []
     let mut usage_applications : Array[@ocg.PdfOcgAppDict] = []
     let mut list_mode : @ocg.PdfOcgListMode = OcgAllPages
-    let mut locked : Array[Int] = []
+    let mut locked : Array[Int32] = []
     for content in contents {
       for entry in content.ocgs {
         ocgs.push((entry.0, pdf_ocg_copy_ocg(entry.1)))

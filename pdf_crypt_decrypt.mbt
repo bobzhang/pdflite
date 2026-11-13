@@ -91,8 +91,8 @@ fn @crypt_core.PdfEncryptionValues::file_key_for_available_password(
 ///|
 fn @crypt_core.PdfEncryptionValues::decrypt_single_stream_with_file_key(
   self : @crypt_core.PdfEncryptionValues,
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   stream : @syntax.PdfObject,
   file_key : BytesView,
   no_encrypt_metadata : Bool,
@@ -122,12 +122,12 @@ fn @crypt_core.PdfEncryptionValues::decrypt_single_stream_with_file_key(
 /// stream object's number and generation because object keys depend on them.
 pub fn PdfDocument::decrypt_single_stream(
   self : PdfDocument,
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   stream : @syntax.PdfObject,
-  user_password? : BytesView? = None,
-  owner_password? : BytesView? = None,
-  no_encrypt_metadata? : Bool = false,
+  user_password~ : BytesView? = None,
+  owner_password~ : BytesView? = None,
+  no_encrypt_metadata~ : Bool = false,
 ) -> @syntax.PdfObject? raise @core.PdfError {
   if !self.is_encrypted() {
     Some(stream)
@@ -156,12 +156,12 @@ pub fn PdfDocument::decrypt_single_stream(
 /// `None`; malformed encryption data still raises `@core.PdfError`.
 pub fn PdfDocument::decrypt_with_passwords(
   self : PdfDocument,
-  user_password? : BytesView? = None,
-  owner_password? : BytesView? = None,
-  no_encrypt_metadata? : Bool = false,
+  user_password~ : BytesView? = None,
+  owner_password~ : BytesView? = None,
+  no_encrypt_metadata~ : Bool = false,
 ) -> PdfDecryptionResult? raise @core.PdfError {
   if !self.is_encrypted() {
-    Some({ document: self.copy(), denied_permissions: [] })
+    Some({ document: self.copy(), denied_permissions: [], })
   } else {
     let values = self.encryption_values()
     match

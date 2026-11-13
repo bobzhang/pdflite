@@ -2,8 +2,8 @@
 /// Return cpdf-style document information report fields as stdout-style UTF-8 bytes.
 pub fn PdfDocument::info_blob(
   self : PdfDocument,
-  encoding? : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
-  unit? : @geometry.PdfUnit = PdfPoint,
+  encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> @core.PdfBytes raise @core.PdfError {
   let output : Array[String] = []
   let (major, minor) = self.version()

@@ -3,7 +3,7 @@
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_uhc_codepoint_table : Array[(Int, Int)] = [
+pub let pdf_text_uhc_codepoint_table : Array[(Int32, Int32)] = [
   (0x8141, 0xAC02),
   (0x8142, 0xAC03),
   (0x8143, 0xAC05),
@@ -17059,7 +17059,7 @@ pub let pdf_text_uhc_codepoint_table : Array[(Int, Int)] = [
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_uhc_charcode_table : Array[(Int, Int)] = [
+pub let pdf_text_uhc_charcode_table : Array[(Int32, Int32)] = [
   (0x00A1, 0xA2AE),
   (0x00A4, 0xA2B4),
   (0x00A7, 0xA1D7),

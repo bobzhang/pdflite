@@ -1,8 +1,8 @@
 ///|
 fn pdf_merge_parent_tree_change_map(
-  changes : ArrayView[(Int, Int)],
-) -> @hashmap.HashMap[Int, Int] {
-  let values : @hashmap.HashMap[Int, Int] = HashMap([])
+  changes : ArrayView[(Int32, Int32)],
+) -> @hashmap.HashMap[Int32, Int32] {
+  let values : @hashmap.HashMap[Int32, Int32] = HashMap([])
   for change in changes {
     let (old, replacement) = change
     if !values.contains(old) {
@@ -14,16 +14,16 @@ fn pdf_merge_parent_tree_change_map(
 
 ///|
 fn pdf_merge_changed_parent_tree_key(
-  changes : @hashmap.HashMap[Int, Int],
-  old_key : Int,
-) -> Int? {
+  changes : @hashmap.HashMap[Int32, Int32],
+  old_key : Int32,
+) -> Int32? {
   changes.get(old_key)
 }
 
 ///|
 fn pdf_merge_renumber_struct_parent_object(
   object : @syntax.PdfObject,
-  changes : @hashmap.HashMap[Int, Int],
+  changes : @hashmap.HashMap[Int32, Int32],
 ) -> @syntax.PdfObject {
   match object {
     PdfDictionary(entries) => {
@@ -74,7 +74,7 @@ fn pdf_merge_renumber_struct_parent_object(
 ///|
 fn pdf_merge_renumber_struct_parent_entry(
   entry : PdfObjectEntry,
-  changes : @hashmap.HashMap[Int, Int],
+  changes : @hashmap.HashMap[Int32, Int32],
 ) -> PdfObjectEntry {
   match entry.data {
     ObjectParsed(object) =>
@@ -91,14 +91,14 @@ fn pdf_merge_renumber_struct_parent_entry(
         ),
         generation: entry.generation,
       }
-    _ => { data: entry.data, generation: entry.generation }
+    _ => { data: entry.data, generation: entry.generation, }
   }
 }
 
 ///|
 fn PdfDocument::pdf_merge_renumber_struct_parent_entries(
   self : PdfDocument,
-  changes : ArrayView[(Int, Int)],
+  changes : ArrayView[(Int32, Int32)],
 ) -> Unit {
   if changes.length() > 0 {
     let change_map = pdf_merge_parent_tree_change_map(changes)
@@ -115,11 +115,11 @@ fn PdfDocument::pdf_merge_renumber_struct_parent_entries(
 ///|
 fn pdf_merge_renumber_parent_trees(
   documents : ArrayView[PdfDocument],
-) -> Array[(Int, @syntax.PdfObject)] raise @core.PdfError {
-  let merged_entries : Array[(Int, @syntax.PdfObject)] = []
+) -> Array[(Int32, @syntax.PdfObject)] raise @core.PdfError {
+  let merged_entries : Array[(Int32, @syntax.PdfObject)] = []
   let mut next_key = 0
   for document in documents {
-    let changes : Array[(Int, Int)] = []
+    let changes : Array[(Int32, Int32)] = []
     for root in pdf_merge_structure_tree_roots([document]) {
       for entry in document.pdf_merge_structure_parent_tree_entries(root) {
         let (old_key, value) = entry

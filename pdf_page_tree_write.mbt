@@ -17,7 +17,7 @@ fn PdfDocument::pdf_page_content_references(
 fn PdfDocument::pdf_page_object(
   self : PdfDocument,
   page : @page.PdfPage,
-  parent : Int,
+  parent : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   let rest_entries = pdf_page_rest_entries(page.rest)
   let entries : Array[(@core.PdfName, @syntax.PdfObject)] = Array::new(
@@ -44,8 +44,8 @@ fn PdfDocument::pdf_page_object(
 ///|
 fn pdf_page_slice(
   pages : ArrayView[@page.PdfPage],
-  start : Int,
-  stop : Int,
+  start : Int32,
+  stop : Int32,
 ) -> Array[@page.PdfPage] {
   let output : Array[@page.PdfPage] = Array::new(capacity=stop - start)
   for i in start..<stop {
@@ -56,9 +56,9 @@ fn pdf_page_slice(
 
 ///|
 fn pdf_page_pages_node_object(
-  kids : ArrayView[Int],
-  count : Int,
-  parent : Int,
+  kids : ArrayView[Int32],
+  count : Int32,
+  parent : Int32,
 ) -> @syntax.PdfObject {
   let kid_refs : Array[@syntax.PdfObject] = Array::new(capacity=kids.length())
   for number in kids {
@@ -80,11 +80,11 @@ fn pdf_page_pages_node_object(
 fn PdfDocument::pdf_page_add_pagetree_node(
   self : PdfDocument,
   pages : ArrayView[@page.PdfPage],
-  parent : Int,
-  node_number : Int,
+  parent : Int32,
+  node_number : Int32,
 ) -> Unit raise @core.PdfError {
   if pages.length() < 10 {
-    let page_numbers : Array[Int] = Array::new(capacity=pages.length())
+    let page_numbers : Array[Int32] = Array::new(capacity=pages.length())
     for page in pages {
       page_numbers.push(
         self.add_object(self.pdf_page_object(page, node_number)),
@@ -104,7 +104,7 @@ fn PdfDocument::pdf_page_add_pagetree_node(
       node_number,
       left_number,
     )
-    let kid_numbers : Array[Int] = Array::new(capacity=middle_count + 2)
+    let kid_numbers : Array[Int32] = Array::new(capacity=middle_count + 2)
     kid_numbers.push(left_number)
     for i in left_count..<middle_end {
       kid_numbers.push(
@@ -133,7 +133,7 @@ fn PdfDocument::pdf_page_add_pagetree_node(
 pub fn PdfDocument::add_pagetree(
   self : PdfDocument,
   pages : ArrayView[@page.PdfPage],
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let page_root_number = self.add_object(PdfNull)
   self.pdf_page_add_pagetree_node(pages, 0, page_root_number)
   page_root_number
@@ -144,7 +144,7 @@ pub fn PdfDocument::add_pagetree(
 pub fn pdf_add_pagetree(
   pages : ArrayView[@page.PdfPage],
   document : PdfDocument,
-) -> (PdfDocument, Int) raise @core.PdfError {
+) -> (PdfDocument, Int32) raise @core.PdfError {
   let pdf = document.copy()
   let page_root_number = pdf.add_pagetree(pages)
   (pdf, page_root_number)

@@ -8,7 +8,7 @@ fn pdf_crypto_fixed_array(data : BytesView) -> FixedArray[Byte] {
 }
 
 ///|
-fn pdf_aes_valid_key_length(length : Int) -> Bool {
+fn pdf_aes_valid_key_length(length : Int32) -> Bool {
   length == 16 || length == 24 || length == 32
 }
 
@@ -92,7 +92,7 @@ fn pdf_aes_remove_padding(data : BytesView) -> @core.PdfBytes {
 pub fn pdf_aes_cbc_decrypt(
   key : BytesView,
   data : BytesView,
-  remove_padding? : Bool = true,
+  remove_padding~ : Bool = true,
 ) -> @core.PdfBytes raise @core.PdfError {
   guard data.length() > 16 else { return Bytes::new(0) }
   guard data.length() % 16 == 0 else {
@@ -188,7 +188,7 @@ pub fn pdf_aes_cbc_encrypt_with_iv(
 pub fn pdf_aes_ecb_decrypt(
   key : BytesView,
   data : BytesView,
-  remove_padding? : Bool = true,
+  remove_padding~ : Bool = true,
 ) -> @core.PdfBytes raise @core.PdfError {
   guard data.length() > 0 else { return Bytes::new(0) }
   guard data.length() % 16 == 0 else {

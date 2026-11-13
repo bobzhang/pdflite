@@ -56,7 +56,7 @@ fn create_stream_bytes_for_test(object : @syntax.PdfObject) -> Bytes raise {
 fn create_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -72,7 +72,10 @@ fn create_bytes_start_with_at_for_test(
 }
 
 ///|
-fn create_find_bytes_for_test(haystack : BytesView, needle : BytesView) -> Int {
+fn create_find_bytes_for_test(
+  haystack : BytesView,
+  needle : BytesView,
+) -> Int32 {
   if needle.length() == 0 {
     0
   } else if haystack.length() < needle.length() {
@@ -111,7 +114,7 @@ fn create_assert_metadata_not_contains_for_test(
 ///|
 fn create_assert_pdfua_common_for_test(
   document : @pdflite.PdfDocument,
-  version : (Int, Int),
+  version : (Int32, Int32),
   info_title : String,
 ) -> Bytes raise {
   @test.assert_eq(document.version(), version)

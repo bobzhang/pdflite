@@ -233,7 +233,7 @@ fn pdf_content_inline_int_orelse(
   dictionary : @syntax.PdfObject,
   first : @core.PdfName,
   second : @core.PdfName,
-) -> Int? {
+) -> Int32? {
   match pdf_content_inline_lookup_orelse(dictionary, first, second) {
     Some(PdfInteger(value)) if value >= 0 => Some(value)
     _ => None
@@ -255,7 +255,7 @@ fn pdf_content_inline_image_mask(dictionary : @syntax.PdfObject) -> Bool {
 fn pdf_content_inline_components(
   colour_space_components : PdfContentColourSpaceComponents?,
   dictionary : @syntax.PdfObject,
-) -> Int? raise @core.PdfError {
+) -> Int32? raise @core.PdfError {
   match
     pdf_content_inline_lookup_orelse(
       dictionary, pdf_content_inline_cs_key_name, pdf_content_inline_colorspace_key_name,
@@ -289,7 +289,7 @@ fn pdf_content_inline_components(
 ///|
 fn pdf_content_inline_bits_per_component(
   dictionary : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match
     pdf_content_inline_int_orelse(
       dictionary, pdf_content_inline_bpc_key_name, pdf_content_inline_bits_per_component_key_name,
@@ -303,7 +303,7 @@ fn pdf_content_inline_bits_per_component(
 ///|
 fn pdf_content_inline_declared_data_length(
   dictionary : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   pdf_content_inline_int_orelse(
     dictionary, pdf_content_inline_l_key_name, pdf_content_length_key_name,
   )
@@ -321,7 +321,7 @@ fn pdf_content_inline_filter_is_empty(dictionary : @syntax.PdfObject) -> Bool {
 fn pdf_content_inline_image_data_length(
   colour_space_components : PdfContentColourSpaceComponents?,
   dictionary : @syntax.PdfObject,
-) -> Int? raise @core.PdfError {
+) -> Int32? raise @core.PdfError {
   if !pdf_content_inline_filter_is_empty(dictionary) {
     pdf_content_inline_declared_data_length(dictionary)
   } else {

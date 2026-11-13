@@ -6,7 +6,7 @@
 pub fn PdfDocument::copy_id_from(
   self : PdfDocument,
   source : PdfDocument,
-  keep_version? : Bool = false,
+  keep_version~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
   match source.lookup_direct(pdf_metadata_id(), source.trailer_dict()) {
@@ -27,10 +27,10 @@ pub fn PdfDocument::set_info_entry(
   self : PdfDocument,
   key : @core.PdfName,
   value : @syntax.PdfObject,
-  version : Int,
-  keep_version? : Bool = false,
-  xmp_also? : Bool = false,
-  xmp_just_set? : Bool = false,
+  version : Int32,
+  keep_version~ : Bool = false,
+  xmp_also~ : Bool = false,
+  xmp_just_set~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let document = if xmp_just_set {
     self
@@ -77,10 +77,10 @@ pub fn PdfDocument::set_info_entry(
 /// Set or replace one `/Info` entry from cpdf's string-key tuple form.
 pub fn PdfDocument::set_info_entry_string(
   self : PdfDocument,
-  entry : (String, @syntax.PdfObject, Int),
-  keep_version? : Bool = false,
-  xmp_also? : Bool = false,
-  xmp_just_set? : Bool = false,
+  entry : (String, @syntax.PdfObject, Int32),
+  keep_version~ : Bool = false,
+  xmp_also~ : Bool = false,
+  xmp_just_set~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.set_info_entry(
     pdf_metadata_source_key_name(entry.0),

@@ -1,14 +1,14 @@
 ///|
 fn pdf_page_label_json_integral_number(
   value : Double,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let integer = value.to_int()
   guard integer.to_double() == value else { raise NumberExpected }
   integer
 }
 
 ///|
-fn pdf_page_label_json_int(value : Json?) -> Int raise @core.PdfError {
+fn pdf_page_label_json_int(value : Json?) -> Int32 raise @core.PdfError {
   match value {
     Some(Number(number, repr=_)) => pdf_page_label_json_integral_number(number)
     _ => raise BadText

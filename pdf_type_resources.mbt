@@ -1,8 +1,8 @@
 ///|
-fn pdf_type_unique_sorted_numbers(numbers : ArrayView[Int]) -> Array[Int] {
+fn pdf_type_unique_sorted_numbers(numbers : ArrayView[Int32]) -> Array[Int32] {
   let sorted = [ for number in numbers => number ]
   sorted.sort()
-  let output : Array[Int] = []
+  let output : Array[Int32] = []
   for number in sorted {
     if output.length() == 0 || output[output.length() - 1] != number {
       output.push(number)
@@ -17,12 +17,14 @@ fn pdf_type_name(text : String) -> @core.PdfName {
 }
 
 ///|
-fn pdf_type_font_resource_name(number : Int) -> @core.PdfName {
+fn pdf_type_font_resource_name(number : Int32) -> @core.PdfName {
   pdf_type_name("/F" + number.to_string())
 }
 
 ///|
-fn pdf_type_make_resources(font_numbers : ArrayView[Int]) -> @syntax.PdfObject {
+fn pdf_type_make_resources(
+  font_numbers : ArrayView[Int32],
+) -> @syntax.PdfObject {
   PdfDictionary([
     (
       pdf_type_name("/Font"),
@@ -102,9 +104,9 @@ fn pdf_type_make_annotations(
 
 ///|
 fn pdf_type_lookup_font_object(
-  fonts : ArrayView[(String, Int)],
+  fonts : ArrayView[(String, Int32)],
   id : String,
-) -> Int? {
+) -> Int32? {
   let mut found = None
   for entry in fonts {
     if entry.0 == id {

@@ -3,7 +3,7 @@ fn pdf_cursor_finish_stream_object(
   cursor : @core.ByteCursor,
   prefix : @syntax.PdfParsedIndirectObject,
 ) -> @syntax.PdfParsedIndirectObject raise @core.PdfError {
-  let length_result : Result[Int, Error] = try
+  let length_result : Result[Int32, Error] = try
     pdf_stream_length(prefix.object)
   catch {
     err => Err(err)
@@ -21,8 +21,8 @@ fn pdf_cursor_finish_stream_object(
 fn pdf_cursor_finish_stream_object_with_length(
   cursor : @core.ByteCursor,
   prefix : @syntax.PdfParsedIndirectObject,
-  length : Int,
-  defer_stream_data? : Bool = false,
+  length : Int32,
+  defer_stream_data~ : Bool = false,
 ) -> @syntax.PdfParsedIndirectObject raise @core.PdfError {
   let stream_keyword_position = cursor.absolute_position()
   @reader.pdf_cursor_consume_ascii(

@@ -5,7 +5,7 @@
 /// reconstruction fallback used by `pdf_read_document_from_view`.
 pub fn pdf_read_document_revision_from_view(
   data : BytesView,
-  revision : Int,
+  revision : Int32,
 ) -> PdfDocument raise @core.PdfError {
   pdf_read_classic_document_revision_from_view(data, revision)
 }
@@ -14,7 +14,7 @@ pub fn pdf_read_document_revision_from_view(
 /// Read one document revision from owned PDF bytes.
 pub fn pdf_read_document_revision_from_bytes(
   data : @core.PdfBytes,
-  revision : Int,
+  revision : Int32,
 ) -> PdfDocument raise @core.PdfError {
   pdf_read_document_revision_from_view(data, revision)
 }

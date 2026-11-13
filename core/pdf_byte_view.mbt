@@ -4,8 +4,8 @@
 /// Negative positions and ranges beyond the end of `view` return `false`.
 pub fn pdf_view_matches_ascii_at(
   view : BytesView,
-  position : Int,
-  values : ArrayView[Int],
+  position : Int32,
+  values : ArrayView[Int32],
 ) -> Bool {
   if position < 0 || position + values.length() > view.length() {
     false
@@ -22,7 +22,10 @@ pub fn pdf_view_matches_ascii_at(
 
 ///|
 /// Return whether `view` has exactly the ASCII byte values in `values`.
-pub fn pdf_view_equals_ascii(view : BytesView, values : ArrayView[Int]) -> Bool {
+pub fn pdf_view_equals_ascii(
+  view : BytesView,
+  values : ArrayView[Int32],
+) -> Bool {
   view.length() == values.length() && pdf_view_matches_ascii_at(view, 0, values)
 }
 
@@ -31,7 +34,10 @@ pub fn pdf_view_equals_ascii(view : BytesView, values : ArrayView[Int]) -> Bool 
 ///
 /// Returns `-1` when the sequence is absent. An empty sequence matches at
 /// `view.length()`.
-pub fn pdf_find_last_ascii(view : BytesView, values : ArrayView[Int]) -> Int {
+pub fn pdf_find_last_ascii(
+  view : BytesView,
+  values : ArrayView[Int32],
+) -> Int32 {
   if values.length() == 0 {
     view.length()
   } else if view.length() < values.length() {
@@ -68,9 +74,9 @@ pub fn pdf_startxref_search_view(data : BytesView) -> BytesView {
 /// Returns `-1` when the sequence is absent.
 pub fn pdf_find_ascii_from(
   view : BytesView,
-  start : Int,
-  values : ArrayView[Int],
-) -> Int {
+  start : Int32,
+  values : ArrayView[Int32],
+) -> Int32 {
   let max_start = view.length() - values.length()
   if start > max_start {
     -1
@@ -89,7 +95,7 @@ pub fn pdf_find_ascii_from(
 /// Parse an unsigned 32-bit signed-range decimal integer from ASCII bytes.
 ///
 /// Raises `PdfError::NumberExpected` for empty, non-digit, or overflow input.
-pub fn pdf_parse_ascii_int_view(view : BytesView) -> Int raise PdfError {
+pub fn pdf_parse_ascii_int_view(view : BytesView) -> Int32 raise PdfError {
   if view.length() == 0 {
     raise NumberExpected
   }
@@ -110,7 +116,7 @@ pub fn pdf_parse_ascii_int_view(view : BytesView) -> Int raise PdfError {
 
 ///|
 /// Count non-empty tokens separated by PDF whitespace bytes.
-pub fn pdf_count_whitespace_tokens(view : BytesView) -> Int {
+pub fn pdf_count_whitespace_tokens(view : BytesView) -> Int32 {
   let mut count = 0
   let mut index = 0
   while index < view.length() {

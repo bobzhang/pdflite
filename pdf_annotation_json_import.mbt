@@ -1,19 +1,19 @@
 ///|
 priv struct PdfAnnotationJsonImportRow {
-  page_number : Int
-  object_number : Int
+  page_number : Int32
+  object_number : Int32
   object : @syntax.PdfObject
 }
 
 ///|
 priv struct PdfAnnotationJsonImportData {
-  max_object_number : Int
-  extras : Array[(Int, @syntax.PdfObject)]
+  max_object_number : Int32
+  extras : Array[(Int32, @syntax.PdfObject)]
   annotations : Array[PdfAnnotationJsonImportRow]
 }
 
 ///|
-fn pdf_annotation_json_import_number(json : Json) -> Int raise @core.PdfError {
+fn pdf_annotation_json_import_number(json : Json) -> Int32 raise @core.PdfError {
   match json {
     Number(value, repr=_) => pdf_util_json_integral_number(value)
     _ => raise SoftError("Bad annots entry")
@@ -28,8 +28,8 @@ fn pdf_annotation_json_import_data(
     Array(values) => values
     _ => raise SoftError("Bad Annotations JSON file")
   }
-  let max_object_number : Ref[Int] = { val: 0 }
-  let extras : Array[(Int, @syntax.PdfObject)] = Array::new(
+  let max_object_number : Ref[Int32] = { val: 0, }
+  let extras : Array[(Int32, @syntax.PdfObject)] = Array::new(
     capacity=entries.length(),
   )
   let annotations : Array[PdfAnnotationJsonImportRow] = Array::new(
@@ -64,19 +64,19 @@ fn pdf_annotation_json_import_data(
       _ => raise SoftError("Bad annots entry")
     }
   }
-  { max_object_number: max_object_number.val, extras, annotations }
+  { max_object_number: max_object_number.val, extras, annotations, }
 }
 
 ///|
 fn PdfDocument::pdf_annotation_json_import_renumbered(
   self : PdfDocument,
-  max_object_number : Int,
+  max_object_number : Int32,
 ) -> PdfDocument raise @core.PdfError {
   if max_object_number <= 0 {
     self.copy()
   } else {
     let object_numbers = self.object_numbers()
-    let changes : Array[(Int, Int)] = Array::new(
+    let changes : Array[(Int32, Int32)] = Array::new(
       capacity=object_numbers.length(),
     )
     for index, number in object_numbers {
@@ -88,9 +88,9 @@ fn PdfDocument::pdf_annotation_json_import_renumbered(
 
 ///|
 fn pdf_annotation_json_import_page_reference(
-  page_reference_numbers : ArrayView[Int],
-  page_number : Int,
-) -> Int {
+  page_reference_numbers : ArrayView[Int32],
+  page_number : Int32,
+) -> Int32 {
   if page_number >= 1 && page_number <= page_reference_numbers.length() {
     page_reference_numbers[page_number - 1]
   } else {
@@ -100,7 +100,7 @@ fn pdf_annotation_json_import_page_reference(
 
 ///|
 fn pdf_annotation_json_import_destination(
-  page_reference_numbers : ArrayView[Int],
+  page_reference_numbers : ArrayView[Int32],
   destination : @syntax.PdfObject,
 ) -> @syntax.PdfObject {
   match destination {
@@ -132,7 +132,7 @@ fn pdf_annotation_json_import_destination(
 ///|
 fn PdfDocument::pdf_annotation_json_import_destinations(
   self : PdfDocument,
-  page_reference_numbers : ArrayView[Int],
+  page_reference_numbers : ArrayView[Int32],
   annotation : @syntax.PdfObject,
 ) -> @syntax.PdfObject raise @core.PdfError {
   let mut rewritten = annotation
@@ -181,9 +181,9 @@ fn PdfDocument::pdf_annotation_json_import_destinations(
 ///|
 fn PdfDocument::pdf_annotation_json_import_rows_for_page(
   self : PdfDocument,
-  page_reference_numbers : ArrayView[Int],
+  page_reference_numbers : ArrayView[Int32],
   rows : ArrayView[PdfAnnotationJsonImportRow],
-  page_number : Int,
+  page_number : Int32,
 ) -> Array[@syntax.PdfObject] raise @core.PdfError {
   let imported : Array[@syntax.PdfObject] = Array::new(capacity=rows.length())
   for row in rows {
@@ -282,7 +282,7 @@ pub fn pdf_set_annotations_json_cpdf_order(
 pub fn PdfDocument::copy_annotations_from(
   self : PdfDocument,
   source : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   self.set_annotations_json(source.annotations_json(page_numbers))
 }
@@ -290,7 +290,7 @@ pub fn PdfDocument::copy_annotations_from(
 ///|
 /// Compatibility wrapper for `PdfDocument::copy_annotations_from`.
 pub fn pdf_copy_annotations(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   source : PdfDocument,
   target : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
@@ -301,7 +301,7 @@ pub fn pdf_copy_annotations(
 /// Return a copy of the document with `/Annots` removed from selected pages.
 pub fn PdfDocument::remove_annotations(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(
@@ -328,7 +328,7 @@ pub fn PdfDocument::remove_annotations(
 ///|
 /// Compatibility wrapper for `PdfDocument::remove_annotations`.
 pub fn pdf_remove_annotations(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.remove_annotations(page_numbers)

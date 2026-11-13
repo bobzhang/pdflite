@@ -26,12 +26,12 @@ fn pdf_ocg_read_json_ocg(json : Json) -> @ocg.PdfOcg raise @core.PdfError {
 ///|
 fn pdf_ocg_read_json_ocgs(
   json : Json,
-) -> Array[(Int, @ocg.PdfOcg)] raise @core.PdfError {
+) -> Array[(Int32, @ocg.PdfOcg)] raise @core.PdfError {
   match json {
     Object(entries) => {
-      let output : Array[(Int, @ocg.PdfOcg)] = []
+      let output : Array[(Int32, @ocg.PdfOcg)] = []
       for entry in entries {
-        let number : Int = @strconv.from_str(entry.0) catch {
+        let number : Int32 = @strconv.from_str(entry.0) catch {
           _ =>
             raise SoftError(
               "ocg_read_json: malformed JSON top-level dictionary",

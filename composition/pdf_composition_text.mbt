@@ -1,9 +1,9 @@
 ///|
 fn pdf_composition_write_utf8(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   text : String,
-) -> Int {
+) -> Int32 {
   let mut current = position
   for byte in @utf8.encode(text) {
     output[current] = byte
@@ -30,9 +30,9 @@ fn pdf_composition_percent_text(percent : Double) -> String {
 ///|
 fn pdf_composition_write_text_entry(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   entry : PdfCompositionEntry,
-) -> Int {
+) -> Int32 {
   let mut current = pdf_composition_write_utf8(output, position, entry.label)
   current = pdf_composition_write_utf8(output, current, ": ")
   current = pdf_composition_write_utf8(output, current, entry.bytes.to_string())
@@ -46,12 +46,12 @@ fn pdf_composition_write_text_entry(
 }
 
 ///|
-fn pdf_composition_utf8_length(text : String) -> Int {
+fn pdf_composition_utf8_length(text : String) -> Int32 {
   @utf8.encode(text).length()
 }
 
 ///|
-fn pdf_composition_text_entry_length(entry : PdfCompositionEntry) -> Int {
+fn pdf_composition_text_entry_length(entry : PdfCompositionEntry) -> Int32 {
   pdf_composition_utf8_length(entry.label) +
   pdf_composition_utf8_length(": ") +
   pdf_composition_utf8_length(entry.bytes.to_string()) +
@@ -61,7 +61,9 @@ fn pdf_composition_text_entry_length(entry : PdfCompositionEntry) -> Int {
 }
 
 ///|
-fn pdf_composition_text_length(entries : ArrayView[PdfCompositionEntry]) -> Int {
+fn pdf_composition_text_length(
+  entries : ArrayView[PdfCompositionEntry],
+) -> Int32 {
   let mut length = 0
   for entry in entries {
     length += pdf_composition_text_entry_length(entry)

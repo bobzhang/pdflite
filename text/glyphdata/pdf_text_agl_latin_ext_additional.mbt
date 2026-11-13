@@ -1,5 +1,7 @@
 ///|
-fn pdf_text_codepoint_of_latin_ext_additional_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_latin_ext_additional_glyphname(
+  name : String,
+) -> Int32? {
   match name {
     "/Abreveacute" => Some(0x1EAE)
     "/Abrevedotbelow" => Some(0x1EB6)

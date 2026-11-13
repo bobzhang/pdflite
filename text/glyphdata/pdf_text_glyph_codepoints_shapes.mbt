@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_codepoint_of_box_drawing_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_box_drawing_glyphname(name : String) -> Int32? {
   match name {
     "/SF010000" => Some(0x250C)
     "/SF020000" => Some(0x2514)
@@ -46,7 +46,7 @@ fn pdf_text_codepoint_of_box_drawing_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_block_element_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_block_element_glyphname(name : String) -> Int32? {
   match name {
     "/block" => Some(0x2588)
     "/dkshade" => Some(0x2593)
@@ -64,7 +64,7 @@ fn pdf_text_codepoint_of_block_element_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_geometric_shape_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_geometric_shape_glyphname(name : String) -> Int32? {
   match name {
     "/H18533" => Some(0x25CF)
     "/H18543" => Some(0x25AA)
@@ -130,7 +130,7 @@ fn pdf_text_codepoint_of_geometric_shape_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_misc_symbol_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_misc_symbol_glyphname(name : String) -> Int32? {
   match name {
     "/beamedsixteenthnotes" => Some(0x266C)
     "/blacksmilingface" => Some(0x263B)
@@ -172,7 +172,7 @@ fn pdf_text_codepoint_of_misc_symbol_glyphname(name : String) -> Int? {
 }
 
 ///|
-fn pdf_text_codepoint_of_private_use_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_private_use_glyphname(name : String) -> Int32? {
   match name {
     "/Acute" => Some(0xF6C9)
     "/Caron" => Some(0xF6CA)

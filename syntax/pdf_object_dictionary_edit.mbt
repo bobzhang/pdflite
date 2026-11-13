@@ -35,7 +35,7 @@ pub fn dict_add_entries(
 ///|
 fn pdf_object_unique_key_candidate(
   prefix : String,
-  index : Int,
+  index : Int32,
 ) -> @core.PdfName {
   let prefix_bytes = @ascii.encode(prefix)
   let index_bytes = @ascii.encode(index.to_string())

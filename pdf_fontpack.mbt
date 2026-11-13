@@ -1,10 +1,11 @@
 ///|
 /// One codepoint-to-font mapping in a cpdf-style font pack.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfFontPackEntry {
-  codepoint : Int
-  font_index : Int
-  charcode : Int
-} derive(Debug, Eq, ToJson)
+  codepoint : Int32
+  font_index : Int32
+  charcode : Int32
+}
 
 ///|
 /// A cpdf-style font pack.
@@ -13,14 +14,15 @@ pub(all) struct PdfFontPackEntry {
 /// Unicode codepoint lookup table returning the font index and one-byte
 /// character code. This ports the source-level `cpdfembed.ml` abstraction
 /// without committing the public API to a hash-table representation.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfFontPack {
   fonts : Array[PdfFont]
   entries : Array[PdfFontPackEntry]
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 fn pdf_fontpack_empty() -> PdfFontPack {
-  { fonts: [], entries: [] }
+  { fonts: [], entries: [], }
 }
 
 ///|
@@ -37,9 +39,9 @@ pub fn pdf_fontpack_of_standard_font(
     let bytes : FixedArray[Byte] = [code.to_byte()]
     let codepoints = extractor.codepoints_of_text(Bytes::from_array(bytes))
     guard codepoints.length() > 0 else { raise BadText }
-    entries.push({ codepoint: codepoints[0], font_index: 0, charcode: code })
+    entries.push({ codepoint: codepoints[0], font_index: 0, charcode: code, })
   }
-  { fonts: [font], entries }
+  { fonts: [font], entries, }
 }
 
 ///|
@@ -56,8 +58,8 @@ pub fn pdf_fontpack_of_standardfont(
 /// Returns `(charcode, font_index, font)` when the codepoint can be represented.
 pub fn PdfFontPack::get_char(
   self : PdfFontPack,
-  codepoint : Int,
-) -> (Int, Int, PdfFont)? {
+  codepoint : Int32,
+) -> (Int32, Int32, PdfFont)? {
   let mut found = None
   for entry in self.entries {
     if entry.codepoint == codepoint &&
@@ -75,8 +77,8 @@ pub fn PdfFontPack::get_char(
 /// Compatibility wrapper for `PdfFontPack::get_char`.
 pub fn pdf_fontpack_get_char(
   pack : PdfFontPack,
-  codepoint : Int,
-) -> (Int, Int, PdfFont)? {
+  codepoint : Int32,
+) -> (Int32, Int32, PdfFont)? {
   pack.get_char(codepoint)
 }
 
@@ -84,8 +86,8 @@ pub fn pdf_fontpack_get_char(
 /// Compatibility wrapper matching cpdfembed's `get_char`.
 pub fn pdf_embed_get_char(
   pack : PdfFontPack,
-  codepoint : Int,
-) -> (Int, Int, PdfFont)? {
+  codepoint : Int32,
+) -> (Int32, Int32, PdfFont)? {
   pack.get_char(codepoint)
 }
 
@@ -124,7 +126,7 @@ pub fn[A, B : Eq, C] pdf_collate_runs(
 ///|
 /// Collate consecutive `(charcode, font_index, font)` runs by font index.
 pub fn pdf_fontpack_collate_runs(
-  runs : ArrayView[(Int, Int, PdfFont)],
-) -> Array[Array[(Int, Int, PdfFont)]] {
+  runs : ArrayView[(Int32, Int32, PdfFont)],
+) -> Array[Array[(Int32, Int32, PdfFont)]] {
   pdf_embed_collate_runs(runs)
 }

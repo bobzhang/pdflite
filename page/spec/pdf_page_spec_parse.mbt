@@ -2,13 +2,13 @@
 fn PdfPageSpecContext::parse_tokens(
   self : PdfPageSpecContext,
   tokens : ArrayView[PdfPageSpecToken],
-) -> Array[Int] raise PdfError {
+) -> Array[Int32] raise PdfError {
   if tokens.length() == 0 {
     self.bad()
   }
   let comma_count = pdf_pagespec_count_commas(tokens)
   if comma_count > 0 {
-    let parts : Array[Array[Int]] = Array::new(capacity=comma_count + 1)
+    let parts : Array[Array[Int32]] = Array::new(capacity=comma_count + 1)
     for part in pdf_pagespec_split_commas(tokens, self, comma_count) {
       parts.push(self.parse_tokens(part))
     }
@@ -56,7 +56,7 @@ fn PdfPageSpecContext::parse_tokens(
 }
 
 ///|
-fn pdf_pagespec_digit_dup_prefix(text : String) -> (Int, String)? {
+fn pdf_pagespec_digit_dup_prefix(text : String) -> (Int32, String)? {
   let bytes = @utf8.encode(text)
   let mut index = 0
   while index < bytes.length() && pdf_pagespec_is_digit(bytes[index].to_int()) {
@@ -81,9 +81,9 @@ fn pdf_pagespec_digit_dup_prefix(text : String) -> (Int, String)? {
 ///|
 fn PdfPageSpecContext::filter_valid_pages(
   self : PdfPageSpecContext,
-  pages : ArrayView[Int],
-) -> Array[Int] {
-  let output : Array[Int] = Array::new(capacity=pages.length())
+  pages : ArrayView[Int32],
+) -> Array[Int32] {
+  let output : Array[Int32] = Array::new(capacity=pages.length())
   for page in pages {
     if page > 0 && page <= self.end_page {
       output.push(page)
@@ -96,7 +96,7 @@ fn PdfPageSpecContext::filter_valid_pages(
 fn PdfPageSpecContext::parse_resolved_text(
   self : PdfPageSpecContext,
   text : String,
-) -> Array[Int] raise PdfError {
+) -> Array[Int32] raise PdfError {
   match pdf_pagespec_digit_dup_prefix(text) {
     Some((count, rest)) =>
       return pdf_pagespec_duplicate_range(count, self.parse_inner(rest))
@@ -152,7 +152,7 @@ fn PdfPageSpecContext::parse_resolved_text(
 fn PdfPageSpecContext::parse_inner(
   self : PdfPageSpecContext,
   spec : String,
-) -> Array[Int] raise PdfError {
+) -> Array[Int32] raise PdfError {
   let effective = if spec == "" { "all" } else { spec }
   let resolved = self.resolve_references(@utf8.encode(effective))
   let resolved_text = @ascii.decode_lossy(resolved)
@@ -162,22 +162,22 @@ fn PdfPageSpecContext::parse_inner(
 ///|
 /// Parse a cpdf page specification with optional document-dependent selectors.
 pub fn pdf_parse_pagespec_with_selectors(
-  end_page : Int,
+  end_page : Int32,
   spec : String,
   selectors : PdfPageSpecSelectors?,
-) -> Array[Int] raise PdfError {
+) -> Array[Int32] raise PdfError {
   if end_page < 1 {
     raise BadPageSpecification(spec)
   }
-  { end_page, selectors, source: spec }.parse_inner(spec)
+  { end_page, selectors, source: spec, }.parse_inner(spec)
 }
 
 ///|
 /// Parse a cpdf page specification against a document with `end_page` pages.
 pub fn pdf_parse_pagespec_for_count(
-  end_page : Int,
+  end_page : Int32,
   spec : String,
-) -> Array[Int] raise PdfError {
+) -> Array[Int32] raise PdfError {
   pdf_parse_pagespec_with_selectors(end_page, spec, None)
 }
 
@@ -185,6 +185,6 @@ pub fn pdf_parse_pagespec_for_count(
 /// Parse a cpdf page specification without a concrete PDF document.
 pub fn pdf_parse_pagespec_without_pdf(
   spec : String,
-) -> Array[Int] raise PdfError {
+) -> Array[Int32] raise PdfError {
   pdf_parse_pagespec_for_count(500000, spec)
 }

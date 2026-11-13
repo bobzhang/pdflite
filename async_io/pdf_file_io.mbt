@@ -15,7 +15,7 @@ pub async fn pdf_read_document_from_file(
 /// revision and larger numbers walk backward through `/Prev`.
 pub async fn pdf_read_document_revision_from_file(
   path : StringView,
-  revision : Int,
+  revision : Int32,
 ) -> @pdflite.PdfDocument {
   @pdflite.pdf_read_document_revision_from_bytes(
     @fs.read_file(path).binary(),
@@ -25,7 +25,7 @@ pub async fn pdf_read_document_revision_from_file(
 
 ///|
 /// Count revisions in a PDF file.
-pub async fn pdf_revisions_from_file(path : StringView) -> Int {
+pub async fn pdf_revisions_from_file(path : StringView) -> Int32 {
   @pdflite.pdf_revisions_from_bytes(@fs.read_file(path).binary())
 }
 
@@ -78,8 +78,8 @@ pub async fn pdf_ocg_replace(
 /// empty denied permissions.
 pub async fn pdf_read_document_from_file_with_passwords(
   path : StringView,
-  user_password? : BytesView? = None,
-  owner_password? : BytesView? = None,
+  user_password~ : BytesView? = None,
+  owner_password~ : BytesView? = None,
 ) -> @pdflite.PdfDecryptionResult? {
   @pdflite.pdf_read_document_from_bytes_with_passwords(
     @fs.read_file(path).binary(),
@@ -95,9 +95,9 @@ pub async fn pdf_read_document_from_file_with_passwords(
 /// authenticates.
 pub async fn pdf_read_document_revision_from_file_with_passwords(
   path : StringView,
-  revision : Int,
-  user_password? : BytesView? = None,
-  owner_password? : BytesView? = None,
+  revision : Int32,
+  user_password~ : BytesView? = None,
+  owner_password~ : BytesView? = None,
 ) -> @pdflite.PdfDecryptionResult? {
   @pdflite.pdf_read_document_revision_from_bytes_with_passwords(
     @fs.read_file(path).binary(),

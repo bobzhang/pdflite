@@ -9,18 +9,18 @@
 /// document and range lists do not align.
 pub fn pdf_merge_documents(
   documents : ArrayView[PdfDocument],
-  ranges : ArrayView[Array[Int]],
-  retain_numbering? : Bool = false,
-  retain_bookmarks? : Bool = true,
-  retain_optional_content? : Bool = true,
-  retain_acroforms? : Bool = true,
-  retain_named_destinations? : Bool = true,
-  retain_name_dictionary? : Bool = true,
-  retain_structure_tree? : Bool = true,
-  add_toplevel_document? : Bool = false,
-  retain_info? : Bool = true,
-  retain_catalog_entries? : Bool = true,
-  remove_duplicate_fonts? : Bool = false,
+  ranges : ArrayView[Array[Int32]],
+  retain_numbering~ : Bool = false,
+  retain_bookmarks~ : Bool = true,
+  retain_optional_content~ : Bool = true,
+  retain_acroforms~ : Bool = true,
+  retain_named_destinations~ : Bool = true,
+  retain_name_dictionary~ : Bool = true,
+  retain_structure_tree~ : Bool = true,
+  add_toplevel_document~ : Bool = false,
+  retain_info~ : Bool = true,
+  retain_catalog_entries~ : Bool = true,
+  remove_duplicate_fonts~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   if documents.length() == 0 || documents.length() != ranges.length() {
     raise PageTreeExpected
@@ -115,7 +115,7 @@ pub fn pdf_merge_documents(
   let (major, minor) = pdf_merge_max_version(staged)
   merged.set_version(major, minor)
   let pages : Array[@page.PdfPage] = []
-  let old_page_numbers : Array[Int] = []
+  let old_page_numbers : Array[Int32] = []
   let bookmarks : Array[@bookmark.PdfBookmark] = []
   let oldstyle_destinations : Array[(@core.PdfName, @syntax.PdfObject)] = []
   let nametree_destinations : Array[(@core.PdfBytes, @syntax.PdfObject)] = []
@@ -255,9 +255,9 @@ pub fn pdf_merge_pdfs(
   remove_duplicate_fonts : Bool,
   names : ArrayView[String],
   documents : ArrayView[PdfDocument],
-  ranges : ArrayView[Array[Int]],
-  process_struct_trees? : Bool = true,
-  add_toplevel_document? : Bool = false,
+  ranges : ArrayView[Array[Int32]],
+  process_struct_trees~ : Bool = true,
+  add_toplevel_document~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   if names.length() != documents.length() {
     raise PageTreeExpected

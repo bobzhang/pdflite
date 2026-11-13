@@ -1,6 +1,6 @@
 ///|
 /// Return the MacExpertEncoding glyph name for a single-byte character code.
-pub fn pdf_text_macexpert_glyphname(code : Int) -> String? {
+pub fn pdf_text_macexpert_glyphname(code : Int32) -> String? {
   match code {
     0x20 => Some("/space")
     0x21 => Some("/exclamsmall")
@@ -171,7 +171,7 @@ pub fn pdf_text_macexpert_glyphname(code : Int) -> String? {
 
 ///|
 /// Return the Symbol font glyph name for a single-byte character code.
-pub fn pdf_text_symbol_glyphname(code : Int) -> String? {
+pub fn pdf_text_symbol_glyphname(code : Int32) -> String? {
   match code {
     0x20 => Some("/space")
     0x21 => Some("/exclam")
@@ -368,7 +368,7 @@ pub fn pdf_text_symbol_glyphname(code : Int) -> String? {
 
 ///|
 /// Return the ZapfDingbats font glyph name for a single-byte character code.
-pub fn pdf_text_zapfdingbats_glyphname(code : Int) -> String? {
+pub fn pdf_text_zapfdingbats_glyphname(code : Int32) -> String? {
   match code {
     0x20 => Some("/space")
     0x21 => Some("/a1")

@@ -32,7 +32,7 @@ fn PdfDocument::set_saved_encryption(
 
 ///|
 /// Return the byte offset of the first xref section read from the input.
-pub fn PdfDocument::first_xref(self : PdfDocument) -> Int {
+pub fn PdfDocument::first_xref(self : PdfDocument) -> Int32 {
   self.first_xref
 }
 
@@ -40,14 +40,14 @@ pub fn PdfDocument::first_xref(self : PdfDocument) -> Int {
 /// Set the byte offset of the first xref section read from the input.
 pub fn PdfDocument::set_first_xref(
   self : PdfDocument,
-  first_xref : Int,
+  first_xref : Int32,
 ) -> Unit {
   self.first_xref = first_xref
 }
 
 ///|
 /// Return the number of document revisions read from the input.
-pub fn PdfDocument::revision_read(self : PdfDocument) -> Int {
+pub fn PdfDocument::revision_read(self : PdfDocument) -> Int32 {
   self.revision_read
 }
 
@@ -55,7 +55,7 @@ pub fn PdfDocument::revision_read(self : PdfDocument) -> Int {
 /// Set the number of document revisions read from the input.
 pub fn PdfDocument::set_revision_read(
   self : PdfDocument,
-  revision_read : Int,
+  revision_read : Int32,
 ) -> Unit {
   self.revision_read = revision_read
 }

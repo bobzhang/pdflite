@@ -7,7 +7,7 @@
 pub fn PdfDocument::redact_path(
   self : PdfDocument,
   path : ArrayView[(Double, Double)],
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   ignore(path)
   let pages = self.pages_of_pagetree()
@@ -20,7 +20,7 @@ pub fn PdfDocument::redact_path(
 pub fn pdf_redact(
   document : PdfDocument,
   path : ArrayView[(Double, Double)],
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.redact_path(path, page_numbers)
 }
@@ -31,7 +31,7 @@ pub fn pdf_redact(
 /// This mirrors the current cpdf stub, which intentionally performs no work.
 pub fn PdfDocument::apply_redactions(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Unit {
   ignore(self)
   ignore(page_numbers)
@@ -41,14 +41,17 @@ pub fn PdfDocument::apply_redactions(
 /// Compatibility wrapper for `PdfDocument::apply_redactions`.
 pub fn pdf_apply_redactions(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Unit {
   document.apply_redactions(page_numbers)
 }
 
 ///|
 /// Compatibility wrapper matching cpdfredact's `apply`.
-pub fn pdf_apply(document : PdfDocument, page_numbers : ArrayView[Int]) -> Unit {
+pub fn pdf_apply(
+  document : PdfDocument,
+  page_numbers : ArrayView[Int32],
+) -> Unit {
   document.apply_redactions(page_numbers)
 }
 
@@ -59,7 +62,7 @@ pub fn pdf_apply(document : PdfDocument, page_numbers : ArrayView[Int]) -> Unit 
 pub fn PdfDocument::apply_redaction_type(
   self : PdfDocument,
   annotation_type : String,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Unit {
   ignore(self)
   ignore(annotation_type)
@@ -71,7 +74,7 @@ pub fn PdfDocument::apply_redaction_type(
 pub fn pdf_apply_redaction_type(
   document : PdfDocument,
   annotation_type : String,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Unit {
   document.apply_redaction_type(annotation_type, page_numbers)
 }
@@ -81,7 +84,7 @@ pub fn pdf_apply_redaction_type(
 pub fn pdf_apply_type(
   document : PdfDocument,
   annotation_type : String,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Unit {
   document.apply_redaction_type(annotation_type, page_numbers)
 }
@@ -182,7 +185,7 @@ fn pdf_redact_content_entry_bounds(
     double_max(bbox.y0, bbox.y1),
     double_max(bbox.y2, bbox.y3),
   )
-  { min_x, min_y, max_x, max_y }
+  { min_x, min_y, max_x, max_y, }
 }
 
 ///|
@@ -251,9 +254,9 @@ fn PdfDocument::pdf_redact_page_content_box_ops(
 /// `light` is set, and appended through the existing page-content rewrite path.
 pub fn PdfDocument::show_annotation_bounding_boxes(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  light? : Bool = false,
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  light~ : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   let selected_pages = @core.pdf_number_set(page_numbers)
@@ -280,9 +283,9 @@ pub fn PdfDocument::show_annotation_bounding_boxes(
 /// Compatibility wrapper for `PdfDocument::show_annotation_bounding_boxes`.
 pub fn pdf_show_annotation_bounding_boxes(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  light? : Bool = false,
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  light~ : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.show_annotation_bounding_boxes(page_numbers, light~, fast~)
 }
@@ -291,10 +294,10 @@ pub fn pdf_show_annotation_bounding_boxes(
 /// Draw bounding boxes around annotations and selected page-content objects.
 pub fn PdfDocument::show_bounding_boxes(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  shape? : @geometry.PdfRectangle? = None,
-  light? : Bool = false,
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  shape~ : @geometry.PdfRectangle? = None,
+  light~ : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let document = self.show_annotation_bounding_boxes(
     page_numbers,
@@ -323,10 +326,10 @@ pub fn PdfDocument::show_bounding_boxes(
 /// Compatibility wrapper for `PdfDocument::show_bounding_boxes`.
 pub fn pdf_show_bounding_boxes(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  shape? : @geometry.PdfRectangle? = None,
-  light? : Bool = false,
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  shape~ : @geometry.PdfRectangle? = None,
+  light~ : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.show_bounding_boxes(page_numbers, shape~, light~, fast~)
 }
@@ -338,7 +341,7 @@ pub fn pdf_show_bounding_boxes_cpdf_order(
   shape : @geometry.PdfRectangle?,
   light : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   document.show_bounding_boxes(page_numbers, shape~, light~, fast~)
 }

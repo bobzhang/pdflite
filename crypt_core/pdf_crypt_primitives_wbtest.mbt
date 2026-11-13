@@ -1,5 +1,5 @@
 ///|
-fn crypt_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn crypt_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -324,7 +324,7 @@ test "canonical crypt primitive helpers cover AES data" {
     crypt_bytes_for_test([0xBB, 0xF3, 0x16, 0xE8, 0xD9, 0x40, 0xAF, 0x0A, 0xD3]),
   )
 
-  let ecb_key_values : ReadOnlyArray[Int] = [
+  let ecb_key_values : ReadOnlyArray[Int32] = [
     0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09,
     0xcf, 0x4f, 0x3c,
   ]
@@ -345,7 +345,7 @@ test "canonical crypt primitive helpers cover AES data" {
     ecb_plain,
   )
 
-  let cbc_key_values : ReadOnlyArray[Int] = [
+  let cbc_key_values : ReadOnlyArray[Int32] = [
     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c,
     0x0d, 0x0e, 0x0f,
   ]
@@ -364,7 +364,7 @@ test "canonical crypt primitive helpers cover AES data" {
     @ascii.encode("hello"),
   )
 
-  let key128_values : ReadOnlyArray[Int] = [
+  let key128_values : ReadOnlyArray[Int32] = [
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
   ]
   let aesv3_file_key = crypt_bytes_for_test([ for value in 0..<32 => value ])

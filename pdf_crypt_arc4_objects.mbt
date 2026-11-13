@@ -1,9 +1,9 @@
 ///|
 fn pdf_arc4_crypt_pdf_object_with_stream_policy(
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   file_key : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
   object : @syntax.PdfObject,
   no_encrypt_metadata : Bool,
   defer_stream_decryption : Bool,
@@ -99,10 +99,10 @@ fn pdf_arc4_crypt_pdf_object_with_stream_policy(
 /// generation, file key, and key length. Streams using identity crypt filters,
 /// and metadata streams when `no_encrypt_metadata=true`, are left unchanged.
 fn pdf_arc4_crypt_pdf_object(
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   file_key : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
   object : @syntax.PdfObject,
   no_encrypt_metadata : Bool,
 ) -> @syntax.PdfObject raise @core.PdfError {

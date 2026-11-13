@@ -27,7 +27,7 @@ fn PdfDocument::pdf_page_horizontal_flip_matrix(
 ///|
 fn PdfDocument::pdf_page_flip_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   context : String,
   fast : Bool,
   matrix_of_page : (@page.PdfPage) -> @geometry.TransformMatrix raise @core.PdfError,
@@ -36,7 +36,7 @@ fn PdfDocument::pdf_page_flip_pages(
   let pages = self.pages_of_pagetree()
   let selected_pages = @core.pdf_number_set(page_numbers)
   let rewritten : Array[@page.PdfPage] = Array::new(capacity=pages.length())
-  let matrices : Array[(Int, @geometry.TransformMatrix)] = Array::new(
+  let matrices : Array[(Int32, @geometry.TransformMatrix)] = Array::new(
     capacity=page_numbers.length(),
   )
   for index in 0..<pages.length() {
@@ -61,8 +61,8 @@ fn PdfDocument::pdf_page_flip_pages(
 /// unchanged.
 pub fn PdfDocument::flip_pages_vertically(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_page_flip_pages(page_numbers, "flip_pages_vertically", fast, page => {
     self.pdf_page_vertical_flip_matrix(page)
@@ -73,8 +73,8 @@ pub fn PdfDocument::flip_pages_vertically(
 /// Compatibility method using cpdfpage's `vflip_pdf` name.
 pub fn PdfDocument::vflip_pdf(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.flip_pages_vertically(page_numbers, fast~)
 }
@@ -83,8 +83,8 @@ pub fn PdfDocument::vflip_pdf(
 /// Compatibility wrapper for `PdfDocument::flip_pages_vertically`.
 pub fn pdf_vflip_pdf(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.vflip_pdf(page_numbers, fast~)
 }
@@ -98,8 +98,8 @@ pub fn pdf_vflip_pdf(
 /// unchanged.
 pub fn PdfDocument::flip_pages_horizontally(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.pdf_page_flip_pages(page_numbers, "flip_pages_horizontally", fast, page => {
     self.pdf_page_horizontal_flip_matrix(page)
@@ -110,8 +110,8 @@ pub fn PdfDocument::flip_pages_horizontally(
 /// Compatibility method using cpdfpage's `hflip_pdf` name.
 pub fn PdfDocument::hflip_pdf(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.flip_pages_horizontally(page_numbers, fast~)
 }
@@ -120,8 +120,8 @@ pub fn PdfDocument::hflip_pdf(
 /// Compatibility wrapper for `PdfDocument::flip_pages_horizontally`.
 pub fn pdf_hflip_pdf(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.hflip_pdf(page_numbers, fast~)
 }

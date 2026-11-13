@@ -1,12 +1,12 @@
 ///|
 priv struct PdfFlateCodeLengthToken {
-  symbol : Int
-  extra : Int
-  extra_width : Int
+  symbol : Int32
+  extra : Int32
+  extra_width : Int32
 }
 
 ///|
-fn pdf_flate_last_nonzero_length(lengths : ArrayView[Int]) -> Int {
+fn pdf_flate_last_nonzero_length(lengths : ArrayView[Int32]) -> Int32 {
   let mut index = lengths.length() - 1
   while index >= 0 {
     if lengths[index] != 0 {
@@ -20,16 +20,16 @@ fn pdf_flate_last_nonzero_length(lengths : ArrayView[Int]) -> Int {
 ///|
 fn pdf_flate_push_code_length_token(
   output : Array[PdfFlateCodeLengthToken],
-  symbol : Int,
-  extra? : Int = 0,
-  extra_width? : Int = 0,
+  symbol : Int32,
+  extra~ : Int32 = 0,
+  extra_width~ : Int32 = 0,
 ) -> Unit {
-  output.push({ symbol, extra, extra_width })
+  output.push({ symbol, extra, extra_width, })
 }
 
 ///|
 fn pdf_flate_code_length_tokens(
-  lengths : ArrayView[Int],
+  lengths : ArrayView[Int32],
 ) -> Array[PdfFlateCodeLengthToken] {
   let tokens : Array[PdfFlateCodeLengthToken] = Array::new(
     capacity=lengths.length(),
@@ -90,8 +90,8 @@ fn pdf_flate_code_length_tokens(
 ///|
 fn pdf_flate_code_length_frequencies(
   tokens : ArrayView[PdfFlateCodeLengthToken],
-) -> Array[Int] {
-  let frequencies : Array[Int] = Array::make(19, 0)
+) -> Array[Int32] {
+  let frequencies : Array[Int32] = Array::make(19, 0)
   for token in tokens {
     frequencies[token.symbol] += 1
   }
@@ -99,14 +99,14 @@ fn pdf_flate_code_length_frequencies(
 }
 
 ///|
-fn pdf_flate_code_length_order() -> Array[Int] {
+fn pdf_flate_code_length_order() -> Array[Int32] {
   [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15]
 }
 
 ///|
 fn pdf_flate_code_length_order_count(
-  code_length_lengths : ArrayView[Int],
-) -> Int {
+  code_length_lengths : ArrayView[Int32],
+) -> Int32 {
   let order = pdf_flate_code_length_order()
   let mut count = order.length()
   while count > 4 && code_length_lengths[order[count - 1]] == 0 {
@@ -118,9 +118,9 @@ fn pdf_flate_code_length_order_count(
 ///|
 fn pdf_flate_count_dynamic_frequencies(
   tokens : ArrayView[PdfFlateToken],
-) -> (Array[Int], Array[Int]) raise @core.PdfError {
-  let literal_frequencies : Array[Int] = Array::make(286, 0)
-  let distance_frequencies : Array[Int] = Array::make(30, 0)
+) -> (Array[Int32], Array[Int32]) raise @core.PdfError {
+  let literal_frequencies : Array[Int32] = Array::make(286, 0)
+  let distance_frequencies : Array[Int32] = Array::make(30, 0)
   literal_frequencies[256] = 1
   let mut has_distance = false
   for token in tokens {
@@ -142,7 +142,10 @@ fn pdf_flate_count_dynamic_frequencies(
 }
 
 ///|
-fn pdf_flate_trim_length_count(lengths : ArrayView[Int], minimum : Int) -> Int {
+fn pdf_flate_trim_length_count(
+  lengths : ArrayView[Int32],
+  minimum : Int32,
+) -> Int32 {
   let last = pdf_flate_last_nonzero_length(lengths)
   let count = last + 1
   if count < minimum {
@@ -156,8 +159,8 @@ fn pdf_flate_trim_length_count(lengths : ArrayView[Int], minimum : Int) -> Int {
 fn pdf_flate_write_code_length_tokens(
   writer : FlateBitWriter,
   tokens : ArrayView[PdfFlateCodeLengthToken],
-  codes : ArrayView[Int],
-  lengths : ArrayView[Int],
+  codes : ArrayView[Int32],
+  lengths : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   for token in tokens {
     pdf_flate_write_canonical_symbol(writer, token.symbol, codes, lengths)
@@ -169,10 +172,10 @@ fn pdf_flate_write_code_length_tokens(
 fn pdf_flate_write_dynamic_tokens(
   writer : FlateBitWriter,
   tokens : ArrayView[PdfFlateToken],
-  literal_codes : ArrayView[Int],
-  literal_lengths : ArrayView[Int],
-  distance_codes : ArrayView[Int],
-  distance_lengths : ArrayView[Int],
+  literal_codes : ArrayView[Int32],
+  literal_lengths : ArrayView[Int32],
+  distance_codes : ArrayView[Int32],
+  distance_lengths : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   for token in tokens {
     match token {
@@ -212,7 +215,7 @@ fn pdf_flate_push_dynamic_match_block(
   output : Array[Byte],
   data : BytesView,
   final_block : Bool,
-  max_probes : Int,
+  max_probes : Int32,
 ) -> Unit raise @core.PdfError {
   guard data.length() > 0 else { raise InvalidFlateData }
   let tokens = pdf_flate_match_tokens(data, max_probes)
@@ -225,7 +228,7 @@ fn pdf_flate_push_dynamic_match_block(
   )
   let literal_count = pdf_flate_trim_length_count(literal_lengths, 257)
   let distance_count = pdf_flate_trim_length_count(distance_lengths, 1)
-  let header_lengths : Array[Int] = Array::new(
+  let header_lengths : Array[Int32] = Array::new(
     capacity=literal_count + distance_count,
   )
   for length in literal_lengths[:literal_count] {
@@ -271,7 +274,7 @@ fn pdf_flate_push_dynamic_match_block(
 fn pdf_flate_encode_dynamic_match_view_with_header(
   data : BytesView,
   header : ArrayView[Byte],
-  max_probes : Int,
+  max_probes : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let output = pdf_flate_output_with_header(header, data.length() + 8)
   pdf_flate_push_dynamic_match_block(output, data, true, max_probes)

@@ -23,7 +23,7 @@ async fn text_fixture_bytes_for_test(path : String) -> Bytes? {
 fn text_fixture_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -42,7 +42,7 @@ fn text_fixture_bytes_start_with_at_for_test(
 fn text_fixture_find_last_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     haystack.length()
   } else if haystack.length() < needle.length() {
@@ -124,7 +124,7 @@ fn text_fixture_assert_contains_for_test(
 }
 
 ///|
-fn text_fixture_replacement_count_for_test(text : String) -> Int {
+fn text_fixture_replacement_count_for_test(text : String) -> Int32 {
   let mut count = 0
   for char in text {
     if char.to_int() == 0xFFFD {
@@ -135,7 +135,7 @@ fn text_fixture_replacement_count_for_test(text : String) -> Int {
 }
 
 ///|
-fn text_fixture_raw_control_count_for_test(text : String) -> Int {
+fn text_fixture_raw_control_count_for_test(text : String) -> Int32 {
   let mut count = 0
   for char in text {
     let codepoint = char.to_int()
@@ -157,7 +157,7 @@ fn text_fixture_assert_cpdf_manual_text_extraction_for_test(
   document : @pdflite.PdfDocument,
 ) -> Unit raise {
   @test.assert_eq(document.endpage(), 175)
-  let selected_pages : ReadOnlyArray[Int] = [1, 2, 19, 31, 33]
+  let selected_pages : ReadOnlyArray[Int32] = [1, 2, 19, 31, 33]
   let extracted = document.test_extract_text(selected_pages)
   @test.assert_eq(
     @pdflite.pdf_test_extract_text(document, selected_pages),

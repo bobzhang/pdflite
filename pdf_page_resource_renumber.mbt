@@ -1,8 +1,8 @@
 ///|
 fn PdfDocument::pdf_page_renumber_inline_image_dictionary(
   self : PdfDocument,
-  changes : ArrayView[(@core.PdfName, Int, @core.PdfName, @core.PdfName)],
-  page_number : Int,
+  changes : ArrayView[(@core.PdfName, Int32, @core.PdfName, @core.PdfName)],
+  page_number : Int32,
   dictionary : @syntax.PdfObject,
 ) -> @syntax.PdfObject raise @core.PdfError {
   match
@@ -31,8 +31,8 @@ fn PdfDocument::pdf_page_renumber_inline_image_dictionary(
 ///|
 fn PdfDocument::pdf_page_renumber_content_op(
   self : PdfDocument,
-  changes : ArrayView[(@core.PdfName, Int, @core.PdfName, @core.PdfName)],
-  page_number : Int,
+  changes : ArrayView[(@core.PdfName, Int32, @core.PdfName, @core.PdfName)],
+  page_number : Int32,
   op : @content.PdfContentOp,
 ) -> @content.PdfContentOp raise @core.PdfError {
   match op {
@@ -131,8 +131,8 @@ fn PdfDocument::pdf_page_renumber_content_op(
 ///|
 fn PdfDocument::pdf_page_renumber_content_ops(
   self : PdfDocument,
-  changes : ArrayView[(@core.PdfName, Int, @core.PdfName, @core.PdfName)],
-  page_number : Int,
+  changes : ArrayView[(@core.PdfName, Int32, @core.PdfName, @core.PdfName)],
+  page_number : Int32,
   ops : ArrayView[@content.PdfContentOp],
 ) -> Array[@content.PdfContentOp] raise @core.PdfError {
   let output : Array[@content.PdfContentOp] = Array::new(capacity=ops.length())
@@ -145,8 +145,8 @@ fn PdfDocument::pdf_page_renumber_content_ops(
 ///|
 fn PdfDocument::pdf_page_renumber_resource_dictionary(
   self : PdfDocument,
-  changes : ArrayView[(@core.PdfName, Int, @core.PdfName, @core.PdfName)],
-  page_number : Int,
+  changes : ArrayView[(@core.PdfName, Int32, @core.PdfName, @core.PdfName)],
+  page_number : Int32,
   resources : @syntax.PdfObject,
 ) -> @syntax.PdfObject raise @core.PdfError {
   let mut output = resources

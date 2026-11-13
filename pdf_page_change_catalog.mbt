@@ -2,8 +2,8 @@
 fn PdfDocument::pdf_page_transform_catalog_destinations_object(
   self : PdfDocument,
   dests : @syntax.PdfObject,
-  matrices : ArrayView[(Int, @geometry.TransformMatrix)],
-  page_reference_numbers : ArrayView[Int],
+  matrices : ArrayView[(Int32, @geometry.TransformMatrix)],
+  page_reference_numbers : ArrayView[Int32],
 ) -> @syntax.PdfObject? {
   let lookup = pdf_page_matrix_lookup(matrices, page_reference_numbers)
   match dests {
@@ -73,8 +73,8 @@ fn PdfDocument::pdf_page_replace_active_catalog_entry(
 ///|
 fn PdfDocument::pdf_page_transform_catalog_destinations_for_matrices(
   self : PdfDocument,
-  matrices : ArrayView[(Int, @geometry.TransformMatrix)],
-  page_reference_numbers : ArrayView[Int],
+  matrices : ArrayView[(Int32, @geometry.TransformMatrix)],
+  page_reference_numbers : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   match self.pdf_page_active_catalog() {
     Some((root_object, uses_trailer_root)) =>

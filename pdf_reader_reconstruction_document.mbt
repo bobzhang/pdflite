@@ -1,9 +1,9 @@
 ///|
 fn pdf_read_reconstructed_document_from_view(
   data : BytesView,
-  include_xref_stream_trailers? : Bool = true,
-  user_password? : BytesView? = None,
-  owner_password? : BytesView? = None,
+  include_xref_stream_trailers~ : Bool = true,
+  user_password~ : BytesView? = None,
+  owner_password~ : BytesView? = None,
 ) -> PdfDocument raise @core.PdfError {
   let cursor = @core.byte_cursor_of_view(data)
   let version = @reader.pdf_read_header_from_cursor(cursor)
@@ -26,7 +26,7 @@ fn pdf_read_reconstructed_document_from_view(
 fn pdf_read_reconstructed_or_raise(
   data : BytesView,
   original_error : @core.PdfError,
-  include_xref_stream_trailers? : Bool = false,
+  include_xref_stream_trailers~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   pdf_read_reconstructed_document_from_view(data, include_xref_stream_trailers~) catch {
     _ => raise original_error
@@ -37,8 +37,8 @@ fn pdf_read_reconstructed_or_raise(
 fn pdf_read_probe_page_tree_or_reconstruct(
   data : BytesView,
   document : PdfDocument,
-  user_password? : BytesView? = None,
-  owner_password? : BytesView? = None,
+  user_password~ : BytesView? = None,
+  owner_password~ : BytesView? = None,
 ) -> PdfDocument raise @core.PdfError {
   let catalog = Some(document.catalog()) catch { _ => None }
   match catalog {

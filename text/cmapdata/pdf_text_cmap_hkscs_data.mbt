@@ -4,7 +4,7 @@
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_hkscs_codepoint_table : Array[(Int, Int)] = [
+pub let pdf_text_hkscs_codepoint_table : Array[(Int32, Int32)] = [
   (0x0020, 0x0020),
   (0x0021, 0x0021),
   (0x0022, 0x0022),
@@ -18682,7 +18682,7 @@ pub let pdf_text_hkscs_codepoint_table : Array[(Int, Int)] = [
 
 ///|
 /// Generated predefined CMap lookup data.
-pub let pdf_text_hkscs_charcode_table : Array[(Int, Int)] = [
+pub let pdf_text_hkscs_charcode_table : Array[(Int32, Int32)] = [
   (0x0000, 0xA1FE),
   (0x0020, 0x0020),
   (0x0021, 0x0021),

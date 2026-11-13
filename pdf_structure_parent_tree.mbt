@@ -10,7 +10,7 @@ fn PdfDocument::pdf_structure_parent_tree_catalog(
 ///|
 fn PdfDocument::pdf_structure_root_parent_tree_entries(
   self : PdfDocument,
-) -> Array[(Int, @syntax.PdfObject)] {
+) -> Array[(Int32, @syntax.PdfObject)] {
   match self.pdf_structure_parent_tree_catalog() {
     Some(catalog) =>
       match self.lookup_direct(pdf_structure_struct_tree_root_key(), catalog) {
@@ -27,19 +27,19 @@ fn PdfDocument::pdf_structure_root_parent_tree_entries(
 
 ///|
 fn pdf_structure_changed_parent_tree_key(
-  changes : @hashmap.HashMap[Int, Int],
-  old_key : Int,
-) -> Int? {
+  changes : @hashmap.HashMap[Int32, Int32],
+  old_key : Int32,
+) -> Int32? {
   changes.get(old_key)
 }
 
 ///|
 fn pdf_structure_apply_parent_tree_changes(
-  entries : ArrayView[(Int, @syntax.PdfObject)],
-  changes : ArrayView[(Int, Int)],
-) -> Array[(Int, @syntax.PdfObject)] {
+  entries : ArrayView[(Int32, @syntax.PdfObject)],
+  changes : ArrayView[(Int32, Int32)],
+) -> Array[(Int32, @syntax.PdfObject)] {
   let change_map = pdf_merge_parent_tree_change_map(changes)
-  let output : Array[(Int, @syntax.PdfObject)] = Array::new(
+  let output : Array[(Int32, @syntax.PdfObject)] = Array::new(
     capacity=entries.length(),
   )
   for entry in entries {
@@ -106,16 +106,18 @@ pub fn pdf_renumber_parent_trees(
   documents : ArrayView[PdfDocument],
 ) -> Unit raise @core.PdfError {
   if documents.length() > 1 {
-    let all_changes : Array[Array[(Int, Int)]] = Array::new(
+    let all_changes : Array[Array[(Int32, Int32)]] = Array::new(
       capacity=documents.length(),
     )
-    let all_entries : Array[Array[(Int, @syntax.PdfObject)]] = Array::new(
+    let all_entries : Array[Array[(Int32, @syntax.PdfObject)]] = Array::new(
       capacity=documents.length(),
     )
     let mut next_key = 0
     for document in documents {
       let entries = document.pdf_structure_root_parent_tree_entries()
-      let changes : Array[(Int, Int)] = Array::new(capacity=entries.length())
+      let changes : Array[(Int32, Int32)] = Array::new(
+        capacity=entries.length(),
+      )
       for entry in entries {
         let (old_key, _) = entry
         changes.push((old_key, next_key))

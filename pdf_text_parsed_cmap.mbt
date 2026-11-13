@@ -2,8 +2,8 @@
 fn pdf_text_parsed_cmap_codespace_charcode(
   codespace : PdfCMapCodeSpace,
   text : BytesView,
-  index : Int,
-) -> Int? {
+  index : Int32,
+) -> Int32? {
   guard codespace.length > 0 && index + codespace.length <= text.length() else {
     return None
   }
@@ -22,9 +22,9 @@ fn pdf_text_parsed_cmap_codespace_charcode(
 fn pdf_text_parsed_cmap_next_charcode(
   parsed : PdfParsedCMap,
   text : BytesView,
-  index : Int,
-) -> (Int, Int)? {
-  let mut best : (Int, Int)? = None
+  index : Int32,
+) -> (Int32, Int32)? {
+  let mut best : (Int32, Int32)? = None
   for codespace in parsed.codespaces {
     match pdf_text_parsed_cmap_codespace_charcode(codespace, text, index) {
       Some(code) =>
@@ -40,7 +40,7 @@ fn pdf_text_parsed_cmap_next_charcode(
 
 ///|
 fn pdf_text_identity_codespace() -> PdfCMapCodeSpace {
-  { length: 2, first: 0x0000, last: 0xFFFF }
+  { length: 2, first: 0x0000, last: 0xFFFF, }
 }
 
 ///|
@@ -68,8 +68,8 @@ fn pdf_text_parsed_cmap_predefined_base(
 fn pdf_text_parsed_cmap_identity_charcode(
   parsed : PdfParsedCMap,
   text : BytesView,
-  index : Int,
-) -> (Int, Int)? {
+  index : Int32,
+) -> (Int32, Int32)? {
   guard pdf_text_parsed_cmap_has_identity_base(parsed) else { return None }
   match
     pdf_text_parsed_cmap_codespace_charcode(
@@ -86,7 +86,7 @@ fn pdf_text_parsed_cmap_identity_charcode(
 fn pdf_text_parsed_cmap_charcodes_of_text(
   parsed : PdfParsedCMap,
   text : BytesView,
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   guard parsed.codespaces.length() > 0 ||
     pdf_text_parsed_cmap_has_identity_base(parsed) else {
     match pdf_text_parsed_cmap_predefined_base(parsed) {
@@ -95,7 +95,7 @@ fn pdf_text_parsed_cmap_charcodes_of_text(
       None => return [ for byte in text => byte.to_int() ]
     }
   }
-  let output : Array[Int] = Array::new(capacity=text.length())
+  let output : Array[Int32] = Array::new(capacity=text.length())
   let mut index = 0
   while index < text.length() {
     let next = match pdf_text_parsed_cmap_next_charcode(parsed, text, index) {

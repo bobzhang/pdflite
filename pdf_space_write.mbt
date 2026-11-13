@@ -12,9 +12,9 @@ fn pdf_space_point_object(point : PdfTristimulusPoint) -> @syntax.PdfObject {
 
 ///|
 fn pdf_space_indexed_find(
-  table : ArrayView[(Int, Array[Int])],
-  index : Int,
-) -> Array[Int]? {
+  table : ArrayView[(Int32, Array[Int32])],
+  index : Int32,
+) -> Array[Int32]? {
   for entry in table {
     if entry.0 == index {
       break Some(entry.1)
@@ -26,8 +26,8 @@ fn pdf_space_indexed_find(
 
 ///|
 fn pdf_space_indexed_lookup_bytes(
-  table : ArrayView[(Int, Array[Int])],
-) -> (Int, @core.PdfBytes)? {
+  table : ArrayView[(Int32, Array[Int32])],
+) -> (Int32, @core.PdfBytes)? {
   guard table.length() > 0 else { return None }
   let components = table[0].1.length()
   let mut hival = table[0].0

@@ -1,8 +1,8 @@
 ///|
 fn pdf_ua_xml_tag_is_self_closing(
   data : BytesView,
-  tag_start : Int,
-  tag_end : Int,
+  tag_start : Int32,
+  tag_end : Int32,
 ) -> Bool {
   let mut position = tag_end - 1
   while position > tag_start && pdf_metadata_is_xml_space(data[position]) {
@@ -19,7 +19,7 @@ fn pdf_ua_remove_xml_element_prefix(
 ) -> (@core.PdfBytes, Bool) {
   let open_pattern = @ascii.encode("<" + prefix + ":" + field)
   let close_pattern = @ascii.encode("</" + prefix + ":" + field + ">")
-  let removals : Array[(Int, Int)] = []
+  let removals : Array[(Int32, Int32)] = []
   let mut search_start = 0
   while search_start < data.length() {
     let tag_start = pdf_metadata_find_bytes_from(
@@ -96,7 +96,7 @@ fn pdf_ua_remove_marker_elements(data : BytesView) -> @core.PdfBytes {
 }
 
 ///|
-fn pdf_ua_find_rdf_open_tag(data : BytesView) -> (Int, String)? {
+fn pdf_ua_find_rdf_open_tag(data : BytesView) -> (Int32, String)? {
   let prefixes = pdf_metadata_namespace_prefixes(
     data, @metadata.pdf_metadata_rdf_namespace, "rdf",
   )
@@ -127,7 +127,7 @@ fn pdf_ua_find_rdf_open_tag(data : BytesView) -> (Int, String)? {
 fn pdf_ua_insert_marker_description(
   data : BytesView,
   part : String,
-  revision : Int?,
+  revision : Int32?,
 ) -> @core.PdfBytes raise @core.PdfError {
   match pdf_ua_find_rdf_open_tag(data) {
     Some((insert_at, rdf_prefix)) => {
@@ -149,7 +149,7 @@ fn pdf_ua_insert_marker_description(
 fn PdfDocument::pdf_ua_mark_inner(
   self : PdfDocument,
   part : String,
-  revision : Int?,
+  revision : Int32?,
 ) -> PdfDocument raise @core.PdfError {
   let document = match self.metadata() {
     Some(_) => self

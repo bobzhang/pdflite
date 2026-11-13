@@ -1,7 +1,7 @@
 ///|
 fn pdf_truetype_subset_extremes(
-  subset_codepoints : ArrayView[Int],
-) -> (Int, Int) raise @core.PdfError {
+  subset_codepoints : ArrayView[Int32],
+) -> (Int32, Int32) raise @core.PdfError {
   if subset_codepoints.length() == 0 {
     raise SoftError("Cpdftruetype: Refusing to create font with no characters")
   }
@@ -20,15 +20,15 @@ fn pdf_truetype_subset_extremes(
 
 ///|
 fn pdf_truetype_parsed_subset(
-  flags : Int,
+  flags : Int32,
   metrics : @truetype.PdfTrueTypeMetrics,
   descriptor : @truetype.PdfTrueTypeDescriptorMetrics,
-  firstchar : Int,
-  lastchar : Int,
-  widths : Array[Int],
+  firstchar : Int32,
+  lastchar : Int32,
+  widths : Array[Int32],
   subset_fontfile : @core.PdfBytes,
-  subset : Array[Int],
-  tounicode : Array[(Int, @core.PdfBytes)]?,
+  subset : Array[Int32],
+  tounicode : Array[(Int32, @core.PdfBytes)]?,
 ) -> @truetype.PdfTrueTypeParsedSubset {
   {
     flags,
@@ -64,7 +64,7 @@ fn pdf_truetype_parsed_subset(
 pub fn pdf_truetype_parse(
   data : BytesView,
   encoding : PdfEncoding,
-  subset_codepoints : ArrayView[Int],
+  subset_codepoints : ArrayView[Int32],
 ) -> Array[@truetype.PdfTrueTypeParsedSubset] raise @core.PdfError {
   let partition = pdf_truetype_partition_subsets(encoding, subset_codepoints)
   let (firstchar, lastchar) = pdf_truetype_subset_extremes(

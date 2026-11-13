@@ -1,6 +1,6 @@
 ///|
 fn pdf_flate_check_dynamic_length_symbol(
-  symbol : Int,
+  symbol : Int32,
 ) -> Unit raise @core.PdfError {
   if symbol < 0 || symbol > 18 {
     raise InvalidFlateData
@@ -9,10 +9,10 @@ fn pdf_flate_check_dynamic_length_symbol(
 
 ///|
 fn pdf_flate_push_repeated_lengths(
-  lengths : Array[Int],
-  total : Int,
-  repeat : Int,
-  value : Int,
+  lengths : Array[Int32],
+  total : Int32,
+  repeat : Int32,
+  value : Int32,
 ) -> Unit raise @core.PdfError {
   for _ in 0..<repeat {
     if lengths.length() >= total {
@@ -29,16 +29,16 @@ fn pdf_flate_read_dynamic_tables(
   let hlit = reader.read_bits(5).reinterpret_as_int() + 257
   let hdist = reader.read_bits(5).reinterpret_as_int() + 1
   let hclen = reader.read_bits(4).reinterpret_as_int() + 4
-  let order : ReadOnlyArray[Int] = [
+  let order : ReadOnlyArray[Int32] = [
     16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15,
   ]
-  let code_lengths : Array[Int] = Array::make(19, 0)
+  let code_lengths : Array[Int32] = Array::make(19, 0)
   for i in 0..<hclen {
     code_lengths[order[i]] = reader.read_bits(3).reinterpret_as_int()
   }
   let code_table = pdf_flate_build_huffman(code_lengths)
   let total = hlit + hdist
-  let lengths : Array[Int] = []
+  let lengths : Array[Int32] = []
   while lengths.length() < total {
     let symbol = pdf_flate_decode_symbol(reader, code_table)
     pdf_flate_check_dynamic_length_symbol(symbol)
@@ -112,7 +112,7 @@ fn pdf_flate_decode_huffman_block(
 ///|
 fn pdf_deflate_decode_raw_prefix(
   bytes : BytesView,
-) -> (@core.PdfBytes, Int) raise @core.PdfError {
+) -> (@core.PdfBytes, Int32) raise @core.PdfError {
   let reader = FlateBitReader::new(bytes)
   let output : Array[Byte] = Array::new(capacity=bytes.length())
   let mut finished = false

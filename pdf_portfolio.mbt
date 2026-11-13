@@ -6,7 +6,7 @@
 pub fn PdfDocument::portfolio(
   self : PdfDocument,
   entries : ArrayView[@portfolio.PdfPortfolioEntry],
-  mod_date? : @core.PdfBytes? = None,
+  mod_date~ : @core.PdfBytes? = None,
 ) -> PdfDocument raise @core.PdfError {
   ignore(self.catalog())
   let document = self.copy()
@@ -41,7 +41,7 @@ pub fn PdfDocument::portfolio(
 pub fn pdf_portfolio(
   document : PdfDocument,
   entries : ArrayView[@portfolio.PdfPortfolioEntry],
-  mod_date? : @core.PdfBytes? = None,
+  mod_date~ : @core.PdfBytes? = None,
 ) -> PdfDocument raise @core.PdfError {
   document.portfolio(entries, mod_date~)
 }

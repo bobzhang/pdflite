@@ -1,15 +1,15 @@
 ///|
 fn crypt_encrypt_model_bytes_for_test(
-  values : ArrayView[Int],
+  values : ArrayView[Int32],
 ) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
 ///|
 fn crypt_encrypt_aes_document_iv_for_test(
-  object_number : Int,
-  generation : Int,
-  index : Int,
+  object_number : Int32,
+  generation : Int32,
+  index : Int32,
 ) -> @core.PdfBytes {
   crypt_encrypt_model_bytes_for_test(
     [
@@ -55,7 +55,7 @@ fn crypt_encrypt_aesv3_r5_permissions_for_test() -> @core.PdfBytes {
 #warnings("-unused_error_type")
 fn crypt_encrypt_aesv3_r5_random_for_test(
   field : @crypt_core.PdfAesV3RandomField,
-  _length : Int,
+  _length : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   match field {
     PdfAesV3FileKey => crypt_encrypt_aesv3_r5_file_key_for_test()
@@ -86,8 +86,8 @@ fn crypt_encrypt_name_for_test(text : String) -> @core.PdfName {
 
 ///|
 fn crypt_encrypt_minimal_catalog_document_for_test(
-  major : Int,
-  minor : Int,
+  major : Int32,
+  minor : Int32,
 ) -> @pdflite.PdfDocument {
   let key_type = crypt_encrypt_name_for_test("/Type")
   let key_catalog = crypt_encrypt_name_for_test("/Catalog")
@@ -602,7 +602,7 @@ test "PdfDocument encrypt_256bit_aesv3_with_providers writes AESV3 revision 5 en
 
   let bad_random = fn(
     field : @crypt_core.PdfAesV3RandomField,
-    length : Int,
+    length : Int32,
   ) -> @core.PdfBytes raise @core.PdfError {
     match field {
       PdfAesV3UserKeySalt => Bytes::new(7)

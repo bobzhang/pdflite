@@ -3,7 +3,7 @@ let pdf_draw_standard_namespace : String = "http://iso.org/pdf/ssn"
 
 ///|
 priv enum PdfDrawStructureNode {
-  PdfDrawStructureNodeMCID(Int)
+  PdfDrawStructureNodeMCID(Int32)
   PdfDrawStructureNodeItem(PdfDrawStructureItem)
 }
 
@@ -11,7 +11,7 @@ priv enum PdfDrawStructureNode {
 priv struct PdfDrawStructureItem {
   kind : String
   namespace_uri : String
-  page_object_number : Int?
+  page_object_number : Int32?
   alt : Array[(String, @syntax.PdfObject)]
   children : Array[PdfDrawStructureNode]
 }
@@ -24,7 +24,7 @@ priv struct PdfDrawStructureBuildContext {
 
 ///|
 fn pdf_draw_structure_context_new() -> PdfDrawStructureBuildContext {
-  { namespace_uri: pdf_draw_standard_namespace, element_info: [] }
+  { namespace_uri: pdf_draw_standard_namespace, element_info: [], }
 }
 
 ///|
@@ -72,9 +72,9 @@ fn PdfDrawStructureBuildContext::remove_element_info(
 
 ///|
 fn pdf_draw_structure_page_object_number(
-  page_object_numbers : ArrayView[Int],
-  page_number : Int,
-) -> Int? {
+  page_object_numbers : ArrayView[Int32],
+  page_number : Int32,
+) -> Int32? {
   if page_number >= 1 && page_number <= page_object_numbers.length() {
     Some(page_object_numbers[page_number - 1])
   } else {
@@ -85,9 +85,9 @@ fn pdf_draw_structure_page_object_number(
 ///|
 fn pdf_draw_make_structure_tree_items(
   data : ArrayView[PdfDrawStructureData],
-  index : Ref[Int],
+  index : Ref[Int32],
   context : PdfDrawStructureBuildContext,
-  page_object_numbers : ArrayView[Int],
+  page_object_numbers : ArrayView[Int32],
   expect_end_tree : Bool,
 ) -> Array[PdfDrawStructureNode] raise @core.PdfError {
   let output : Array[PdfDrawStructureNode] = Array::new(
@@ -159,7 +159,7 @@ fn PdfDocument::pdf_draw_make_structure_tree(
   self : PdfDocument,
   data : ArrayView[PdfDrawStructureData],
 ) -> Array[PdfDrawStructureNode] raise @core.PdfError {
-  let index : Ref[Int] = { val: 0 }
+  let index : Ref[Int32] = { val: 0, }
   pdf_draw_make_structure_tree_items(
     data,
     index,
@@ -171,12 +171,12 @@ fn PdfDocument::pdf_draw_make_structure_tree(
 
 ///|
 priv struct PdfDrawNamespaceMap {
-  entries : Array[(String, Int)]
+  entries : Array[(String, Int32)]
 }
 
 ///|
 fn pdf_draw_namespace_map_new() -> PdfDrawNamespaceMap {
-  { entries: [] }
+  { entries: [], }
 }
 
 ///|
@@ -184,7 +184,7 @@ fn PdfDrawNamespaceMap::object_number(
   self : PdfDrawNamespaceMap,
   document : PdfDocument,
   namespace_uri : String,
-) -> Int? {
+) -> Int32? {
   if namespace_uri == pdf_draw_standard_namespace {
     None
   } else {
@@ -205,19 +205,19 @@ fn PdfDrawNamespaceMap::object_number(
 
 ///|
 priv struct PdfDrawParentMap {
-  entries : Array[(Int, Array[Int])]
+  entries : Array[(Int32, Array[Int32])]
 }
 
 ///|
 fn pdf_draw_parent_map_new() -> PdfDrawParentMap {
-  { entries: [] }
+  { entries: [], }
 }
 
 ///|
 fn PdfDrawParentMap::add(
   self : PdfDrawParentMap,
-  page_object_number : Int,
-  structure_object_number : Int,
+  page_object_number : Int32,
+  structure_object_number : Int32,
 ) -> Unit {
   for index in 0..<self.entries.length() {
     if self.entries[index].0 == page_object_number {
@@ -231,7 +231,7 @@ fn PdfDrawParentMap::add(
 ///|
 fn PdfDrawParentMap::number_tree_entries(
   self : PdfDrawParentMap,
-) -> Array[(Int, @syntax.PdfObject)] {
+) -> Array[(Int32, @syntax.PdfObject)] {
   [
     for entry in self.entries => {
       (
@@ -245,7 +245,7 @@ fn PdfDrawParentMap::number_tree_entries(
 ///|
 fn PdfDocument::pdf_draw_write_structure_node(
   self : PdfDocument,
-  parent_object_number : Int,
+  parent_object_number : Int32,
   namespaces : PdfDrawNamespaceMap,
   parent_map : PdfDrawParentMap,
   node : PdfDrawStructureNode,

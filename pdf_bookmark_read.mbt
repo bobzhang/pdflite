@@ -75,7 +75,7 @@ fn PdfDocument::pdf_bookmark_colour(
           self.pdf_bookmark_colour_number(green),
           self.pdf_bookmark_colour_number(blue),
         ) {
-        (Some(red), Some(green), Some(blue)) => { red, green, blue }
+        (Some(red), Some(green), Some(blue)) => { red, green, blue, }
         _ => @bookmark.pdf_bookmark_black
       }
     _ => @bookmark.pdf_bookmark_black
@@ -86,7 +86,7 @@ fn PdfDocument::pdf_bookmark_colour(
 fn PdfDocument::pdf_bookmark_flags(
   self : PdfDocument,
   outline : @syntax.PdfObject,
-) -> Int {
+) -> Int32 {
   match self.lookup_direct(pdf_bookmark_flags_key(), outline) {
     Some(PdfInteger(flags)) => flags
     _ => 0
@@ -96,7 +96,7 @@ fn PdfDocument::pdf_bookmark_flags(
 ///|
 fn PdfDocument::pdf_bookmark_of_outline(
   self : PdfDocument,
-  level : Int,
+  level : Int32,
   outline : @syntax.PdfObject,
   preserve_actions : Bool,
 ) -> @bookmark.PdfBookmark raise @core.PdfError {
@@ -113,11 +113,11 @@ fn PdfDocument::pdf_bookmark_of_outline(
 ///|
 fn PdfDocument::pdf_bookmark_traverse_siblings(
   self : PdfDocument,
-  level : Int,
+  level : Int32,
   first : @syntax.PdfObject,
   preserve_actions : Bool,
   output : Array[@bookmark.PdfBookmark],
-  depth : Int,
+  depth : Int32,
 ) -> Unit raise @core.PdfError {
   if depth > 10000 {
     raise PageTreeExpected
@@ -146,11 +146,11 @@ fn PdfDocument::pdf_bookmark_traverse_siblings(
 ///|
 fn PdfDocument::pdf_bookmark_traverse_children(
   self : PdfDocument,
-  level : Int,
+  level : Int32,
   outline : @syntax.PdfObject,
   preserve_actions : Bool,
   output : Array[@bookmark.PdfBookmark],
-  depth : Int,
+  depth : Int32,
 ) -> Unit raise @core.PdfError {
   match self.lookup_direct(pdf_bookmark_first_key(), outline) {
     Some(first) =>
@@ -173,7 +173,7 @@ fn PdfDocument::pdf_bookmark_traverse_children(
 /// destinations are preserved more shallowly for round-tripping.
 pub fn PdfDocument::read_bookmarks(
   self : PdfDocument,
-  preserve_actions? : Bool = false,
+  preserve_actions~ : Bool = false,
 ) -> Array[@bookmark.PdfBookmark] raise @core.PdfError {
   let output : Array[@bookmark.PdfBookmark] = []
   let root = self.pdf_bookmark_catalog()
@@ -191,7 +191,7 @@ pub fn PdfDocument::read_bookmarks(
 /// Compatibility wrapper for `PdfDocument::read_bookmarks`.
 pub fn pdf_read_bookmarks(
   document : PdfDocument,
-  preserve_actions? : Bool = false,
+  preserve_actions~ : Bool = false,
 ) -> Array[@bookmark.PdfBookmark] raise @core.PdfError {
   document.read_bookmarks(preserve_actions~)
 }

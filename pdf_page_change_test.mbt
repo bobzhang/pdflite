@@ -47,7 +47,7 @@ fn page_change_hello_resources_for_test() -> @syntax.PdfObject {
 }
 
 ///|
-fn page_change_index_mediabox_for_test(index : Int) -> @syntax.PdfObject {
+fn page_change_index_mediabox_for_test(index : Int32) -> @syntax.PdfObject {
   PdfArray([
     PdfInteger(index),
     PdfInteger(0),
@@ -57,7 +57,7 @@ fn page_change_index_mediabox_for_test(index : Int) -> @syntax.PdfObject {
 }
 
 ///|
-fn page_change_indexed_blank_for_test(index : Int) -> @page.PdfPage {
+fn page_change_indexed_blank_for_test(index : Int32) -> @page.PdfPage {
   {
     ..@page.pdf_page_blank(@geometry.paper_a4),
     mediabox: page_change_index_mediabox_for_test(index),
@@ -308,7 +308,7 @@ test "PdfDocument change_pages preserves document metadata and trailer entries" 
   doc.set_trailer_dict(doc.trailer_dict().add_dict_entry(key_id, document_id))
 
   let changed = try! doc.change_pages([
-    { ..@page.pdf_page_blank(@geometry.paper_a4), rotate: Rotate90 },
+    { ..@page.pdf_page_blank(@geometry.paper_a4), rotate: Rotate90, },
   ])
   @test.assert_eq(changed.version(), (1, 7))
   @test.assert_eq(changed.first_xref(), 4096)
@@ -466,7 +466,7 @@ test "PdfDocument change_pages renumbers same-count page references" {
   let type_fit = page_change_name_for_test("/Fit")
   let doc = @pdflite.pdf_document_empty()
   let first = @page.pdf_page_blank(@geometry.paper_a4)
-  let second = { ..@page.pdf_page_blank(@geometry.paper_a4), rotate: Rotate90 }
+  let second = { ..@page.pdf_page_blank(@geometry.paper_a4), rotate: Rotate90, }
   let page_root = try! doc.add_pagetree([first, second])
   ignore(try! doc.add_root(page_root, []))
   let old_numbers = try! doc.page_reference_numbers()
@@ -720,7 +720,7 @@ test "PdfDocument change_pages transforms link annotations and open action" {
         PdfIndirect(_),
         PdfDictionary(_) as direct_dest_annotation,
         PdfDictionary(_) as direct_action_annotation,
-      ]
+      ],
     ) => {
       match direct_dest_annotation.lookup_immediate(key_dest) {
         Some(destination) =>

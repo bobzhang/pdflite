@@ -56,11 +56,12 @@ let pdf_space_device_n_name : @core.PdfName = pdf_space_name("/DeviceN")
 ///
 /// The fields represent the `X`, `Y`, and `Z` components used for white point
 /// and black point entries in `/CalGray`, `/CalRGB`, and `/Lab` dictionaries.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfTristimulusPoint {
   x : Double
   y : Double
   z : Double
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Parsed representation of the PDF colour spaces supported by this package.
@@ -69,6 +70,7 @@ pub(all) struct PdfTristimulusPoint {
 /// preserve their calibration data, indexed spaces hold an expanded lookup
 /// table, and separation or DeviceN spaces retain their tint transform objects
 /// for round-tripping.
+#derive(Debug, Eq, ToJson)
 pub(all) enum PdfColourSpace {
   PdfDeviceGray
   PdfDeviceRGB
@@ -78,17 +80,17 @@ pub(all) enum PdfColourSpace {
     PdfTristimulusPoint,
     PdfTristimulusPoint,
     Array[Double],
-    Array[Double]
+    Array[Double],
   )
   PdfLab(PdfTristimulusPoint, PdfTristimulusPoint, Array[Double])
   PdfICCBased(
-    Int,
+    Int32,
     PdfColourSpace,
     Array[Double],
     @syntax.PdfObject?,
-    @syntax.PdfObject
+    @syntax.PdfObject,
   )
-  PdfIndexed(PdfColourSpace, Array[(Int, Array[Int])])
+  PdfIndexed(PdfColourSpace, Array[(Int32, Array[Int32])])
   PdfPattern
   PdfPatternWithBaseColourSpace(PdfColourSpace)
   PdfSeparation(@core.PdfName, PdfColourSpace, @syntax.PdfObject)
@@ -96,9 +98,9 @@ pub(all) enum PdfColourSpace {
     Array[@core.PdfName],
     PdfColourSpace,
     @syntax.PdfObject,
-    @syntax.PdfObject
+    @syntax.PdfObject,
   )
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Return a diagnostic name for a colour space.

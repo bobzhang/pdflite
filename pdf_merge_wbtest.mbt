@@ -1,6 +1,6 @@
 ///|
 test "private merge helpers cover guards and membership branches" {
-  let empty_version : Result[(Int, Int), Error] = try
+  let empty_version : Result[(Int32, Int32), Error] = try
     pdf_merge_max_version([])
   catch {
     err => Err(err)
@@ -411,7 +411,7 @@ test "private merge catalog and AcroForm helpers cover malformed roots" {
 
 ///|
 test "private merge destination renumbering covers all target variants" {
-  let changes : ReadOnlyArray[(Int, Int)] = [(1, 10)]
+  let changes : ReadOnlyArray[(Int32, Int32)] = [(1, 10)]
   let change_map = pdf_page_reference_map(changes)
   @test.assert_eq(
     pdf_merge_renumber_target_page_with_map(

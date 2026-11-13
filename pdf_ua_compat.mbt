@@ -7,7 +7,7 @@ pub fn pdf_ua_mark(document : PdfDocument) -> PdfDocument raise @core.PdfError {
 ///|
 /// Compatibility wrapper for `PdfDocument::mark_pdfua2`.
 pub fn pdf_ua_mark2(
-  year : Int,
+  year : Int32,
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.mark_pdfua2(year)

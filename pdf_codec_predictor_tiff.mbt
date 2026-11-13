@@ -1,8 +1,8 @@
 ///|
 fn pdf_decode_tiff_predictor(
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   if bits_per_component != 8 {
@@ -29,9 +29,9 @@ fn pdf_decode_tiff_predictor(
 
 ///|
 fn pdf_encode_tiff_predictor(
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   if bits_per_component != 8 {

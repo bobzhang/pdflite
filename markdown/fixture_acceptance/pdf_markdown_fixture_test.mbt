@@ -47,7 +47,7 @@ async fn markdown_optional_fixture_bytes_for_test(path : String) -> Bytes? {
 fn markdown_fixture_find_last_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     haystack.length()
   } else if haystack.length() < needle.length() {
@@ -75,7 +75,7 @@ fn markdown_fixture_find_last_bytes_for_test(
 fn markdown_fixture_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -94,7 +94,7 @@ fn markdown_fixture_bytes_start_with_at_for_test(
 fn markdown_fixture_find_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     0
   } else if haystack.length() < needle.length() {
@@ -114,8 +114,8 @@ fn markdown_fixture_find_bytes_for_test(
 fn markdown_fixture_find_bytes_after_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
-) -> Int {
+  start : Int32,
+) -> Int32 {
   if needle.length() == 0 {
     start
   } else if start < 0 || haystack.length() < needle.length() {
@@ -183,7 +183,7 @@ fn markdown_fixture_corrupt_startxref_pointer_for_test(
 }
 
 ///|
-fn markdown_fixture_startxref_offset_for_test(bytes : Bytes) -> Int raise {
+fn markdown_fixture_startxref_offset_for_test(bytes : Bytes) -> Int32 raise {
   let marker = @ascii.encode("startxref")
   let marker_position = markdown_fixture_find_last_bytes_for_test(bytes, marker)
   if marker_position < 0 {
@@ -318,7 +318,7 @@ fn markdown_fixture_replace_bytes_after_with_padded_ascii_for_test(
 ///|
 fn markdown_fixture_replace_bytes_at_for_test(
   bytes : Bytes,
-  position : Int,
+  position : Int32,
   target : BytesView,
   replacement : BytesView,
   description : String,
@@ -342,8 +342,8 @@ fn markdown_fixture_replace_bytes_at_for_test(
 ///|
 fn markdown_fixture_skip_pdf_whitespace_for_test(
   bytes : BytesView,
-  position : Int,
-) -> Int {
+  position : Int32,
+) -> Int32 {
   let mut current = position
   while current < bytes.length() {
     let value = bytes[current].to_int()
@@ -364,8 +364,8 @@ fn markdown_fixture_skip_pdf_whitespace_for_test(
 ///|
 fn markdown_fixture_stream_data_start_for_test(
   bytes : BytesView,
-  stream_position : Int,
-) -> Int {
+  stream_position : Int32,
+) -> Int32 {
   let mut current = stream_position + @ascii.encode("stream").length()
   while current < bytes.length() {
     let value = bytes[current].to_int()
@@ -389,10 +389,10 @@ fn markdown_fixture_stream_data_start_for_test(
 ///|
 fn markdown_fixture_direct_length_before_for_test(
   bytes : BytesView,
-  anchor_position : Int,
-  limit : Int,
+  anchor_position : Int32,
+  limit : Int32,
   description : String,
-) -> Int raise {
+) -> Int32 raise {
   let length_key = @ascii.encode("/Length")
   let length_position = markdown_fixture_find_bytes_after_for_test(
     bytes, length_key, anchor_position,
@@ -519,7 +519,7 @@ fn markdown_fixture_corrupt_xref_stream_filter_for_test(
 ///|
 fn markdown_fixture_first_object_stream_stream_position_for_test(
   bytes : BytesView,
-) -> Int raise {
+) -> Int32 raise {
   let anchor = @ascii.encode("/Type /ObjStm")
   let anchor_position = markdown_fixture_find_bytes_for_test(bytes, anchor)
   if anchor_position < 0 {
@@ -540,7 +540,7 @@ fn markdown_fixture_first_object_stream_stream_position_for_test(
 ///|
 fn markdown_fixture_first_object_stream_endstream_position_for_test(
   bytes : BytesView,
-) -> Int raise {
+) -> Int32 raise {
   let anchor = @ascii.encode("/Type /ObjStm")
   let anchor_position = markdown_fixture_find_bytes_for_test(bytes, anchor)
   if anchor_position < 0 {
@@ -569,7 +569,7 @@ fn markdown_fixture_first_object_stream_endstream_position_for_test(
 ///|
 fn markdown_fixture_first_object_stream_endobj_position_for_test(
   bytes : BytesView,
-) -> Int raise {
+) -> Int32 raise {
   let endstream_position = markdown_fixture_first_object_stream_endstream_position_for_test(
     bytes,
   )
@@ -677,7 +677,7 @@ fn markdown_fixture_corrupt_first_object_stream_endobj_for_test(
 ///|
 fn markdown_fixture_first_in_use_xref_row_start_for_test(
   bytes : Bytes,
-) -> Int raise {
+) -> Int32 raise {
   let free_row = @ascii.encode("0000000000 65535 f")
   let free_row_position = markdown_fixture_find_bytes_for_test(bytes, free_row)
   if free_row_position < 0 {
@@ -752,7 +752,7 @@ fn markdown_fixture_corrupt_first_in_use_xref_generation_for_test(
 ///|
 fn markdown_fixture_first_xref_subsection_spans_for_test(
   bytes : Bytes,
-) -> (Int, Int, Int, Int) raise {
+) -> (Int32, Int32, Int32, Int32) raise {
   let header = @ascii.encode("xref")
   let header_position = markdown_fixture_find_bytes_for_test(bytes, header)
   if header_position < 0 {
@@ -844,7 +844,7 @@ fn markdown_fixture_assert_contains_for_test(
 }
 
 ///|
-fn markdown_fixture_replacement_count_for_test(text : String) -> Int {
+fn markdown_fixture_replacement_count_for_test(text : String) -> Int32 {
   let mut count = 0
   for char in text {
     if char.to_int() == 0xFFFD {
@@ -855,7 +855,7 @@ fn markdown_fixture_replacement_count_for_test(text : String) -> Int {
 }
 
 ///|
-fn markdown_fixture_raw_control_count_for_test(text : String) -> Int {
+fn markdown_fixture_raw_control_count_for_test(text : String) -> Int32 {
   let mut count = 0
   for char in text {
     let codepoint = char.to_int()
@@ -873,7 +873,7 @@ fn markdown_fixture_raw_control_count_for_test(text : String) -> Int {
 }
 
 ///|
-fn markdown_fixture_unique_cjk_unified_count_for_test(text : String) -> Int {
+fn markdown_fixture_unique_cjk_unified_count_for_test(text : String) -> Int32 {
   let lower = 0x4E00
   let upper = 0x9FFF
   let seen = Array::make(upper - lower + 1, false)

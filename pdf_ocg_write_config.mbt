@@ -2,7 +2,7 @@
 fn PdfDocument::pdf_ocg_write_config(
   self : PdfDocument,
   config : @ocg.PdfOcgConfig,
-) -> Int {
+) -> Int32 {
   let entries : Array[(@core.PdfName, @syntax.PdfObject)] = []
   match config.name {
     Some(name) => entries.push((pdf_ocg_name_key(), PdfString(name)))

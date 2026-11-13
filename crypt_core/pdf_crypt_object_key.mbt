@@ -5,10 +5,10 @@
 /// hashed according to the PDF standard-security object-key algorithm.
 pub fn pdf_encryption_object_key(
   crypt_type : @core.PdfCryptType,
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   file_key : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
 ) -> @core.PdfBytes {
   let md5 = @crypto.MD5::new()
   md5.update(file_key)
@@ -43,10 +43,10 @@ pub fn pdf_encryption_object_key(
 /// The per-object key is derived from object number and generation before ARC4
 /// is applied.
 pub fn pdf_arc4_crypt_object(
-  object_number : Int,
-  generation : Int,
+  object_number : Int32,
+  generation : Int32,
   file_key : BytesView,
-  key_length_bits : Int,
+  key_length_bits : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let object_key = pdf_encryption_object_key(

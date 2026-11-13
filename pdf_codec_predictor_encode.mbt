@@ -5,10 +5,10 @@
 /// use fixed PNG row filters, and `15` chooses the lowest-scoring PNG filter
 /// per row.
 pub fn pdf_encode_predictor_view(
-  predictor : Int,
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  predictor : Int32,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   match predictor {
@@ -42,10 +42,10 @@ pub fn pdf_encode_predictor_view(
 ///
 /// Predictor `1` returns the original owned bytes unchanged.
 pub fn pdf_encode_predictor(
-  predictor : Int,
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  predictor : Int32,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
   data : @core.PdfBytes,
 ) -> @core.PdfBytes raise @core.PdfError {
   if predictor == 1 {

@@ -6,7 +6,7 @@
 #cfg(not(target="native"))
 pub fn pdf_flate_encode_view_with_level(
   data : BytesView,
-  level : Int,
+  level : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_flate_encode_view_with_level_pure(data, level)
 }
@@ -21,7 +21,7 @@ pub fn pdf_flate_encode_view_with_level(
 #coverage.skip
 pub fn pdf_flate_encode_view_with_level(
   data : BytesView,
-  level : Int,
+  level : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_flate_encode_bytes_native(data.to_owned(), level)
 }
@@ -59,7 +59,7 @@ pub fn pdf_flate_encode_view(data : BytesView) -> @core.PdfBytes {
 #cfg(not(target="native"))
 pub fn pdf_flate_encode_with_level(
   data : @core.PdfBytes,
-  level : Int,
+  level : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_flate_encode_view_with_level_pure(data, level)
 }
@@ -74,7 +74,7 @@ pub fn pdf_flate_encode_with_level(
 #coverage.skip
 pub fn pdf_flate_encode_with_level(
   data : @core.PdfBytes,
-  level : Int,
+  level : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   pdf_flate_encode_bytes_native(data, level)
 }
@@ -130,7 +130,7 @@ pub fn pdf_flate_decode_view(
   if data.length() == 0 {
     Bytes::new(0)
   } else {
-    let status = Ref::{ val: 0 }
+    let status = Ref::{ val: 0, }
     try
       pdf_flate_native_payload(
         pdf_flate_zlib_decode_ffi(data.to_owned(), status),
@@ -175,7 +175,7 @@ pub fn pdf_flate_decode(
 /// lets callers continue parsing data that follows the compressed stream.
 pub fn pdf_flate_decode_view_prefix(
   data : BytesView,
-) -> (@core.PdfBytes, Int) raise @core.PdfError {
+) -> (@core.PdfBytes, Int32) raise @core.PdfError {
   if data.length() == 0 {
     (Bytes::new(0), 0)
   } else {

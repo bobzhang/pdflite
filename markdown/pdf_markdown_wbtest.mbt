@@ -2,9 +2,9 @@
 fn markdown_chunk_for_wbtest(
   x : Double,
   y : Double,
-  index : Int,
+  index : Int32,
 ) -> PdfMarkdownTextChunk {
-  { x, y, width: 1.0, font_size: 1.0, index, codepoints: [] }
+  { x, y, width: 1.0, font_size: 1.0, index, codepoints: [], }
 }
 
 ///|
@@ -26,15 +26,15 @@ fn markdown_text_chunk_for_wbtest(
   x : Double,
   y : Double,
   width : Double,
-  index : Int,
-  codepoints : Array[Int],
+  index : Int32,
+  codepoints : Array[Int32],
 ) -> PdfMarkdownTextChunk {
-  { x, y, width, font_size: 10.0, index, codepoints }
+  { x, y, width, font_size: 10.0, index, codepoints, }
 }
 
 ///|
-fn markdown_codepoints_for_wbtest(text : String) -> Array[Int] {
-  let output : Array[Int] = []
+fn markdown_codepoints_for_wbtest(text : String) -> Array[Int32] {
+  let output : Array[Int32] = []
   for byte in @ascii.encode(text) {
     output.push(byte.to_int())
   }
@@ -45,7 +45,7 @@ fn markdown_codepoints_for_wbtest(text : String) -> Array[Int] {
 fn markdown_text_cell_for_wbtest(
   x : Double,
   y : Double,
-  index : Int,
+  index : Int32,
   text : String,
 ) -> PdfMarkdownTextChunk {
   markdown_text_chunk_for_wbtest(
@@ -82,9 +82,9 @@ test "private positioned chunk compare preserves stream order for equal origins"
 ///|
 test "private positioned text array treats large integer adjustment as space" {
   let chunks : Array[PdfMarkdownTextChunk] = []
-  let next_index : Ref[Int] = { val: 0 }
+  let next_index : Ref[Int32] = { val: 0, }
   let extractor = @pdflite.pdf_text_extractor_of_font_real(
-    PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding }),
+    PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding, }),
   )
   pdf_markdown_add_positioned_text_array(
     chunks,
@@ -337,7 +337,7 @@ test "private TJ spacing joins Han but preserves Hangul word gaps" {
 
 ///|
 test "private word-space push ignores empty output" {
-  let output : Array[Int] = []
+  let output : Array[Int32] = []
   pdf_markdown_push_word_space(output)
   @test.assert_eq(output, [])
 }

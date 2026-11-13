@@ -5,7 +5,7 @@
 /// attached files, xref table, piece info, then unclassified bytes.
 pub fn PdfDocument::composition(
   self : PdfDocument,
-  file_size : Int,
+  file_size : Int32,
 ) -> Array[@composition.PdfCompositionEntry] raise @core.PdfError {
   if file_size <= 0 {
     raise BadNumberArgument("file_size must be positive")
@@ -57,7 +57,7 @@ pub fn PdfDocument::composition(
 /// Return the document composition in cpdf JSON row format.
 pub fn PdfDocument::composition_json(
   self : PdfDocument,
-  file_size : Int,
+  file_size : Int32,
 ) -> Json raise @core.PdfError {
   let entries = self.composition(file_size)
   let values : Array[Json] = Array::new(capacity=entries.length())
@@ -71,7 +71,7 @@ pub fn PdfDocument::composition_json(
 /// Return the document composition serialized as UTF-8 JSON bytes.
 pub fn PdfDocument::composition_json_blob(
   self : PdfDocument,
-  file_size : Int,
+  file_size : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   @utf8.encode(self.composition_json(file_size).stringify())
 }
@@ -80,7 +80,7 @@ pub fn PdfDocument::composition_json_blob(
 /// Return the text that cpdf's `show_composition` prints when `json=false`.
 pub fn PdfDocument::composition_text(
   self : PdfDocument,
-  file_size : Int,
+  file_size : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   @composition.pdf_composition_text_of_entries(self.composition(file_size))
 }
@@ -89,7 +89,7 @@ pub fn PdfDocument::composition_text(
 /// Compatibility wrapper for `PdfDocument::composition`.
 pub fn pdf_composition(
   document : PdfDocument,
-  file_size : Int,
+  file_size : Int32,
 ) -> Array[@composition.PdfCompositionEntry] raise @core.PdfError {
   document.composition(file_size)
 }
@@ -97,7 +97,7 @@ pub fn pdf_composition(
 ///|
 /// Compatibility wrapper for `PdfDocument::composition_json_blob`.
 pub fn pdf_show_composition_json_blob(
-  file_size : Int,
+  file_size : Int32,
   document : PdfDocument,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.composition_json_blob(file_size)
@@ -106,7 +106,7 @@ pub fn pdf_show_composition_json_blob(
 ///|
 /// Return the bytes cpdf's `show_composition` would print.
 pub fn pdf_show_composition(
-  file_size : Int,
+  file_size : Int32,
   json : Bool,
   document : PdfDocument,
 ) -> @core.PdfBytes raise @core.PdfError {

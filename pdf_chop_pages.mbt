@@ -47,8 +47,8 @@ fn pdf_chop_page_with_box(
 }
 
 ///|
-fn pdf_chop_index_order(count : Int, reverse : Bool) -> Array[Int] {
-  let output : Array[Int] = Array::new(capacity=count)
+fn pdf_chop_index_order(count : Int32, reverse : Bool) -> Array[Int32] {
+  let output : Array[Int32] = Array::new(capacity=count)
   for index in 0..<count {
     output.push(if reverse { count - index - 1 } else { index })
   }
@@ -59,8 +59,8 @@ fn pdf_chop_index_order(count : Int, reverse : Bool) -> Array[Int] {
 fn pdf_chop_grid_pages(
   page : @page.PdfPage,
   bounds : @geometry.PdfRectangle,
-  x : Int,
-  y : Int,
+  x : Int32,
+  y : Int32,
   columns : Bool,
   btt : Bool,
   rtl : Bool,
@@ -128,8 +128,8 @@ fn pdf_chop_page_boxes(
   document : PdfDocument,
   page : @page.PdfPage,
   line : Double,
-  x : Int,
-  y : Int,
+  x : Int32,
+  y : Int32,
   columns : Bool,
   btt : Bool,
   rtl : Bool,
@@ -174,8 +174,8 @@ fn pdf_chop_page_boxes(
 
 ///|
 fn pdf_chop_validate_page_numbers(
-  page_numbers : ArrayView[Int],
-  end_page : Int,
+  page_numbers : ArrayView[Int32],
+  end_page : Int32,
   context : String,
 ) -> Unit raise @core.PdfError {
   for page_number in page_numbers {
@@ -188,7 +188,7 @@ fn pdf_chop_validate_page_numbers(
 }
 
 ///|
-fn pdf_chop_validate_grid(x : Int, y : Int) -> Unit raise @core.PdfError {
+fn pdf_chop_validate_grid(x : Int32, y : Int32) -> Unit raise @core.PdfError {
   if x <= 0 || y <= 0 {
     raise BadNumberArgument("chop: x and y must be positive")
   }
@@ -196,9 +196,9 @@ fn pdf_chop_validate_grid(x : Int, y : Int) -> Unit raise @core.PdfError {
 
 ///|
 fn pdf_chop_selected_page_count(
-  original_count : Int,
+  original_count : Int32,
   selected_pages : @core.PdfNumberSet,
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for page_number in 1..<=original_count {
     if selected_pages.contains(page_number) {
@@ -210,12 +210,12 @@ fn pdf_chop_selected_page_count(
 
 ///|
 fn pdf_chop_change_table(
-  original_count : Int,
+  original_count : Int32,
   selected_pages : @core.PdfNumberSet,
-  selected_count : Int,
-  pieces_per_selected_page : Int,
-) -> Array[(Int, Int)] {
-  let changes : Array[(Int, Int)] = Array::new(
+  selected_count : Int32,
+  pieces_per_selected_page : Int32,
+) -> Array[(Int32, Int32)] {
+  let changes : Array[(Int32, Int32)] = Array::new(
     capacity=original_count + selected_count * (pieces_per_selected_page - 1),
   )
   let mut next_page = 1
@@ -237,12 +237,12 @@ fn pdf_chop_change_table(
 fn PdfDocument::pdf_chop_inner(
   self : PdfDocument,
   line : Double,
-  x : Int,
-  y : Int,
+  x : Int32,
+  y : Int32,
   columns : Bool,
   btt : Bool,
   rtl : Bool,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   context : String,
 ) -> PdfDocument raise @core.PdfError {
   let end_page = self.endpage()

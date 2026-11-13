@@ -1,8 +1,8 @@
 ///|
 fn PdfFont::pdf_text_predefined_builtin_codepoints(
   self : PdfFont,
-  code : Int,
-) -> Array[Int]? {
+  code : Int32,
+) -> Array[Int32]? {
   match self {
     PdfFontCIDKeyed(font) =>
       match font.encoding {
@@ -144,8 +144,8 @@ fn PdfFont::pdf_text_predefined_builtin_codepoints(
 ///|
 fn PdfFont::pdf_text_predefined_builtin_charcode(
   self : PdfFont,
-  codepoint : Int,
-) -> Int? {
+  codepoint : Int32,
+) -> Int32? {
   match self {
     PdfFontCIDKeyed(font) =>
       match font.encoding {

@@ -23,7 +23,7 @@ async fn toc_fixture_bytes_for_test(path : String) -> Bytes? {
 fn toc_fixture_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -42,7 +42,7 @@ fn toc_fixture_bytes_start_with_at_for_test(
 fn toc_fixture_find_last_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     haystack.length()
   } else if haystack.length() < needle.length() {
@@ -124,7 +124,7 @@ fn toc_fixture_reparse_bad_final_startxref_for_test(
 ///|
 fn toc_fixture_fontpack_for_test() -> @pdflite.PdfFontPack raise {
   @pdflite.pdf_fontpack_of_standard_font(
-    PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding }),
+    PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding, }),
   )
 }
 
@@ -168,7 +168,7 @@ fn toc_fixture_type_dest_contains_for_test(
 fn toc_fixture_assert_page_for_test(
   document : @pdflite.PdfDocument,
   bookmark : @bookmark.PdfBookmark,
-  page_number : Int,
+  page_number : Int32,
 ) -> Unit raise {
   @test.assert_eq(document.page_number_of_target(bookmark.target), page_number)
   @test.assert_eq(
@@ -180,7 +180,7 @@ fn toc_fixture_assert_page_for_test(
 ///|
 fn toc_fixture_assert_cpdf_manual_toc_bookmark_for_test(
   document : @pdflite.PdfDocument,
-  expected_original_first_page : Int,
+  expected_original_first_page : Int32,
 ) -> Unit raise {
   let bookmarks = document.read_bookmarks(preserve_actions=true)
   @test.assert_eq(

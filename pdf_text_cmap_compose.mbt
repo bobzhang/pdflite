@@ -1,7 +1,7 @@
 ///|
 fn pdf_text_tounicode_has_charcode(
-  entries : ArrayView[(Int, @core.PdfBytes)],
-  code : Int,
+  entries : ArrayView[(Int32, @core.PdfBytes)],
+  code : Int32,
 ) -> Bool {
   for entry in entries {
     if entry.0 == code {
@@ -14,13 +14,13 @@ fn pdf_text_tounicode_has_charcode(
 
 ///|
 fn pdf_text_compose_tounicode_entries(
-  current : ArrayView[(Int, @core.PdfBytes)],
-  inherited : ArrayView[(Int, @core.PdfBytes)],
-) -> Array[(Int, @core.PdfBytes)] {
-  let output : Array[(Int, @core.PdfBytes)] = Array::new(
+  current : ArrayView[(Int32, @core.PdfBytes)],
+  inherited : ArrayView[(Int32, @core.PdfBytes)],
+) -> Array[(Int32, @core.PdfBytes)] {
+  let output : Array[(Int32, @core.PdfBytes)] = Array::new(
     capacity=current.length() + inherited.length(),
   )
-  let seen : @hashmap.HashMap[Int, Bool] = HashMap([])
+  let seen : @hashmap.HashMap[Int32, Bool] = HashMap([])
   for entry in current {
     output.push(entry)
     seen[entry.0] = true
@@ -36,13 +36,13 @@ fn pdf_text_compose_tounicode_entries(
 
 ///|
 fn pdf_text_compose_cid_entries(
-  current : ArrayView[(Int, Int)],
-  inherited : ArrayView[(Int, Int)],
-) -> Array[(Int, Int)] {
-  let output : Array[(Int, Int)] = Array::new(
+  current : ArrayView[(Int32, Int32)],
+  inherited : ArrayView[(Int32, Int32)],
+) -> Array[(Int32, Int32)] {
+  let output : Array[(Int32, Int32)] = Array::new(
     capacity=current.length() + inherited.length(),
   )
-  let seen : @hashmap.HashMap[Int, Bool] = HashMap([])
+  let seen : @hashmap.HashMap[Int32, Bool] = HashMap([])
   for entry in current {
     output.push(entry)
     seen[entry.0] = true

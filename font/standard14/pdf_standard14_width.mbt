@@ -1,8 +1,8 @@
 ///|
 fn pdf_standard14_char_metric_width(
-  widths : ArrayView[(Int, Int)],
-  code : Int,
-) -> Int {
+  widths : ArrayView[(Int32, Int32)],
+  code : Int32,
+) -> Int32 {
   for entry in widths {
     let (candidate, width) = entry
     if candidate == code {
@@ -24,7 +24,10 @@ fn pdf_standard14_normalize_glyphname(name : BytesView) -> BytesView {
 
 ///|
 /// Return the AFM width for a glyph code in the font's built-in encoding.
-pub fn pdf_standard14_width_of_charcode(data : PdfAfmData, code : Int) -> Int {
+pub fn pdf_standard14_width_of_charcode(
+  data : PdfAfmData,
+  code : Int32,
+) -> Int32 {
   pdf_standard14_char_metric_width(data.char_metrics, code)
 }
 
@@ -36,7 +39,7 @@ pub fn pdf_standard14_width_of_charcode(data : PdfAfmData, code : Int) -> Int {
 pub fn pdf_standard14_width_of_glyphname(
   data : PdfAfmData,
   name : BytesView,
-) -> Int {
+) -> Int32 {
   let requested = pdf_standard14_normalize_glyphname(name)
   for entry in data.char_name_widths {
     let (candidate, width) = entry
@@ -50,7 +53,11 @@ pub fn pdf_standard14_width_of_glyphname(
 
 ///|
 /// Return the AFM kerning adjustment between two built-in character codes.
-pub fn pdf_standard14_kern(data : PdfAfmData, left : Int, right : Int) -> Int {
+pub fn pdf_standard14_kern(
+  data : PdfAfmData,
+  left : Int32,
+  right : Int32,
+) -> Int32 {
   for entry in data.kerns {
     let (candidate_left, candidate_right, kern) = entry
     if candidate_left == left && candidate_right == right {

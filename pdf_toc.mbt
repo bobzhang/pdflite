@@ -4,7 +4,7 @@ fn pdf_toc_ascii(text : String) -> @core.PdfBytes {
 }
 
 ///|
-fn pdf_toc_type_font_id(font_index : Int) -> String {
+fn pdf_toc_type_font_id(font_index : Int32) -> String {
   font_index.to_string()
 }
 
@@ -13,10 +13,11 @@ fn pdf_toc_type_font_id(font_index : Int) -> String {
 ///
 /// This ports the non-embedding cpdftoc font-source dispatch. TrueType
 /// `EmbedInfo` remains a separate embedding slice.
+#derive(Debug, Eq, ToJson)
 pub(all) enum PdfTocFontSource {
   PdfTocPreMadeFontPack(PdfFontPack)
   PdfTocExistingNamedFont
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Add a table of contents using an already prepared font pack.
@@ -30,8 +31,8 @@ pub fn PdfDocument::toc_with_fontpack(
   fontpack : PdfFontPack,
   font_size : Double,
   title : BytesView,
-  bookmark? : Bool = false,
-  dotleader? : Bool = false,
+  bookmark~ : Bool = false,
+  dotleader~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let source_bookmarks = self.read_bookmarks(preserve_actions=true)
   if source_bookmarks.length() == 0 {
@@ -58,8 +59,8 @@ pub fn pdf_toc_with_fontpack(
   fontpack : PdfFontPack,
   font_size : Double,
   title : BytesView,
-  bookmark? : Bool = false,
-  dotleader? : Bool = false,
+  bookmark~ : Bool = false,
+  dotleader~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.toc_with_fontpack(fontpack, font_size, title, bookmark~, dotleader~)
 }
@@ -85,8 +86,8 @@ pub fn PdfDocument::toc_with_source(
   source : PdfTocFontSource,
   font_size : Double,
   title : BytesView,
-  bookmark? : Bool = false,
-  dotleader? : Bool = false,
+  bookmark~ : Bool = false,
+  dotleader~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.toc_with_fontpack(
     pdf_toc_fontpack_of_source(source),
@@ -104,8 +105,8 @@ pub fn pdf_toc_with_source(
   source : PdfTocFontSource,
   font_size : Double,
   title : BytesView,
-  bookmark? : Bool = false,
-  dotleader? : Bool = false,
+  bookmark~ : Bool = false,
+  dotleader~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.toc_with_source(source, font_size, title, bookmark~, dotleader~)
 }
@@ -124,7 +125,7 @@ pub fn PdfDocument::typeset_table_of_contents(
   bookmark : Bool,
   dotleader : Bool,
   process_struct_tree : Bool,
-  subformat? : PdfUASubformat? = None,
+  subformat~ : PdfUASubformat? = None,
 ) -> PdfDocument raise @core.PdfError {
   if process_struct_tree || subformat != None {
     raise SoftError(
@@ -144,7 +145,7 @@ pub fn pdf_typeset_table_of_contents(
   dotleader : Bool,
   process_struct_tree : Bool,
   document : PdfDocument,
-  subformat? : PdfUASubformat? = None,
+  subformat~ : PdfUASubformat? = None,
 ) -> PdfDocument raise @core.PdfError {
   document.typeset_table_of_contents(
     source,

@@ -10,7 +10,7 @@ priv enum PdfImageDecodedStream {
 fn PdfDocument::pdf_image_decode_stream_stages(
   self : PdfDocument,
   current : @syntax.PdfStream,
-  stages : Int,
+  stages : Int32,
 ) -> PdfImageDecodedStream raise @core.PdfError {
   match self.pdf_stream_first_filter_direct(current.dictionary) {
     Some(filter) if filter == pdf_image_dctdecode_name() ||
@@ -48,7 +48,7 @@ fn PdfDocument::pdf_image_decode_to_image(
 fn PdfDocument::pdf_image_jbig2_globals(
   self : PdfDocument,
   dictionary : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   let first_decodeparms = match
     self.lookup_direct_or_else(
       pdf_image_decodeparms_key(),

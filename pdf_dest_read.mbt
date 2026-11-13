@@ -75,7 +75,7 @@ fn PdfDocument::pdf_dest_lookup_string_destination(
 pub fn PdfDocument::read_destination(
   self : PdfDocument,
   object : @syntax.PdfObject,
-  shallow? : Bool = false,
+  shallow~ : Bool = false,
 ) -> @destination.PdfDestination raise @core.PdfError {
   match self.direct(object) {
     PdfDictionary(_) as dictionary =>
@@ -190,7 +190,7 @@ pub fn PdfDocument::read_destination(
 pub fn pdf_read_destination(
   document : PdfDocument,
   object : @syntax.PdfObject,
-  shallow? : Bool = false,
+  shallow~ : Bool = false,
 ) -> @destination.PdfDestination raise @core.PdfError {
   document.read_destination(object, shallow~)
 }

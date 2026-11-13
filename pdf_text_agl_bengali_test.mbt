@@ -1,6 +1,6 @@
 ///|
 test "PdfTextExtractor decodes Bengali AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/aabengali", 0x0986),
     ("/aavowelsignbengali", 0x09BE),
     ("/abengali", 0x0985),
@@ -92,8 +92,8 @@ test "PdfTextExtractor decodes Bengali AGL glyph names" {
     ("/zerobengali", 0x09E6),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1

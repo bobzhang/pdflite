@@ -1,6 +1,6 @@
 ///|
 /// Return the object number referenced by an embedded font-file marker.
-pub fn PdfFontFile::object_number(self : PdfFontFile) -> Int {
+pub fn PdfFontFile::object_number(self : PdfFontFile) -> Int32 {
   match self {
     PdfFontFile(number) | PdfFontFile2(number) | PdfFontFile3(number) => number
   }
@@ -8,16 +8,16 @@ pub fn PdfFontFile::object_number(self : PdfFontFile) -> Int {
 
 ///|
 /// Return the embedded font-file stream object number for a parsed font.
-pub fn PdfFont::embedded_fontfile_number(self : PdfFont) -> Int? {
+pub fn PdfFont::embedded_fontfile_number(self : PdfFont) -> Int32? {
   match self {
     PdfFontSimple(
-      { fontdescriptor: Some({ fontfile: Some(fontfile), .. }), .. }
+      { fontdescriptor: Some({ fontfile: Some(fontfile), .. }), .. },
     ) => Some(fontfile.object_number())
     PdfFontCIDKeyed(
       {
         composite: { cid_fontdescriptor: { fontfile: Some(fontfile), .. }, .. },
-        ..,
-      }
+        ..
+      },
     ) => Some(fontfile.object_number())
     _ => None
   }
@@ -27,7 +27,7 @@ pub fn PdfFont::embedded_fontfile_number(self : PdfFont) -> Int? {
 fn PdfDocument::pdf_font_descriptor_file_number(
   self : PdfDocument,
   font : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match self.lookup_direct(pdf_text_font_descriptor_key_name, font) {
     Some(descriptor) =>
       match pdf_text_fontfile_of_descriptor(descriptor) {
@@ -42,7 +42,7 @@ fn PdfDocument::pdf_font_descriptor_file_number(
 fn PdfDocument::pdf_font_embedded_file_number(
   self : PdfDocument,
   font : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match self.pdf_font_descriptor_file_number(font) {
     Some(number) => Some(number)
     None =>
@@ -70,7 +70,7 @@ fn PdfDocument::pdf_font_embedded_file_number(
 /// objects raise through the normal PDF error path.
 pub fn PdfDocument::extract_fontfile_bytes(
   self : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   font_name : String,
 ) -> @core.PdfBytes? raise @core.PdfError {
   let font = self.font_from_name(font_name, page_number)
@@ -89,7 +89,7 @@ pub fn PdfDocument::extract_fontfile_bytes(
 /// Compatibility wrapper for `PdfDocument::extract_fontfile_bytes`.
 pub fn pdf_extract_fontfile_bytes(
   document : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   font_name : String,
 ) -> @core.PdfBytes? raise @core.PdfError {
   document.extract_fontfile_bytes(page_number, font_name)
@@ -146,8 +146,8 @@ pub fn PdfDocument::copy_font_from(
   self : PdfDocument,
   source : PdfDocument,
   font_name : String,
-  font_page : Int,
-  page_numbers : ArrayView[Int],
+  font_page : Int32,
+  page_numbers : ArrayView[Int32],
 ) -> PdfDocument raise @core.PdfError {
   let renumbered = pdf_renumber_documents([source, self])
   let source_pdf = renumbered[0]
@@ -181,8 +181,8 @@ pub fn PdfDocument::copy_font_from(
 pub fn pdf_copy_font(
   source : PdfDocument,
   font_name : String,
-  font_page : Int,
-  page_numbers : ArrayView[Int],
+  font_page : Int32,
+  page_numbers : ArrayView[Int32],
   target : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   target.copy_font_from(source, font_name, font_page, page_numbers)

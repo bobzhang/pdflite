@@ -61,21 +61,21 @@ fn impose_assert_cm_close_for_test(
 
 ///|
 fn impose_transforms_for_test(
-  fit? : Bool = false,
-  x? : Int = 2,
-  y? : Int = 2,
-  columns? : Bool = false,
-  rtl? : Bool = false,
-  btt? : Bool = false,
-  center? : Bool = false,
-  margin? : Double = 0.0,
-  page_width? : Double = 100.0,
-  page_height? : Double = 200.0,
-  output_width? : Double = 200.0,
-  output_height? : Double = 400.0,
-  fit_extra_hspace? : Double = 0.0,
-  fit_extra_vspace? : Double = 0.0,
-  count? : Int = 3,
+  fit~ : Bool = false,
+  x~ : Int32 = 2,
+  y~ : Int32 = 2,
+  columns~ : Bool = false,
+  rtl~ : Bool = false,
+  btt~ : Bool = false,
+  center~ : Bool = false,
+  margin~ : Double = 0.0,
+  page_width~ : Double = 100.0,
+  page_height~ : Double = 200.0,
+  output_width~ : Double = 200.0,
+  output_height~ : Double = 400.0,
+  fit_extra_hspace~ : Double = 0.0,
+  fit_extra_vspace~ : Double = 0.0,
+  count~ : Int32 = 3,
 ) -> Array[@geometry.TransformMatrix] raise @core.PdfError {
   pdf_document_empty().pdf_impose_transforms(
     fit,
@@ -112,11 +112,11 @@ fn impose_content_ops_for_test(
 ///|
 fn impose_page_for_test(
   ops : ArrayView[@content.PdfContentOp],
-  resources? : @syntax.PdfObject = PdfDictionary([]),
-  rest? : @syntax.PdfObject = PdfDictionary([]),
-  rotate? : @page.PdfPageRotation = Rotate0,
-  width? : Double = 100.0,
-  height? : Double = 100.0,
+  resources~ : @syntax.PdfObject = PdfDictionary([]),
+  rest~ : @syntax.PdfObject = PdfDictionary([]),
+  rotate~ : @page.PdfPageRotation = Rotate0,
+  width~ : Double = 100.0,
+  height~ : Double = 100.0,
 ) -> @page.PdfPage raise @core.PdfError {
   {
     content: [pdf_content_stream_of_ops(ops)],
@@ -270,8 +270,8 @@ test "pdf_impose_layout calculates fit sheets and spacing" {
   guard too_small
     is Err(
       @core.PdfError::BadNumberArgument(
-        "impose: not even a single page would fit"
-      )
+        "impose: not even a single page would fit",
+      ),
     ) else {
     fail("expected fit layout to reject too-small output")
   }
@@ -335,8 +335,8 @@ test "pdf_impose_layout calculates non-fit stacks and output boxes" {
   guard bad_zero
     is Err(
       @core.PdfError::BadNumberArgument(
-        "impose-xy: both dimensions cannot be zero"
-      )
+        "impose-xy: both dimensions cannot be zero",
+      ),
     ) else {
     fail("expected non-fit layout to reject zero dimensions")
   }
@@ -620,7 +620,7 @@ test "pdf_impose_transforms applies fit spacing and margin transforms" {
       output_height=100.0,
       count=1,
     ),
-    [{ a: 0.8, b: 0.0, c: 0.0, d: 0.8, e: 20.0, f: 10.0 }],
+    [{ a: 0.8, b: 0.0, c: 0.0, d: 0.8, e: 20.0, f: 10.0, }],
   )
 }
 
@@ -635,7 +635,7 @@ test "pdf_impose_transforms rejects invalid grids and margins" {
   }
   guard bad_grid
     is Err(
-      @core.PdfError::BadNumberArgument("impose: x and y must be positive")
+      @core.PdfError::BadNumberArgument("impose: x and y must be positive"),
     ) else {
     fail("expected BadNumberArgument for non-positive imposition grid")
   }
@@ -657,7 +657,7 @@ test "pdf_impose_transforms rejects invalid grids and margins" {
   }
   guard bad_margin
     is Err(
-      @core.PdfError::BadNumberArgument("impose: margin would fill whole page")
+      @core.PdfError::BadNumberArgument("impose: margin would fill whole page"),
     ) else {
     fail("expected BadNumberArgument for over-large imposition margin")
   }
@@ -974,8 +974,8 @@ test "pdf_impose pattern matrix rewrite descends into form xobjects" {
   guard document.lookup_object_or_null(30).lookup_immediate(key_resources)
     is Some(
       PdfDictionary(
-        [(pattern_key, PdfDictionary([(name, PdfIndirect(number))]))]
-      )
+        [(pattern_key, PdfDictionary([(name, PdfIndirect(number))]))],
+      ),
     ) &&
     pattern_key == key_pattern &&
     name == pattern_name else {

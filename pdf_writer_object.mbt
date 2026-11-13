@@ -11,7 +11,7 @@ fn pdf_writer_length_name() -> @core.PdfName {
 ///|
 fn pdf_write_stream_dictionary(
   stream : @syntax.PdfStream,
-  length : Int,
+  length : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   stream.dictionary.add_dict_entry(pdf_writer_length_name(), PdfInteger(length))
 }

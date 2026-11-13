@@ -39,8 +39,8 @@ fn content_inline_compressed_render_for_test(
 
 ///|
 fn content_inline_lzw_codes_for_test(
-  codes : ArrayView[Int],
-  early_change : Int,
+  codes : ArrayView[Int32],
+  early_change : Int32,
 ) -> @core.PdfBytes {
   let writer = @core.bit_writer_new()
   let mut code_length = 9

@@ -1,5 +1,5 @@
 ///|
-fn pdf_jpeg_eoi_length(data : BytesView) -> Int? {
+fn pdf_jpeg_eoi_length(data : BytesView) -> Int32? {
   let mut last = 0
   for index in 0..<data.length() {
     let value = data[index].to_int()
@@ -37,7 +37,7 @@ pub fn pdf_get_jpeg_data(
 }
 
 ///|
-fn pdf_jpeg_get(data : BytesView, index : Int) -> Int? {
+fn pdf_jpeg_get(data : BytesView, index : Int32) -> Int32? {
   if index >= 0 && index < data.length() {
     Some(data[index].to_int())
   } else {
@@ -48,9 +48,9 @@ fn pdf_jpeg_get(data : BytesView, index : Int) -> Int? {
 ///|
 fn pdf_jpeg_get_or(
   data : BytesView,
-  index : Int,
+  index : Int32,
   error : @core.PdfError,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match pdf_jpeg_get(data, index) {
     Some(value) => value
     None => raise error
@@ -60,9 +60,9 @@ fn pdf_jpeg_get_or(
 ///|
 fn pdf_jpeg_word_at(
   data : BytesView,
-  index : Int,
+  index : Int32,
   error : @core.PdfError,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   pdf_jpeg_get_or(data, index, error) * 256 +
   pdf_jpeg_get_or(data, index + 1, error)
 }
@@ -79,7 +79,7 @@ fn pdf_jpeg_has_app_header(data : BytesView) -> Bool {
 ///|
 fn pdf_jpeg_has_signature(
   data : BytesView,
-  index : Int,
+  index : Int32,
 ) -> Bool raise @core.PdfError {
   let first = pdf_jpeg_get_or(data, index + 2, BadJPEGString)
   let second = pdf_jpeg_get_or(data, index + 3, BadJPEGString)
@@ -105,7 +105,7 @@ fn pdf_jpeg_has_signature(
 ///|
 fn pdf_jpeg_dimensions_inner(
   data : BytesView,
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   if !pdf_jpeg_has_app_header(data) {
     raise BadJPEGHeader
   }
@@ -141,7 +141,7 @@ fn pdf_jpeg_dimensions_inner(
 /// Progressive JPEGs and JPEGs without SOF0 raise `@core.PdfError::JPEGDimensionsExpected`.
 pub fn pdf_jpeg_dimensions_view(
   data : BytesView,
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   pdf_jpeg_dimensions_inner(data)
 }
 
@@ -149,17 +149,17 @@ pub fn pdf_jpeg_dimensions_view(
 /// Return the width and height of a baseline JFIF/Exif JPEG byte stream.
 pub fn pdf_jpeg_dimensions(
   data : @core.PdfBytes,
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   pdf_jpeg_dimensions_view(data)
 }
 
 ///|
-fn pdf_jpeg_marker_without_segment_length(marker : Int) -> Bool {
+fn pdf_jpeg_marker_without_segment_length(marker : Int32) -> Bool {
   marker == 0x01 || (marker >= 0xD0 && marker <= 0xD9)
 }
 
 ///|
-fn pdf_jpeg_marker_has_dimensions(marker : Int) -> Bool {
+fn pdf_jpeg_marker_has_dimensions(marker : Int32) -> Bool {
   match marker {
     0xC0
     | 0xC1
@@ -181,8 +181,8 @@ fn pdf_jpeg_marker_has_dimensions(marker : Int) -> Bool {
 ///|
 fn pdf_jpeg_next_marker(
   data : BytesView,
-  index : Int,
-) -> (Int, Int) raise @core.PdfError {
+  index : Int32,
+) -> (Int32, Int32) raise @core.PdfError {
   let mut cursor = index
   while cursor < data.length() && data[cursor].to_int() != 0xFF {
     cursor += 1
@@ -202,7 +202,7 @@ fn pdf_jpeg_next_marker(
 ///|
 fn pdf_jpeg_backup_dimensions_inner(
   data : BytesView,
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   if data.length() < 2 || data[0].to_int() != 0xFF || data[1].to_int() != 0xD8 {
     raise BadJPEGHeader
   }
@@ -256,7 +256,7 @@ fn pdf_jpeg_backup_dimensions_inner(
 /// `jpeg_dimensions` parser rejects.
 pub fn pdf_jpeg_backup_dimensions_view(
   data : BytesView,
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   pdf_jpeg_backup_dimensions_inner(data)
 }
 
@@ -264,6 +264,6 @@ pub fn pdf_jpeg_backup_dimensions_view(
 /// Return JPEG dimensions by scanning any SOF marker with width and height.
 pub fn pdf_jpeg_backup_dimensions(
   data : @core.PdfBytes,
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   pdf_jpeg_backup_dimensions_view(data)
 }

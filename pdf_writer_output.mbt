@@ -1,5 +1,5 @@
 ///|
-fn pdf_writer_push_byte(output : Array[Byte], value : Int) -> Unit {
+fn pdf_writer_push_byte(output : Array[Byte], value : Int32) -> Unit {
   output.push(value.to_byte())
 }
 
@@ -16,7 +16,7 @@ fn pdf_writer_push_ascii(output : Array[Byte], text : String) -> Unit {
 }
 
 ///|
-fn pdf_writer_hex_digit(value : Int) -> Byte {
+fn pdf_writer_hex_digit(value : Int32) -> Byte {
   if value < 10 {
     (48 + value).to_byte()
   } else {
@@ -25,7 +25,7 @@ fn pdf_writer_hex_digit(value : Int) -> Byte {
 }
 
 ///|
-fn pdf_writer_lower_hex_digit(value : Int) -> Byte {
+fn pdf_writer_lower_hex_digit(value : Int32) -> Byte {
   if value < 10 {
     (48 + value).to_byte()
   } else {
@@ -34,14 +34,14 @@ fn pdf_writer_lower_hex_digit(value : Int) -> Byte {
 }
 
 ///|
-fn pdf_writer_push_hex_escape(output : Array[Byte], value : Int) -> Unit {
+fn pdf_writer_push_hex_escape(output : Array[Byte], value : Int32) -> Unit {
   pdf_writer_push_byte(output, 35)
   output.push(pdf_writer_hex_digit(value / 16))
   output.push(pdf_writer_hex_digit(value % 16))
 }
 
 ///|
-fn pdf_writer_push_octal_escape(output : Array[Byte], value : Int) -> Unit {
+fn pdf_writer_push_octal_escape(output : Array[Byte], value : Int32) -> Unit {
   pdf_writer_push_byte(output, 92)
   pdf_writer_push_byte(output, 48 + value / 64)
   pdf_writer_push_byte(output, 48 + value / 8 % 8)

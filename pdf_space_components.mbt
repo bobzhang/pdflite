@@ -3,7 +3,7 @@ fn PdfDocument::pdf_space_named_components(
   self : PdfDocument,
   resources : @syntax.PdfObject,
   name : @core.PdfName,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   if name == pdf_space_calgray_name ||
     name == pdf_space_device_gray_name ||
     name == pdf_space_g_name {
@@ -40,7 +40,7 @@ pub fn PdfDocument::colour_space_components(
   self : PdfDocument,
   resources : @syntax.PdfObject,
   object : @syntax.PdfObject,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match self.direct(object) {
     PdfNameObject(name) => self.pdf_space_named_components(resources, name)
     PdfArray([PdfNameObject(kind), alternate]) if kind == pdf_space_pattern_name =>
@@ -72,6 +72,6 @@ pub fn pdf_colour_space_components(
   document : PdfDocument,
   resources : @syntax.PdfObject,
   object : @syntax.PdfObject,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   document.colour_space_components(resources, object)
 }

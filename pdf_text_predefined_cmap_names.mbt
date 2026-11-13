@@ -108,7 +108,7 @@ fn pdf_text_predefined_cmap_uses_cns_euc_charcodes(
 ///|
 fn pdf_text_predefined_cns_euc_cid_ranges(
   name : @core.PdfName,
-) -> Array[(Int, Int, Int)]? {
+) -> Array[(Int32, Int32, Int32)]? {
   guard pdf_text_predefined_cmap_uses_cns_euc_charcodes(name) else {
     return None
   }
@@ -122,7 +122,7 @@ fn pdf_text_predefined_cns_euc_cid_ranges(
 ///|
 fn pdf_text_predefined_cns1_b5_cid_ranges(
   name : @core.PdfName,
-) -> Array[(Int, Int, Int)]? {
+) -> Array[(Int32, Int32, Int32)]? {
   let text = pdf_text_string_of_name(name)
   guard pdf_text_predefined_cmap_has_text_orientation(text) else { return None }
   if text.contains("ETenms-B5") {

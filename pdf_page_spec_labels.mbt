@@ -1,9 +1,9 @@
 ///|
 fn pdf_pagespec_copy_view(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   bytes : BytesView,
-) -> Int {
+) -> Int32 {
   let mut position = position
   for byte in bytes {
     output[position] = byte
@@ -16,8 +16,8 @@ fn pdf_pagespec_copy_view(
 fn PdfDocumentPageSpecContext::read_page_label_reference(
   self : PdfDocumentPageSpecContext,
   spec : BytesView,
-  open_index : Int,
-) -> (Bytes, Int) raise @core.PdfError {
+  open_index : Int32,
+) -> (Bytes, Int32) raise @core.PdfError {
   let mut index = open_index + 1
   let mut label_length = 0
   let mut closed = false
@@ -96,7 +96,7 @@ fn PdfDocumentPageSpecContext::resolved_page_labels_length(
   self : PdfDocumentPageSpecContext,
   spec : BytesView,
   labels : ArrayView[@label.PdfPageLabel],
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let mut length = 0
   let mut index = 0
   while index < spec.length() {

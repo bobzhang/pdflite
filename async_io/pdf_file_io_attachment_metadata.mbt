@@ -32,10 +32,10 @@ fn pdf_async_io_attachment_data(
 pub async fn pdf_attach_file_from_path(
   document : @pdflite.PdfDocument,
   path : StringView,
-  keep_version? : Bool = false,
-  page_number? : Int? = None,
-  relationship? : String? = None,
-  description? : String? = None,
+  keep_version~ : Bool = false,
+  page_number~ : Int32? = None,
+  relationship~ : String? = None,
+  description~ : String? = None,
 ) -> @pdflite.PdfDocument {
   @pdflite.pdf_attach_file(
     document,
@@ -51,7 +51,7 @@ pub async fn pdf_attach_file_from_path(
 ///|
 fn pdf_async_io_catalog_metadata_number(
   document : @pdflite.PdfDocument,
-) -> Int? raise @core.PdfError {
+) -> Int32? raise @core.PdfError {
   let root = match
     document.lookup_direct(pdf_async_io_name("/Root"), document.trailer_dict()) {
     Some(root) => root
@@ -111,7 +111,7 @@ pub async fn pdf_set_metadata(
 pub async fn pdf_write_metadata_to_file(
   document : @pdflite.PdfDocument,
   path : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   match document.metadata() {
     Some(metadata) =>
@@ -129,7 +129,7 @@ pub async fn pdf_write_metadata_to_file(
 pub async fn pdf_extract_all_metadata_to_directory(
   document : @pdflite.PdfDocument,
   directory : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   let main_number = pdf_async_io_catalog_metadata_number(document)
   match main_number {
@@ -163,7 +163,7 @@ pub async fn pdf_extract_all_metadata_to_directory(
 pub async fn pdf_extract_all_metadata(
   document : @pdflite.PdfDocument,
   directory : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   pdf_extract_all_metadata_to_directory(document, directory, permission~)
 }
@@ -177,7 +177,7 @@ pub async fn pdf_extract_all_metadata(
 pub async fn pdf_dump_attached_files_to_directory(
   document : @pdflite.PdfDocument,
   directory : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   for attachment in document.list_attached_files() {
     let filename = @pdflite.pdf_attachment_remove_unsafe_characters(
@@ -197,7 +197,7 @@ pub async fn pdf_dump_attached_files_to_directory(
 pub async fn pdf_dump_attached_files(
   document : @pdflite.PdfDocument,
   directory : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   pdf_dump_attached_files_to_directory(document, directory, permission~)
 }

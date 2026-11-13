@@ -44,14 +44,14 @@ fn PdfDocument::pdf_draw_has_fresh_structure_tree(self : PdfDocument) -> Bool {
 fn PdfDocument::pdf_draw_apply_chunk(
   self : PdfDocument,
   state : PdfDrawRenderState,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   drawops : ArrayView[PdfDrawOp],
   struct_tree : Bool,
   fast : Bool,
   underneath : Bool,
   filename : String,
-  bates : Int,
-  bates_pad : Int?,
+  bates : Int32,
+  bates_pad : Int32?,
   time : @date.PdfStrftimeTime?,
   add_artifacts : Bool,
 ) -> PdfDocument raise @core.PdfError {
@@ -95,8 +95,8 @@ fn PdfDocument::pdf_draw_apply_chunk(
 ///|
 fn pdf_draw_next_range(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-) -> (PdfDocument, Array[Int]) raise @core.PdfError {
+  page_numbers : ArrayView[Int32],
+) -> (PdfDocument, Array[Int32]) raise @core.PdfError {
   let end_page = document.endpage()
   match page_numbers {
     [page_number] if end_page > page_number => (document, [page_number + 1])

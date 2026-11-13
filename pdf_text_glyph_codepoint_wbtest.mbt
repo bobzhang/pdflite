@@ -8,7 +8,7 @@ fn glyph_codepoint_wbtest_name(text : String) -> @core.PdfName {
 
 ///|
 test "private text glyph codepoint tables cover representative names" {
-  let basic_latin_entries : Array[(String, Int)] = [
+  let basic_latin_entries : Array[(String, Int32)] = [
     ("/A", 65),
     ("/B", 66),
     ("/C", 67),
@@ -106,7 +106,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let cjk_symbol_entries : Array[(String, Int)] = [
+  let cjk_symbol_entries : Array[(String, Int32)] = [
     ("/anglebracketleft", 0x3008),
     ("/anglebracketright", 0x3009),
     ("/blacklenticularbracketleft", 0x3010),
@@ -163,7 +163,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let hiragana_entries : Array[(String, Int)] = [
+  let hiragana_entries : Array[(String, Int32)] = [
     ("/ahiragana", 0x3042),
     ("/asmallhiragana", 0x3041),
     ("/bahiragana", 0x3070),
@@ -267,7 +267,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let katakana_entries : Array[(String, Int)] = [
+  let katakana_entries : Array[(String, Int32)] = [
     ("/akatakana", 0x30A2),
     ("/asmallkatakana", 0x30A1),
     ("/bakatakana", 0x30D0),
@@ -377,7 +377,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let bopomofo_entries : Array[(String, Int)] = [
+  let bopomofo_entries : Array[(String, Int32)] = [
     ("/abopomofo", 0x311A),
     ("/aibopomofo", 0x311E),
     ("/anbopomofo", 0x3122),
@@ -430,7 +430,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let hangul_compat_jamo_entries : Array[(String, Int)] = [
+  let hangul_compat_jamo_entries : Array[(String, Int32)] = [
     ("/aekorean", 0x3150),
     ("/akorean", 0x314F),
     ("/araeaekorean", 0x318E),
@@ -540,7 +540,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let enclosed_cjk_entries : Array[(String, Int)] = [
+  let enclosed_cjk_entries : Array[(String, Int32)] = [
     ("/chieuchacirclekorean", 0x3277),
     ("/chieuchaparenkorean", 0x3217),
     ("/chieuchcirclekorean", 0x3269),
@@ -669,7 +669,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let armenian_entries : Array[(String, Int)] = [
+  let armenian_entries : Array[(String, Int32)] = [
     ("/Aybarmenian", 0x0531),
     ("/Benarmenian", 0x0532),
     ("/Caarmenian", 0x053E),
@@ -770,7 +770,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let devanagari_entries : Array[(String, Int)] = [
+  let devanagari_entries : Array[(String, Int32)] = [
     ("/aadeva", 0x0906),
     ("/aavowelsigndeva", 0x093E),
     ("/abbreviationsigndeva", 0x0970),
@@ -890,7 +890,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let thai_entries : Array[(String, Int)] = [
+  let thai_entries : Array[(String, Int32)] = [
     ("/angkhankhuthai", 0x0E5A),
     ("/bahtthai", 0x0E3F),
     ("/bobaimaithai", 0x0E1A),
@@ -991,7 +991,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let private_use_entries : Array[(String, Int)] = [
+  let private_use_entries : Array[(String, Int32)] = [
     ("/Acute", 0xF6C9),
     ("/Caron", 0xF6CA),
     ("/Dieresis", 0xF6CB),
@@ -1056,7 +1056,7 @@ test "private text glyph codepoint tables cover representative names" {
     ),
     None,
   )
-  let half_fullwidth_entries : Array[(String, Int)] = [
+  let half_fullwidth_entries : Array[(String, Int32)] = [
     ("/Amonospace", 0xFF21),
     ("/Bmonospace", 0xFF22),
     ("/Cmonospace", 0xFF23),

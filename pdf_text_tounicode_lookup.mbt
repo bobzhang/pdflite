@@ -1,17 +1,19 @@
 ///|
-fn PdfFont::pdf_text_tounicode(self : PdfFont) -> Array[(Int, @core.PdfBytes)]? {
+fn PdfFont::pdf_text_tounicode(
+  self : PdfFont,
+) -> Array[(Int32, @core.PdfBytes)]? {
   match self {
     PdfFontSimple(
-      { fontdescriptor: Some({ tounicode: Some(tounicode), .. }), .. }
+      { fontdescriptor: Some({ tounicode: Some(tounicode), .. }), .. },
     ) => Some(tounicode)
     PdfFontCIDKeyed(
       {
         composite: {
           cid_fontdescriptor: { tounicode: Some(tounicode), .. },
-          ..,
+          ..
         },
-        ..,
-      }
+        ..
+      },
     ) => Some(tounicode)
     _ => None
   }
@@ -19,8 +21,8 @@ fn PdfFont::pdf_text_tounicode(self : PdfFont) -> Array[(Int, @core.PdfBytes)]? 
 
 ///|
 fn pdf_text_lookup_tounicode(
-  tounicode : ArrayView[(Int, @core.PdfBytes)],
-  code : Int,
+  tounicode : ArrayView[(Int32, @core.PdfBytes)],
+  code : Int32,
 ) -> @core.PdfBytes? {
   for entry in tounicode {
     if entry.0 == code {
@@ -34,8 +36,8 @@ fn pdf_text_lookup_tounicode(
 ///|
 fn pdf_text_codepoints_of_tounicode_bytes_or_charcode(
   bytes : @core.PdfBytes,
-  code : Int,
-) -> Array[Int] {
+  code : Int32,
+) -> Array[Int32] {
   try pdf_codepoints_of_utf16be(bytes) catch {
     _ => [code]
   } noraise {
@@ -45,9 +47,9 @@ fn pdf_text_codepoints_of_tounicode_bytes_or_charcode(
 
 ///|
 fn pdf_text_lookup_tounicode_codepoints(
-  tounicode : ArrayView[(Int, @core.PdfBytes)],
-  code : Int,
-) -> Array[Int]? {
+  tounicode : ArrayView[(Int32, @core.PdfBytes)],
+  code : Int32,
+) -> Array[Int32]? {
   match pdf_text_lookup_tounicode(tounicode, code) {
     Some(bytes) =>
       Some(pdf_text_codepoints_of_tounicode_bytes_or_charcode(bytes, code))
@@ -57,16 +59,16 @@ fn pdf_text_lookup_tounicode_codepoints(
 
 ///|
 priv struct PdfTextExternalCMapLookup {
-  cid_map : @hashmap.HashMap[Int, Int]
-  notdef_map : @hashmap.HashMap[Int, Int]
-  map : @hashmap.HashMap[Int, Array[Int]]
+  cid_map : @hashmap.HashMap[Int32, Int32]
+  notdef_map : @hashmap.HashMap[Int32, Int32]
+  map : @hashmap.HashMap[Int32, Array[Int32]]
 }
 
 ///|
 fn pdf_text_cmap_cid_lookup_map(
-  entries : ArrayView[(Int, Int)],
-) -> @hashmap.HashMap[Int, Int] {
-  let values : @hashmap.HashMap[Int, Int] = HashMap([])
+  entries : ArrayView[(Int32, Int32)],
+) -> @hashmap.HashMap[Int32, Int32] {
+  let values : @hashmap.HashMap[Int32, Int32] = HashMap([])
   for entry in entries {
     if !values.contains(entry.0) {
       values[entry.0] = entry.1
@@ -77,9 +79,9 @@ fn pdf_text_cmap_cid_lookup_map(
 
 ///|
 fn pdf_text_tounicode_codepoints_lookup_map(
-  entries : ArrayView[(Int, @core.PdfBytes)],
-) -> @hashmap.HashMap[Int, Array[Int]] {
-  let values : @hashmap.HashMap[Int, Array[Int]] = HashMap([])
+  entries : ArrayView[(Int32, @core.PdfBytes)],
+) -> @hashmap.HashMap[Int32, Array[Int32]] {
+  let values : @hashmap.HashMap[Int32, Array[Int32]] = HashMap([])
   for entry in entries {
     if !values.contains(entry.0) {
       values[entry.0] = pdf_text_codepoints_of_tounicode_bytes_or_charcode(
@@ -104,11 +106,11 @@ fn pdf_text_external_cmap_lookup(
 
 ///|
 fn pdf_text_reverse_lookup_tounicode_charcode(
-  tounicode : ArrayView[(Int, @core.PdfBytes)],
-  codepoint : Int,
-  shadow_first : ArrayView[(Int, Int)],
-  shadow_second : ArrayView[(Int, Int)],
-) -> Int? {
+  tounicode : ArrayView[(Int32, @core.PdfBytes)],
+  codepoint : Int32,
+  shadow_first : ArrayView[(Int32, Int32)],
+  shadow_second : ArrayView[(Int32, Int32)],
+) -> Int32? {
   for entry in tounicode {
     try pdf_codepoints_of_utf16be(entry.1) catch {
       _ => ()

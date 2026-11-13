@@ -4,7 +4,7 @@ fn image_extract_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn image_extract_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn image_extract_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -99,7 +99,7 @@ test "PdfDocument extract_single_image_files preserves encoded image streams" {
     ),
   )
   @test.assert_eq(try! doc.extract_single_image_files(20, "one"), [
-    { path: "one.jpg", data: @ascii.encode("jpg") },
+    { path: "one.jpg", data: @ascii.encode("jpg"), },
   ])
 
   doc.add_object_given_number(
@@ -132,8 +132,8 @@ test "PdfDocument extract_single_image_files preserves encoded image streams" {
     ),
   )
   @test.assert_eq(try! doc.extract_single_image_files(31, "dir/image"), [
-    { path: "dir/1.jbig2global", data: @ascii.encode("globals") },
-    { path: "dir/image.jbig2__1", data: @ascii.encode("jbig") },
+    { path: "dir/1.jbig2global", data: @ascii.encode("globals"), },
+    { path: "dir/image.jbig2__1", data: @ascii.encode("jbig"), },
   ])
 }
 
@@ -332,14 +332,14 @@ test "PdfDocument extract_images_files walks page images masks and form images i
     image_extract_bytes_for_test([64, 64, 64]),
   )
   @test.assert_eq(files, [
-    { path: "img-00-p1.pnm", data: Bytes::from_array(expected_image) },
-    { path: "img-01-p1.jpg", data: second_jpeg_data },
+    { path: "img-00-p1.pnm", data: Bytes::from_array(expected_image), },
+    { path: "img-01-p1.jpg", data: second_jpeg_data, },
     {
       path: "img-02-smask-p1.pnm",
       data: Bytes::from_array(expected_second_mask),
     },
-    { path: "img-03-smask-p1.pnm", data: Bytes::from_array(expected_mask) },
-    { path: "img-04-p1.jpg", data: jpeg_data },
+    { path: "img-03-smask-p1.pnm", data: Bytes::from_array(expected_mask), },
+    { path: "img-04-p1.jpg", data: jpeg_data, },
   ])
 }
 
@@ -393,22 +393,22 @@ test "PdfDocument extract_images_files honors global and per-page dedup" {
   ignore(try! doc.add_root(page_root, []))
 
   @test.assert_eq(try! doc.extract_images_files([1, 2], "dup-%"), [
-    { path: "dup-0-p1.jpg", data: jpeg_data },
-    { path: "dup-1-p1.jpg", data: jpeg_data },
-    { path: "dup-2-p2.jpg", data: jpeg_data },
+    { path: "dup-0-p1.jpg", data: jpeg_data, },
+    { path: "dup-1-p1.jpg", data: jpeg_data, },
+    { path: "dup-2-p2.jpg", data: jpeg_data, },
   ])
   @test.assert_eq(try! doc.extract_images_files([1, 2], "dup-%", dedup=true), [
-    { path: "dup-0-p1.jpg", data: jpeg_data },
+    { path: "dup-0-p1.jpg", data: jpeg_data, },
   ])
   @test.assert_eq(
     try! doc.extract_images_files([1, 2], "dup-%", dedup_per_page=true),
     [
-      { path: "dup-0-p1.jpg", data: jpeg_data },
-      { path: "dup-1-p2.jpg", data: jpeg_data },
+      { path: "dup-0-p1.jpg", data: jpeg_data, },
+      { path: "dup-1-p2.jpg", data: jpeg_data, },
     ],
   )
   @test.assert_eq(try! doc.extract_images_files([2], "sel-%"), [
-    { path: "sel-0-p1.jpg", data: jpeg_data },
+    { path: "sel-0-p1.jpg", data: jpeg_data, },
   ])
 }
 
@@ -449,7 +449,7 @@ test "PdfDocument extract_images_files expands object number stem marker" {
   let page_root = try! doc.add_pagetree([page])
   ignore(try! doc.add_root(page_root, []))
   @test.assert_eq(try! doc.extract_images_files([1], "obj-%objnum@-%"), [
-    { path: "obj-10-0-p1.jpg", data: jpeg_data },
+    { path: "obj-10-0-p1.jpg", data: jpeg_data, },
   ])
 }
 
@@ -482,6 +482,6 @@ test "PdfDocument extract_images_files optionally emits inline images" {
   image_extract_append_bytes_for_test(expected, @ascii.encode("P6 1 1 255\n"))
   image_extract_append_bytes_for_test(expected, inline_data)
   @test.assert_eq(try! doc.extract_images_files([1], "ii-%", inline=true), [
-    { path: "ii-0-p1-inline.pnm", data: Bytes::from_array(expected) },
+    { path: "ii-0-p1-inline.pnm", data: Bytes::from_array(expected), },
   ])
 }

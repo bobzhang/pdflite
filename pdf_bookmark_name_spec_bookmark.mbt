@@ -2,8 +2,8 @@
 fn PdfDocument::pdf_bookmark_name_for_page(
   self : PdfDocument,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  split_level : Int,
-  page_number : Int,
+  split_level : Int32,
+  page_number : Int32,
 ) -> String raise @core.PdfError {
   for bookmark in bookmarks {
     if bookmark.level <= split_level &&

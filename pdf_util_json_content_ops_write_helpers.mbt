@@ -4,7 +4,7 @@ fn pdf_util_json_float_object(value : Double) -> Json {
 }
 
 ///|
-fn pdf_util_json_int_object(value : Int) -> Json {
+fn pdf_util_json_int_object(value : Int32) -> Json {
   Json::object(Map([("I", pdf_util_json_number(value))]))
 }
 

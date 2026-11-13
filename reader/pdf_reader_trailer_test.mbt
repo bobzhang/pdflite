@@ -6,7 +6,7 @@ fn test_trailer_dictionary(
 }
 
 ///|
-fn test_trailer_integer(value : Int) -> @syntax.PdfObject {
+fn test_trailer_integer(value : Int32) -> @syntax.PdfObject {
   PdfInteger(value)
 }
 
@@ -79,7 +79,7 @@ test "trailer helpers parse prev and xref stream offsets" {
 
 ///|
 test "trailer helpers reject malformed offsets" {
-  let negative_prev : Result[Int?, Error] = try
+  let negative_prev : Result[Int32?, Error] = try
     @reader.pdf_trailer_prev_position(
       test_trailer_dictionary([
         (@reader.pdf_reader_prev_name(), test_trailer_integer(-1)),
@@ -94,7 +94,7 @@ test "trailer helpers reject malformed offsets" {
     fail("expected TrailerExpected")
   }
 
-  let non_integer_prev : Result[Int?, Error] = try
+  let non_integer_prev : Result[Int32?, Error] = try
     @reader.pdf_trailer_prev_position(
       test_trailer_dictionary([
         (
@@ -112,7 +112,7 @@ test "trailer helpers reject malformed offsets" {
     fail("expected TrailerExpected")
   }
 
-  let negative_xrefstm : Result[Int?, Error] = try
+  let negative_xrefstm : Result[Int32?, Error] = try
     @reader.pdf_trailer_xref_stream_position(
       test_trailer_dictionary([
         (@reader.pdf_reader_xrefstm_name(), test_trailer_integer(-1)),

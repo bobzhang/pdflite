@@ -5,7 +5,7 @@ fn text_wbtest_name(text : String) -> @core.PdfName {
 
 ///|
 fn text_wbtest_descriptor(
-  tounicode : Array[(Int, @core.PdfBytes)]?,
+  tounicode : Array[(Int32, @core.PdfBytes)]?,
 ) -> PdfFontDescriptor {
   {
     ascent: 0.0,
@@ -13,7 +13,7 @@ fn text_wbtest_descriptor(
     avgwidth: 0.0,
     maxwidth: 0.0,
     flags: 0,
-    fontbbox: { min_x: 0.0, min_y: 0.0, max_x: 0.0, max_y: 0.0 },
+    fontbbox: { min_x: 0.0, min_y: 0.0, max_x: 0.0, max_y: 0.0, },
     italicangle: 0.0,
     capheight: 0.0,
     xheight: 0.0,

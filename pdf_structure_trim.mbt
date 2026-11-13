@@ -1,9 +1,9 @@
 ///|
 fn PdfDocument::pdf_structure_indirect_number(
   self : PdfDocument,
-  object_number : Int,
+  object_number : Int32,
   key : @core.PdfName,
-) -> Int? {
+) -> Int32? {
   match self.direct(PdfIndirect(object_number)).lookup_immediate(key) {
     Some(PdfIndirect(number)) => Some(number)
     _ => None
@@ -25,7 +25,7 @@ fn PdfDocument::pdf_structure_object_has_deleted_page_in_set(
 ///|
 fn PdfDocument::pdf_structure_indirect_survives_in_set(
   self : PdfDocument,
-  object_number : Int,
+  object_number : Int32,
   deleted_pages : @core.PdfNumberSet,
 ) -> Bool {
   if self.lookup_object_or_null(object_number) == PdfNull {
@@ -118,7 +118,7 @@ fn pdf_structure_k_object(
 ///|
 fn PdfDocument::pdf_structure_trim_deleted_pages(
   self : PdfDocument,
-  deleted_page_numbers : ArrayView[Int],
+  deleted_page_numbers : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   if deleted_page_numbers.length() > 0 {
     let deleted_pages = @core.pdf_number_set(deleted_page_numbers)
@@ -126,7 +126,9 @@ fn PdfDocument::pdf_structure_trim_deleted_pages(
     while changed {
       changed = false
       let object_numbers = self.object_numbers()
-      let deletions : Array[Int] = Array::new(capacity=object_numbers.length())
+      let deletions : Array[Int32] = Array::new(
+        capacity=object_numbers.length(),
+      )
       let deletion_seen = @core.pdf_number_set([])
       for object_number in object_numbers {
         if self.pdf_structure_object_has_deleted_page_in_set(
@@ -143,7 +145,7 @@ fn PdfDocument::pdf_structure_trim_deleted_pages(
         }
       }
       let object_numbers = self.object_numbers()
-      let replacements : Array[(Int, @syntax.PdfObject)] = Array::new(
+      let replacements : Array[(Int32, @syntax.PdfObject)] = Array::new(
         capacity=object_numbers.length(),
       )
       for object_number in object_numbers {
@@ -192,7 +194,7 @@ fn PdfDocument::pdf_structure_trim_deleted_pages(
 /// removed pages and pruning `/K` arrays that reference them.
 pub fn PdfDocument::trim_structure_tree(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   let all_page_numbers = self.page_reference_numbers()
   let kept_page_numbers = pdf_page_select_numbers(
@@ -207,7 +209,7 @@ pub fn PdfDocument::trim_structure_tree(
 /// Compatibility wrapper for `PdfDocument::trim_structure_tree`.
 pub fn pdf_trim_structure_tree(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   document.trim_structure_tree(page_numbers)
 }

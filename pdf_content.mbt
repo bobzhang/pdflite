@@ -72,7 +72,7 @@ fn pdf_parse_content_ops_from_view_with_context(
 }
 
 ///|
-fn pdf_content_parse_ops_capacity(data : BytesView) -> Int {
+fn pdf_content_parse_ops_capacity(data : BytesView) -> Int32 {
   let estimated = data.length() / 12
   if estimated < 4 {
     4

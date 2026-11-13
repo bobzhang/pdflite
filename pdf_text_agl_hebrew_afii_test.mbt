@@ -1,6 +1,6 @@
 ///|
 test "PdfTextExtractor decodes Hebrew AFII core AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/afii57645", 0x05BE),
     ("/afii57658", 0x05C3),
     ("/afii57664", 0x05D0),
@@ -52,8 +52,8 @@ test "PdfTextExtractor decodes Hebrew AFII core AGL glyph names" {
     ("/afii57842", 0x05C0),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1

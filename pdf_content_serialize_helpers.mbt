@@ -1,9 +1,9 @@
 ///|
 fn pdf_content_copy_view(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   view : BytesView,
-) -> Int {
+) -> Int32 {
   let mut position = position
   for byte in view {
     output[position] = byte

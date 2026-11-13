@@ -1,5 +1,5 @@
 ///|
-fn pdf_content_page_number_json(page_number : Int) -> Json {
+fn pdf_content_page_number_json(page_number : Int32) -> Json {
   Json::number(page_number.to_double(), repr=page_number.to_string())
 }
 
@@ -119,7 +119,7 @@ fn pdf_content_extracted_text_of_entries(
 /// Return cpdf's simple test text extraction bytes for selected 1-based pages.
 pub fn PdfDocument::test_extract_text(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(
@@ -158,7 +158,7 @@ pub fn PdfDocument::test_extract_text(
 /// Compatibility wrapper for `PdfDocument::test_extract_text`.
 pub fn pdf_test_extract_text(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   document.test_extract_text(page_numbers)
 }
@@ -185,7 +185,7 @@ pub fn pdf_content_json_of_page(
 /// Return cpdf's page-content JSON array for selected 1-based page numbers.
 pub fn PdfDocument::page_content_json(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Json raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(
@@ -215,7 +215,7 @@ pub fn PdfDocument::page_content_json(
 /// Compatibility wrapper for `PdfDocument::page_content_json`.
 pub fn pdf_page_content_json(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Json raise @core.PdfError {
   document.page_content_json(page_numbers)
 }

@@ -1,9 +1,9 @@
 ///|
 fn pdf_read_classic_document_from_view_at_revision(
   data : BytesView,
-  revision? : Int? = None,
-  user_password? : BytesView? = None,
-  owner_password? : BytesView? = None,
+  revision~ : Int32? = None,
+  user_password~ : BytesView? = None,
+  owner_password~ : BytesView? = None,
 ) -> PdfDocument raise @core.PdfError {
   let revision = pdf_read_reader_revision_target(revision)
   let was_linearized = pdf_read_was_linearized(data)
@@ -58,7 +58,7 @@ pub fn pdf_read_classic_document_from_bytes(
 /// revisions raise `@core.PdfError::BadRevision`.
 pub fn pdf_read_classic_document_revision_from_view(
   data : BytesView,
-  revision : Int,
+  revision : Int32,
 ) -> PdfDocument raise @core.PdfError {
   pdf_read_classic_document_from_view_at_revision(data, revision=Some(revision))
 }
@@ -67,7 +67,7 @@ pub fn pdf_read_classic_document_revision_from_view(
 /// Read one classic-xref document revision from owned bytes.
 pub fn pdf_read_classic_document_revision_from_bytes(
   data : @core.PdfBytes,
-  revision : Int,
+  revision : Int32,
 ) -> PdfDocument raise @core.PdfError {
   pdf_read_classic_document_revision_from_view(data, revision)
 }

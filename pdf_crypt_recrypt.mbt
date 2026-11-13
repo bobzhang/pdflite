@@ -19,7 +19,7 @@ fn PdfDocument::pdf_crypt_prepare_plaintext_for_recrypt(
 ) -> Unit {
   for number in self.object_numbers() {
     match self.objects.get_entry(number) {
-      Some({ data: ObjectParsedAlreadyDecrypted(object), generation }) =>
+      Some({ data: ObjectParsedAlreadyDecrypted(object), generation, }) =>
         self.objects.set_entry(number, {
           data: ObjectParsed(object),
           generation,
@@ -34,8 +34,8 @@ fn PdfDocument::recrypt_arc4_with_file_key(
   self : PdfDocument,
   values : @crypt_core.PdfEncryptionValues,
   file_key : BytesView,
-  key_length_bits : Int,
-  revision : Int,
+  key_length_bits : Int32,
+  revision : Int32,
 ) -> PdfDocument raise @core.PdfError {
   let (document, _) = self.with_file_id(file_id=values.file_id)
   document.pdf_crypt_prepare_plaintext_for_recrypt()
@@ -64,7 +64,7 @@ fn PdfDocument::recrypt_aesv2_with_file_key(
   self : PdfDocument,
   values : @crypt_core.PdfEncryptionValues,
   file_key : BytesView,
-  iv_provider : (Int, Int, Int) -> @core.PdfBytes raise @core.PdfError,
+  iv_provider : (Int32, Int32, Int32) -> @core.PdfBytes raise @core.PdfError,
 ) -> PdfDocument raise @core.PdfError {
   let (document, _) = self.with_file_id(file_id=values.file_id)
   document.pdf_crypt_prepare_plaintext_for_recrypt()
@@ -91,7 +91,7 @@ fn PdfDocument::recrypt_aesv3_with_file_key(
   self : PdfDocument,
   values : @crypt_core.PdfEncryptionValues,
   file_key : BytesView,
-  iv_provider : (Int, Int, Int) -> @core.PdfBytes raise @core.PdfError,
+  iv_provider : (Int32, Int32, Int32) -> @core.PdfBytes raise @core.PdfError,
 ) -> PdfDocument raise @core.PdfError {
   let (document, _) = self.with_file_id(file_id=values.file_id)
   document.pdf_crypt_prepare_plaintext_for_recrypt()
@@ -149,7 +149,7 @@ pub fn PdfDocument::recrypt_with_password(
 pub fn PdfDocument::recrypt_with_password_aesv2_with_iv_provider(
   self : PdfDocument,
   password : BytesView,
-  iv_provider : (Int, Int, Int) -> @core.PdfBytes raise @core.PdfError,
+  iv_provider : (Int32, Int32, Int32) -> @core.PdfBytes raise @core.PdfError,
 ) -> PdfDocument raise @core.PdfError {
   let saved = match self.saved_encryption() {
     Some(saved) => saved
@@ -174,7 +174,7 @@ pub fn PdfDocument::recrypt_with_password_aesv2_with_iv_provider(
 pub fn PdfDocument::recrypt_with_password_aesv3_with_iv_provider(
   self : PdfDocument,
   password : BytesView,
-  iv_provider : (Int, Int, Int) -> @core.PdfBytes raise @core.PdfError,
+  iv_provider : (Int32, Int32, Int32) -> @core.PdfBytes raise @core.PdfError,
 ) -> PdfDocument raise @core.PdfError {
   let saved = match self.saved_encryption() {
     Some(saved) => saved

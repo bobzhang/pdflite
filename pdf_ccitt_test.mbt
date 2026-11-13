@@ -1,5 +1,7 @@
 ///|
-fn ccitt_public_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes raise {
+fn ccitt_public_bytes_for_test(
+  values : ArrayView[Int32],
+) -> @core.PdfBytes raise {
   @core.pdf_bytes_of_int_array(values)
 }
 
@@ -10,9 +12,9 @@ fn ccitt_public_name_for_test(text : String) -> @core.PdfName {
 
 ///|
 fn ccitt_public_wrap_view_for_test(
-  prefix : ArrayView[Int],
+  prefix : ArrayView[Int32],
   data : BytesView,
-  suffix : ArrayView[Int],
+  suffix : ArrayView[Int32],
 ) -> @core.PdfBytes raise {
   let output : Array[Byte] = []
   for value in prefix {

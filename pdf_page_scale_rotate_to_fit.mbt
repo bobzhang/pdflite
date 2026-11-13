@@ -17,7 +17,7 @@ fn PdfDocument::pdf_page_scale_to_fit_rotate_page(
   page : @page.PdfPage,
   target_width : Double,
   target_height : Double,
-  rotation : Int,
+  rotation : Int32,
 ) -> @page.PdfPage raise @core.PdfError {
   if pdf_page_scale_to_fit_rotate_should_rotate(
       self.pdf_page_scale_bounds(page),
@@ -44,10 +44,10 @@ fn PdfDocument::pdf_page_scale_to_fit_rotate_page(
 /// `upright_pages` is then applied to the selected range.
 pub fn PdfDocument::scale_to_fit_rotate_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
-  rotation : Int,
-  fast? : Bool = false,
+  rotation : Int32,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   pdf_page_box_validate_page_numbers(
     page_numbers,
@@ -87,10 +87,10 @@ pub fn PdfDocument::scale_to_fit_rotate_pages(
 /// Compatibility wrapper for `PdfDocument::scale_to_fit_rotate_pages`.
 pub fn pdf_scale_to_fit_rotate_pages(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
-  rotation : Int,
-  fast? : Bool = false,
+  rotation : Int32,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.scale_to_fit_rotate_pages(page_numbers, sizes, rotation, fast~)
 }
@@ -100,10 +100,10 @@ pub fn pdf_scale_to_fit_rotate_pages(
 /// list, then upright the same pages.
 pub fn PdfDocument::scale_to_fit_rotate(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   sizes : ArrayView[(Double, Double)],
-  rotation : Int,
-  fast? : Bool = false,
+  rotation : Int32,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(
@@ -129,10 +129,10 @@ pub fn PdfDocument::scale_to_fit_rotate(
 /// Compatibility wrapper matching cpdfpage's `scale_to_fit_rotate` order.
 pub fn pdf_scale_to_fit_rotate(
   sizes : ArrayView[(Double, Double)],
-  rotation : Int,
+  rotation : Int32,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.scale_to_fit_rotate(page_numbers, sizes, rotation, fast~)
 }

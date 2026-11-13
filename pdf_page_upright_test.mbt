@@ -24,8 +24,8 @@ fn page_upright_stream_for_test(
 fn page_upright_page_for_test(
   ops : ArrayView[@content.PdfContentOp],
   mediabox : @syntax.PdfObject,
-  rotate? : @page.PdfPageRotation = Rotate0,
-  rest? : @syntax.PdfObject = PdfDictionary([]),
+  rotate~ : @page.PdfPageRotation = Rotate0,
+  rest~ : @syntax.PdfObject = PdfDictionary([]),
 ) -> @page.PdfPage {
   {
     content: [page_upright_stream_for_test(ops)],
@@ -120,7 +120,7 @@ test "PdfDocument upright_pages removes rotation and rectifies boxes" {
     @geometry.point2(50.0, 100.0),
     -@math.PI / 2.0,
   )
-  let content_rotation_matrix = { ..rotation_matrix, a: 0.0, d: 0.0 }
+  let content_rotation_matrix = { ..rotation_matrix, a: 0.0, d: 0.0, }
   let rotated_mediabox = try! document.transform_rect(rotation_matrix, mediabox)
   let rotated_bounds = try! document.parse_rectangle(rotated_mediabox)
   let rectification_matrix = @geometry.transform_translate(
@@ -245,8 +245,8 @@ test "PdfDocument upright_pages validates page range" {
   guard bad_page
     is Err(
       @core.PdfError::BadPageSpecification(
-        "upright_pages: range contains pages not present in pdf"
-      )
+        "upright_pages: range contains pages not present in pdf",
+      ),
     ) else {
     fail("expected page range validation")
   }

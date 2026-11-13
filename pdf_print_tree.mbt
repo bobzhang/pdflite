@@ -59,7 +59,7 @@ pub fn[T] pdf_print_tree_to_buffer(
   value : T,
   get_name : (T) -> String,
   get_children : (T) -> Array[T],
-  line_prefix? : String = "",
+  line_prefix~ : String = "",
 ) -> Unit {
   output.write_string_utf16le(line_prefix)
   pdf_print_tree_root_to_buffer(
@@ -74,7 +74,7 @@ pub fn[T] pdf_printtree_to_buffer(
   value : T,
   get_name : (T) -> String,
   get_children : (T) -> Array[T],
-  line_prefix? : String = "",
+  line_prefix~ : String = "",
 ) -> Unit {
   pdf_print_tree_to_buffer(output, value, get_name, get_children, line_prefix~)
 }
@@ -88,7 +88,7 @@ pub fn[T] pdf_print_tree_to_string(
   value : T,
   get_name : (T) -> String,
   get_children : (T) -> Array[T],
-  line_prefix? : String = "",
+  line_prefix~ : String = "",
 ) -> String {
   let output : Array[String] = [line_prefix]
   pdf_print_tree_root(output, line_prefix, value, get_name, get_children)
@@ -101,7 +101,7 @@ pub fn[T] pdf_printtree_to_string(
   value : T,
   get_name : (T) -> String,
   get_children : (T) -> Array[T],
-  line_prefix? : String = "",
+  line_prefix~ : String = "",
 ) -> String {
   pdf_print_tree_to_string(value, get_name, get_children, line_prefix~)
 }

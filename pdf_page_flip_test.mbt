@@ -23,9 +23,9 @@ fn page_flip_stream_for_test(
 ///|
 fn page_flip_page_for_test(
   ops : ArrayView[@content.PdfContentOp],
-  resources? : @syntax.PdfObject = PdfDictionary([]),
-  rest? : @syntax.PdfObject = PdfDictionary([]),
-  mediabox? : @syntax.PdfObject = page_flip_rect_for_test(
+  resources~ : @syntax.PdfObject = PdfDictionary([]),
+  rest~ : @syntax.PdfObject = PdfDictionary([]),
+  mediabox~ : @syntax.PdfObject = page_flip_rect_for_test(
     0.0, 0.0, 100.0, 100.0,
   ),
 ) -> @page.PdfPage {
@@ -217,8 +217,8 @@ test "PdfDocument flip pages validate selected pages" {
   guard bad_vertical
     is Err(
       @core.PdfError::BadPageSpecification(
-        "flip_pages_vertically: range contains pages not present in pdf"
-      )
+        "flip_pages_vertically: range contains pages not present in pdf",
+      ),
     ) else {
     fail("expected vertical flip page range validation")
   }
@@ -233,8 +233,8 @@ test "PdfDocument flip pages validate selected pages" {
   guard bad_horizontal
     is Err(
       @core.PdfError::BadPageSpecification(
-        "flip_pages_horizontally: range contains pages not present in pdf"
-      )
+        "flip_pages_horizontally: range contains pages not present in pdf",
+      ),
     ) else {
     fail("expected horizontal flip page range validation")
   }

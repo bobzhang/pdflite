@@ -41,7 +41,7 @@ fn draw_fixture_name_for_test(text : String) -> @core.PdfName {
 fn draw_fixture_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -60,7 +60,7 @@ fn draw_fixture_bytes_start_with_at_for_test(
 fn draw_fixture_find_last_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     haystack.length()
   } else if haystack.length() < needle.length() {
@@ -82,8 +82,8 @@ fn draw_fixture_find_last_bytes_for_test(
 fn draw_fixture_find_bytes_after_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
-) -> Int {
+  start : Int32,
+) -> Int32 {
   if needle.length() == 0 {
     start
   } else if start < 0 || haystack.length() < needle.length() {
@@ -146,7 +146,7 @@ fn draw_fixture_corrupt_startxref_pointer_for_test(
 }
 
 ///|
-fn draw_fixture_startxref_offset_for_test(bytes : Bytes) -> Int raise {
+fn draw_fixture_startxref_offset_for_test(bytes : Bytes) -> Int32 raise {
   let marker = @ascii.encode("startxref")
   let marker_position = draw_fixture_find_last_bytes_for_test(bytes, marker)
   if marker_position < 0 {
@@ -220,7 +220,7 @@ fn draw_fixture_corrupt_startxref_trailer_keyword_for_test(
 ///|
 fn draw_fixture_first_in_use_xref_row_start_for_test(
   bytes : Bytes,
-) -> Int raise {
+) -> Int32 raise {
   let free_row = @ascii.encode("0000000000 65535 f")
   let free_row_position = draw_fixture_find_bytes_after_for_test(
     bytes, free_row, 0,
@@ -297,7 +297,7 @@ fn draw_fixture_corrupt_first_in_use_xref_generation_for_test(
 ///|
 fn draw_fixture_first_xref_subsection_spans_for_test(
   bytes : Bytes,
-) -> (Int, Int, Int, Int) raise {
+) -> (Int32, Int32, Int32, Int32) raise {
   let header = @ascii.encode("xref")
   let header_position = draw_fixture_find_bytes_after_for_test(bytes, header, 0)
   if header_position < 0 {
@@ -389,7 +389,7 @@ fn draw_fixture_matrix_for_test(
   e : Double,
   f : Double,
 ) -> @geometry.TransformMatrix {
-  { a, b, c, d, e, f }
+  { a, b, c, d, e, f, }
 }
 
 ///|
@@ -411,7 +411,7 @@ fn draw_fixture_lookup_for_test(
 fn draw_fixture_count_op_for_test(
   ops : ArrayView[@content.PdfContentOp],
   expected : @content.PdfContentOp,
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for op in ops {
     if op == expected {
@@ -424,7 +424,7 @@ fn draw_fixture_count_op_for_test(
 ///|
 fn draw_fixture_content_stroke_count_for_test(
   ops : ArrayView[@content.PdfContentOp],
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for op in ops {
     match op {
@@ -438,7 +438,7 @@ fn draw_fixture_content_stroke_count_for_test(
 ///|
 fn draw_fixture_content_save_count_for_test(
   ops : ArrayView[@content.PdfContentOp],
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for op in ops {
     match op {
@@ -562,7 +562,7 @@ fn draw_fixture_assert_cpdf_xobject_content_for_test(
 }
 
 ///|
-fn draw_fixture_stream_count_for_test(document : @pdflite.PdfDocument) -> Int {
+fn draw_fixture_stream_count_for_test(document : @pdflite.PdfDocument) -> Int32 {
   let mut count = 0
   for entry in document.parsed_object_entries() {
     match entry.2 {
@@ -576,7 +576,7 @@ fn draw_fixture_stream_count_for_test(document : @pdflite.PdfDocument) -> Int {
 ///|
 fn draw_fixture_filtered_stream_count_for_test(
   document : @pdflite.PdfDocument,
-) -> Int {
+) -> Int32 {
   let key_filter = draw_fixture_name_for_test("/Filter")
   let key_short_filter = draw_fixture_name_for_test("/F")
   let mut count = 0
@@ -784,7 +784,7 @@ fn draw_fixture_cpdf_source_manual_text_pdf_paths_for_test() -> Array[String] {
 ///|
 fn draw_fixture_expected_manual_content_counts_for_test(
   path : String,
-) -> (Int, Int, Int) raise {
+) -> (Int32, Int32, Int32) raise {
   match path {
     "fixtures/cpdf-source/manualimages/bez.pdf" => (0, 0, 1)
     "fixtures/cpdf-source/manualimages/capjoins.pdf" => (0, 0, 1)
@@ -834,7 +834,7 @@ fn draw_fixture_expected_manual_text_for_test(path : String) -> String raise {
 }
 
 ///|
-fn draw_fixture_replacement_count_for_test(text : String) -> Int {
+fn draw_fixture_replacement_count_for_test(text : String) -> Int32 {
   let mut count = 0
   for char in text {
     if char.to_int() == 0xFFFD {
@@ -845,7 +845,7 @@ fn draw_fixture_replacement_count_for_test(text : String) -> Int {
 }
 
 ///|
-fn draw_fixture_raw_control_count_for_test(text : String) -> Int {
+fn draw_fixture_raw_control_count_for_test(text : String) -> Int32 {
   let mut count = 0
   for char in text {
     let codepoint = char.to_int()
@@ -865,7 +865,7 @@ fn draw_fixture_raw_control_count_for_test(text : String) -> Int {
 ///|
 fn draw_fixture_assert_manual_content_entries_for_test(
   document : @pdflite.PdfDocument,
-) -> (Int, Int, Int) raise {
+) -> (Int32, Int32, Int32) raise {
   @test.assert_eq(document.endpage(), 1)
   let pages = document.pages_of_pagetree()
   let entries = document.content_entries_of_page(pages[0])
@@ -907,7 +907,7 @@ fn draw_fixture_assert_manual_text_for_test(
   document : @pdflite.PdfDocument,
 ) -> Unit raise {
   @test.assert_eq(document.endpage(), 1)
-  let pages : ReadOnlyArray[Int] = [1]
+  let pages : ReadOnlyArray[Int32] = [1]
   let extracted = document.test_extract_text(pages)
   @test.assert_eq(@pdflite.pdf_test_extract_text(document, pages), extracted)
   let text = @utf8.decode_lossy(extracted)

@@ -126,7 +126,7 @@ pub fn pdf_add_annotation(
 fn PdfDocument::pdf_annotation_transform_one(
   self : PdfDocument,
   matrix : @geometry.TransformMatrix,
-  annotation_number : Int,
+  annotation_number : Int32,
 ) -> Unit raise @core.PdfError {
   let annotation = self.lookup_object_or_null(annotation_number)
   let transformed = self.pdf_annotation_transform_object(matrix, annotation)

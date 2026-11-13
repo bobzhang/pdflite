@@ -1,8 +1,8 @@
 ///|
 fn pdf_metadata_xml_find_tag_end(
   data : BytesView,
-  start : Int,
-) -> Int raise @core.PdfError {
+  start : Int32,
+) -> Int32 raise @core.PdfError {
   let mut index = start
   let mut quote = 0
   while index < data.length() {
@@ -22,7 +22,7 @@ fn pdf_metadata_xml_find_tag_end(
 }
 
 ///|
-fn pdf_metadata_xml_is_self_closing_tag(data : BytesView, end : Int) -> Bool {
+fn pdf_metadata_xml_is_self_closing_tag(data : BytesView, end : Int32) -> Bool {
   let mut index = end - 1
   while index >= 0 && pdf_metadata_is_xml_space(data[index]) {
     index -= 1
@@ -33,9 +33,9 @@ fn pdf_metadata_xml_is_self_closing_tag(data : BytesView, end : Int) -> Bool {
 ///|
 fn pdf_metadata_xml_parse_start_tag(
   data : BytesView,
-  start : Int,
+  start : Int32,
   context : ArrayView[(String, String)],
-) -> (String, @metadata.PdfMetadataXmlTag, Array[(String, String)], Bool, Int) raise @core.PdfError {
+) -> (String, @metadata.PdfMetadataXmlTag, Array[(String, String)], Bool, Int32) raise @core.PdfError {
   guard start < data.length() && data[start].to_int() == 60 else {
     raise BadText
   }
@@ -71,8 +71,8 @@ fn pdf_metadata_xml_parse_start_tag(
 ///|
 fn pdf_metadata_xml_parse_close_tag(
   data : BytesView,
-  start : Int,
-) -> (String, Int) raise @core.PdfError {
+  start : Int32,
+) -> (String, Int32) raise @core.PdfError {
   guard start + 1 < data.length() &&
     data[start].to_int() == 60 &&
     data[start + 1].to_int() == 47 else {

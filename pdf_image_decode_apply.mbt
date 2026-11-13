@@ -1,7 +1,7 @@
 ///|
 fn pdf_image_require_size(
   data : BytesView,
-  required : Int,
+  required : Int32,
 ) -> Unit raise @core.PdfError {
   if data.length() < required {
     raise EndOfInput
@@ -31,9 +31,9 @@ fn pdf_image_decode_is_identity(
 fn pdf_image_decode_interpolate(
   dmin : Double,
   dmax : Double,
-  value : Int,
-  bpc : Int,
-) -> Int {
+  value : Int32,
+  bpc : Int32,
+) -> Int32 {
   let denominator = match bpc {
     1 => 1.0
     2 => 3.0
@@ -78,7 +78,7 @@ fn pdf_image_apply_8bpp_decode(
 ///|
 fn pdf_image_apply_decode_borrowed(
   data : BytesView,
-  bpc : Int?,
+  bpc : Int32?,
   decode_values : Array[Double]?,
 ) -> @core.PdfBytes raise @core.PdfError {
   match decode_values {
@@ -100,7 +100,7 @@ fn pdf_image_apply_decode_borrowed(
 ///|
 fn pdf_image_apply_decode(
   data : @core.PdfBytes,
-  bpc : Int?,
+  bpc : Int32?,
   decode_values : Array[Double]?,
 ) -> @core.PdfBytes raise @core.PdfError {
   match decode_values {

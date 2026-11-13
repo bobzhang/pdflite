@@ -21,10 +21,10 @@ fn pdf_truetype_required_subset_table(tag : String) -> Bool {
 /// length for directory metadata.
 pub fn pdf_truetype_subset_cmap_table(
   data : BytesView,
-  subset_codepoints : ArrayView[Int],
+  subset_codepoints : ArrayView[Int32],
 ) -> @truetype.PdfTrueTypeSubsetTable raise @core.PdfError {
   let cmap_entries = pdf_truetype_cmap_glyphs(data)
-  let glyph_indices : Array[Int] = []
+  let glyph_indices : Array[Int32] = []
   for codepoint in subset_codepoints {
     glyph_indices.push(
       match pdf_truetype_cmap_glyph_from_entries(cmap_entries, codepoint) {
@@ -56,7 +56,7 @@ pub fn pdf_truetype_subset_cmap_table(
       pdf_truetype_normalize_u16(glyph_index),
     )
   }
-  { length, bytes: Bytes::from_array(output) }
+  { length, bytes: Bytes::from_array(output), }
 }
 
 ///|
@@ -94,7 +94,7 @@ fn pdf_truetype_subset_font_kept_tables(
 }
 
 ///|
-fn pdf_truetype_table_padded_length(length : Int) -> Int {
+fn pdf_truetype_table_padded_length(length : Int32) -> Int32 {
   length + pdf_truetype_table_padding(length)
 }
 
@@ -103,7 +103,7 @@ fn pdf_truetype_subset_original_table_span(
   data : BytesView,
   sorted_tables : ArrayView[@truetype.PdfTrueTypeTableRecord],
   tag : String,
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   for index in 0..<sorted_tables.length() {
     let table = sorted_tables[index]
     if table.tag == tag {
@@ -127,12 +127,12 @@ fn pdf_truetype_subset_original_table(
   data : BytesView,
   sorted_tables : ArrayView[@truetype.PdfTrueTypeTableRecord],
   tag : String,
-  directory_length : Int,
+  directory_length : Int32,
 ) -> @truetype.PdfTrueTypeSubsetTable raise @core.PdfError {
   let (offset, length) = pdf_truetype_subset_original_table_span(
     data, sorted_tables, tag,
   )
-  { length: directory_length, bytes: data[offset:offset + length].to_owned() }
+  { length: directory_length, bytes: data[offset:offset + length].to_owned(), }
 }
 
 ///|
@@ -140,7 +140,7 @@ fn pdf_truetype_subset_font_table_payload(
   data : BytesView,
   sorted_tables : ArrayView[@truetype.PdfTrueTypeTableRecord],
   record : @truetype.PdfTrueTypeTableRecord,
-  subset_codepoints : ArrayView[Int],
+  subset_codepoints : ArrayView[Int32],
   rewrite_cmap : Bool,
 ) -> @truetype.PdfTrueTypeSubsetTable raise @core.PdfError {
   if record.tag == "loca" {
@@ -166,7 +166,7 @@ fn pdf_truetype_subset_font_table_payload(
 fn pdf_truetype_subset_font_directory(
   data : BytesView,
   sorted_tables : ArrayView[@truetype.PdfTrueTypeTableRecord],
-  subset_codepoints : ArrayView[Int],
+  subset_codepoints : ArrayView[Int32],
   rewrite_cmap : Bool,
 ) -> (
   Array[@truetype.PdfTrueTypeTableRecord],
@@ -226,8 +226,8 @@ fn pdf_truetype_subset_font_directory(
 /// original cmap table like the main subset path.
 pub fn pdf_truetype_subset_font(
   data : BytesView,
-  subset_codepoints : ArrayView[Int],
-  rewrite_cmap? : Bool = false,
+  subset_codepoints : ArrayView[Int32],
+  rewrite_cmap~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   let major = pdf_truetype_required_u16(data, 0, "font header")
   let minor = pdf_truetype_required_u16(data, 2, "font header")

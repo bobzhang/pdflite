@@ -49,7 +49,7 @@ test "pdf_read_document_from_bytes reconstructs page trees missing from xref" {
   let strict = try! @pdflite.pdf_read_classic_document_from_bytes(payload)
   @test.assert_eq(strict.root(), 1)
   @test.assert_eq(strict.object_numbers(), [1])
-  let strict_pages : Result[Int, Error] = try strict.endpage() catch {
+  let strict_pages : Result[Int32, Error] = try strict.endpage() catch {
     err => Err(err)
   } noraise {
     value => Ok(value)

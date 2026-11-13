@@ -158,8 +158,8 @@ fn PdfDocument::pdf_ua_matterhorn_xfa_config_stream_data(
 ///|
 fn pdf_ua_matterhorn_xml_tag_local_name(
   data : BytesView,
-  tag_start : Int,
-  tag_end : Int,
+  tag_start : Int32,
+  tag_end : Int32,
   closing : Bool,
 ) -> BytesView? {
   let mut name_start = tag_start + 1
@@ -195,8 +195,8 @@ fn pdf_ua_matterhorn_xml_tag_local_name(
 ///|
 fn pdf_ua_matterhorn_xml_dynamic_render_tag(
   data : BytesView,
-  tag_start : Int,
-  tag_end : Int,
+  tag_start : Int32,
+  tag_end : Int32,
   closing : Bool,
 ) -> Bool {
   match
@@ -212,8 +212,8 @@ fn pdf_ua_matterhorn_xml_dynamic_render_tag(
 ///|
 fn pdf_ua_matterhorn_find_dynamic_render_close(
   data : BytesView,
-  start : Int,
-) -> Int {
+  start : Int32,
+) -> Int32 {
   let mut search_start = start
   let mut result = -1
   while search_start < data.length() && result < 0 {

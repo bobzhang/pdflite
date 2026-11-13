@@ -4,7 +4,7 @@ fn image_get_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn image_get_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn image_get_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -435,7 +435,7 @@ test "PdfDocument get_image_24bpp extracts image XObjects after PDF roundtrip" {
       StreamGot(flate_data),
     ),
   )
-  let placement = { ..@geometry.transform_identity_matrix, a: 2.0, d: 1.0 }
+  let placement = { ..@geometry.transform_identity_matrix, a: 2.0, d: 1.0, }
   let page = {
     ..@page.pdf_page_blank(@geometry.paper_a4),
     content: [

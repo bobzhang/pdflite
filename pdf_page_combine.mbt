@@ -1,7 +1,7 @@
 ///|
 fn pdf_page_combine_take_pages(
   pages : ArrayView[@page.PdfPage],
-  count : Int,
+  count : Int32,
 ) -> Array[@page.PdfPage] {
   [
     for index in 0..<count => pages[index]
@@ -11,7 +11,7 @@ fn pdf_page_combine_take_pages(
 ///|
 fn pdf_page_combine_with_blank_pages(
   pages : ArrayView[@page.PdfPage],
-  count : Int,
+  count : Int32,
 ) -> Array[@page.PdfPage] {
   let output : Array[@page.PdfPage] = []
   for page in pages {
@@ -26,7 +26,7 @@ fn pdf_page_combine_with_blank_pages(
 ///|
 fn pdf_page_combine_equalize_overlay(
   overlay : PdfDocument,
-  under_length : Int,
+  under_length : Int32,
 ) -> PdfDocument raise @core.PdfError {
   let overlay_pages = overlay.pages_of_pagetree()
   let overlay_length = overlay_pages.length()
@@ -51,8 +51,8 @@ fn pdf_page_combine_equalize_overlay(
 }
 
 ///|
-fn pdf_page_combine_output_changes(count : Int) -> Array[(Int, Int)] {
-  let output : Array[(Int, Int)] = []
+fn pdf_page_combine_output_changes(count : Int32) -> Array[(Int32, Int32)] {
+  let output : Array[(Int32, Int32)] = []
   for page_number in 1..<=count {
     output.push((page_number, page_number))
   }
@@ -65,10 +65,10 @@ fn pdf_page_combine_output_changes(count : Int) -> Array[(Int, Int)] {
 ///|
 fn pdf_page_combine_retained_bookmarks(
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  old_page_numbers : ArrayView[Int],
-  final_page_numbers : ArrayView[Int],
+  old_page_numbers : ArrayView[Int32],
+  final_page_numbers : ArrayView[Int32],
 ) -> Array[@bookmark.PdfBookmark] {
-  let changes : Array[(Int, Int)] = []
+  let changes : Array[(Int32, Int32)] = []
   let count = if old_page_numbers.length() < final_page_numbers.length() {
     old_page_numbers.length()
   } else {
@@ -109,10 +109,10 @@ fn pdf_page_combine_append_bookmarks(
 pub fn PdfDocument::combine_pages(
   self : PdfDocument,
   overlay : PdfDocument,
-  fast? : Bool = false,
-  scale_to_fit? : Bool = false,
-  overlay_is_under? : Bool = false,
-  process_struct_tree? : Bool = false,
+  fast~ : Bool = false,
+  scale_to_fit~ : Bool = false,
+  overlay_is_under~ : Bool = false,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   let overlay = if process_struct_tree {
     overlay.remove_struct_tree().mark_all_as_artifact()
@@ -190,10 +190,10 @@ pub fn PdfDocument::combine_pages(
 pub fn pdf_combine_pages(
   under : PdfDocument,
   overlay : PdfDocument,
-  fast? : Bool = false,
-  scale_to_fit? : Bool = false,
-  overlay_is_under? : Bool = false,
-  process_struct_tree? : Bool = false,
+  fast~ : Bool = false,
+  scale_to_fit~ : Bool = false,
+  overlay_is_under~ : Bool = false,
+  process_struct_tree~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   under.combine_pages(
     overlay,

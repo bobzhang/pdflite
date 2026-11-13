@@ -1,6 +1,6 @@
 ///|
 test "private descriptive Cyrillic AGL glyph helper covers table" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/Abrevecyrillic", 0x04D0),
     ("/Acyrillic", 0x0410),
     ("/Adieresiscyrillic", 0x04D2),

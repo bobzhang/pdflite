@@ -1,8 +1,8 @@
 ///|
 fn pdf_bookmark_import_quoted_scan(
   line : BytesView,
-  start : Int,
-) -> (Int, Int, Bool) {
+  start : Int32,
+) -> (Int32, Int32, Bool) {
   let mut length = 0
   let mut index = start
   let mut closed = false
@@ -26,7 +26,7 @@ fn pdf_bookmark_import_quoted_scan(
 fn pdf_bookmark_import_copy_quoted(
   output : Array[Byte],
   line : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Unit {
   let mut output_index = 0
   let mut index = start
@@ -48,7 +48,7 @@ fn pdf_bookmark_import_copy_quoted(
 ///|
 fn pdf_bookmark_import_parse_quoted(
   line : BytesView,
-  index : Ref[Int],
+  index : Ref[Int32],
 ) -> @core.PdfBytes? raise @core.PdfError {
   pdf_bookmark_import_skip_whitespace(line, index)
   if index.val >= line.length() || line[index.val].to_int() != 34 {
@@ -68,7 +68,7 @@ fn pdf_bookmark_import_parse_quoted(
 }
 
 ///|
-fn pdf_bookmark_import_take_open(line : BytesView, index : Ref[Int]) -> Bool {
+fn pdf_bookmark_import_take_open(line : BytesView, index : Ref[Int32]) -> Bool {
   pdf_bookmark_import_skip_whitespace(line, index)
   let start = index.val
   if start + 4 <= line.length() &&
@@ -90,7 +90,7 @@ fn pdf_bookmark_import_take_open(line : BytesView, index : Ref[Int]) -> Bool {
 ///|
 fn pdf_bookmark_import_optional_destination(
   line : BytesView,
-  index : Ref[Int],
+  index : Ref[Int32],
 ) -> @core.PdfBytes? raise @core.PdfError {
   pdf_bookmark_import_skip_whitespace(line, index)
   if index.val >= line.length() || line[index.val].to_int() != 34 {

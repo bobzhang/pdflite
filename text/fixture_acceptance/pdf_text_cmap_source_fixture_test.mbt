@@ -71,7 +71,7 @@ fn text_fixture_source_font_entry_for_test(
 ///|
 fn text_fixture_source_font_table_entry_for_test(
   entries : ArrayView[@font.PdfFontTableEntry],
-  code : Int,
+  code : Int32,
 ) -> @font.PdfFontTableEntry raise {
   for entry in entries {
     if entry.code == code {
@@ -85,7 +85,7 @@ fn text_fixture_source_font_table_entry_for_test(
 ///|
 fn text_fixture_usecmap_stream_for_test(
   data : @core.PdfBytes,
-  usecmap : Int?,
+  usecmap : Int32?,
   compressed : Bool,
 ) -> @syntax.PdfObject raise {
   let stream_data = if compressed {
@@ -135,7 +135,7 @@ fn text_fixture_usecmap_grandbase_cmap_for_test() -> @syntax.PdfObject raise {
 
 ///|
 fn text_fixture_usecmap_base_cmap_for_test(
-  usecmap : Int,
+  usecmap : Int32,
 ) -> @syntax.PdfObject raise {
   text_fixture_usecmap_stream_for_test(
     @ascii.encode(
@@ -148,7 +148,7 @@ fn text_fixture_usecmap_base_cmap_for_test(
 
 ///|
 fn text_fixture_usecmap_child_cmap_for_test(
-  usecmap : Int,
+  usecmap : Int32,
 ) -> @syntax.PdfObject raise {
   text_fixture_usecmap_stream_for_test(
     @ascii.encode(
@@ -160,7 +160,7 @@ fn text_fixture_usecmap_child_cmap_for_test(
 }
 
 ///|
-fn text_fixture_usecmap_tounicode_for_test() -> Array[(Int, @core.PdfBytes)] raise {
+fn text_fixture_usecmap_tounicode_for_test() -> Array[(Int32, @core.PdfBytes)] raise {
   [
     (0x42, @core.pdf_bytes_of_int_array([0x00, 0x59])),
     (0x43, @core.pdf_bytes_of_int_array([0x00, 0x5A])),
@@ -176,7 +176,7 @@ fn text_fixture_usecmap_text_for_test() -> @core.PdfBytes raise {
 }
 
 ///|
-fn text_fixture_usecmap_font_for_test(tounicode : Int) -> @syntax.PdfObject {
+fn text_fixture_usecmap_font_for_test(tounicode : Int32) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
       text_fixture_name_for_test("/Subtype"),
@@ -359,7 +359,7 @@ fn text_fixture_usecmap_variation_grandbase_cmap_for_test() -> @syntax.PdfObject
 
 ///|
 fn text_fixture_usecmap_variation_base_cmap_for_test(
-  usecmap : Int,
+  usecmap : Int32,
 ) -> @syntax.PdfObject raise {
   text_fixture_usecmap_stream_for_test(
     @ascii.encode(
@@ -372,7 +372,7 @@ fn text_fixture_usecmap_variation_base_cmap_for_test(
 
 ///|
 fn text_fixture_usecmap_variation_child_cmap_for_test(
-  usecmap : Int,
+  usecmap : Int32,
 ) -> @syntax.PdfObject raise {
   text_fixture_usecmap_stream_for_test(
     @ascii.encode(
@@ -385,7 +385,7 @@ fn text_fixture_usecmap_variation_child_cmap_for_test(
 
 ///|
 fn text_fixture_usecmap_variation_tounicode_for_test() -> Array[
-  (Int, @core.PdfBytes),
+  (Int32, @core.PdfBytes),
 ] raise {
   [
     (0x42, @core.pdf_bytes_of_int_array([0x00, 0x59])),
@@ -403,7 +403,7 @@ fn text_fixture_usecmap_variation_text_for_test() -> @core.PdfBytes raise {
 
 ///|
 fn text_fixture_usecmap_variation_font_for_test(
-  tounicode : Int,
+  tounicode : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -630,7 +630,7 @@ fn text_fixture_parser_corner_cmap_for_test() -> @syntax.PdfObject {
 
 ///|
 fn text_fixture_parser_corner_font_for_test(
-  tounicode : Int,
+  tounicode : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -654,7 +654,7 @@ fn text_fixture_parser_corner_text_for_test() -> @core.PdfBytes raise {
 
 ///|
 fn text_fixture_parser_corner_tounicode_for_test() -> Array[
-  (Int, @core.PdfBytes),
+  (Int32, @core.PdfBytes),
 ] raise {
   [
     (0x41, @core.pdf_bytes_of_int_array([0x00, 0x5A])),

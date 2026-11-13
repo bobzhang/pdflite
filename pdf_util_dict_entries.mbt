@@ -145,7 +145,7 @@ fn PdfDocument::pdf_util_replace_entry_transform(
 pub fn PdfDocument::remove_dict_entry_everywhere(
   self : PdfDocument,
   key : @core.PdfName,
-  search? : @syntax.PdfObject? = None,
+  search~ : @syntax.PdfObject? = None,
 ) -> Unit {
   self.pdf_util_rewrite_dict_entries(
     self.pdf_util_remove_entry_transform(key, search),
@@ -161,7 +161,7 @@ pub fn PdfDocument::replace_dict_entry_everywhere(
   self : PdfDocument,
   key : @core.PdfName,
   value : @syntax.PdfObject,
-  search? : @syntax.PdfObject? = None,
+  search~ : @syntax.PdfObject? = None,
 ) -> Unit {
   self.pdf_util_rewrite_dict_entries(
     self.pdf_util_replace_entry_transform(key, value, search),
@@ -215,7 +215,7 @@ pub fn PdfDocument::dict_entry_rendered_values(
 pub fn PdfDocument::dict_entries_json(
   self : PdfDocument,
   key : @core.PdfName,
-  utf8? : Bool = false,
+  utf8~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   let entry_values = self.dict_entry_values(key)
   let values : Array[Json] = Array::new(capacity=entry_values.length())
@@ -246,7 +246,7 @@ pub fn PdfDocument::dict_entry_rendered_values_string(
 pub fn PdfDocument::dict_entries_json_string(
   self : PdfDocument,
   key : String,
-  utf8? : Bool = false,
+  utf8~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   self.dict_entries_json(pdf_util_source_key_name(key), utf8~)
 }
@@ -294,7 +294,7 @@ pub fn pdf_print_dict_entry_cpdf_order(
 pub fn pdf_get_dict_entries(
   document : PdfDocument,
   key : @core.PdfName,
-  utf8? : Bool = false,
+  utf8~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.dict_entries_json(key, utf8~)
 }
@@ -304,7 +304,7 @@ pub fn pdf_get_dict_entries(
 pub fn pdf_get_dict_entries_string(
   document : PdfDocument,
   key : String,
-  utf8? : Bool = false,
+  utf8~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.dict_entries_json_string(key, utf8~)
 }
@@ -324,7 +324,7 @@ pub fn pdf_get_dict_entries_cpdf_order(
 pub fn pdf_remove_dict_entry(
   document : PdfDocument,
   key : @core.PdfName,
-  search? : @syntax.PdfObject? = None,
+  search~ : @syntax.PdfObject? = None,
 ) -> Unit {
   document.remove_dict_entry_everywhere(key, search~)
 }
@@ -334,7 +334,7 @@ pub fn pdf_remove_dict_entry(
 pub fn PdfDocument::remove_dict_entry_string(
   self : PdfDocument,
   key : String,
-  search? : @syntax.PdfObject? = None,
+  search~ : @syntax.PdfObject? = None,
 ) -> Unit {
   self.remove_dict_entry_everywhere(
     @core.pdf_name_of_bytes(@ascii.encode(key)),
@@ -347,7 +347,7 @@ pub fn PdfDocument::remove_dict_entry_string(
 pub fn pdf_remove_dict_entry_string(
   document : PdfDocument,
   key : String,
-  search? : @syntax.PdfObject? = None,
+  search~ : @syntax.PdfObject? = None,
 ) -> Unit {
   document.remove_dict_entry_string(key, search~)
 }
@@ -358,7 +358,7 @@ pub fn pdf_replace_dict_entry(
   document : PdfDocument,
   key : @core.PdfName,
   value : @syntax.PdfObject,
-  search? : @syntax.PdfObject? = None,
+  search~ : @syntax.PdfObject? = None,
 ) -> Unit {
   document.replace_dict_entry_everywhere(key, value, search~)
 }
@@ -369,7 +369,7 @@ pub fn PdfDocument::replace_dict_entry_string(
   self : PdfDocument,
   key : String,
   value : @syntax.PdfObject,
-  search? : @syntax.PdfObject? = None,
+  search~ : @syntax.PdfObject? = None,
 ) -> Unit {
   self.replace_dict_entry_everywhere(
     @core.pdf_name_of_bytes(@ascii.encode(key)),
@@ -384,7 +384,7 @@ pub fn pdf_replace_dict_entry_string(
   document : PdfDocument,
   key : String,
   value : @syntax.PdfObject,
-  search? : @syntax.PdfObject? = None,
+  search~ : @syntax.PdfObject? = None,
 ) -> Unit {
   document.replace_dict_entry_string(key, value, search~)
 }

@@ -25,10 +25,10 @@ fn pdf_draw_single_page_ops(
   document : PdfDocument,
   state : PdfDrawRenderState,
   drawops : ArrayView[PdfDrawOp],
-  page_number : Int,
+  page_number : Int32,
   filename : String,
-  bates : Int,
-  bates_pad : Int?,
+  bates : Int32,
+  bates_pad : Int32?,
   time : @date.PdfStrftimeTime?,
 ) -> Array[@content.PdfContentOp] raise @core.PdfError {
   let context = document.draw_special_text_context(
@@ -50,8 +50,8 @@ fn PdfDocument::pdf_draw_render_page_ops(
   selected_pages : @core.PdfNumberSet,
   drawops : ArrayView[PdfDrawOp],
   filename : String,
-  bates : Int,
-  bates_pad : Int?,
+  bates : Int32,
+  bates_pad : Int32?,
   time : @date.PdfStrftimeTime?,
 ) -> Array[Array[@content.PdfContentOp]] raise @core.PdfError {
   let pages = self.pages_of_pagetree()

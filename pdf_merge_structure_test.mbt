@@ -1,7 +1,7 @@
 ///|
 fn merge_structure_one_page_doc_for_test(
-  major : Int,
-  minor : Int,
+  major : Int32,
+  minor : Int32,
 ) -> @pdflite.PdfDocument {
   let doc = try! @pdflite.pdf_minimum_valid_pdf()
   doc.set_version(major, minor)
@@ -121,7 +121,7 @@ fn merge_structure_parent_tree_doc_for_test() -> @pdflite.PdfDocument {
 ///|
 fn merge_structure_add_object_entry_for_test(
   doc : @pdflite.PdfDocument,
-  number : Int,
+  number : Int32,
   key : @core.PdfName,
   value : @syntax.PdfObject,
 ) -> @pdflite.PdfDocument {

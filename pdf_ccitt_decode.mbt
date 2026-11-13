@@ -3,8 +3,8 @@ fn pdf_ccitt_decode_g3_1d(
   input : @core.BitStream,
   output : @core.BitWriter,
   params : PdfCCITTParams,
-  whiteval : Int,
-  blackval : Int,
+  whiteval : Int32,
+  blackval : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let mut row = 0
   let mut column = 0
@@ -64,8 +64,8 @@ fn pdf_ccitt_decode_g4(
   input : @core.BitStream,
   output : @core.BitWriter,
   params : PdfCCITTParams,
-  whiteval : Int,
-  blackval : Int,
+  whiteval : Int32,
+  blackval : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let mut row = 0
   let mut column = 0

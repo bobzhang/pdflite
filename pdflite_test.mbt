@@ -1,6 +1,6 @@
 ///|
 test "@core.PdfBytes preserve byte-oriented PDF data" {
-  let header : FixedArray[Int] = [0x25, 0x50, 0x44, 0x46, 0xFF]
+  let header : FixedArray[Int32] = [0x25, 0x50, 0x44, 0x46, 0xFF]
   let bytes = try! @core.pdf_bytes_of_int_array(header)
   @test.assert_eq(@core.pdf_bytes_length(bytes), 5)
   @test.assert_eq(@core.pdf_bytes_get(bytes, 0), Some(0x25))
@@ -86,8 +86,8 @@ test "@core.PdfBytes explicit copy preserves value but not physical identity" {
 
 ///|
 test "@core.PdfBytes expose CamlPDF int-array compatibility conversions" {
-  let first : FixedArray[Int] = [65, 0xFF]
-  let second : Array[Int] = [0, 66]
+  let first : FixedArray[Int32] = [65, 0xFF]
+  let second : Array[Int32] = [0, 66]
   let combined = try! @core.pdf_bytes_of_int_arrays([first, second])
   @test.assert_eq(@core.pdf_int_array_of_bytes(combined), [65, 0xFF, 0, 66])
   @test.assert_eq(@core.pdf_int_array_of_bytes(combined[1:3]), [0xFF, 0])
@@ -151,7 +151,7 @@ test "@core.PdfBytes reject out-of-range integers" {
 
 ///|
 test "@core.PdfName stores names as bytes" {
-  let raw_name : FixedArray[Int] = [0x2F, 0x54, 0x79, 0x70, 0x65]
+  let raw_name : FixedArray[Int32] = [0x2F, 0x54, 0x79, 0x70, 0x65]
   let name_bytes = try! @core.pdf_bytes_of_int_array(raw_name)
   let name = @core.pdf_name_of_bytes(name_bytes)
   @test.assert_eq(name.byte_length(), 5)

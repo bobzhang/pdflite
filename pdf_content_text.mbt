@@ -1,12 +1,14 @@
 ///|
 /// Cached font resource resolved while interpreting text operators.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentTextFontCacheEntry {
   name : String
   font : PdfFont
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Text state tracked by cpdfcontent before glyph layout is emitted.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentTextState {
   character_spacing : Double
   word_spacing : Double
@@ -16,23 +18,24 @@ pub(all) struct PdfContentTextState {
   current_font : PdfFont
   font_cache : Array[PdfContentTextFontCacheEntry]
   font_size : Double
-  rendering_mode : Int
+  rendering_mode : Int32
   rise : Double
   knockout : Bool
   text_matrix : @geometry.TransformMatrix
   line_matrix : @geometry.TransformMatrix
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Result of applying a text operator to the current text state.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfContentTextOpResult {
   text_state : PdfContentTextState
   glyphs : Array[PdfContentTextGlyphPlacement]
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 fn pdf_content_initial_text_font() -> PdfFont {
-  PdfFontStandard({ font: PdfTimesRoman, encoding: PdfWinAnsiEncoding })
+  PdfFontStandard({ font: PdfTimesRoman, encoding: PdfWinAnsiEncoding, })
 }
 
 ///|
@@ -82,14 +85,14 @@ fn pdf_content_text_font_cache_with(
   let mut found = false
   for entry in cache {
     if entry.name == name {
-      output.push({ name, font })
+      output.push({ name, font, })
       found = true
     } else {
       output.push(entry)
     }
   }
   if !found {
-    output.push({ name, font })
+    output.push({ name, font, })
   }
   output
 }

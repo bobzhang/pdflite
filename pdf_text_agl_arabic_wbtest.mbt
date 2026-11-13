@@ -1,6 +1,6 @@
 ///|
 test "private Arabic core AGL glyph helper covers table" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/afii57381", 0x066A),
     ("/afii57388", 0x060C),
     ("/afii57392", 0x0660),

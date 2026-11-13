@@ -1,11 +1,11 @@
 ///|
-fn jpeg2000_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn jpeg2000_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
 ///|
-fn jpeg2000_jp2_for_test(prefix : ArrayView[Int]) -> @core.PdfBytes {
-  let values : Array[Int] = [
+fn jpeg2000_jp2_for_test(prefix : ArrayView[Int32]) -> @core.PdfBytes {
+  let values : Array[Int32] = [
     0x00, 0x00, 0x00, 0x0C, 0x6A, 0x50, 0x20, 0x20, 0x0D, 0x0A, 0x87, 0x0A,
   ]
   for byte in prefix {
@@ -41,7 +41,7 @@ test "pdf_jpeg2000_dimensions scans for unaligned image header box" {
 
 ///|
 test "pdf_jpeg2000_dimensions reports malformed JPEG2000 inputs" {
-  let bad_header : Result[(Int, Int), Error] = try
+  let bad_header : Result[(Int32, Int32), Error] = try
     @pdflite.pdf_jpeg2000_dimensions(
       jpeg2000_bytes_for_test([
         0x00, 0x00, 0x00, 0x0C, 0x6A, 0x50, 0x20, 0x21, 0x0D, 0x0A, 0x87, 0x0A,
@@ -55,7 +55,7 @@ test "pdf_jpeg2000_dimensions reports malformed JPEG2000 inputs" {
   guard bad_header is Err(@core.PdfError::BadJPEG2000Header) else {
     fail("expected BadJPEG2000Header")
   }
-  let missing_header : Result[(Int, Int), Error] = try
+  let missing_header : Result[(Int32, Int32), Error] = try
     @pdflite.pdf_jpeg2000_dimensions(
       jpeg2000_bytes_for_test([
         0x00, 0x00, 0x00, 0x0C, 0x6A, 0x50, 0x20, 0x20, 0x0D, 0x0A, 0x87, 0x0A, 0x66,
@@ -70,7 +70,7 @@ test "pdf_jpeg2000_dimensions reports malformed JPEG2000 inputs" {
   guard missing_header is Err(@core.PdfError::JPEG2000DimensionsExpected) else {
     fail("expected JPEG2000DimensionsExpected")
   }
-  let truncated : Result[(Int, Int), Error] = try
+  let truncated : Result[(Int32, Int32), Error] = try
     @pdflite.pdf_jpeg2000_dimensions(
       jpeg2000_bytes_for_test([0x00, 0x00, 0x00, 0x0C, 0x6A, 0x50]),
     )

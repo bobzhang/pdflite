@@ -23,7 +23,7 @@ fn PdfDocument::pdf_ua_matterhorn_truetype_fontfile(
 fn PdfDocument::pdf_ua_matterhorn_truetype_cmaps(
   self : PdfDocument,
   object : @syntax.PdfObject,
-) -> Array[(Int, Int)]? raise @core.PdfError {
+) -> Array[(Int32, Int32)]? raise @core.PdfError {
   match self.pdf_ua_matterhorn_truetype_fontfile(object) {
     Some(fontfile) => Some(pdf_truetype_cmaps(fontfile))
     None => None
@@ -32,9 +32,9 @@ fn PdfDocument::pdf_ua_matterhorn_truetype_cmaps(
 
 ///|
 fn pdf_ua_matterhorn_cmaps_contain(
-  cmaps : ArrayView[(Int, Int)],
-  platform_id : Int,
-  encoding_id : Int,
+  cmaps : ArrayView[(Int32, Int32)],
+  platform_id : Int32,
+  encoding_id : Int32,
 ) -> Bool {
   for cmap in cmaps {
     if cmap.0 == platform_id && cmap.1 == encoding_id {
@@ -45,12 +45,12 @@ fn pdf_ua_matterhorn_cmaps_contain(
 }
 
 ///|
-fn pdf_ua_matterhorn_symbolic_cmap(cmap : (Int, Int)) -> Bool {
+fn pdf_ua_matterhorn_symbolic_cmap(cmap : (Int32, Int32)) -> Bool {
   (cmap.0 == 1 && cmap.1 == 8) || (cmap.0 == 3 && cmap.1 == 0)
 }
 
 ///|
-fn pdf_ua_matterhorn_cmap_extra(cmap : (Int, Int)) -> Json {
+fn pdf_ua_matterhorn_cmap_extra(cmap : (Int32, Int32)) -> Json {
   Json::string("(" + cmap.0.to_string() + ", " + cmap.1.to_string() + ") cmap")
 }
 

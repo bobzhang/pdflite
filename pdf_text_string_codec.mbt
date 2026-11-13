@@ -4,7 +4,7 @@
 /// PDFDocEncoding is used when all codepoints are representable; otherwise the
 /// result is a BOM-prefixed UTF-16BE string.
 pub fn pdf_pdfdocstring_of_codepoints(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   match pdf_pdfdocencoding_of_codepoints(codepoints) {
     Some(encoded) => encoded
@@ -19,7 +19,7 @@ pub fn pdf_pdfdocstring_of_codepoints(
 /// decoded as PDFDocEncoding.
 pub fn pdf_codepoints_of_pdfdocstring(
   bytes : BytesView,
-) -> Array[Int] raise @core.PdfError {
+) -> Array[Int32] raise @core.PdfError {
   if pdf_is_unicode_string(bytes) {
     pdf_codepoints_of_utf16be(bytes[2:])
   } else {

@@ -25,7 +25,7 @@ async fn metadata_fixture_bytes_for_test(path : String) -> Bytes? {
 fn metadata_fixture_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -44,7 +44,7 @@ fn metadata_fixture_bytes_start_with_at_for_test(
 fn metadata_fixture_find_last_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     haystack.length()
   } else if haystack.length() < needle.length() {
@@ -137,7 +137,7 @@ fn metadata_fixture_pdf_name_for_test(text : String) -> @core.PdfName {
 fn metadata_fixture_composition_entry_bytes_for_test(
   entries : ArrayView[@composition.PdfCompositionEntry],
   label : String,
-) -> Int raise {
+) -> Int32 raise {
   for entry in entries {
     if entry.label == label {
       break entry.bytes
@@ -151,7 +151,7 @@ fn metadata_fixture_composition_entry_bytes_for_test(
 ///|
 fn metadata_fixture_assert_cpdf_manual_reports_for_test(
   document : @pdflite.PdfDocument,
-  file_size : Int,
+  file_size : Int32,
 ) -> Unit raise {
   @test.assert_eq(document.endpage(), 175)
   let info_json = document.info_json()

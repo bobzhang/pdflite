@@ -1,6 +1,6 @@
 ///|
 #warnings("-unused_value")
-fn reader_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn reader_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -26,7 +26,7 @@ fn reader_assert_deferred_stream_data_for_test(
 
 ///|
 #warnings("-unused_value")
-fn reader_push_byte(output : Array[Byte], value : Int) -> Unit {
+fn reader_push_byte(output : Array[Byte], value : Int32) -> Unit {
   output.push(value.to_byte())
 }
 
@@ -42,8 +42,8 @@ fn reader_push_ascii(output : Array[Byte], text : String) -> Unit {
 #warnings("-unused_value")
 fn reader_push_padded_decimal(
   output : Array[Byte],
-  value : Int,
-  width : Int,
+  value : Int32,
+  width : Int32,
 ) -> Unit {
   let text = value.to_string()
   if text.length() < width {
@@ -58,8 +58,8 @@ fn reader_push_padded_decimal(
 #warnings("-unused_value")
 fn reader_push_big_endian(
   output : Array[Byte],
-  value : Int,
-  width : Int,
+  value : Int32,
+  width : Int32,
 ) -> Unit {
   let mut divisor = 1
   if width > 1 {
@@ -78,9 +78,9 @@ fn reader_push_big_endian(
 #warnings("-unused_value")
 fn reader_push_xref_stream_entry(
   output : Array[Byte],
-  kind : Int,
-  field2 : Int,
-  field3 : Int,
+  kind : Int32,
+  field2 : Int32,
+  field3 : Int32,
 ) -> Unit {
   reader_push_byte(output, kind)
   reader_push_big_endian(output, field2, 4)
@@ -91,8 +91,8 @@ fn reader_push_xref_stream_entry(
 #warnings("-unused_value")
 fn reader_push_xref_stream_default_in_use_entry(
   output : Array[Byte],
-  offset : Int,
-  generation : Int,
+  offset : Int32,
+  generation : Int32,
 ) -> Unit {
   reader_push_big_endian(output, offset, 4)
   reader_push_big_endian(output, generation, 2)
@@ -102,7 +102,7 @@ fn reader_push_xref_stream_default_in_use_entry(
 #warnings("-unused_value")
 fn reader_png_none_predictor_rows_for_test(
   data : ArrayView[Byte],
-  columns : Int,
+  columns : Int32,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   let row_count = (data.length() + columns - 1) / columns
@@ -125,8 +125,8 @@ fn reader_png_none_predictor_rows_for_test(
 #warnings("-unused_value")
 fn reader_push_xref_entry(
   output : Array[Byte],
-  offset : Int,
-  generation : Int,
+  offset : Int32,
+  generation : Int32,
 ) -> Unit {
   reader_push_padded_decimal(output, offset, 10)
   reader_push_byte(output, 32)
@@ -171,10 +171,10 @@ fn reader_wrap_view_for_test(
 #warnings("-unused_value")
 fn reader_push_indirect_object(
   output : Array[Byte],
-  number : Int,
-  generation : Int,
+  number : Int32,
+  generation : Int32,
   body : String,
-) -> Int {
+) -> Int32 {
   let offset = output.length()
   reader_push_ascii(output, number.to_string())
   reader_push_byte(output, 32)
@@ -189,8 +189,8 @@ fn reader_push_indirect_object(
 #warnings("-unused_value")
 fn reader_push_classic_trailer(
   output : Array[Byte],
-  xref_offset : Int,
-  size : Int,
+  xref_offset : Int32,
+  size : Int32,
 ) -> Unit {
   reader_push_ascii(output, "trailer\n<< /Root 1 0 R /Size ")
   reader_push_ascii(output, size.to_string())

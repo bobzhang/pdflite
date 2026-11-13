@@ -3,11 +3,12 @@
 ///
 /// Width and height are stored as given; conversion to PDF points happens at
 /// page-construction boundaries.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PaperSize {
   unit : PdfUnit
   width : Double
   height : Double
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Creates a paper size from a unit, width, and height.
@@ -16,7 +17,7 @@ pub fn paper_size_make(
   width : Double,
   height : Double,
 ) -> PaperSize {
-  { unit, width, height }
+  { unit, width, height, }
 }
 
 ///|
@@ -40,7 +41,7 @@ pub fn PaperSize::height(self : PaperSize) -> Double {
 ///|
 /// Returns the same paper dimensions with width and height swapped.
 pub fn PaperSize::landscape(self : PaperSize) -> PaperSize {
-  { unit: self.unit, width: self.height, height: self.width }
+  { unit: self.unit, width: self.height, height: self.width, }
 }
 
 ///|

@@ -1,15 +1,15 @@
 ///|
 fn PdfDocument::pdf_composition_object_size(
   self : PdfDocument,
-  number : Int,
-) -> Int raise @core.PdfError {
+  number : Int32,
+) -> Int32 raise @core.PdfError {
   pdf_write_object(self.lookup_object_or_null(number)).length()
 }
 
 ///|
-fn pdf_composition_unique_numbers(numbers : ArrayView[Int]) -> Array[Int] {
-  let seen : @hashmap.HashMap[Int, Bool] = HashMap([])
-  let output : Array[Int] = Array::new(capacity=numbers.length())
+fn pdf_composition_unique_numbers(numbers : ArrayView[Int32]) -> Array[Int32] {
+  let seen : @hashmap.HashMap[Int32, Bool] = HashMap([])
+  let output : Array[Int32] = Array::new(capacity=numbers.length())
   for number in numbers {
     if !seen.contains(number) {
       seen[number] = true
@@ -22,8 +22,8 @@ fn pdf_composition_unique_numbers(numbers : ArrayView[Int]) -> Array[Int] {
 ///|
 fn PdfDocument::pdf_composition_compressed_size(
   self : PdfDocument,
-  numbers : ArrayView[Int],
-) -> Int raise @core.PdfError {
+  numbers : ArrayView[Int32],
+) -> Int32 raise @core.PdfError {
   let unique_numbers = pdf_composition_unique_numbers(numbers)
   if unique_numbers.length() == 0 {
     0
@@ -56,7 +56,7 @@ fn PdfDocument::pdf_composition_compressed_size(
 ///|
 fn PdfDocument::pdf_composition_xref_table_size(
   self : PdfDocument,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   if self.objects.object_stream_ids.length() == 0 {
     20 * self.object_count()
   } else {

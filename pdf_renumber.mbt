@@ -1,15 +1,15 @@
 ///|
 fn pdf_renumber_document_with_changes(
   document : PdfDocument,
-  changes : ArrayView[(Int, Int)],
+  changes : ArrayView[(Int32, Int32)],
 ) -> PdfDocument raise @core.PdfError {
   let output = document.copy()
   let old_numbers = output.object_numbers()
   let change_map = pdf_page_reference_map(changes)
-  let entries : Array[(Int, PdfObjectEntry)] = Array::new(
+  let entries : Array[(Int32, PdfObjectEntry)] = Array::new(
     capacity=old_numbers.length(),
   )
-  let seen : @hashmap.HashMap[Int, Bool] = HashMap([])
+  let seen : @hashmap.HashMap[Int32, Bool] = HashMap([])
   for number in old_numbers {
     let new_number = change_map.changed_reference(number)
     if new_number < 1 || seen.contains(new_number) {
@@ -50,7 +50,7 @@ fn pdf_renumber_document_with_changes(
 /// target numbers raise `@core.PdfError::InvalidObjectNumber`.
 pub fn PdfDocument::renumber_objects(
   self : PdfDocument,
-  changes : ArrayView[(Int, Int)],
+  changes : ArrayView[(Int32, Int32)],
 ) -> PdfDocument raise @core.PdfError {
   pdf_renumber_document_with_changes(self, changes)
 }
@@ -61,7 +61,7 @@ pub fn PdfDocument::renumber_objects_compact(
   self : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   let numbers = self.object_numbers()
-  let changes : Array[(Int, Int)] = Array::new(capacity=numbers.length())
+  let changes : Array[(Int32, Int32)] = Array::new(capacity=numbers.length())
   for index, number in numbers {
     changes.push((number, index + 1))
   }
@@ -75,7 +75,7 @@ pub fn PdfDocument::renumber_objects_compact(
 /// `@core.PdfError::InvalidObjectNumber`.
 pub fn PdfDocument::renumber_objects_by_offset(
   self : PdfDocument,
-  offset : Int,
+  offset : Int32,
 ) -> PdfDocument raise @core.PdfError {
   if offset < 0 {
     raise InvalidObjectNumber(offset)
@@ -84,7 +84,7 @@ pub fn PdfDocument::renumber_objects_by_offset(
     self.copy()
   } else {
     let old_numbers = self.object_numbers()
-    let changes : Array[(Int, Int)] = [
+    let changes : Array[(Int32, Int32)] = [
       for number in old_numbers => (number, number + offset)
     ]
     pdf_renumber_document_with_changes(self, changes)
@@ -104,7 +104,7 @@ pub fn pdf_renumber_documents(
   let mut base = 1
   for document in documents {
     let numbers = document.object_numbers()
-    let changes : Array[(Int, Int)] = Array::new(capacity=numbers.length())
+    let changes : Array[(Int32, Int32)] = Array::new(capacity=numbers.length())
     for index, number in numbers {
       changes.push((number, base + index))
     }

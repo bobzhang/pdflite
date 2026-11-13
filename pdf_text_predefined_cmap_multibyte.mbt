@@ -1,8 +1,8 @@
 ///|
 fn pdf_text_predefined_gb1_codepoint(
-  ranges : Array[(Int, Int, Int)],
-  code : Int,
-) -> Int? {
+  ranges : Array[(Int32, Int32, Int32)],
+  code : Int32,
+) -> Int32? {
   match pdf_text_predefined_cid_range_lookup(ranges, code) {
     Some(cid) => pdf_text_gb1_codepoint_of_cid(cid)
     None => None
@@ -11,28 +11,28 @@ fn pdf_text_predefined_gb1_codepoint(
 
 ///|
 fn pdf_text_predefined_gb1_charcode(
-  ranges : Array[(Int, Int, Int)],
-  codepoint : Int,
-) -> Int? {
+  ranges : Array[(Int32, Int32, Int32)],
+  codepoint : Int32,
+) -> Int32? {
   pdf_text_predefined_unicode_table_charcode(
     @cmapdata.pdf_text_gb1_unicode_table, ranges, codepoint,
   )
 }
 
 ///|
-fn pdf_text_predefined_gbk2k_codepoint(code : Int) -> Int? {
+fn pdf_text_predefined_gbk2k_codepoint(code : Int32) -> Int32? {
   pdf_text_predefined_gb1_codepoint(@cmapdata.pdf_text_gbk2k_cid_ranges, code)
 }
 
 ///|
-fn pdf_text_predefined_gbk2k_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_gbk2k_charcode(codepoint : Int32) -> Int32? {
   pdf_text_predefined_gb1_charcode(
     @cmapdata.pdf_text_gbk2k_cid_ranges, codepoint,
   )
 }
 
 ///|
-fn pdf_text_predefined_gb_euc_codepoint(code : Int) -> Int? {
+fn pdf_text_predefined_gb_euc_codepoint(code : Int32) -> Int32? {
   if code >= 0x00 && code <= 0x7F {
     Some(code)
   } else {
@@ -43,7 +43,7 @@ fn pdf_text_predefined_gb_euc_codepoint(code : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_predefined_gb_euc_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_gb_euc_charcode(codepoint : Int32) -> Int32? {
   if codepoint >= 0x00 && codepoint <= 0x7F {
     Some(codepoint)
   } else {
@@ -54,21 +54,21 @@ fn pdf_text_predefined_gb_euc_charcode(codepoint : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_predefined_gbpc_euc_codepoints(code : Int) -> Array[Int]? {
+fn pdf_text_predefined_gbpc_euc_codepoints(code : Int32) -> Array[Int32]? {
   pdf_text_predefined_pair_codepoints_table_lookup(
     @cmapdata.pdf_text_gbpc_euc_codepoints_table, code,
   )
 }
 
 ///|
-fn pdf_text_predefined_gbpc_euc_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_gbpc_euc_charcode(codepoint : Int32) -> Int32? {
   pdf_text_predefined_pair_table_lookup(
     @cmapdata.pdf_text_gbpc_euc_charcode_table, codepoint,
   )
 }
 
 ///|
-fn pdf_text_predefined_big5_codepoint(code : Int) -> Int? {
+fn pdf_text_predefined_big5_codepoint(code : Int32) -> Int32? {
   if code >= 0x00 && code <= 0x7F {
     Some(code)
   } else {
@@ -79,7 +79,7 @@ fn pdf_text_predefined_big5_codepoint(code : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_predefined_big5_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_big5_charcode(codepoint : Int32) -> Int32? {
   if codepoint >= 0x00 && codepoint <= 0x7F {
     Some(codepoint)
   } else {
@@ -90,35 +90,35 @@ fn pdf_text_predefined_big5_charcode(codepoint : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_predefined_b5pc_codepoint(code : Int) -> Int? {
+fn pdf_text_predefined_b5pc_codepoint(code : Int32) -> Int32? {
   pdf_text_predefined_pair_table_lookup(
     @cmapdata.pdf_text_b5pc_codepoint_table, code,
   )
 }
 
 ///|
-fn pdf_text_predefined_b5pc_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_b5pc_charcode(codepoint : Int32) -> Int32? {
   pdf_text_predefined_pair_table_lookup(
     @cmapdata.pdf_text_b5pc_charcode_table, codepoint,
   )
 }
 
 ///|
-fn pdf_text_predefined_hkscs_codepoint(code : Int) -> Int? {
+fn pdf_text_predefined_hkscs_codepoint(code : Int32) -> Int32? {
   pdf_text_predefined_pair_table_lookup(
     @cmapdata.pdf_text_hkscs_codepoint_table, code,
   )
 }
 
 ///|
-fn pdf_text_predefined_hkscs_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_hkscs_charcode(codepoint : Int32) -> Int32? {
   pdf_text_predefined_pair_table_lookup(
     @cmapdata.pdf_text_hkscs_charcode_table, codepoint,
   )
 }
 
 ///|
-fn pdf_text_predefined_uhc_codepoint(code : Int) -> Int? {
+fn pdf_text_predefined_uhc_codepoint(code : Int32) -> Int32? {
   if code >= 0x00 && code <= 0x7F {
     Some(code)
   } else {
@@ -129,7 +129,7 @@ fn pdf_text_predefined_uhc_codepoint(code : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_predefined_uhc_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_uhc_charcode(codepoint : Int32) -> Int32? {
   if codepoint >= 0x00 && codepoint <= 0x7F {
     Some(codepoint)
   } else {
@@ -140,35 +140,35 @@ fn pdf_text_predefined_uhc_charcode(codepoint : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_predefined_ksc_euc_codepoint(code : Int) -> Int? {
+fn pdf_text_predefined_ksc_euc_codepoint(code : Int32) -> Int32? {
   pdf_text_predefined_pair_table_lookup(
     @cmapdata.pdf_text_ksc_euc_codepoint_table, code,
   )
 }
 
 ///|
-fn pdf_text_predefined_ksc_euc_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_ksc_euc_charcode(codepoint : Int32) -> Int32? {
   pdf_text_predefined_pair_table_lookup(
     @cmapdata.pdf_text_ksc_euc_charcode_table, codepoint,
   )
 }
 
 ///|
-fn pdf_text_predefined_kscpc_euc_codepoints(code : Int) -> Array[Int]? {
+fn pdf_text_predefined_kscpc_euc_codepoints(code : Int32) -> Array[Int32]? {
   pdf_text_predefined_pair_codepoints_table_lookup(
     @cmapdata.pdf_text_kscpc_euc_codepoints_table, code,
   )
 }
 
 ///|
-fn pdf_text_predefined_kscpc_euc_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_kscpc_euc_charcode(codepoint : Int32) -> Int32? {
   pdf_text_predefined_pair_table_lookup(
     @cmapdata.pdf_text_kscpc_euc_charcode_table, codepoint,
   )
 }
 
 ///|
-fn pdf_text_predefined_gbk_codepoint(code : Int) -> Int? {
+fn pdf_text_predefined_gbk_codepoint(code : Int32) -> Int32? {
   if code >= 0x00 && code <= 0x80 {
     Some(code)
   } else if code == 0xFF {
@@ -181,7 +181,7 @@ fn pdf_text_predefined_gbk_codepoint(code : Int) -> Int? {
 }
 
 ///|
-fn pdf_text_predefined_gbk_charcode(codepoint : Int) -> Int? {
+fn pdf_text_predefined_gbk_charcode(codepoint : Int32) -> Int32? {
   if codepoint >= 0x00 && codepoint <= 0x80 {
     Some(codepoint)
   } else if codepoint == 0xF8F5 {

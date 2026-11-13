@@ -3,16 +3,17 @@
 ///
 /// Bits are packed most-significant first in each output byte. The final byte
 /// is zero-padded when `align` or `to_bytes` flushes a partially filled byte.
+#derive(Debug, Eq, ToJson)
 pub struct BitWriter {
-  mut current_byte : Int
-  mut bit_index : Int
+  mut current_byte : Int32
+  mut bit_index : Int32
   bytes : Array[Byte]
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Creates an empty bit writer.
 pub fn bit_writer_new() -> BitWriter {
-  { current_byte: 0, bit_index: 0, bytes: [] }
+  { current_byte: 0, bit_index: 0, bytes: [], }
 }
 
 ///|
@@ -25,7 +26,7 @@ fn BitWriter::copy(self : BitWriter) -> BitWriter {
 }
 
 ///|
-fn BitWriter::put_bit_unchecked(self : BitWriter, bit : Int) -> Unit {
+fn BitWriter::put_bit_unchecked(self : BitWriter, bit : Int32) -> Unit {
   if bit == 1 {
     self.current_byte = self.current_byte | (1 << (7 - self.bit_index))
   }
@@ -41,7 +42,7 @@ fn BitWriter::put_bit_unchecked(self : BitWriter, bit : Int) -> Unit {
 /// Writes one bit, accepting only integer values `0` and `1`.
 ///
 /// Raises `PdfError::InvalidBit` for any other value.
-pub fn BitWriter::put_bit(self : BitWriter, bit : Int) -> Unit raise PdfError {
+pub fn BitWriter::put_bit(self : BitWriter, bit : Int32) -> Unit raise PdfError {
   if bit != 0 && bit != 1 {
     raise InvalidBit(bit)
   }
@@ -54,8 +55,8 @@ pub fn BitWriter::put_bit(self : BitWriter, bit : Int) -> Unit raise PdfError {
 /// Raises `PdfError::InvalidBitCount` for widths outside `0..=31`.
 pub fn BitWriter::put_value_int(
   self : BitWriter,
-  width : Int,
-  value : Int,
+  width : Int32,
+  value : Int32,
 ) -> Unit raise PdfError {
   if width < 0 || width > 31 {
     raise InvalidBitCount(width)
@@ -72,7 +73,7 @@ pub fn BitWriter::put_value_int(
 /// Raises `PdfError::InvalidBitCount` for widths outside `0..=32`.
 pub fn BitWriter::put_value_int64(
   self : BitWriter,
-  width : Int,
+  width : Int32,
   value : Int64,
 ) -> Unit raise PdfError {
   if width < 0 || width > 32 {
@@ -123,6 +124,6 @@ pub fn BitWriter::append_aligned(
 ///|
 /// Returns the number of bits currently written, including an unflushed partial
 /// byte.
-pub fn BitWriter::bit_length(self : BitWriter) -> Int {
+pub fn BitWriter::bit_length(self : BitWriter) -> Int32 {
   self.bytes.length() * 8 + self.bit_index
 }

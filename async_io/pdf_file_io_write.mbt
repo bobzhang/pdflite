@@ -5,7 +5,7 @@
 pub async fn pdf_write_document_to_file(
   document : @pdflite.PdfDocument,
   path : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -20,7 +20,7 @@ pub async fn pdf_write_document_to_file(
 pub async fn pdf_write_document_to_file_with_xref_stream(
   document : @pdflite.PdfDocument,
   path : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -35,7 +35,7 @@ pub async fn pdf_write_document_to_file_with_xref_stream(
 pub async fn pdf_write_document_to_file_with_compressed_xref_stream(
   document : @pdflite.PdfDocument,
   path : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -51,7 +51,7 @@ pub async fn pdf_write_document_to_file_with_mode(
   document : @pdflite.PdfDocument,
   path : StringView,
   mode : @writer.PdfWriteMode,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -68,8 +68,8 @@ pub async fn pdf_write_document_to_file_with_mode(
 pub async fn pdf_write_document_to_file_with_generated_id(
   document : @pdflite.PdfDocument,
   path : StringView,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  permission? : Int = 0o644,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -89,7 +89,7 @@ pub async fn pdf_write_document_incremental_update_to_file(
   original_path : StringView,
   document : @pdflite.PdfDocument,
   path : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -108,7 +108,7 @@ pub async fn pdf_write_document_incremental_update_with_xref_stream_to_file(
   original_path : StringView,
   document : @pdflite.PdfDocument,
   path : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -127,7 +127,7 @@ pub async fn pdf_write_document_incremental_update_with_compressed_xref_stream_t
   original_path : StringView,
   document : @pdflite.PdfDocument,
   path : StringView,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -147,7 +147,7 @@ pub async fn pdf_write_document_incremental_update_to_file_with_mode(
   document : @pdflite.PdfDocument,
   path : StringView,
   mode : @writer.PdfWriteMode,
-  permission? : Int = 0o644,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,
@@ -169,8 +169,8 @@ pub async fn pdf_write_document_incremental_update_to_file_with_generated_id(
   original_path : StringView,
   document : @pdflite.PdfDocument,
   path : StringView,
-  mode? : @writer.PdfWriteMode = PdfWriteClassic,
-  permission? : Int = 0o644,
+  mode~ : @writer.PdfWriteMode = PdfWriteClassic,
+  permission~ : Int32 = 0o644,
 ) -> Unit {
   @fs.write_file(
     path,

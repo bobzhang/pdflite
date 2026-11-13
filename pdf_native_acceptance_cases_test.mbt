@@ -1824,7 +1824,7 @@ test "native acceptance suite decrypts reconstructed encrypted page trees missin
   let strict = @pdflite.pdf_read_classic_document_from_bytes(malformed)
   @test.assert_eq(strict.root(), 1)
   @test.assert_eq(strict.object_numbers(), [1, encrypt_object_number])
-  let strict_pages : Result[Int, Error] = try strict.endpage() catch {
+  let strict_pages : Result[Int32, Error] = try strict.endpage() catch {
     err => Err(err)
   } noraise {
     value => Ok(value)

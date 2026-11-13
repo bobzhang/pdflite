@@ -29,15 +29,15 @@ fn pdf_image_list_entry_json(entry : PdfImageListEntry) -> Json {
 /// List image XObjects referenced by selected pages as cpdf-style JSON rows.
 pub fn PdfDocument::images_json(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  inline? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  inline~ : Bool = false,
 ) -> Json raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(page_numbers, pages.length(), "images")
   let entries : Array[PdfImageListEntry] = Array::new(
     capacity=page_numbers.length(),
   )
-  let form_numbers : @hashmap.HashMap[Int, Bool] = HashMap([])
+  let form_numbers : @hashmap.HashMap[Int32, Bool] = HashMap([])
   for page_number in page_numbers {
     self.pdf_image_collect_page_images(
       pages[page_number - 1],
@@ -54,8 +54,8 @@ pub fn PdfDocument::images_json(
 /// List image XObjects referenced by selected pages as UTF-8 JSON bytes.
 pub fn PdfDocument::images_json_blob(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  inline? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  inline~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   @utf8.encode(self.images_json(page_numbers, inline~).stringify())
 }
@@ -65,7 +65,7 @@ pub fn PdfDocument::images_json_blob(
 pub fn pdf_image_images(
   inline : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Json raise @core.PdfError {
   document.images_json(page_numbers, inline~)
 }
@@ -75,7 +75,7 @@ pub fn pdf_image_images(
 pub fn pdf_images(
   inline : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Json raise @core.PdfError {
   document.images_json(page_numbers, inline~)
 }
@@ -85,7 +85,7 @@ pub fn pdf_images(
 pub fn pdf_image_images_json_blob(
   inline : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   document.images_json_blob(page_numbers, inline~)
 }

@@ -1,14 +1,14 @@
 ///|
 priv struct PdfClassicReadPlan {
   xrefs : Array[@reader.PdfClassicXRefEntry]
-  xref_stream_refs : Array[(Int, Int)]
+  xref_stream_refs : Array[(Int32, Int32)]
   trailer : @syntax.PdfObject
 }
 
 ///|
 fn pdf_read_reader_revision_target(
-  revision : Int?,
-) -> Int? raise @core.PdfError {
+  revision : Int32?,
+) -> Int32? raise @core.PdfError {
   match revision {
     Some(value) if value < 1 => raise BadRevision
     _ => revision
@@ -17,8 +17,8 @@ fn pdf_read_reader_revision_target(
 
 ///|
 fn pdf_reader_revision_reads_section(
-  revision : Int?,
-  current_revision : Int,
+  revision : Int32?,
+  current_revision : Int32,
 ) -> Bool {
   match revision {
     Some(target) => target <= current_revision
@@ -28,9 +28,9 @@ fn pdf_reader_revision_reads_section(
 
 ///|
 fn pdf_reader_revision_selects_trailer(
-  revision : Int?,
-  current_revision : Int,
-  depth : Int,
+  revision : Int32?,
+  current_revision : Int32,
+  depth : Int32,
 ) -> Bool {
   match revision {
     Some(target) => target == current_revision
@@ -41,13 +41,13 @@ fn pdf_reader_revision_selects_trailer(
 ///|
 fn pdf_reader_classic_read_plan(
   cursor : @core.ByteCursor,
-  xref_position : Int,
-  revision : Int?,
+  xref_position : Int32,
+  revision : Int32?,
 ) -> PdfClassicReadPlan raise @core.PdfError {
   let xrefs : Array[@reader.PdfClassicXRefEntry] = []
   let xref_seen = @core.pdf_number_set([])
   let mut trailer = @syntax.PdfDictionary([])
-  let xref_stream_refs : Array[(Int, Int)] = []
+  let xref_stream_refs : Array[(Int32, Int32)] = []
   let mut current_xref = xref_position
   let mut done = false
   let mut depth = 0
@@ -99,5 +99,5 @@ fn pdf_reader_classic_read_plan(
     }
     depth += 1
   }
-  { xrefs, xref_stream_refs, trailer }
+  { xrefs, xref_stream_refs, trailer, }
 }

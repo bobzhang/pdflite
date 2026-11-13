@@ -1,6 +1,6 @@
 ///|
 test "private Gurmukhi AGL glyph helper covers table" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/aagurmukhi", 0x0A06),
     ("/aamatragurmukhi", 0x0A3E),
     ("/addakgurmukhi", 0x0A71),

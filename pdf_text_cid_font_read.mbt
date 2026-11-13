@@ -54,8 +54,8 @@ fn PdfDocument::pdf_text_cid_number(
 fn PdfDocument::pdf_text_read_cid_widths(
   self : PdfDocument,
   values : ArrayView[@syntax.PdfObject],
-) -> Array[(Int, Double)] raise @core.PdfError {
-  let output : Array[(Int, Double)] = Array::new(capacity=values.length())
+) -> Array[(Int32, Double)] raise @core.PdfError {
+  let output : Array[(Int32, Double)] = Array::new(capacity=values.length())
   let mut index = 0
   while index < values.length() {
     match self.direct(values[index]) {
@@ -99,8 +99,8 @@ fn PdfDocument::pdf_text_read_cid_widths(
 fn PdfDocument::pdf_text_read_cid_widths2(
   self : PdfDocument,
   values : ArrayView[@syntax.PdfObject],
-) -> Array[(Int, PdfCIDVerticalWidth)] raise @core.PdfError {
-  let output : Array[(Int, PdfCIDVerticalWidth)] = Array::new(
+) -> Array[(Int32, PdfCIDVerticalWidth)] raise @core.PdfError {
+  let output : Array[(Int32, PdfCIDVerticalWidth)] = Array::new(
     capacity=values.length(),
   )
   let mut index = 0
@@ -174,7 +174,7 @@ fn PdfDocument::pdf_text_read_cid_widths2(
 fn PdfDocument::pdf_text_cid_widths(
   self : PdfDocument,
   dictionary : @syntax.PdfObject,
-) -> Array[(Int, Double)] raise @core.PdfError {
+) -> Array[(Int32, Double)] raise @core.PdfError {
   match self.lookup_direct(pdf_text_w_key_name, dictionary) {
     Some(PdfArray(values)) => self.pdf_text_read_cid_widths(values)
     _ => []
@@ -185,7 +185,7 @@ fn PdfDocument::pdf_text_cid_widths(
 fn PdfDocument::pdf_text_cid_widths2(
   self : PdfDocument,
   dictionary : @syntax.PdfObject,
-) -> Array[(Int, PdfCIDVerticalWidth)] raise @core.PdfError {
+) -> Array[(Int32, PdfCIDVerticalWidth)] raise @core.PdfError {
   match self.lookup_direct(pdf_text_w2_key_name, dictionary) {
     Some(PdfArray(values)) => self.pdf_text_read_cid_widths2(values)
     _ => []
@@ -291,5 +291,5 @@ pub fn PdfDocument::read_cidkeyed_font(
       self.pdf_text_read_descendant(self.direct(descendant))
     _ => raise DescendantFontExpected
   }
-  { basefont, composite, encoding: self.pdf_text_read_cmap_encoding(font) }
+  { basefont, composite, encoding: self.pdf_text_read_cmap_encoding(font), }
 }

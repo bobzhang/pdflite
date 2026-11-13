@@ -1,7 +1,7 @@
 ///|
 fn PdfDocument::pdf_attach_document_size(
   self : PdfDocument,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let mut total = 0
   let catalog = self.catalog()
   match self.lookup_direct(pdf_attach_names_key(), catalog) {
@@ -21,7 +21,7 @@ fn PdfDocument::pdf_attach_document_size(
 ///|
 fn PdfDocument::pdf_attach_page_size(
   self : PdfDocument,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let mut total = 0
   for page in self.pages_of_pagetree() {
     match self.lookup_direct(pdf_attach_annots_key(), page.rest) {
@@ -45,7 +45,7 @@ fn PdfDocument::pdf_attach_page_size(
 /// Return the total raw byte size of all embedded file attachment streams.
 pub fn PdfDocument::size_attached_files(
   self : PdfDocument,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   self.pdf_attach_document_size() + self.pdf_attach_page_size()
 }
 
@@ -53,6 +53,6 @@ pub fn PdfDocument::size_attached_files(
 /// Compatibility wrapper for `PdfDocument::size_attached_files`.
 pub fn pdf_size_attached_files(
   document : PdfDocument,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   document.size_attached_files()
 }

@@ -1,11 +1,12 @@
 ///|
 /// Pixel layout for extracted raw image data.
+#derive(Debug, Eq, ToJson)
 pub(all) enum PdfPixelLayout {
   PdfBPP1
   PdfBPP8
   PdfBPP24
   PdfBPP48
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Extracted PDF image data.
@@ -13,19 +14,21 @@ pub(all) enum PdfPixelLayout {
 /// JPEG, JPEG2000, and JBIG2 variants keep their encoded bytes and optional
 /// decode array. `PdfJBIG2` also carries the optional `/JBIG2Globals` object
 /// number. `PdfRawImage` stores width, height, layout, and decoded pixel bytes.
+#derive(Debug, Eq, ToJson)
 pub(all) enum PdfImage {
   PdfJPEG(@core.PdfBytes, Array[Double]?)
   PdfJPEG2000(@core.PdfBytes, Array[Double]?)
-  PdfJBIG2(@core.PdfBytes, Array[Double]?, Int?)
-  PdfRawImage(Int, Int, PdfPixelLayout, @core.PdfBytes)
-} derive(Debug, Eq, ToJson)
+  PdfJBIG2(@core.PdfBytes, Array[Double]?, Int32?)
+  PdfRawImage(Int32, Int32, PdfPixelLayout, @core.PdfBytes)
+}
 
 ///|
 /// One file that cpdf-style image extraction would write.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfExtractedImageFile {
   path : String
   data : @core.PdfBytes
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Build a PDF image XObject for JPEG data.
@@ -52,8 +55,8 @@ pub fn pdf_image_object_of_jpeg_data(
 /// Compatibility wrapper matching cpdfimage's `obj_of_jpeg_data` result shape.
 pub fn pdf_image_obj_of_jpeg_data(
   data : BytesView,
-  path_to_im? : String = "",
-) -> (@syntax.PdfObject, Array[(Int, @syntax.PdfObject)]) raise @core.PdfError {
+  path_to_im~ : String = "",
+) -> (@syntax.PdfObject, Array[(Int32, @syntax.PdfObject)]) raise @core.PdfError {
   ignore(path_to_im)
   (pdf_image_object_of_jpeg_data(data), [])
 }
@@ -62,8 +65,8 @@ pub fn pdf_image_obj_of_jpeg_data(
 /// Source-spelled cpdfimage `obj_of_jpeg_data` wrapper.
 pub fn pdf_obj_of_jpeg_data(
   data : BytesView,
-  path_to_im? : String = "",
-) -> (@syntax.PdfObject, Array[(Int, @syntax.PdfObject)]) raise @core.PdfError {
+  path_to_im~ : String = "",
+) -> (@syntax.PdfObject, Array[(Int32, @syntax.PdfObject)]) raise @core.PdfError {
   pdf_image_obj_of_jpeg_data(data, path_to_im~)
 }
 
@@ -90,7 +93,7 @@ pub fn pdf_image_object_of_jpeg2000_data(
 /// Compatibility wrapper matching cpdfimage's `obj_of_jpeg2000_data` result shape.
 pub fn pdf_image_obj_of_jpeg2000_data(
   data : BytesView,
-) -> (@syntax.PdfObject, Array[(Int, @syntax.PdfObject)]) raise @core.PdfError {
+) -> (@syntax.PdfObject, Array[(Int32, @syntax.PdfObject)]) raise @core.PdfError {
   (pdf_image_object_of_jpeg2000_data(data), [])
 }
 
@@ -98,12 +101,14 @@ pub fn pdf_image_obj_of_jpeg2000_data(
 /// Source-spelled cpdfimage `obj_of_jpeg2000_data` wrapper.
 pub fn pdf_obj_of_jpeg2000_data(
   data : BytesView,
-) -> (@syntax.PdfObject, Array[(Int, @syntax.PdfObject)]) raise @core.PdfError {
+) -> (@syntax.PdfObject, Array[(Int32, @syntax.PdfObject)]) raise @core.PdfError {
   pdf_image_obj_of_jpeg2000_data(data)
 }
 
 ///|
-fn PdfPNG::pdf_image_png_components(self : PdfPNG) -> Int raise @core.PdfError {
+fn PdfPNG::pdf_image_png_components(
+  self : PdfPNG,
+) -> Int32 raise @core.PdfError {
   match self.color_type {
     0 | 4 => 1
     2 | 6 => 3
@@ -127,7 +132,7 @@ fn pdf_image_png_dictionary(
   png : PdfPNG,
   data : @core.PdfBytes,
   color_space : @core.PdfName,
-  colors : Int,
+  colors : Int32,
   predictor : Bool,
 ) -> Array[(@core.PdfName, @syntax.PdfObject)] {
   let entries : Array[(@core.PdfName, @syntax.PdfObject)] = [
@@ -252,7 +257,7 @@ pub fn pdf_image_object_of_png_data(
 pub fn pdf_image_obj_of_png_data(
   document : PdfDocument,
   data : BytesView,
-) -> (@syntax.PdfObject, Array[(Int, @syntax.PdfObject)]) raise @core.PdfError {
+) -> (@syntax.PdfObject, Array[(Int32, @syntax.PdfObject)]) raise @core.PdfError {
   (document.pdf_image_object_of_png_data(data), [])
 }
 
@@ -261,15 +266,15 @@ pub fn pdf_image_obj_of_png_data(
 pub fn pdf_obj_of_png_data(
   document : PdfDocument,
   data : BytesView,
-) -> (@syntax.PdfObject, Array[(Int, @syntax.PdfObject)]) raise @core.PdfError {
+) -> (@syntax.PdfObject, Array[(Int32, @syntax.PdfObject)]) raise @core.PdfError {
   pdf_image_obj_of_png_data(document, data)
 }
 
 ///|
 fn pdf_image_jbig2_u32_at(
   data : BytesView,
-  offset : Int,
-) -> Int raise @core.PdfError {
+  offset : Int32,
+) -> Int32 raise @core.PdfError {
   if offset < 0 || offset + 4 > data.length() {
     raise EndOfInput
   }
@@ -283,7 +288,7 @@ fn pdf_image_jbig2_u32_at(
 ///|
 fn pdf_image_jbig2_dimensions_view(
   data : BytesView,
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   (pdf_image_jbig2_u32_at(data, 11), pdf_image_jbig2_u32_at(data, 15))
 }
 
@@ -295,8 +300,8 @@ fn pdf_image_jbig2_dimensions_view(
 /// `obj_of_jbig2_data` contract.
 pub fn pdf_image_object_of_jbig2_data(
   data : BytesView,
-  global? : BytesView? = None,
-) -> (@syntax.PdfObject, Array[(Int, @syntax.PdfObject)]) raise @core.PdfError {
+  global~ : BytesView? = None,
+) -> (@syntax.PdfObject, Array[(Int32, @syntax.PdfObject)]) raise @core.PdfError {
   let payload = data.to_owned()
   let (width, height) = pdf_image_jbig2_dimensions_view(data)
   let entries : Array[(@core.PdfName, @syntax.PdfObject)] = [
@@ -308,7 +313,7 @@ pub fn pdf_image_object_of_jbig2_data(
     (pdf_image_width_key(), PdfInteger(width)),
     (pdf_image_height_key(), PdfInteger(height)),
   ]
-  let extra : Array[(Int, @syntax.PdfObject)] = Array::new(
+  let extra : Array[(Int32, @syntax.PdfObject)] = Array::new(
     capacity=match global {
       Some(_) => 1
       None => 0
@@ -349,8 +354,8 @@ pub fn pdf_image_object_of_jbig2_data(
 /// Compatibility wrapper matching cpdfimage's `obj_of_jbig2_data`.
 pub fn pdf_image_obj_of_jbig2_data(
   data : BytesView,
-  global? : BytesView? = None,
-) -> (@syntax.PdfObject, Array[(Int, @syntax.PdfObject)]) raise @core.PdfError {
+  global~ : BytesView? = None,
+) -> (@syntax.PdfObject, Array[(Int32, @syntax.PdfObject)]) raise @core.PdfError {
   pdf_image_object_of_jbig2_data(data, global~)
 }
 
@@ -358,7 +363,7 @@ pub fn pdf_image_obj_of_jbig2_data(
 /// Source-spelled cpdfimage `obj_of_jbig2_data` wrapper.
 pub fn pdf_obj_of_jbig2_data(
   data : BytesView,
-  global? : BytesView? = None,
-) -> (@syntax.PdfObject, Array[(Int, @syntax.PdfObject)]) raise @core.PdfError {
+  global~ : BytesView? = None,
+) -> (@syntax.PdfObject, Array[(Int32, @syntax.PdfObject)]) raise @core.PdfError {
   pdf_image_obj_of_jbig2_data(data, global~)
 }

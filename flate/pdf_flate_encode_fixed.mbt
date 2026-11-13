@@ -1,5 +1,5 @@
 ///|
-fn pdf_flate_fixed_literal_code(symbol : Int) -> (UInt, Int) {
+fn pdf_flate_fixed_literal_code(symbol : Int32) -> (UInt32, Int32) {
   if symbol <= 143 {
     ((0x30 + symbol).reinterpret_as_uint(), 8)
   } else if symbol <= 255 {
@@ -12,13 +12,18 @@ fn pdf_flate_fixed_literal_code(symbol : Int) -> (UInt, Int) {
 }
 
 ///|
-fn pdf_flate_write_fixed_literal(writer : FlateBitWriter, symbol : Int) -> Unit {
+fn pdf_flate_write_fixed_literal(
+  writer : FlateBitWriter,
+  symbol : Int32,
+) -> Unit {
   let (code, width) = pdf_flate_fixed_literal_code(symbol)
   writer.write_bits(pdf_flate_reverse_bits(code, width), width)
 }
 
 ///|
-fn pdf_flate_length_code(length : Int) -> (Int, Int, Int) raise @core.PdfError {
+fn pdf_flate_length_code(
+  length : Int32,
+) -> (Int32, Int32, Int32) raise @core.PdfError {
   for index, base in pdf_flate_length_base {
     let extra_width = pdf_flate_length_extra[index]
     let max = base + ((1 << extra_width) - 1)
@@ -32,8 +37,8 @@ fn pdf_flate_length_code(length : Int) -> (Int, Int, Int) raise @core.PdfError {
 
 ///|
 fn pdf_flate_distance_code(
-  distance : Int,
-) -> (Int, Int, Int) raise @core.PdfError {
+  distance : Int32,
+) -> (Int32, Int32, Int32) raise @core.PdfError {
   for index, base in pdf_flate_distance_base {
     let extra_width = pdf_flate_distance_extra[index]
     let max = base + ((1 << extra_width) - 1)
@@ -48,7 +53,7 @@ fn pdf_flate_distance_code(
 ///|
 fn pdf_flate_write_fixed_distance(
   writer : FlateBitWriter,
-  distance : Int,
+  distance : Int32,
 ) -> Unit raise @core.PdfError {
   let (symbol, extra, extra_width) = pdf_flate_distance_code(distance)
   writer.write_bits(pdf_flate_reverse_bits(symbol.reinterpret_as_uint(), 5), 5)
@@ -58,8 +63,8 @@ fn pdf_flate_write_fixed_distance(
 ///|
 fn pdf_flate_write_fixed_length_distance(
   writer : FlateBitWriter,
-  length : Int,
-  distance : Int,
+  length : Int32,
+  distance : Int32,
 ) -> Unit raise @core.PdfError {
   let (symbol, extra, extra_width) = pdf_flate_length_code(length)
   pdf_flate_write_fixed_literal(writer, symbol)
@@ -70,9 +75,9 @@ fn pdf_flate_write_fixed_length_distance(
 ///|
 fn pdf_flate_write_canonical_symbol(
   writer : FlateBitWriter,
-  symbol : Int,
-  codes : ArrayView[Int],
-  lengths : ArrayView[Int],
+  symbol : Int32,
+  codes : ArrayView[Int32],
+  lengths : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   guard symbol >= 0 && symbol < lengths.length() && lengths[symbol] > 0 else {
     raise InvalidFlateData
@@ -101,7 +106,10 @@ fn pdf_flate_push_fixed_literal_block(
 }
 
 ///|
-fn pdf_flate_repeated_previous_length(data : BytesView, position : Int) -> Int {
+fn pdf_flate_repeated_previous_length(
+  data : BytesView,
+  position : Int32,
+) -> Int32 {
   if position <= 0 || position >= data.length() {
     0
   } else {
@@ -141,16 +149,16 @@ fn pdf_flate_push_fixed_repeat_block(
 }
 
 ///|
-fn pdf_flate_match_key(data : BytesView, position : Int) -> Int {
+fn pdf_flate_match_key(data : BytesView, position : Int32) -> Int32 {
   (data[position].to_int() << 8) | data[position + 1].to_int()
 }
 
 ///|
 fn pdf_flate_remember_match_prefix(
-  table : Array[Int],
-  previous : Array[Int],
+  table : Array[Int32],
+  previous : Array[Int32],
   data : BytesView,
-  position : Int,
+  position : Int32,
 ) -> Unit {
   if position + 1 < data.length() {
     let key = pdf_flate_match_key(data, position)
@@ -162,9 +170,9 @@ fn pdf_flate_remember_match_prefix(
 ///|
 fn pdf_flate_previous_match_length(
   data : BytesView,
-  source : Int,
-  position : Int,
-) -> Int {
+  source : Int32,
+  position : Int32,
+) -> Int32 {
   let mut length = 0
   while position + length < data.length() &&
         length < 258 &&
@@ -177,11 +185,11 @@ fn pdf_flate_previous_match_length(
 ///|
 fn pdf_flate_best_previous_match(
   data : BytesView,
-  last_by_prefix : ArrayView[Int],
-  previous_by_position : ArrayView[Int],
-  position : Int,
-  max_probes : Int,
-) -> (Int, Int) {
+  last_by_prefix : ArrayView[Int32],
+  previous_by_position : ArrayView[Int32],
+  position : Int32,
+  max_probes : Int32,
+) -> (Int32, Int32) {
   let mut match_length = 0
   let mut match_distance = 0
   if position + 2 < data.length() {
@@ -208,18 +216,18 @@ fn pdf_flate_best_previous_match(
 
 ///|
 priv enum PdfFlateToken {
-  PdfFlateLiteral(Int)
-  PdfFlateLengthDistance(Int, Int)
+  PdfFlateLiteral(Int32)
+  PdfFlateLengthDistance(Int32, Int32)
 }
 
 ///|
 fn pdf_flate_match_tokens(
   data : BytesView,
-  max_probes : Int,
+  max_probes : Int32,
 ) -> Array[PdfFlateToken] {
   let tokens : Array[PdfFlateToken] = Array::new(capacity=data.length())
-  let last_by_prefix : Array[Int] = Array::make(65536, -1)
-  let previous_by_position : Array[Int] = Array::make(data.length(), -1)
+  let last_by_prefix : Array[Int32] = Array::make(65536, -1)
+  let previous_by_position : Array[Int32] = Array::make(data.length(), -1)
   let mut index = 0
   while index < data.length() {
     let (match_length, match_distance) = pdf_flate_best_previous_match(
@@ -250,13 +258,13 @@ fn pdf_flate_push_fixed_match_block(
   output : Array[Byte],
   data : BytesView,
   final_block : Bool,
-  max_probes : Int,
+  max_probes : Int32,
 ) -> Unit raise @core.PdfError {
   let writer = FlateBitWriter::new(output)
   writer.write_bits(if final_block { 1 } else { 0 }, 1)
   writer.write_bits(1, 2)
-  let last_by_prefix : Array[Int] = Array::make(65536, -1)
-  let previous_by_position : Array[Int] = Array::make(data.length(), -1)
+  let last_by_prefix : Array[Int32] = Array::make(65536, -1)
+  let previous_by_position : Array[Int32] = Array::make(data.length(), -1)
   let mut index = 0
   while index < data.length() {
     let (match_length, match_distance) = pdf_flate_best_previous_match(
@@ -311,7 +319,7 @@ fn pdf_flate_encode_fixed_repeat_view_with_header(
 fn pdf_flate_encode_fixed_match_view_with_header(
   data : BytesView,
   header : ArrayView[Byte],
-  max_probes : Int,
+  max_probes : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let output = pdf_flate_output_with_header(header, data.length() + 8)
   pdf_flate_push_fixed_match_block(output, data, true, max_probes)

@@ -33,7 +33,7 @@ fn pdf_composition_wb_minimal_document() -> PdfDocument {
 fn pdf_composition_wb_entry_bytes(
   entries : ArrayView[@composition.PdfCompositionEntry],
   label : String,
-) -> Int raise {
+) -> Int32 raise {
   for entry in entries {
     if entry.label == label {
       break entry.bytes

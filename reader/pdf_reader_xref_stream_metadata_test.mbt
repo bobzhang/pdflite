@@ -16,7 +16,7 @@ fn test_name(name : @core.PdfName) -> @syntax.PdfObject {
 }
 
 ///|
-fn test_integer(value : Int) -> @syntax.PdfObject {
+fn test_integer(value : Int32) -> @syntax.PdfObject {
   PdfInteger(value)
 }
 
@@ -118,7 +118,7 @@ test "xref stream metadata parses widths and indexes" {
 
 ///|
 test "xref stream metadata rejects malformed arrays" {
-  let malformed_array_value : Result[Array[Int]?, Error] = try
+  let malformed_array_value : Result[Array[Int32]?, Error] = try
     @reader.pdf_xref_stream_int_array(
       test_dictionary([
         (
@@ -137,7 +137,7 @@ test "xref stream metadata rejects malformed arrays" {
     fail("expected XRefEntryExpected")
   }
 
-  let malformed_widths : Result[(Int, Int, Int), Error] = try
+  let malformed_widths : Result[(Int32, Int32, Int32), Error] = try
     @reader.pdf_xref_stream_widths(
       test_dictionary([
         (@reader.pdf_reader_w_name(), test_array([test_integer(0)])),
@@ -152,7 +152,7 @@ test "xref stream metadata rejects malformed arrays" {
     fail("expected XRefEntryExpected")
   }
 
-  let odd_index : Result[Array[(Int, Int)], Error] = try
+  let odd_index : Result[Array[(Int32, Int32)], Error] = try
     @reader.pdf_xref_stream_index_pairs(
       test_dictionary([
         (@reader.pdf_reader_index_name(), test_array([test_integer(0)])),

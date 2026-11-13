@@ -1,7 +1,7 @@
 ///|
 fn pdf_pagespec_same_values(
-  left : ArrayView[Int],
-  right : ArrayView[Int],
+  left : ArrayView[Int32],
+  right : ArrayView[Int32],
 ) -> Bool {
   if left.length() != right.length() {
     false
@@ -17,7 +17,7 @@ fn pdf_pagespec_same_values(
 }
 
 ///|
-fn pdf_pagespec_join_ranges(ranges : ArrayView[(Int, Int)]) -> String {
+fn pdf_pagespec_join_ranges(ranges : ArrayView[(Int32, Int32)]) -> String {
   let mut output = ""
   for index in 0..<ranges.length() {
     let (start, finish) = ranges[index]
@@ -36,8 +36,8 @@ fn pdf_pagespec_join_ranges(ranges : ArrayView[(Int, Int)]) -> String {
 ///|
 /// Format selected pages as a compact cpdf page specification.
 pub fn pdf_string_of_pagespec_for_count(
-  end_page : Int,
-  pages : ArrayView[Int],
+  end_page : Int32,
+  pages : ArrayView[Int32],
 ) -> String {
   if pages.length() == 0 {
     ""
@@ -59,7 +59,7 @@ pub fn pdf_string_of_pagespec_for_count(
     } else if pdf_pagespec_same_values(sorted, pdf_pagespec_all_pages(end_page)) {
       "all"
     } else {
-      let ranges : Array[(Int, Int)] = Array::new(capacity=sorted.length())
+      let ranges : Array[(Int32, Int32)] = Array::new(capacity=sorted.length())
       let mut start = sorted[0]
       let mut previous = sorted[0]
       for index in 1..<sorted.length() {

@@ -1,5 +1,5 @@
 ///|
-fn pdf_flate_push_u16_le(output : Array[Byte], value : Int) -> Unit {
+fn pdf_flate_push_u16_le(output : Array[Byte], value : Int32) -> Unit {
   output.push((value & 0xFF).to_byte())
   output.push(((value >> 8) & 0xFF).to_byte())
 }
@@ -8,8 +8,8 @@ fn pdf_flate_push_u16_le(output : Array[Byte], value : Int) -> Unit {
 fn pdf_flate_push_stored_block(
   output : Array[Byte],
   data : BytesView,
-  offset : Int,
-  length : Int,
+  offset : Int32,
+  length : Int32,
   final_block : Bool,
 ) -> Unit {
   output.push(if final_block { 1 } else { 0 })

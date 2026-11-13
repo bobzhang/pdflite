@@ -1,8 +1,8 @@
 ///|
 fn PdfFont::pdf_text_external_cmap_codepoints(
   self : PdfFont,
-  code : Int,
-) -> Array[Int]? {
+  code : Int32,
+) -> Array[Int32]? {
   match self {
     PdfFontCIDKeyed(font) =>
       match font.encoding {
@@ -53,8 +53,8 @@ fn pdf_text_external_cmap_codepoints_from_lookup(
   font : PdfCIDKeyedFont,
   parsed : PdfParsedCMap,
   lookup : PdfTextExternalCMapLookup,
-  code : Int,
-) -> Array[Int]? {
+  code : Int32,
+) -> Array[Int32]? {
   match lookup.cid_map.get(code) {
     Some(cid) => Some([cid])
     None =>
@@ -87,7 +87,10 @@ fn pdf_text_external_cmap_codepoints_from_lookup(
 }
 
 ///|
-fn PdfFont::pdf_text_external_cmap_charcode(self : PdfFont, cid : Int) -> Int? {
+fn PdfFont::pdf_text_external_cmap_charcode(
+  self : PdfFont,
+  cid : Int32,
+) -> Int32? {
   match self {
     PdfFontCIDKeyed(font) =>
       match font.encoding {

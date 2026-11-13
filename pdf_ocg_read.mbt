@@ -13,7 +13,7 @@ pub fn PdfDocument::read_optional_content_groups(
     Some(ocproperties) => {
       let ocgs = match self.lookup_direct(pdf_ocg_ocgs_key(), ocproperties) {
         Some(PdfArray(indirects)) => {
-          let output : Array[(Int, @ocg.PdfOcg)] = []
+          let output : Array[(Int32, @ocg.PdfOcg)] = []
           for indirect in indirects {
             match indirect {
               PdfIndirect(number) =>
@@ -38,7 +38,7 @@ pub fn PdfDocument::read_optional_content_groups(
           ]
         _ => []
       }
-      Some({ ocgs, default_config, configs })
+      Some({ ocgs, default_config, configs, })
     }
   }
 }

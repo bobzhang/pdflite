@@ -6,10 +6,10 @@
 /// kept when either axis is below `dpi`.
 pub fn PdfDocument::image_resolution(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   dpi : Double,
-  inline? : Bool = false,
-) -> Array[(Int, String, Int, Int, Double, Double, Int)] raise @core.PdfError {
+  inline~ : Bool = false,
+) -> Array[(Int32, String, Int32, Int32, Double, Double, Int32)] raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   pdf_page_box_validate_page_numbers(page_numbers, pages.length(), "images")
   let results : Array[PdfImageResolutionEntry] = Array::new(
@@ -57,7 +57,7 @@ pub fn PdfDocument::image_resolution(
 
 ///|
 fn pdf_image_resolution_entry_json(
-  entry : (Int, String, Int, Int, Double, Double, Int),
+  entry : (Int32, String, Int32, Int32, Double, Double, Int32),
 ) -> Json {
   Json::object(
     Map([
@@ -76,9 +76,9 @@ fn pdf_image_resolution_entry_json(
 /// Report image resolution data as cpdf-style JSON rows.
 pub fn PdfDocument::image_resolution_json(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   dpi : Double,
-  inline? : Bool = false,
+  inline~ : Bool = false,
 ) -> Json raise @core.PdfError {
   Json::array(
     [
@@ -93,9 +93,9 @@ pub fn PdfDocument::image_resolution_json(
 /// Report image resolution data as UTF-8 JSON bytes.
 pub fn PdfDocument::image_resolution_json_blob(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   dpi : Double,
-  inline? : Bool = false,
+  inline~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   @utf8.encode(
     self.image_resolution_json(page_numbers, dpi, inline~).stringify(),
@@ -107,9 +107,9 @@ pub fn PdfDocument::image_resolution_json_blob(
 pub fn pdf_image_resolution(
   inline : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   dpi : Double,
-) -> Array[(Int, String, Int, Int, Double, Double, Int)] raise @core.PdfError {
+) -> Array[(Int32, String, Int32, Int32, Double, Double, Int32)] raise @core.PdfError {
   document.image_resolution(page_numbers, dpi, inline~)
 }
 
@@ -118,7 +118,7 @@ pub fn pdf_image_resolution(
 pub fn pdf_image_resolution_json(
   inline : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   dpi : Double,
 ) -> Json raise @core.PdfError {
   document.image_resolution_json(page_numbers, dpi, inline~)
@@ -129,7 +129,7 @@ pub fn pdf_image_resolution_json(
 pub fn pdf_image_resolution_json_blob(
   inline : Bool,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   dpi : Double,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.image_resolution_json_blob(page_numbers, dpi, inline~)

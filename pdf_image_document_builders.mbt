@@ -95,8 +95,8 @@ fn pdf_image_title_for_subformat(
 ///|
 fn pdf_image_content_ops(
   structinfo : Bool,
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
 ) -> Array[@content.PdfContentOp] {
   let output : Array[@content.PdfContentOp] = Array::new(
     capacity=if structinfo { 4 } else { 2 },
@@ -184,9 +184,9 @@ fn PdfDocument::pdf_image_add_image_page(
 /// Build a single-page PDF document that draws `image` at its natural size.
 pub fn pdf_image_document_of_object(
   image : @syntax.PdfObject,
-  process_struct_tree? : Bool = false,
-  subformat? : PdfUASubformat? = None,
-  title? : String? = None,
+  process_struct_tree~ : Bool = false,
+  subformat~ : PdfUASubformat? = None,
+  title~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   let document = pdf_document_empty()
   document.pdf_image_add_image_page(
@@ -205,11 +205,11 @@ pub fn pdf_image_of_input(
   data : BytesView,
   object_of_data : (PdfDocument, BytesView) -> (
     @syntax.PdfObject,
-    Array[(Int, @syntax.PdfObject)],
+    Array[(Int32, @syntax.PdfObject)],
   ) raise @core.PdfError,
-  process_struct_tree? : Bool = false,
-  subformat? : PdfUASubformat? = None,
-  title? : String? = None,
+  process_struct_tree~ : Bool = false,
+  subformat~ : PdfUASubformat? = None,
+  title~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   let document = pdf_document_empty()
   let (image, extra_objects) = object_of_data(document, data)
@@ -226,9 +226,9 @@ pub fn pdf_image_of_input(
 /// Build a single-page PDF document from JPEG data.
 pub fn pdf_image_document_of_jpeg_data(
   data : BytesView,
-  process_struct_tree? : Bool = false,
-  subformat? : PdfUASubformat? = None,
-  title? : String? = None,
+  process_struct_tree~ : Bool = false,
+  subformat~ : PdfUASubformat? = None,
+  title~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   pdf_image_document_of_object(
     pdf_image_object_of_jpeg_data(data),
@@ -242,9 +242,9 @@ pub fn pdf_image_document_of_jpeg_data(
 /// Build a single-page PDF document from JPEG2000 data.
 pub fn pdf_image_document_of_jpeg2000_data(
   data : BytesView,
-  process_struct_tree? : Bool = false,
-  subformat? : PdfUASubformat? = None,
-  title? : String? = None,
+  process_struct_tree~ : Bool = false,
+  subformat~ : PdfUASubformat? = None,
+  title~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   pdf_image_document_of_object(
     pdf_image_object_of_jpeg2000_data(data),
@@ -258,9 +258,9 @@ pub fn pdf_image_document_of_jpeg2000_data(
 /// Build a single-page PDF document from PNG data.
 pub fn pdf_image_document_of_png_data(
   data : BytesView,
-  process_struct_tree? : Bool = false,
-  subformat? : PdfUASubformat? = None,
-  title? : String? = None,
+  process_struct_tree~ : Bool = false,
+  subformat~ : PdfUASubformat? = None,
+  title~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   let document = pdf_document_empty()
   let image = document.pdf_image_object_of_png_data(data)
@@ -274,10 +274,10 @@ pub fn pdf_image_document_of_png_data(
 /// Build a single-page PDF document from JBIG2 data.
 pub fn pdf_image_document_of_jbig2_data(
   data : BytesView,
-  global? : BytesView? = None,
-  process_struct_tree? : Bool = false,
-  subformat? : PdfUASubformat? = None,
-  title? : String? = None,
+  global~ : BytesView? = None,
+  process_struct_tree~ : Bool = false,
+  subformat~ : PdfUASubformat? = None,
+  title~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   let document = pdf_document_empty()
   let (image, extra_objects) = pdf_image_object_of_jbig2_data(data, global~)

@@ -4,15 +4,18 @@ fn page_spec_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn page_spec_rectangle_for_test(width : Int, height : Int) -> @syntax.PdfObject {
+fn page_spec_rectangle_for_test(
+  width : Int32,
+  height : Int32,
+) -> @syntax.PdfObject {
   PdfArray([PdfInteger(0), PdfInteger(0), PdfInteger(width), PdfInteger(height)])
 }
 
 ///|
 fn page_spec_page_for_test(
-  width : Int,
-  height : Int,
-  annotated? : Bool = false,
+  width : Int32,
+  height : Int32,
+  annotated~ : Bool = false,
 ) -> @page.PdfPage {
   let page = @page.pdf_page_custom(page_spec_rectangle_for_test(width, height))
   if annotated {
@@ -89,7 +92,7 @@ test "cpdf pagespec applies odd even not duplicate and bounds filtering" {
 
 ///|
 test "cpdf pagespec rejects malformed syntax" {
-  let leading_comma : Result[Array[Int], Error] = try
+  let leading_comma : Result[Array[Int32], Error] = try
     @spec.pdf_parse_pagespec_for_count(10, ",1")
   catch {
     err => Err(err)
@@ -99,7 +102,7 @@ test "cpdf pagespec rejects malformed syntax" {
   guard leading_comma is Err(@core.PdfError::BadPageSpecification(",1")) else {
     fail("expected BadPageSpecification for leading comma")
   }
-  let doubled_dash : Result[Array[Int], Error] = try
+  let doubled_dash : Result[Array[Int32], Error] = try
     @spec.pdf_parse_pagespec_for_count(10, "1--3")
   catch {
     err => Err(err)
@@ -109,7 +112,7 @@ test "cpdf pagespec rejects malformed syntax" {
   guard doubled_dash is Err(@core.PdfError::BadPageSpecification("1--3")) else {
     fail("expected BadPageSpecification for doubled dash")
   }
-  let zero_pages : Result[Array[Int], Error] = try
+  let zero_pages : Result[Array[Int32], Error] = try
     @spec.pdf_parse_pagespec_for_count(0, "1")
   catch {
     err => Err(err)
@@ -159,7 +162,7 @@ test "cpdf pagespec resolves page labels" {
   ]
   let labeled = try! document.write_page_labels(labels)
   @test.assert_eq(try! labeled.parse_pagespec("[iii],[A-1]"), [3, 4])
-  let missing : Result[Array[Int], Error] = try
+  let missing : Result[Array[Int32], Error] = try
     labeled.parse_pagespec("[missing]")
   catch {
     err => Err(err)
@@ -194,7 +197,7 @@ test "cpdf pagespec resolves escaped bracket page labels" {
   ]
   let labeled = try! document.write_page_labels(labels)
   @test.assert_eq(try! labeled.parse_pagespec("[A\\]1],[B\\[2]"), [1, 3])
-  let nested : Result[Array[Int], Error] = try
+  let nested : Result[Array[Int32], Error] = try
     labeled.parse_pagespec("[A]1]")
   catch {
     err => Err(err)

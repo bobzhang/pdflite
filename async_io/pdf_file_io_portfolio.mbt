@@ -2,10 +2,10 @@
 /// Construct a filesystem-backed portfolio entry.
 pub fn pdf_portfolio_file_entry(
   filename : String,
-  relationship? : String? = None,
-  description? : String? = None,
+  relationship~ : String? = None,
+  description~ : String? = None,
 ) -> PdfPortfolioFileEntry {
-  { filename, relationship, description }
+  { filename, relationship, description, }
 }
 
 ///|
@@ -16,7 +16,7 @@ pub fn pdf_portfolio_file_entry(
 pub async fn pdf_portfolio_from_files(
   document : @pdflite.PdfDocument,
   entries : ArrayView[PdfPortfolioFileEntry],
-  mod_date? : @core.PdfBytes? = None,
+  mod_date~ : @core.PdfBytes? = None,
 ) -> @pdflite.PdfDocument {
   let loaded : Array[@portfolio.PdfPortfolioEntry] = []
   for entry in entries {

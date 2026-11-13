@@ -1,5 +1,5 @@
 ///|
-fn pdf_markdown_line_first_codepoint(line : PdfMarkdownTextLine) -> Int? {
+fn pdf_markdown_line_first_codepoint(line : PdfMarkdownTextLine) -> Int32? {
   for chunk in line.chunks {
     if chunk.codepoints.length() > 0 {
       break Some(chunk.codepoints[0])
@@ -10,17 +10,19 @@ fn pdf_markdown_line_first_codepoint(line : PdfMarkdownTextLine) -> Int? {
 }
 
 ///|
-fn pdf_markdown_codepoint_is_ascii_lower(codepoint : Int) -> Bool {
+fn pdf_markdown_codepoint_is_ascii_lower(codepoint : Int32) -> Bool {
   codepoint >= 0x61 && codepoint <= 0x7A
 }
 
 ///|
-fn pdf_markdown_codepoint_is_ascii_digit(codepoint : Int) -> Bool {
+fn pdf_markdown_codepoint_is_ascii_digit(codepoint : Int32) -> Bool {
   codepoint >= 0x30 && codepoint <= 0x39
 }
 
 ///|
-fn pdf_markdown_codepoint_is_numeric_table_punctuation(codepoint : Int) -> Bool {
+fn pdf_markdown_codepoint_is_numeric_table_punctuation(
+  codepoint : Int32,
+) -> Bool {
   match codepoint {
     0x20 | 0x24 | 0x25 | 0x2B | 0x2C | 0x2D | 0x2E | 0x2F => true
     _ => false
@@ -29,7 +31,7 @@ fn pdf_markdown_codepoint_is_numeric_table_punctuation(codepoint : Int) -> Bool 
 
 ///|
 fn pdf_markdown_codepoints_are_numeric_table_value(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> Bool {
   let mut has_digit = false
   for codepoint in codepoints {
@@ -54,7 +56,7 @@ fn pdf_markdown_line_is_numeric_dominated(line : PdfMarkdownTextLine) -> Bool {
 }
 
 ///|
-fn pdf_markdown_codepoints_period_count(codepoints : ArrayView[Int]) -> Int {
+fn pdf_markdown_codepoints_period_count(codepoints : ArrayView[Int32]) -> Int32 {
   let mut count = 0
   for codepoint in codepoints {
     if codepoint == 0x2E {
@@ -65,7 +67,9 @@ fn pdf_markdown_codepoints_period_count(codepoints : ArrayView[Int]) -> Int {
 }
 
 ///|
-fn pdf_markdown_codepoints_nonspace_count(codepoints : ArrayView[Int]) -> Int {
+fn pdf_markdown_codepoints_nonspace_count(
+  codepoints : ArrayView[Int32],
+) -> Int32 {
   let mut count = 0
   for codepoint in codepoints {
     if codepoint != 0x20 {
@@ -76,7 +80,7 @@ fn pdf_markdown_codepoints_nonspace_count(codepoints : ArrayView[Int]) -> Int {
 }
 
 ///|
-fn pdf_markdown_codepoints_space_count(codepoints : ArrayView[Int]) -> Int {
+fn pdf_markdown_codepoints_space_count(codepoints : ArrayView[Int32]) -> Int32 {
   let mut count = 0
   for codepoint in codepoints {
     if codepoint == 0x20 {
@@ -109,7 +113,7 @@ fn pdf_markdown_line_has_dot_leaders(line : PdfMarkdownTextLine) -> Bool {
 }
 
 ///|
-fn pdf_markdown_codepoint_is_sentence_punctuation(codepoint : Int) -> Bool {
+fn pdf_markdown_codepoint_is_sentence_punctuation(codepoint : Int32) -> Bool {
   match codepoint {
     0x2C | 0x2E | 0x3B => true
     _ => false
@@ -132,7 +136,7 @@ fn pdf_markdown_line_has_sentence_punctuation(
 
 ///|
 fn pdf_markdown_codepoints_have_sentence_punctuation_phrase(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> Bool {
   let mut has_punctuation = false
   for codepoint in codepoints {
@@ -208,8 +212,8 @@ let pdf_markdown_table_column_x_tolerance : Double = 12.0
 ///|
 fn pdf_markdown_table_columns_of_lines(
   lines : ArrayView[PdfMarkdownTextLine],
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
 ) -> Array[Double] {
   let values : Array[Double] = []
   for index in start..<end {
@@ -238,8 +242,8 @@ fn pdf_markdown_table_columns_of_lines(
 ///|
 fn pdf_markdown_table_run_is_table(
   lines : ArrayView[PdfMarkdownTextLine],
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
   columns : ArrayView[Double],
 ) -> Bool {
   if end - start < 2 || columns.length() < 3 || columns.length() > 12 {
@@ -259,7 +263,7 @@ fn pdf_markdown_table_run_is_table(
 fn pdf_markdown_nearest_table_column(
   columns : ArrayView[Double],
   x : Double,
-) -> Int {
+) -> Int32 {
   let mut best = 0
   let mut best_distance = (x - columns[0]).abs()
   for index in 1..<columns.length() {
@@ -273,8 +277,8 @@ fn pdf_markdown_nearest_table_column(
 }
 
 ///|
-fn pdf_markdown_empty_table_cells(count : Int) -> Array[Array[Int]] {
-  let cells : Array[Array[Int]] = []
+fn pdf_markdown_empty_table_cells(count : Int32) -> Array[Array[Int32]] {
+  let cells : Array[Array[Int32]] = []
   for _ in 0..<count {
     cells.push([])
   }
@@ -285,7 +289,7 @@ fn pdf_markdown_empty_table_cells(count : Int) -> Array[Array[Int]] {
 fn pdf_markdown_table_cells_of_line(
   line : PdfMarkdownTextLine,
   columns : ArrayView[Double],
-) -> Array[Array[Int]] {
+) -> Array[Array[Int32]] {
   let cells = pdf_markdown_empty_table_cells(columns.length())
   for chunk in line.chunks {
     let column = pdf_markdown_nearest_table_column(columns, chunk.x)
@@ -299,8 +303,8 @@ fn pdf_markdown_table_cells_of_line(
 
 ///|
 fn pdf_markdown_push_table_cell(
-  output : Array[Int],
-  cell : ArrayView[Int],
+  output : Array[Int32],
+  cell : ArrayView[Int32],
 ) -> Unit {
   for codepoint in cell {
     if codepoint == 0x7C {
@@ -312,8 +316,8 @@ fn pdf_markdown_push_table_cell(
 
 ///|
 fn pdf_markdown_push_table_row(
-  output : Array[Int],
-  cells : ArrayView[Array[Int]],
+  output : Array[Int32],
+  cells : ArrayView[Array[Int32]],
 ) -> Unit {
   output.push(0x7C)
   for cell in cells {
@@ -327,8 +331,8 @@ fn pdf_markdown_push_table_row(
 
 ///|
 fn pdf_markdown_push_table_separator(
-  output : Array[Int],
-  columns : Int,
+  output : Array[Int32],
+  columns : Int32,
 ) -> Unit {
   output.push(0x7C)
   for _ in 0..<columns {
@@ -340,10 +344,10 @@ fn pdf_markdown_push_table_separator(
 
 ///|
 fn pdf_markdown_push_markdown_table(
-  output : Array[Int],
+  output : Array[Int32],
   lines : ArrayView[PdfMarkdownTextLine],
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
   columns : ArrayView[Double],
 ) -> Unit {
   for index in start..<end {
@@ -359,10 +363,10 @@ fn pdf_markdown_push_markdown_table(
 
 ///|
 fn pdf_markdown_push_regular_lines(
-  output : Array[Int],
+  output : Array[Int32],
   lines : ArrayView[PdfMarkdownTextLine],
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
 ) -> Unit {
   for index in start..<end {
     if output.length() > 0 {

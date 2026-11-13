@@ -28,9 +28,9 @@ fn pdf_page_root_entries_without_catalog_keys(
 /// updated and the document is mutated in place.
 pub fn PdfDocument::add_root(
   self : PdfDocument,
-  page_root_number : Int,
+  page_root_number : Int32,
   extras : ArrayView[(@core.PdfName, @syntax.PdfObject)],
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   let mut root = @syntax.PdfDictionary([
     (pdf_page_type_key(), PdfNameObject(pdf_page_type_catalog())),
     (pdf_page_pages_key(), PdfIndirect(page_root_number)),
@@ -62,7 +62,7 @@ pub fn PdfDocument::add_root(
 ///|
 /// Copy a document, add a catalog root, and return the copy.
 pub fn pdf_add_root(
-  page_root_number : Int,
+  page_root_number : Int32,
   extras : ArrayView[(@core.PdfName, @syntax.PdfObject)],
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {

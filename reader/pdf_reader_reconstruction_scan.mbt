@@ -1,5 +1,5 @@
 ///|
-fn pdf_reader_skip_digits(data : BytesView, position : Int) -> Int {
+fn pdf_reader_skip_digits(data : BytesView, position : Int32) -> Int32 {
   let mut current = position
   while current < data.length() &&
         @core.pdf_is_digit_byte(data[current].to_int()) {
@@ -11,8 +11,8 @@ fn pdf_reader_skip_digits(data : BytesView, position : Int) -> Int {
 ///|
 fn pdf_reader_skip_required_whitespace(
   data : BytesView,
-  position : Int,
-) -> Int? {
+  position : Int32,
+) -> Int32? {
   if position >= data.length() ||
     !@core.pdf_is_whitespace_byte(data[position].to_int()) {
     None
@@ -30,7 +30,7 @@ fn pdf_reader_skip_required_whitespace(
 /// Return whether `position` starts a plausible indirect-object header.
 pub fn pdf_reader_reconstruction_indirect_header_at(
   data : BytesView,
-  position : Int,
+  position : Int32,
 ) -> Bool {
   if position < 0 ||
     position >= data.length() ||
@@ -61,7 +61,7 @@ pub fn pdf_reader_reconstruction_indirect_header_at(
 }
 
 ///|
-fn pdf_reader_line_end(data : BytesView, position : Int) -> Int {
+fn pdf_reader_line_end(data : BytesView, position : Int32) -> Int32 {
   let mut current = position
   while current < data.length() &&
         !@core.pdf_is_newline_byte(data[current].to_int()) {
@@ -71,7 +71,7 @@ fn pdf_reader_line_end(data : BytesView, position : Int) -> Int {
 }
 
 ///|
-fn pdf_reader_after_line_break(data : BytesView, line_end : Int) -> Int {
+fn pdf_reader_after_line_break(data : BytesView, line_end : Int32) -> Int32 {
   if line_end >= data.length() {
     data.length()
   } else if data[line_end].to_int() == 13 &&
@@ -86,8 +86,8 @@ fn pdf_reader_after_line_break(data : BytesView, line_end : Int) -> Int {
 ///|
 fn pdf_reader_trimmed_line_starts_or_ends_with_endobj(
   data : BytesView,
-  line_start : Int,
-  line_end : Int,
+  line_start : Int32,
+  line_end : Int32,
 ) -> Bool {
   let mut start = line_start
   while start < line_end && @core.pdf_is_whitespace_byte(data[start].to_int()) {
@@ -108,8 +108,8 @@ fn pdf_reader_trimmed_line_starts_or_ends_with_endobj(
 /// Return the next scan position after a malformed indirect object candidate.
 pub fn pdf_reader_reconstruction_skip_malformed_object(
   data : BytesView,
-  position : Int,
-) -> Int? {
+  position : Int32,
+) -> Int32? {
   if !pdf_reader_reconstruction_indirect_header_at(data, position) {
     None
   } else {

@@ -5,7 +5,7 @@ fn afm_wb_ascii_for_test(text : String) -> PdfBytes {
 
 ///|
 fn assert_afm_number_expected_for_test(
-  result : Result[Int, Error],
+  result : Result[Int32, Error],
 ) -> Unit raise {
   guard result is Err(PdfError::NumberExpected) else {
     fail("expected PdfError::NumberExpected")

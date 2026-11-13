@@ -16,7 +16,7 @@ fn pdf_text_font_descriptor_bbox_object(
 }
 
 ///|
-fn pdf_text_fontfile2_number(fontfile : PdfFontFile?) -> Int? {
+fn pdf_text_fontfile2_number(fontfile : PdfFontFile?) -> Int32? {
   match fontfile {
     Some(PdfFontFile2(number)) => Some(number)
     _ => None
@@ -35,9 +35,9 @@ fn pdf_text_true_type_encoding_name(encoding : PdfEncoding) -> @core.PdfName? {
 fn PdfDocument::pdf_text_make_true_type_font(
   self : PdfDocument,
   basefont : @core.PdfName,
-  firstchar : Int,
-  lastchar : Int,
-  widths : Array[Int],
+  firstchar : Int32,
+  lastchar : Int32,
+  widths : Array[Int32],
   descriptor : PdfFontDescriptor,
   encoding : PdfEncoding,
 ) -> @syntax.PdfObject raise @core.PdfError {

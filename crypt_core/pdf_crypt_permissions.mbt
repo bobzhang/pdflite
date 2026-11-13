@@ -5,6 +5,7 @@
 /// `PdfNoPrint` means printing is denied. They are converted to and from the
 /// PDF `/P` permission bit mask by `pdf_p_of_permissions` and
 /// `pdf_permissions_of_p`.
+#derive(Debug, Eq, ToJson)
 pub(all) enum PdfPermission {
   PdfNoEdit
   PdfNoPrint
@@ -14,7 +15,7 @@ pub(all) enum PdfPermission {
   PdfNoExtract
   PdfNoAssemble
   PdfNoHqPrint
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 fn pdf_permission_denied(
@@ -31,7 +32,7 @@ fn pdf_permission_denied(
 }
 
 ///|
-fn pdf_permission_set_bit(mask : Int, bit : Int, value : Bool) -> Int {
+fn pdf_permission_set_bit(mask : Int32, bit : Int32, value : Bool) -> Int32 {
   if value {
     mask | (1 << (bit - 1))
   } else {
@@ -44,7 +45,7 @@ fn pdf_permission_set_bit(mask : Int, bit : Int, value : Bool) -> Int {
 ///
 /// The input is a ban list. Required reserved bits are set according to the
 /// PDF standard-security-handler convention.
-pub fn pdf_p_of_permissions(permissions : ArrayView[PdfPermission]) -> Int {
+pub fn pdf_p_of_permissions(permissions : ArrayView[PdfPermission]) -> Int32 {
   let mut mask = 0
   mask = pdf_permission_set_bit(
     mask,
@@ -95,7 +96,7 @@ pub fn pdf_p_of_permissions(permissions : ArrayView[PdfPermission]) -> Int {
 }
 
 ///|
-fn pdf_permission_bit_denied(mask : Int, bit : Int) -> Bool {
+fn pdf_permission_bit_denied(mask : Int32, bit : Int32) -> Bool {
   ((mask >> (bit - 1)) & 1) == 0
 }
 
@@ -104,7 +105,7 @@ fn pdf_permission_bit_denied(mask : Int, bit : Int) -> Bool {
 ///
 /// The returned array is a ban list ordered from later permission bits down to
 /// basic print/edit/copy permissions.
-pub fn pdf_permissions_of_p(mask : Int) -> Array[PdfPermission] {
+pub fn pdf_permissions_of_p(mask : Int32) -> Array[PdfPermission] {
   let permissions : Array[PdfPermission] = []
   if pdf_permission_bit_denied(mask, 12) {
     permissions.push(PdfNoHqPrint)

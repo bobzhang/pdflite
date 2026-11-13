@@ -2,7 +2,7 @@
 /// Return the Unicode scalar sequence for an Adobe Glyph List sequence glyph name.
 pub fn pdf_text_codepoints_of_agl_sequence_glyphname(
   name : String,
-) -> Array[Int]? {
+) -> Array[Int32]? {
   match name {
     "/dalethatafpatah" => Some([0x05D3, 0x05B2])
     "/dalethatafpatahhebrew" => Some([0x05D3, 0x05B2])

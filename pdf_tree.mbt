@@ -36,7 +36,7 @@ fn pdf_tree_limits_key() -> @core.PdfName {
 }
 
 ///|
-fn pdf_tree_byte_compare(left : Byte, right : Byte) -> Int {
+fn pdf_tree_byte_compare(left : Byte, right : Byte) -> Int32 {
   if left < right {
     -1
   } else if left > right {
@@ -47,7 +47,7 @@ fn pdf_tree_byte_compare(left : Byte, right : Byte) -> Int {
 }
 
 ///|
-fn pdf_tree_bytes_compare(left : Bytes, right : Bytes) -> Int {
+fn pdf_tree_bytes_compare(left : Bytes, right : Bytes) -> Int32 {
   let shared = if left.length() < right.length() {
     left.length()
   } else {

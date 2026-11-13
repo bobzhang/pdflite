@@ -1,8 +1,8 @@
 ///|
 fn PdfDocument::pdf_page_transform_matrix_destinations(
   self : PdfDocument,
-  matrices : ArrayView[(Int, @geometry.TransformMatrix)],
-  page_reference_numbers : ArrayView[Int],
+  matrices : ArrayView[(Int32, @geometry.TransformMatrix)],
+  page_reference_numbers : ArrayView[Int32],
   transform_bookmarks : Bool,
 ) -> PdfDocument raise @core.PdfError {
   let pdf = if transform_bookmarks {

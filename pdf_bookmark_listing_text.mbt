@@ -1,7 +1,7 @@
 ///|
 fn pdf_bookmark_listing_escape_codepoints(
-  codepoints : ArrayView[Int],
-) -> Array[Int] {
+  codepoints : ArrayView[Int32],
+) -> Array[Int32] {
   let output = Array::make(
     pdf_bookmark_listing_escape_codepoints_length(codepoints),
     0,
@@ -35,8 +35,8 @@ fn pdf_bookmark_listing_escape_codepoints(
 
 ///|
 fn pdf_bookmark_listing_escape_codepoints_length(
-  codepoints : ArrayView[Int],
-) -> Int {
+  codepoints : ArrayView[Int32],
+) -> Int32 {
   let mut length = 0
   for codepoint in codepoints {
     match codepoint {
@@ -49,8 +49,8 @@ fn pdf_bookmark_listing_escape_codepoints_length(
 
 ///|
 fn pdf_bookmark_listing_stripped_codepoints_length(
-  codepoints : ArrayView[Int],
-) -> Int {
+  codepoints : ArrayView[Int32],
+) -> Int32 {
   let mut length = 0
   for codepoint in codepoints {
     if codepoint <= 127 {
@@ -62,7 +62,7 @@ fn pdf_bookmark_listing_stripped_codepoints_length(
 
 ///|
 fn pdf_bookmark_listing_stripped_codepoints(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> @core.PdfBytes raise @core.PdfError {
   let output = Array::make(
     pdf_bookmark_listing_stripped_codepoints_length(codepoints),
@@ -112,9 +112,9 @@ priv struct PdfBookmarkListingTextLine {
 ///|
 fn pdf_bookmark_copy_view(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   bytes : BytesView,
-) -> Int {
+) -> Int32 {
   let mut position = position
   for byte in bytes {
     output[position] = byte
@@ -126,16 +126,16 @@ fn pdf_bookmark_copy_view(
 ///|
 fn pdf_bookmark_copy_ascii(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   text : String,
-) -> Int {
+) -> Int32 {
   pdf_bookmark_copy_view(output, position, @ascii.encode(text))
 }
 
 ///|
 fn PdfBookmarkListingTextLine::byte_length(
   self : PdfBookmarkListingTextLine,
-) -> Int {
+) -> Int32 {
   let open_length = if self.is_open { 5 } else { 0 }
   self.level.length() +
   self.text.length() +
@@ -149,8 +149,8 @@ fn PdfBookmarkListingTextLine::byte_length(
 fn PdfBookmarkListingTextLine::write_to(
   self : PdfBookmarkListingTextLine,
   output : Array[Byte],
-  position : Int,
-) -> Int {
+  position : Int32,
+) -> Int32 {
   let mut position = pdf_bookmark_copy_view(output, position, self.level)
   position = pdf_bookmark_copy_ascii(output, position, " \"")
   position = pdf_bookmark_copy_view(output, position, self.text)

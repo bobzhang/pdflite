@@ -38,7 +38,7 @@ pub fn PdfDrawControl::add_text_scale(
 /// Append a text rendering-mode operation.
 pub fn PdfDrawControl::add_render_mode(
   self : PdfDrawControl,
-  mode : Int,
+  mode : Int32,
 ) -> Unit raise @core.PdfError {
   self.add_op(PdfDrawRenderMode(mode))
 }
@@ -309,7 +309,7 @@ pub fn PdfDrawControl::add_paras(
 ///|
 /// Start a text-section frame.
 pub fn PdfDrawControl::begin_text_section(self : PdfDrawControl) -> Unit {
-  self.frames.push({ name: pdf_draw_control_text_frame, ops: [] })
+  self.frames.push({ name: pdf_draw_control_text_frame, ops: [], })
 }
 
 ///|

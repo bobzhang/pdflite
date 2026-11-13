@@ -25,7 +25,7 @@ async fn annotation_fixture_bytes_for_test(path : String) -> Bytes? {
 fn annotation_fixture_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -44,7 +44,7 @@ fn annotation_fixture_bytes_start_with_at_for_test(
 fn annotation_fixture_find_last_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     haystack.length()
   } else if haystack.length() < needle.length() {
@@ -143,7 +143,7 @@ fn annotation_fixture_assert_not_contains_for_test(
 ///|
 fn annotation_fixture_assert_json_entry_count_for_test(
   json : Json,
-  expected : Int,
+  expected : Int32,
 ) -> Unit raise {
   guard json is Array(entries) else { fail("expected annotation JSON array") }
   @test.assert_eq(entries.length(), expected)
@@ -152,7 +152,7 @@ fn annotation_fixture_assert_json_entry_count_for_test(
 ///|
 fn annotation_fixture_assert_json_entry_count_at_least_for_test(
   json : Json,
-  minimum : Int,
+  minimum : Int32,
 ) -> Unit raise {
   guard json is Array(entries) else { fail("expected annotation JSON array") }
   @test.assert_eq(entries.length() >= minimum, true)

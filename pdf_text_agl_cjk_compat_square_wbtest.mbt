@@ -1,6 +1,6 @@
 ///|
 test "private CJK compatibility square AGL glyph helper covers table" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/GBsquare", 0x3387),
     ("/HPsquare", 0x33CB),
     ("/Hzsquare", 0x3390),

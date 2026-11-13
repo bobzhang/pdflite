@@ -23,7 +23,7 @@ async fn page_fixture_bytes_for_test(path : String) -> Bytes? {
 fn page_fixture_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -42,7 +42,7 @@ fn page_fixture_bytes_start_with_at_for_test(
 fn page_fixture_find_last_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     haystack.length()
   } else if haystack.length() < needle.length() {

@@ -23,10 +23,10 @@ fn stamp_stream_for_test(
 ///|
 fn stamp_page_for_test(
   ops : ArrayView[@content.PdfContentOp],
-  resources? : @syntax.PdfObject = PdfDictionary([]),
-  rest? : @syntax.PdfObject = PdfDictionary([]),
-  width? : Double = 100.0,
-  height? : Double = 100.0,
+  resources~ : @syntax.PdfObject = PdfDictionary([]),
+  rest~ : @syntax.PdfObject = PdfDictionary([]),
+  width~ : Double = 100.0,
+  height~ : Double = 100.0,
 ) -> @page.PdfPage {
   {
     content: [stamp_stream_for_test(ops)],
@@ -295,8 +295,8 @@ test "PdfDocument stamp_pages rejects invalid page ranges and empty overlays" {
   guard bad_page
     is Err(
       @core.PdfError::BadPageSpecification(
-        "stamp_pages: range contains pages not present in pdf"
-      )
+        "stamp_pages: range contains pages not present in pdf",
+      ),
     ) else {
     fail("expected stamp_pages to reject invalid pages")
   }

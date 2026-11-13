@@ -10,7 +10,7 @@ fn PdfDocument::pdf_attach_stream_data(
 fn PdfDocument::pdf_attach_raw_stream_size(
   self : PdfDocument,
   stream : @syntax.PdfObject,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   self.direct(stream).stream_bytes().length()
 }
 
@@ -33,7 +33,7 @@ fn PdfDocument::pdf_attach_file_spec_data(
 fn PdfDocument::pdf_attach_file_spec_raw_size(
   self : PdfDocument,
   file_spec : @syntax.PdfObject,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match self.lookup_direct(pdf_attach_ef_key(), file_spec) {
     Some(ef) =>
       match self.lookup_direct(pdf_attach_f_key(), ef) {

@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_codepoint_of_gurmukhi_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_gurmukhi_glyphname(name : String) -> Int32? {
   match name {
     "/aagurmukhi" => Some(0x0A06)
     "/aamatragurmukhi" => Some(0x0A3E)

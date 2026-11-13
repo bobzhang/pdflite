@@ -1,8 +1,8 @@
 ///|
 fn pdf_metadata_xml_skip_processing_instruction(
   data : BytesView,
-  start : Int,
-) -> Int raise @core.PdfError {
+  start : Int32,
+) -> Int32 raise @core.PdfError {
   let end = pdf_metadata_find_bytes_from(data, start + 2, b"?>")
   guard end >= 0 else { raise BadText }
   end + 2
@@ -11,8 +11,8 @@ fn pdf_metadata_xml_skip_processing_instruction(
 ///|
 fn pdf_metadata_xml_skip_comment(
   data : BytesView,
-  start : Int,
-) -> Int raise @core.PdfError {
+  start : Int32,
+) -> Int32 raise @core.PdfError {
   let end = pdf_metadata_find_bytes_from(data, start + 4, b"-->")
   guard end >= 0 else { raise BadText }
   end + 3
@@ -21,8 +21,8 @@ fn pdf_metadata_xml_skip_comment(
 ///|
 fn pdf_metadata_xml_skip_misc(
   data : BytesView,
-  start : Int,
-) -> Int raise @core.PdfError {
+  start : Int32,
+) -> Int32 raise @core.PdfError {
   let mut index = start
   let mut done = false
   while !done {
@@ -43,8 +43,8 @@ fn pdf_metadata_xml_skip_misc(
 ///|
 fn pdf_metadata_xml_parse_dtd(
   data : BytesView,
-  start : Int,
-) -> (String?, Int) raise @core.PdfError {
+  start : Int32,
+) -> (String?, Int32) raise @core.PdfError {
   let index = pdf_metadata_xml_skip_misc(data, start)
   if index + 8 < data.length() &&
     pdf_metadata_view_matches_at(data, index, b"<!DOCTYPE") {

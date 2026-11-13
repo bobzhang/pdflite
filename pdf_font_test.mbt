@@ -38,7 +38,7 @@ fn font_document_for_test() -> @pdflite.PdfDocument {
 }
 
 ///|
-fn font_json_int_for_test(value : Int) -> Json {
+fn font_json_int_for_test(value : Int32) -> Json {
   Json::number(value.to_double(), repr=value.to_string())
 }
 
@@ -132,7 +132,7 @@ fn font_descriptor_without_files_for_test() -> @syntax.PdfObject {
 ///|
 fn font_descriptor_with_file_for_test(
   key : String,
-  number : Int,
+  number : Int32,
 ) -> @syntax.PdfObject {
   PdfDictionary([
     (font_name_for_test(key), PdfIndirect(number)),

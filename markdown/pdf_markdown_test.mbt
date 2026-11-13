@@ -9,7 +9,7 @@ fn markdown_ascii_for_test(text : String) -> @core.PdfBytes {
 }
 
 ///|
-fn markdown_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes raise {
+fn markdown_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes raise {
   @core.pdf_bytes_of_int_array(values)
 }
 
@@ -27,7 +27,7 @@ fn markdown_font_resources_for_test(
 
 ///|
 fn markdown_indirect_font_resources_for_test(
-  font_number : Int,
+  font_number : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (

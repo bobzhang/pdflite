@@ -4,7 +4,7 @@ fn PdfDocument::load_reconstructed_object_stream_entries_from_context(
   entries : ArrayView[
     (@reader.PdfClassicXRefEntry, @xref_model.ObjectStreamReference),
   ],
-  object_stream_number : Int,
+  object_stream_number : Int32,
   context : PdfObjectStreamContext,
   already_decrypted : Bool,
 ) -> Unit {
@@ -12,7 +12,7 @@ fn PdfDocument::load_reconstructed_object_stream_entries_from_context(
     let xref = entry.0
     let reference = entry.1
     if reference.object_stream_number == object_stream_number {
-      let loaded : Result[(Int, @syntax.PdfObject), Error] = try
+      let loaded : Result[(Int32, @syntax.PdfObject), Error] = try
         context.read_reference(reference)
       catch {
         err => Err(err)
@@ -79,8 +79,8 @@ fn PdfDocument::load_reconstructed_physical_object_stream_members(
     match context_result {
       Ok(context) =>
         for index in 0..<context.pairs.length() {
-          let loaded_member : Result[(Int, @syntax.PdfObject), Error] = try
-            context.read_reference({ object_stream_number, index })
+          let loaded_member : Result[(Int32, @syntax.PdfObject), Error] = try
+            context.read_reference({ object_stream_number, index, })
           catch {
             err => Err(err)
           } noraise {

@@ -4,9 +4,9 @@ fn PdfDocument::encrypt_arc4_standard(
   user_password : BytesView,
   owner_password : BytesView,
   denied_permissions : ArrayView[@crypt_core.PdfPermission],
-  version : Int,
-  revision : Int,
-  key_length_bits : Int,
+  version : Int32,
+  revision : Int32,
+  key_length_bits : Int32,
   write_length : Bool,
   file_id : BytesView,
 ) -> PdfDocument raise @core.PdfError {

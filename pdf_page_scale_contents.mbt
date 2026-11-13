@@ -6,10 +6,10 @@
 /// the same matrix.
 pub fn PdfDocument::scale_contents(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   position : @geometry.PdfPosition,
   scale : Double,
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   pdf_page_box_validate_page_numbers(
     page_numbers,
@@ -19,7 +19,7 @@ pub fn PdfDocument::scale_contents(
   let pages = self.pages_of_pagetree()
   let selected_pages = @core.pdf_number_set(page_numbers)
   let rewritten : Array[@page.PdfPage] = Array::new(capacity=pages.length())
-  let matrices : Array[(Int, @geometry.TransformMatrix)] = Array::new(
+  let matrices : Array[(Int32, @geometry.TransformMatrix)] = Array::new(
     capacity=page_numbers.length(),
   )
   for index in 0..<pages.length() {
@@ -39,10 +39,10 @@ pub fn PdfDocument::scale_contents(
 /// Compatibility wrapper for `PdfDocument::scale_contents`.
 pub fn pdf_scale_contents(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   position : @geometry.PdfPosition,
   scale : Double,
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.scale_contents(page_numbers, position, scale, fast~)
 }
@@ -53,8 +53,8 @@ pub fn pdf_scale_contents_cpdf_order(
   position : @geometry.PdfPosition,
   scale : Double,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.scale_contents(page_numbers, position, scale, fast~)
 }

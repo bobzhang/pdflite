@@ -10,23 +10,25 @@
 /// low-level `crypt_core` package that the document core can depend on without a
 /// cycle. Fields are public so the (still root-resident) crypt logic can build
 /// and read them across the package boundary.
+#derive(Debug, Eq)
 pub(all) struct PdfEncryptionValues {
   crypt_type : @core.PdfCryptType
   user_entry : @core.PdfBytes
   owner_entry : @core.PdfBytes
-  permissions : Int
+  permissions : Int32
   file_id : @core.PdfBytes
   encrypt_metadata : Bool
   permissions_entry : @core.PdfBytes?
   user_encryption_key : @core.PdfBytes?
   owner_encryption_key : @core.PdfBytes?
-} derive(Debug, Eq)
+}
 
 ///|
 /// Saved encryption state retained on a decrypted document.
 ///
 /// Recrypt helpers use this to put a previously encrypted document back into
 /// its original security-handler shape after edits.
+#derive(Debug, Eq)
 pub(all) struct PdfSavedEncryption {
   values : PdfEncryptionValues
-} derive(Debug, Eq)
+}

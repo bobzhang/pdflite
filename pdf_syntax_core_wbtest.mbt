@@ -99,7 +99,7 @@ test "parser prefix helper reports malformed indirect prefixes" {
       LexObj,
       LexEndObj,
     ]),
-    { number: 2, generation: 0, object: PdfNull },
+    { number: 2, generation: 0, object: PdfNull, },
   )
 }
 
@@ -122,7 +122,7 @@ test "core byte-view helpers cover boundary cases through root facade" {
   @test.assert_eq(@core.pdf_find_last_ascii(view[:1], [97, 98]), -1)
   @test.assert_eq(@core.pdf_find_last_ascii(view, [120]), -1)
 
-  let empty_number : Result[Int, Error] = try
+  let empty_number : Result[Int32, Error] = try
     @core.pdf_parse_ascii_int_view(Bytes::new(0))
   catch {
     err => Err(err)
@@ -132,7 +132,7 @@ test "core byte-view helpers cover boundary cases through root facade" {
   guard empty_number is Err(@core.PdfError::NumberExpected) else {
     fail("expected @core.PdfError::NumberExpected")
   }
-  let bad_number : Result[Int, Error] = try
+  let bad_number : Result[Int32, Error] = try
     @core.pdf_parse_ascii_int_view(@ascii.encode("12a"))
   catch {
     err => Err(err)
@@ -142,7 +142,7 @@ test "core byte-view helpers cover boundary cases through root facade" {
   guard bad_number is Err(@core.PdfError::NumberExpected) else {
     fail("expected @core.PdfError::NumberExpected")
   }
-  let overflow_number : Result[Int, Error] = try
+  let overflow_number : Result[Int32, Error] = try
     @core.pdf_parse_ascii_int_view(@ascii.encode("2147483648"))
   catch {
     err => Err(err)

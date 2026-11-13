@@ -5,8 +5,8 @@
 pub fn PdfDocument::add_object(
   self : PdfDocument,
   object : @syntax.PdfObject,
-  generation? : Int = 0,
-) -> Int {
+  generation~ : Int32 = 0,
+) -> Int32 {
   self.objects.add_object(object, generation~)
 }
 
@@ -17,9 +17,9 @@ pub fn PdfDocument::add_object(
 /// needed.
 pub fn PdfDocument::add_object_given_number(
   self : PdfDocument,
-  number : Int,
+  number : Int32,
   object : @syntax.PdfObject,
-  generation? : Int = 0,
+  generation~ : Int32 = 0,
 ) -> Unit {
   self.objects.add_object_given_number(number, object, generation~)
 }
@@ -27,9 +27,9 @@ pub fn PdfDocument::add_object_given_number(
 ///|
 fn PdfDocument::load_object_given_number(
   self : PdfDocument,
-  number : Int,
+  number : Int32,
   object : @syntax.PdfObject,
-  generation? : Int = 0,
+  generation~ : Int32 = 0,
 ) -> Unit {
   self.objects.load_object_given_number(number, object, generation)
 }
@@ -37,7 +37,7 @@ fn PdfDocument::load_object_given_number(
 ///|
 fn PdfDocument::load_object_given_number_already_decrypted(
   self : PdfDocument,
-  number : Int,
+  number : Int32,
   object : @syntax.PdfObject,
 ) -> Unit {
   self.objects.load_object_given_number_already_decrypted(number, object)
@@ -45,7 +45,7 @@ fn PdfDocument::load_object_given_number_already_decrypted(
 
 ///|
 /// Remove an object from the document and record a deletion event.
-pub fn PdfDocument::remove_object(self : PdfDocument, number : Int) -> Unit {
+pub fn PdfDocument::remove_object(self : PdfDocument, number : Int32) -> Unit {
   self.objects.remove_object(number)
 }
 
@@ -53,7 +53,7 @@ pub fn PdfDocument::remove_object(self : PdfDocument, number : Int) -> Unit {
 /// Return a parsed object by number, or `PdfNull` if it is absent or deferred.
 pub fn PdfDocument::lookup_object_or_null(
   self : PdfDocument,
-  number : Int,
+  number : Int32,
 ) -> @syntax.PdfObject {
   self.objects.lookup_object_or_null(number)
 }
@@ -62,6 +62,6 @@ pub fn PdfDocument::lookup_object_or_null(
 /// Return a copy of the document object mutation log.
 pub fn PdfDocument::event_log(
   self : PdfDocument,
-) -> Array[(Int, PdfObjectEvent)] {
+) -> Array[(Int32, PdfObjectEvent)] {
   self.objects.log()
 }

@@ -20,7 +20,7 @@ fn PdfDrawRenderState::ensure_fontpack(
   match self.stored_fontpack(identifier) {
     Some(stored) => stored
     None => {
-      self.fontpacks.push({ identifier, fontpack })
+      self.fontpacks.push({ identifier, fontpack, })
       fontpack
     }
   }
@@ -30,7 +30,7 @@ fn PdfDrawRenderState::ensure_fontpack(
 fn PdfDrawRenderState::stored_font_resource(
   self : PdfDrawRenderState,
   identifier : String,
-  font_index : Int,
+  font_index : Int32,
 ) -> PdfDrawFontResource? {
   for resource in self.fonts {
     if resource.identifier == identifier && resource.font_index == font_index {
@@ -44,11 +44,11 @@ fn PdfDrawRenderState::stored_font_resource(
 fn PdfDrawRenderState::register_font_resource(
   self : PdfDrawRenderState,
   identifier : String,
-  font_index : Int,
-  object_number : Int,
+  font_index : Int32,
+  object_number : Int32,
 ) -> @core.PdfName {
   let resource_name = self.fresh_name("/F")
-  self.fonts.push({ identifier, font_index, resource_name, object_number })
+  self.fonts.push({ identifier, font_index, resource_name, object_number, })
   resource_name
 }
 
@@ -68,7 +68,7 @@ fn PdfDrawRenderState::register_fontpack_resources(
         let resource_name = self.register_font_resource(
           identifier, index, object_number,
         )
-        { identifier, font_index: index, resource_name, object_number }
+        { identifier, font_index: index, resource_name, object_number, }
       }
     }
     self.mark_page_resource(resource.resource_name)

@@ -1,7 +1,7 @@
 ///|
 fn pdf_content_cid_width_lookup(
-  widths : ArrayView[(Int, Double)],
-  charcode : Int,
+  widths : ArrayView[(Int32, Double)],
+  charcode : Int32,
 ) -> Double? {
   for entry in widths {
     if entry.0 == charcode {
@@ -14,8 +14,8 @@ fn pdf_content_cid_width_lookup(
 
 ///|
 fn pdf_content_cid_vertical_width_lookup(
-  widths : ArrayView[(Int, PdfCIDVerticalWidth)],
-  charcode : Int,
+  widths : ArrayView[(Int32, PdfCIDVerticalWidth)],
+  charcode : Int32,
 ) -> PdfCIDVerticalWidth? {
   for entry in widths {
     if entry.0 == charcode {
@@ -40,7 +40,7 @@ fn pdf_content_cid_default_width2(
 ///|
 fn pdf_content_cid_width_of_charcode(
   font : PdfCIDKeyedFont,
-  charcode : Int,
+  charcode : Int32,
 ) -> (Double, Double, Double) {
   if PdfFontCIDKeyed(font).content_is_vertical() {
     match
@@ -72,7 +72,7 @@ fn pdf_content_cid_width_of_charcode(
 ///|
 fn pdf_content_simple_width_of_charcode(
   font : PdfSimpleFont,
-  charcode : Int,
+  charcode : Int32,
 ) -> (Double, Double, Double) {
   match font.fontmetrics {
     Some(metrics) if charcode >= 0 && charcode < metrics.length() => {
@@ -95,11 +95,11 @@ fn pdf_content_simple_width_of_charcode(
 /// vector components from `/W2` or the default vertical metrics.
 pub fn PdfFont::content_width_of_charcode(
   self : PdfFont,
-  charcode : Int,
+  charcode : Int32,
 ) -> (Double, Double, Double) {
   match self {
     PdfFontSimple(font) => pdf_content_simple_width_of_charcode(font, charcode)
-    PdfFontStandard({ font, encoding }) =>
+    PdfFontStandard({ font, encoding, }) =>
       (
         pdf_standard14_width_of_code(font.afm_data(), encoding, charcode).to_double(),
         0.0,
@@ -113,7 +113,7 @@ pub fn PdfFont::content_width_of_charcode(
 /// Compatibility wrapper for `PdfFont::content_width_of_charcode`.
 pub fn pdf_content_width_of_charcode(
   font : PdfFont,
-  charcode : Int,
+  charcode : Int32,
 ) -> (Double, Double, Double) {
   font.content_width_of_charcode(charcode)
 }

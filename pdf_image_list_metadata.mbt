@@ -4,8 +4,8 @@ fn PdfDocument::pdf_image_lookup_int_or_default(
   first_key : @core.PdfName,
   second_key : @core.PdfName,
   image : @syntax.PdfObject,
-  default : Int,
-) -> Int raise @core.PdfError {
+  default : Int32,
+) -> Int32 raise @core.PdfError {
   match self.lookup_direct_or_else(first_key, second_key, image) {
     Some(value) => self.get_number(value).to_int()
     None => default
@@ -16,8 +16,8 @@ fn PdfDocument::pdf_image_lookup_int_or_default(
 fn PdfDocument::pdf_image_stream_length(
   self : PdfDocument,
   image : @syntax.PdfObject,
-  fallback : Int,
-) -> Int {
+  fallback : Int32,
+) -> Int32 {
   match self.lookup_direct(pdf_image_length_key(), image) {
     Some(PdfInteger(value)) => value
     _ => fallback
@@ -28,7 +28,7 @@ fn PdfDocument::pdf_image_stream_length(
 fn PdfDocument::pdf_image_bits_per_component_number(
   self : PdfDocument,
   image : @syntax.PdfObject,
-) -> Int? raise @core.PdfError {
+) -> Int32? raise @core.PdfError {
   match self.image_bits_per_component(image) {
     Some(PdfInteger(value)) => Some(value)
     Some(_) => raise NumberExpected
@@ -94,7 +94,7 @@ fn PdfDocument::pdf_image_first_decodeparms(
 fn PdfDocument::pdf_image_decodeparms_k(
   self : PdfDocument,
   image : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match self.pdf_image_first_decodeparms(image) {
     Some(decodeparms) =>
       match self.lookup_direct(pdf_image_k_key(), decodeparms) {

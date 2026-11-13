@@ -1,7 +1,7 @@
 ///|
 fn pdf_toc_push_font_text_runs(
   output : Array[PdfTypeElement],
-  runs : ArrayView[(Int, Int, PdfFont)],
+  runs : ArrayView[(Int32, Int32, PdfFont)],
   font_size : Double,
 ) -> Unit raise @core.PdfError {
   for run in pdf_fontpack_collate_runs(runs) {
@@ -59,7 +59,7 @@ fn pdf_toc_ellipsis_run(
 ///|
 fn pdf_toc_last_text_width(
   elements : ArrayView[PdfTypeElement],
-) -> (Int, PdfTypeElement, Double)? raise @core.PdfError {
+) -> (Int32, PdfTypeElement, Double)? raise @core.PdfError {
   if elements.length() < 2 {
     None
   } else {
@@ -80,7 +80,7 @@ fn pdf_toc_last_text_width(
 ///|
 fn pdf_toc_trim_last_text_once(
   elements : Array[PdfTypeElement],
-  text_index : Int,
+  text_index : Int32,
 ) -> Bool {
   match elements[text_index] {
     PdfTypeText(text) =>

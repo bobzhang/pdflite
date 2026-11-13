@@ -7,7 +7,7 @@
 pub fn PdfDocument::parse_bookmark_text(
   self : PdfDocument,
   data : BytesView,
-  verify? : Bool = true,
+  verify~ : Bool = true,
 ) -> Array[@bookmark.PdfBookmark] raise @core.PdfError {
   let bookmarks : Array[@bookmark.PdfBookmark] = []
   let cursor = @core.byte_cursor_of_view(data)
@@ -30,7 +30,7 @@ pub fn PdfDocument::parse_bookmark_text(
 pub fn PdfDocument::add_bookmarks_from_text(
   self : PdfDocument,
   data : BytesView,
-  verify? : Bool = true,
+  verify~ : Bool = true,
 ) -> PdfDocument raise @core.PdfError {
   self.add_bookmarks(self.parse_bookmark_text(data, verify~))
 }

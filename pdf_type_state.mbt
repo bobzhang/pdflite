@@ -24,7 +24,7 @@ fn pdf_type_initial_state(
 }
 
 ///|
-fn PdfTypeTypesetState::next_mcid(self : PdfTypeTypesetState) -> Int {
+fn PdfTypeTypesetState::next_mcid(self : PdfTypeTypesetState) -> Int32 {
   self.mcid += 1
   self.mcid
 }

@@ -41,8 +41,8 @@ pub async fn pdf_draw_control_add_jpeg_file(
 /// so `path_to_im` is accepted for API parity and otherwise ignored.
 pub async fn pdf_backup_jpeg_dimensions(
   filename : StringView,
-  path_to_im? : String = "",
-) -> (Int, Int) {
+  path_to_im~ : String = "",
+) -> (Int32, Int32) {
   ignore(path_to_im)
   @codec.pdf_jpeg_backup_dimensions_view(@fs.read_file(filename).binary())
 }

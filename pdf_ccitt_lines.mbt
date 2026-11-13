@@ -1,5 +1,5 @@
 ///|
-fn pdf_ccitt_blank_line(columns : Int, whiteval : Int) -> Array[Int] {
+fn pdf_ccitt_blank_line(columns : Int32, whiteval : Int32) -> Array[Int32] {
   [
     for _ in 0..<columns => whiteval
   ]
@@ -7,11 +7,11 @@ fn pdf_ccitt_blank_line(columns : Int, whiteval : Int) -> Array[Int] {
 
 ///|
 fn pdf_ccitt_output_span(
-  line : Array[Int],
-  column : Int,
-  length : Int,
-  value : Int,
-) -> Int raise @core.PdfError {
+  line : Array[Int32],
+  column : Int32,
+  length : Int32,
+  value : Int32,
+) -> Int32 raise @core.PdfError {
   if length < 0 || column < 0 || column + length > line.length() {
     raise InvalidCCITTData
   }
@@ -24,7 +24,7 @@ fn pdf_ccitt_output_span(
 ///|
 fn pdf_ccitt_output_line(
   output : @core.BitWriter,
-  line : ArrayView[Int],
+  line : ArrayView[Int32],
 ) -> Unit raise @core.PdfError {
   for bit in line {
     output.put_bit(bit)
@@ -33,7 +33,11 @@ fn pdf_ccitt_output_line(
 }
 
 ///|
-fn pdf_ccitt_find_value(line : ArrayView[Int], start : Int, value : Int) -> Int {
+fn pdf_ccitt_find_value(
+  line : ArrayView[Int32],
+  start : Int32,
+  value : Int32,
+) -> Int32 {
   let mut position = start
   while position >= 0 && position < line.length() && line[position] != value {
     position += 1
@@ -47,12 +51,12 @@ fn pdf_ccitt_find_value(line : ArrayView[Int], start : Int, value : Int) -> Int 
 
 ///|
 fn pdf_ccitt_find_b1(
-  reference : ArrayView[Int],
-  column : Int,
+  reference : ArrayView[Int32],
+  column : Int32,
   white : Bool,
-  whiteval : Int,
-  blackval : Int,
-) -> Int {
+  whiteval : Int32,
+  blackval : Int32,
+) -> Int32 {
   let current = if white { whiteval } else { blackval }
   let opposite = if white { blackval } else { whiteval }
   let mut position = column
@@ -64,12 +68,12 @@ fn pdf_ccitt_find_b1(
 
 ///|
 fn pdf_ccitt_find_b2(
-  reference : ArrayView[Int],
-  column : Int,
+  reference : ArrayView[Int32],
+  column : Int32,
   white : Bool,
-  whiteval : Int,
-  blackval : Int,
-) -> Int {
+  whiteval : Int32,
+  blackval : Int32,
+) -> Int32 {
   let current = if white { whiteval } else { blackval }
   let opposite = if white { blackval } else { whiteval }
   let mut position = column

@@ -26,15 +26,15 @@ fn pdf_text_tounicode_postamble() -> String {
 
 ///|
 fn pdf_text_tounicode_sorted(
-  entries : ArrayView[(Int, @core.PdfBytes)],
-) -> Array[(Int, @core.PdfBytes)] {
+  entries : ArrayView[(Int32, @core.PdfBytes)],
+) -> Array[(Int32, @core.PdfBytes)] {
   let sorted = [ for entry in entries => entry ]
   sorted.sort_by(fn(left, right) { left.0.compare(right.0) })
   sorted
 }
 
 ///|
-fn pdf_text_hex_int_min2(value : Int) -> String {
+fn pdf_text_hex_int_min2(value : Int32) -> String {
   let text = value.to_string(radix=16)
   if text.length() == 1 {
     "0" + text
@@ -44,16 +44,16 @@ fn pdf_text_hex_int_min2(value : Int) -> String {
 }
 
 ///|
-fn pdf_text_ascii_length(text : String) -> Int {
+fn pdf_text_ascii_length(text : String) -> Int32 {
   @ascii.encode(text).length()
 }
 
 ///|
 fn pdf_text_write_ascii(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   text : String,
-) -> Int {
+) -> Int32 {
   let mut current = position
   for byte in @ascii.encode(text) {
     output[current] = byte
@@ -63,16 +63,16 @@ fn pdf_text_write_ascii(
 }
 
 ///|
-fn pdf_text_hex_bytes_length(bytes : BytesView) -> Int {
+fn pdf_text_hex_bytes_length(bytes : BytesView) -> Int32 {
   bytes.length() * 2
 }
 
 ///|
 fn pdf_text_write_hex_bytes(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   bytes : BytesView,
-) -> Int {
+) -> Int32 {
   let mut current = position
   for byte in bytes {
     let value = byte.to_int()
@@ -87,7 +87,7 @@ fn pdf_text_write_hex_bytes(
 fn pdf_text_tounicode_bfrange_length(
   charcode_text : String,
   bytes : BytesView,
-) -> Int {
+) -> Int32 {
   pdf_text_ascii_length("<") +
   pdf_text_ascii_length(charcode_text) +
   pdf_text_ascii_length("><") +
@@ -100,10 +100,10 @@ fn pdf_text_tounicode_bfrange_length(
 ///|
 fn pdf_text_write_tounicode_bfrange(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   charcode_text : String,
   bytes : BytesView,
-) -> Int {
+) -> Int32 {
   let mut current = pdf_text_write_ascii(output, position, "<")
   current = pdf_text_write_ascii(output, current, charcode_text)
   current = pdf_text_write_ascii(output, current, "><")
@@ -115,7 +115,7 @@ fn pdf_text_write_tounicode_bfrange(
 
 ///|
 fn pdf_text_tounicode_bytes(
-  sorted : ArrayView[(Int, @core.PdfBytes)],
+  sorted : ArrayView[(Int32, @core.PdfBytes)],
 ) -> @core.PdfBytes {
   let count_text = sorted.length().to_string()
   let mut length = pdf_text_ascii_length(pdf_text_tounicode_preamble()) +
@@ -153,8 +153,8 @@ fn pdf_text_tounicode_bytes(
 ///|
 fn PdfDocument::pdf_text_write_tounicode(
   self : PdfDocument,
-  entries : ArrayView[(Int, @core.PdfBytes)],
-) -> Int {
+  entries : ArrayView[(Int32, @core.PdfBytes)],
+) -> Int32 {
   let sorted = pdf_text_tounicode_sorted(entries)
   let bytes = pdf_text_tounicode_bytes(sorted)
   self.add_object(

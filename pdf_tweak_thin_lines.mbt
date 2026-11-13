@@ -133,7 +133,7 @@ fn PdfDocument::pdf_tweak_thin_lines_page(
 /// cpdf's `thinlines` implementation.
 pub fn PdfDocument::thin_lines(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   width : Double,
 ) -> PdfDocument raise @core.PdfError {
   let document = self.copy()
@@ -156,7 +156,7 @@ pub fn PdfDocument::thin_lines(
 /// Compatibility wrapper for `PdfDocument::thin_lines`.
 pub fn pdf_thin_lines(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   width : Double,
 ) -> PdfDocument raise @core.PdfError {
   document.thin_lines(page_numbers, width)
@@ -165,7 +165,7 @@ pub fn pdf_thin_lines(
 ///|
 /// Compatibility wrapper matching cpdftweak's `thinlines` name and order.
 pub fn pdf_thinlines(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   width : Double,
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {

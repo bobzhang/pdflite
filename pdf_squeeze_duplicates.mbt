@@ -1,6 +1,6 @@
 ///|
 priv struct PdfSqueezeDuplicateCandidate {
-  number : Int
+  number : Int32
   object : @syntax.PdfObject
 }
 
@@ -20,10 +20,10 @@ fn pdf_squeeze_materialized_object(
 
 ///|
 fn pdf_squeeze_duplicate_candidate(
-  number : Int,
+  number : Int32,
   object : @syntax.PdfObject,
 ) -> PdfSqueezeDuplicateCandidate raise @core.PdfError {
-  { number, object: pdf_squeeze_materialized_object(object) }
+  { number, object: pdf_squeeze_materialized_object(object), }
 }
 
 ///|
@@ -44,12 +44,12 @@ fn PdfDocument::pdf_squeeze_skip_duplicate_candidate(
 ///|
 fn PdfDocument::pdf_squeeze_duplicate_object_changes(
   self : PdfDocument,
-) -> Array[(Int, Int)] raise @core.PdfError {
+) -> Array[(Int32, Int32)] raise @core.PdfError {
   let entries = self.parsed_object_entries()
   let unique : Array[PdfSqueezeDuplicateCandidate] = Array::new(
     capacity=entries.length(),
   )
-  let changes : Array[(Int, Int)] = Array::new(capacity=entries.length())
+  let changes : Array[(Int32, Int32)] = Array::new(capacity=entries.length())
   for entry in entries {
     let (number, _, object) = entry
     let candidate = pdf_squeeze_duplicate_candidate(number, object)
@@ -73,7 +73,7 @@ fn PdfDocument::pdf_squeeze_duplicate_object_changes(
 ///|
 fn PdfDocument::pdf_squeeze_apply_duplicate_changes(
   self : PdfDocument,
-  changes : ArrayView[(Int, Int)],
+  changes : ArrayView[(Int32, Int32)],
 ) -> Unit {
   if changes.length() > 0 {
     let change_map = pdf_page_reference_map(changes)

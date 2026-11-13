@@ -4,7 +4,7 @@ fn toc_bytes_for_test(text : String) -> @core.PdfBytes {
 }
 
 ///|
-fn toc_raw_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn toc_raw_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   let output : Array[Byte] = []
   for value in values {
     output.push(value.to_byte())
@@ -29,12 +29,12 @@ fn toc_rectangle_for_test(
 
 ///|
 fn toc_standard_font_for_test() -> @pdflite.PdfFont {
-  PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding })
+  PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding, })
 }
 
 ///|
 fn toc_bold_font_for_test() -> @pdflite.PdfFont {
-  PdfFontStandard({ font: PdfHelveticaBold, encoding: PdfWinAnsiEncoding })
+  PdfFontStandard({ font: PdfHelveticaBold, encoding: PdfWinAnsiEncoding, })
 }
 
 ///|
@@ -94,11 +94,11 @@ test "pdf_toc_of_utf8 collates consecutive fontpack runs" {
   let pack : @pdflite.PdfFontPack = {
     fonts: [first, second],
     entries: [
-      { codepoint: 65, font_index: 0, charcode: 1 },
-      { codepoint: 66, font_index: 0, charcode: 2 },
-      { codepoint: 67, font_index: 1, charcode: 3 },
-      { codepoint: 68, font_index: 1, charcode: 4 },
-      { codepoint: 69, font_index: 0, charcode: 5 },
+      { codepoint: 65, font_index: 0, charcode: 1, },
+      { codepoint: 66, font_index: 0, charcode: 2, },
+      { codepoint: 67, font_index: 1, charcode: 3, },
+      { codepoint: 68, font_index: 1, charcode: 4, },
+      { codepoint: 69, font_index: 0, charcode: 5, },
     ],
   }
   @test.assert_eq(
@@ -459,10 +459,10 @@ test "PdfDocument toc_typeset_pages uses first-page cropbox geometry" {
   )
   let expected_pages = [
     for page in expected_raw.pages => {
-      { ..page, rest: try! page.rest.add_dict_entry(cropbox_key, cropbox) }
+      { ..page, rest: try! page.rest.add_dict_entry(cropbox_key, cropbox), }
     }
   ]
-  let expected = { ..expected_raw, pages: expected_pages }
+  let expected = { ..expected_raw, pages: expected_pages, }
   let result = try! document
     .copy()
     .toc_typeset_pages(
@@ -526,7 +526,7 @@ test "PdfDocument toc_insert_pages prepends pages and shifts labels" {
       start_page: 1,
       start_value: 1,
     },
-    { ..labels[0], start_page: 3 },
+    { ..labels[0], start_page: 3, },
   ]
   @test.assert_eq(
     @pdflite.pdf_toc_shift_page_labels(1, labels),
@@ -617,7 +617,7 @@ test "PdfDocument toc_with_fontpack composes non-structured TOC" {
       start_page: 1,
       start_value: 1,
     },
-    { ..labels[0], start_page: labels[0].start_page + toc_page_count },
+    { ..labels[0], start_page: labels[0].start_page + toc_page_count, },
   ])
   let bookmarks = try! updated.read_bookmarks(preserve_actions=true)
   @test.assert_eq(bookmarks.length(), 2)
@@ -703,8 +703,8 @@ test "PdfDocument toc_with_source handles cpdftoc font-source dispatch" {
   guard rejected
     is Err(
       @core.PdfError::SoftError(
-        "Cannot use existing font with -table-of-contents"
-      )
+        "Cannot use existing font with -table-of-contents",
+      ),
     ) else {
     fail("expected existing named font rejection")
   }
@@ -776,8 +776,8 @@ test "pdf_typeset_table_of_contents preserves cpdftoc argument order" {
   guard structured
     is Err(
       @core.PdfError::SoftError(
-        "typeset_table_of_contents: structured TOC output is not implemented"
-      )
+        "typeset_table_of_contents: structured TOC output is not implemented",
+      ),
     ) else {
     fail("expected structured TOC rejection")
   }
@@ -800,8 +800,8 @@ test "pdf_typeset_table_of_contents preserves cpdftoc argument order" {
   guard pdfua
     is Err(
       @core.PdfError::SoftError(
-        "typeset_table_of_contents: structured TOC output is not implemented"
-      )
+        "typeset_table_of_contents: structured TOC output is not implemented",
+      ),
     ) else {
     fail("expected PDF/UA TOC rejection")
   }

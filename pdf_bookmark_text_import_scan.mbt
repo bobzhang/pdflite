@@ -1,5 +1,5 @@
 ///|
-fn pdf_bookmark_import_is_whitespace(value : Int) -> Bool {
+fn pdf_bookmark_import_is_whitespace(value : Int32) -> Bool {
   @core.pdf_is_whitespace_byte(value)
 }
 
@@ -20,7 +20,7 @@ fn pdf_bookmark_import_trim_line_end(line : BytesView) -> BytesView {
 ///|
 fn pdf_bookmark_import_skip_whitespace(
   line : BytesView,
-  index : Ref[Int],
+  index : Ref[Int32],
 ) -> Unit {
   while index.val < line.length() &&
         pdf_bookmark_import_is_whitespace(line[index.val].to_int()) {
@@ -29,7 +29,10 @@ fn pdf_bookmark_import_skip_whitespace(
 }
 
 ///|
-fn pdf_bookmark_import_parse_int(line : BytesView, index : Ref[Int]) -> Int? {
+fn pdf_bookmark_import_parse_int(
+  line : BytesView,
+  index : Ref[Int32],
+) -> Int32? {
   pdf_bookmark_import_skip_whitespace(line, index)
   let start = index.val
   let mut negative = false

@@ -1,5 +1,5 @@
 ///|
-fn pdf_text_codepoint_of_cjk_compat_square_glyphname(name : String) -> Int? {
+fn pdf_text_codepoint_of_cjk_compat_square_glyphname(name : String) -> Int32? {
   match name {
     "/GBsquare" => Some(0x3387)
     "/HPsquare" => Some(0x33CB)

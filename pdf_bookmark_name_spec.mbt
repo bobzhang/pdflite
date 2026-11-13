@@ -7,12 +7,12 @@ pub fn PdfDocument::bookmark_name_of_spec(
   self : PdfDocument,
   encoding : @metadata.PdfMetadataEncoding,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
-  split_level : Int,
+  split_level : Int32,
   spec : String,
-  sequence : Int,
+  sequence : Int32,
   filename : String,
-  start_page : Int,
-  end_page : Int,
+  start_page : Int32,
+  end_page : Int32,
 ) -> String raise @core.PdfError {
   let _ = encoding
   self.pdf_bookmark_name_spec_process_at_fields(
@@ -32,12 +32,12 @@ pub fn pdf_bookmark_name_of_spec(
   encoding : @metadata.PdfMetadataEncoding,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
   document : PdfDocument,
-  split_level : Int,
+  split_level : Int32,
   spec : String,
-  sequence : Int,
+  sequence : Int32,
   filename : String,
-  start_page : Int,
-  end_page : Int,
+  start_page : Int32,
+  end_page : Int32,
 ) -> String raise @core.PdfError {
   document.bookmark_name_of_spec(
     encoding, bookmarks, split_level, spec, sequence, filename, start_page, end_page,
@@ -50,12 +50,12 @@ pub fn pdf_name_of_spec(
   encoding : @metadata.PdfMetadataEncoding,
   bookmarks : ArrayView[@bookmark.PdfBookmark],
   document : PdfDocument,
-  split_level : Int,
+  split_level : Int32,
   spec : String,
-  sequence : Int,
+  sequence : Int32,
   filename : String,
-  start_page : Int,
-  end_page : Int,
+  start_page : Int32,
+  end_page : Int32,
 ) -> String raise @core.PdfError {
   document.bookmark_name_of_spec(
     encoding, bookmarks, split_level, spec, sequence, filename, start_page, end_page,

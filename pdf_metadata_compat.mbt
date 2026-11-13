@@ -13,11 +13,11 @@ pub fn pdf_copy_id(
 pub fn pdf_set_pdf_info(
   key : @core.PdfName,
   value : @syntax.PdfObject,
-  version : Int,
+  version : Int32,
   document : PdfDocument,
-  keep_version? : Bool = false,
-  xmp_also? : Bool = false,
-  xmp_just_set? : Bool = false,
+  keep_version~ : Bool = false,
+  xmp_also~ : Bool = false,
+  xmp_just_set~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.set_info_entry(
     key,
@@ -32,10 +32,10 @@ pub fn pdf_set_pdf_info(
 ///|
 /// Compatibility wrapper matching cpdfmetadata's string-key tuple form.
 pub fn pdf_set_pdf_info_cpdf_order(
-  entry : (String, @syntax.PdfObject, Int),
+  entry : (String, @syntax.PdfObject, Int32),
   document : PdfDocument,
-  xmp_also? : Bool = false,
-  xmp_just_set? : Bool = false,
+  xmp_also~ : Bool = false,
+  xmp_just_set~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.set_info_entry_string(entry, xmp_also~, xmp_just_set~)
 }
@@ -43,10 +43,10 @@ pub fn pdf_set_pdf_info_cpdf_order(
 ///|
 /// Compatibility wrapper matching cpdfmetadata's string-key tuple form.
 pub fn pdf_set_pdf_info_string(
-  entry : (String, @syntax.PdfObject, Int),
+  entry : (String, @syntax.PdfObject, Int32),
   document : PdfDocument,
-  xmp_also? : Bool = false,
-  xmp_just_set? : Bool = false,
+  xmp_also~ : Bool = false,
+  xmp_just_set~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   pdf_set_pdf_info_cpdf_order(entry, document, xmp_also~, xmp_just_set~)
 }
@@ -80,7 +80,7 @@ pub fn pdf_get_xmp_info_string(document : PdfDocument, key : String) -> String {
 pub fn pdf_set_viewer_preference(
   key : @core.PdfName,
   value : @syntax.PdfObject,
-  version : Int,
+  version : Int32,
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.set_viewer_preference(key, value, version)
@@ -89,7 +89,7 @@ pub fn pdf_set_viewer_preference(
 ///|
 /// Compatibility wrapper matching cpdfmetadata's string-key tuple form.
 pub fn pdf_set_viewer_preference_cpdf_order(
-  entry : (String, @syntax.PdfObject, Int),
+  entry : (String, @syntax.PdfObject, Int32),
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   document.set_viewer_preference_string(entry)
@@ -98,7 +98,7 @@ pub fn pdf_set_viewer_preference_cpdf_order(
 ///|
 /// Compatibility wrapper matching cpdfmetadata's string-key tuple form.
 pub fn pdf_set_viewer_preference_string(
-  entry : (String, @syntax.PdfObject, Int),
+  entry : (String, @syntax.PdfObject, Int32),
   document : PdfDocument,
 ) -> PdfDocument raise @core.PdfError {
   pdf_set_viewer_preference_cpdf_order(entry, document)
@@ -136,8 +136,8 @@ pub fn pdf_set_non_full_screen_page_mode(
 pub fn pdf_set_open_action(
   document : PdfDocument,
   fit : Bool,
-  page_number : Int,
-  destination? : @syntax.PdfObject? = None,
+  page_number : Int32,
+  destination~ : @syntax.PdfObject? = None,
 ) -> PdfDocument raise @core.PdfError {
   document.set_open_action(page_number, fit~, destination~)
 }
@@ -147,8 +147,8 @@ pub fn pdf_set_open_action(
 pub fn pdf_set_open_action_string_destination(
   document : PdfDocument,
   fit : Bool,
-  page_number : Int,
-  destination? : String? = None,
+  page_number : Int32,
+  destination~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   document.set_open_action_string_destination(page_number, fit~, destination~)
 }
@@ -158,8 +158,8 @@ pub fn pdf_set_open_action_string_destination(
 pub fn pdf_set_open_action_cpdf_order(
   document : PdfDocument,
   fit : Bool,
-  page_number : Int,
-  destination? : String? = None,
+  page_number : Int32,
+  destination~ : String? = None,
 ) -> PdfDocument raise @core.PdfError {
   pdf_set_open_action_string_destination(
     document,
@@ -264,7 +264,7 @@ pub fn pdf_get_open_action_string(
 
 ///|
 /// Compatibility wrapper for cpdf's minor-version setter.
-pub fn pdf_set_version(minor : Int, document : PdfDocument) -> Unit {
+pub fn pdf_set_version(minor : Int32, document : PdfDocument) -> Unit {
   let (major, _) = document.version()
   document.set_version(major, minor)
 }
@@ -281,8 +281,8 @@ pub fn pdf_determine_subformats(
 /// Compatibility wrapper for `PdfDocument::info_json_blob`.
 pub fn pdf_output_info_json_blob(
   document : PdfDocument,
-  encoding? : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
-  unit? : @geometry.PdfUnit = PdfPoint,
+  encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.info_json_blob(encoding~, unit~)
 }
@@ -291,8 +291,8 @@ pub fn pdf_output_info_json_blob(
 /// Compatibility wrapper for `PdfDocument::info_blob`.
 pub fn pdf_output_info(
   document : PdfDocument,
-  encoding? : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
-  unit? : @geometry.PdfUnit = PdfPoint,
+  encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.info_blob(encoding~, unit~)
 }
@@ -309,8 +309,8 @@ pub fn pdf_output_xmp_info_json_blob(
 /// Compatibility wrapper for `PdfDocument::xmp_info_blob`.
 pub fn pdf_output_xmp_info(
   document : PdfDocument,
-  encoding? : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
-  unit? : @geometry.PdfUnit = PdfPoint,
+  encoding~ : @metadata.PdfMetadataEncoding = PdfMetadataUTF8,
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> @core.PdfBytes raise @core.PdfError {
   ignore(encoding)
   ignore(unit)

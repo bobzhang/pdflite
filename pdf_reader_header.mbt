@@ -6,7 +6,7 @@
 /// `@reader.pdf_default_version`.
 pub fn pdf_document_of_parsed_indirect_objects(
   objects : ArrayView[@syntax.PdfParsedIndirectObject],
-  version? : @reader.PdfVersion = @reader.pdf_default_version,
+  version~ : @reader.PdfVersion = @reader.pdf_default_version,
 ) -> PdfDocument {
   let document = pdf_document_empty()
   document.set_version(version.major, version.minor)

@@ -1,6 +1,6 @@
 ///|
 test "PdfTextExtractor decodes Gujarati AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/aagujarati", 0x0A86),
     ("/aavowelsigngujarati", 0x0ABE),
     ("/agujarati", 0x0A85),
@@ -80,8 +80,8 @@ test "PdfTextExtractor decodes Gujarati AGL glyph names" {
     ("/zerogujarati", 0x0AE6),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1

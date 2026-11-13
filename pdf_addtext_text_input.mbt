@@ -1,7 +1,7 @@
 ///|
 fn pdf_addtext_bytes_match_at(
   bytes : BytesView,
-  index : Int,
+  index : Int32,
   pattern : BytesView,
 ) -> Bool {
   if pattern.length() == 0 || index + pattern.length() > bytes.length() {
@@ -19,9 +19,9 @@ fn pdf_addtext_bytes_match_at(
 ///|
 fn pdf_addtext_copy_view(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   view : BytesView,
-) -> Int {
+) -> Int32 {
   let mut position = position
   for byte in view {
     output[position] = byte
@@ -41,7 +41,7 @@ fn pdf_addtext_replace_all_lazy(
     text
   } else {
     let text_bytes = @utf8.encode(text)
-    let replacements : Array[(Int, Int, @core.PdfBytes)] = Array::new(
+    let replacements : Array[(Int32, Int32, @core.PdfBytes)] = Array::new(
       capacity=text_bytes.length() / search_bytes.length(),
     )
     let mut index = 0
@@ -149,12 +149,14 @@ fn pdf_addtext_is_octal_digit(byte : Byte) -> Bool {
 }
 
 ///|
-fn pdf_addtext_octal_value(a : Byte, b : Byte, c : Byte) -> Int {
+fn pdf_addtext_octal_value(a : Byte, b : Byte, c : Byte) -> Int32 {
   (a.to_int() - 48) * 64 + (b.to_int() - 48) * 8 + c.to_int() - 48
 }
 
 ///|
-fn pdf_addtext_unescaped_length(bytes : BytesView) -> Int raise @core.PdfError {
+fn pdf_addtext_unescaped_length(
+  bytes : BytesView,
+) -> Int32 raise @core.PdfError {
   let mut index = 0
   let mut length = 0
   while index < bytes.length() {

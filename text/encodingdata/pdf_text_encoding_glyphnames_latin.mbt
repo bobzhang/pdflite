@@ -1,6 +1,6 @@
 ///|
 /// Return the MacRomanEncoding glyph name for a single-byte character code.
-pub fn pdf_text_macroman_glyphname(code : Int) -> String? {
+pub fn pdf_text_macroman_glyphname(code : Int32) -> String? {
   match pdf_text_basic_latin_glyphname(code, false) {
     Some(name) => Some(name)
     None =>
@@ -125,7 +125,7 @@ pub fn pdf_text_macroman_glyphname(code : Int) -> String? {
 
 ///|
 /// Return the WinAnsiEncoding glyph name for a single-byte character code.
-pub fn pdf_text_winansi_glyphname(code : Int) -> String? {
+pub fn pdf_text_winansi_glyphname(code : Int32) -> String? {
   match pdf_text_basic_latin_glyphname(code, false) {
     Some(name) => Some(name)
     None =>

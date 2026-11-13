@@ -20,7 +20,7 @@ fn pdf_write_string_to(output : Array[Byte], bytes : BytesView) -> Unit {
 }
 
 ///|
-fn pdf_write_literal_string_length(bytes : BytesView) -> Int {
+fn pdf_write_literal_string_length(bytes : BytesView) -> Int32 {
   let mut length = 2
   for byte in bytes {
     let value = byte.to_int()
@@ -36,9 +36,9 @@ fn pdf_write_literal_string_length(bytes : BytesView) -> Int {
 ///|
 fn pdf_write_literal_escape_byte(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   value : Byte,
-) -> Int {
+) -> Int32 {
   output[position] = b'\\'
   output[position + 1] = value
   position + 2

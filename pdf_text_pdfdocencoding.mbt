@@ -1,5 +1,5 @@
 ///|
-fn pdf_codepoint_of_pdfdocencoding_byte_option(value : Int) -> Int? {
+fn pdf_codepoint_of_pdfdocencoding_byte_option(value : Int32) -> Int32? {
   match value {
     0x09 => Some(0x0009)
     0x0A => Some(0x000A)
@@ -13,7 +13,7 @@ fn pdf_codepoint_of_pdfdocencoding_byte_option(value : Int) -> Int? {
     0x1D => Some(0x02DB)
     0x1E => Some(0x02DA)
     0x1F => Some(0x02DC)
-    0x20..=0x7E => Some(value)
+    0x20..<=0x7E => Some(value)
     0x80 => Some(0x2022)
     0x81 => Some(0x2020)
     0x82 => Some(0x2021)
@@ -45,8 +45,8 @@ fn pdf_codepoint_of_pdfdocencoding_byte_option(value : Int) -> Int? {
     0x9D => Some(0x0161)
     0x9E => Some(0x017E)
     0xA0 => Some(0x20AC)
-    0xA1..=0xAC => Some(value)
-    0xAE..=0xFF => Some(value)
+    0xA1..<=0xAC => Some(value)
+    0xAE..<=0xFF => Some(value)
     _ => None
   }
 }
@@ -56,8 +56,8 @@ fn pdf_codepoint_of_pdfdocencoding_byte_option(value : Int) -> Int? {
 ///
 /// Undefined byte values raise `@core.PdfError::InvalidPDFDocEncoding`.
 pub fn pdf_codepoint_of_pdfdocencoding_byte(
-  value : Int,
-) -> Int raise @core.PdfError {
+  value : Int32,
+) -> Int32 raise @core.PdfError {
   match pdf_codepoint_of_pdfdocencoding_byte_option(value) {
     Some(codepoint) => codepoint
     None => raise InvalidPDFDocEncoding(value)
@@ -68,8 +68,8 @@ pub fn pdf_codepoint_of_pdfdocencoding_byte(
 /// Decode a PDFDocEncoding byte string to Unicode codepoints.
 pub fn pdf_codepoints_of_pdfdocencoding(
   bytes : BytesView,
-) -> Array[Int] raise @core.PdfError {
-  let codepoints : Array[Int] = Array::new(capacity=bytes.length())
+) -> Array[Int32] raise @core.PdfError {
+  let codepoints : Array[Int32] = Array::new(capacity=bytes.length())
   for byte in bytes {
     codepoints.push(pdf_codepoint_of_pdfdocencoding_byte(byte.to_int()))
   }
@@ -81,7 +81,7 @@ pub fn pdf_codepoints_of_pdfdocencoding(
 ///
 /// The lookup preserves CamlPDF compatibility for the `fi` ligature by mapping
 /// U+FB01 to byte `0x93`.
-pub fn pdf_pdfdocencoding_byte_of_codepoint(codepoint : Int) -> Byte? {
+pub fn pdf_pdfdocencoding_byte_of_codepoint(codepoint : Int32) -> Byte? {
   if codepoint == 0xFB01 {
     Some(0x93)
   } else {
@@ -102,7 +102,7 @@ pub fn pdf_pdfdocencoding_byte_of_codepoint(codepoint : Int) -> Byte? {
 /// Returns `None` instead of falling back to UTF-16BE; use
 /// `pdf_pdfdocstring_of_codepoints` for the PDF string policy fallback.
 pub fn pdf_pdfdocencoding_of_codepoints(
-  codepoints : ArrayView[Int],
+  codepoints : ArrayView[Int32],
 ) -> @core.PdfBytes? {
   let output = Array::make(codepoints.length(), b'\x00')
   for index in 0..<codepoints.length() {

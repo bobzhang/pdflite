@@ -6,7 +6,7 @@ priv struct PdfUAStructTreeRoleMap {
 ///|
 priv struct PdfUAStructTreeTextNode {
   name : @core.PdfName
-  page_ref : Int?
+  page_ref : Int32?
   children : Array[PdfUAStructTreeTextNode]
 }
 
@@ -70,7 +70,7 @@ fn PdfDocument::pdf_ua_struct_tree_rolemap(
 fn PdfDocument::pdf_ua_struct_tree_page_ref(
   self : PdfDocument,
   node : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   match self.direct(node).lookup_immediate(pdf_ua_pg_key()) {
     Some(PdfIndirect(number)) => Some(number)
     _ => None
@@ -82,7 +82,7 @@ fn PdfDocument::pdf_ua_read_struct_tree_text_inner(
   self : PdfDocument,
   node : @syntax.PdfObject,
   rolemap : PdfUAStructTreeRoleMap,
-  depth : Int,
+  depth : Int32,
 ) -> PdfUAStructTreeTextNode raise @core.PdfError {
   if depth > 10000 {
     raise SoftError("malformed st node")
@@ -108,7 +108,7 @@ fn PdfDocument::pdf_ua_read_struct_tree_text_inner(
     }
     _ => raise SoftError("malformed st node")
   }
-  { name, page_ref, children }
+  { name, page_ref, children, }
 }
 
 ///|
@@ -121,12 +121,12 @@ fn PdfDocument::pdf_ua_read_struct_tree_text(
   }
   let root_name = rolemap.rewrite_name(pdf_ua_struct_tree_root_key())
   match catalog.lookup_immediate(pdf_ua_struct_tree_root_key()) {
-    None => { name: root_name, page_ref: None, children: [] }
+    None => { name: root_name, page_ref: None, children: [], }
     Some(struct_tree_root) => {
       let tree = self.pdf_ua_read_struct_tree_text_inner(
         struct_tree_root, rolemap, 0,
       )
-      { name: root_name, page_ref: tree.page_ref, children: tree.children }
+      { name: root_name, page_ref: tree.page_ref, children: tree.children, }
     }
   }
 }
@@ -149,14 +149,14 @@ fn pdf_ua_remove_empty_struct_tree_text_nodes(
       children.push(pruned)
     }
   }
-  { name: node.name, page_ref: node.page_ref, children }
+  { name: node.name, page_ref: node.page_ref, children, }
 }
 
 ///|
 fn pdf_ua_struct_tree_text_name_length(
   node : PdfUAStructTreeTextNode,
-  page_lookup : @hashmap.HashMap[Int, Int],
-) -> Int {
+  page_lookup : @hashmap.HashMap[Int32, Int32],
+) -> Int32 {
   let bytes = node.name.bytes()
   let start = if bytes.length() > 0 { 1 } else { 0 }
   let mut length = bytes.length() - start
@@ -177,10 +177,10 @@ fn pdf_ua_struct_tree_text_name_length(
 ///|
 fn pdf_ua_write_struct_tree_text_name(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   node : PdfUAStructTreeTextNode,
-  page_lookup : @hashmap.HashMap[Int, Int],
-) -> Int {
+  page_lookup : @hashmap.HashMap[Int32, Int32],
+) -> Int32 {
   let bytes = node.name.bytes()
   let start = if bytes.length() > 0 { 1 } else { 0 }
   let mut current = position
@@ -207,8 +207,8 @@ fn pdf_ua_write_struct_tree_text_name(
 fn pdf_ua_struct_tree_text_root_length(
   node : PdfUAStructTreeTextNode,
   indent : String,
-  page_lookup : @hashmap.HashMap[Int, Int],
-) -> Int {
+  page_lookup : @hashmap.HashMap[Int32, Int32],
+) -> Int32 {
   let mut length = pdf_ua_struct_tree_text_name_length(node, page_lookup) + 1
   for index in 0..<node.children.length() {
     let is_last = index == node.children.length() - 1
@@ -233,11 +233,11 @@ fn pdf_ua_struct_tree_text_root_length(
 ///|
 fn pdf_ua_write_struct_tree_text_root(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   node : PdfUAStructTreeTextNode,
   indent : String,
-  page_lookup : @hashmap.HashMap[Int, Int],
-) -> Int {
+  page_lookup : @hashmap.HashMap[Int32, Int32],
+) -> Int32 {
   let mut current = pdf_ua_write_struct_tree_text_name(
     output, position, node, page_lookup,
   )
@@ -269,9 +269,9 @@ fn pdf_ua_write_struct_tree_text_root(
 
 ///|
 fn pdf_ua_page_lookup(
-  page_numbers : ArrayView[Int],
-) -> @hashmap.HashMap[Int, Int] {
-  let lookup : @hashmap.HashMap[Int, Int] = HashMap([])
+  page_numbers : ArrayView[Int32],
+) -> @hashmap.HashMap[Int32, Int32] {
+  let lookup : @hashmap.HashMap[Int32, Int32] = HashMap([])
   for index, page_number in page_numbers {
     lookup[page_number] = index + 1
   }

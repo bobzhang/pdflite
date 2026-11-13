@@ -1,7 +1,7 @@
 ///|
 fn pdf_squeeze_stream_dictionary(
   dictionary : @syntax.PdfObject,
-  length : Int,
+  length : Int32,
 ) -> @syntax.PdfObject raise @core.PdfError {
   dictionary
   .remove_dict_entry(pdf_filter_key())
@@ -14,11 +14,11 @@ fn pdf_squeeze_stream_dictionary(
 ///|
 fn PdfDocument::pdf_squeeze_content_stream_numbers(
   self : PdfDocument,
-  page_number : Int,
-) -> Array[Int] {
+  page_number : Int32,
+) -> Array[Int32] {
   let page = self.lookup_object_or_null(page_number)
   let contents = self.pdf_page_content_list(self.pdf_page_content_object(page))
-  let numbers : Array[Int] = Array::new(capacity=contents.length())
+  let numbers : Array[Int32] = Array::new(capacity=contents.length())
   for content in contents {
     match content {
       PdfIndirect(number) => numbers.push(number)
@@ -31,9 +31,9 @@ fn PdfDocument::pdf_squeeze_content_stream_numbers(
 ///|
 fn PdfDocument::pdf_squeeze_all_page_content_numbers(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-) -> Array[Int] {
-  let numbers : Array[Int] = Array::new(capacity=page_numbers.length())
+  page_numbers : ArrayView[Int32],
+) -> Array[Int32] {
+  let numbers : Array[Int32] = Array::new(capacity=page_numbers.length())
   for page_number in page_numbers {
     for number in self.pdf_squeeze_content_stream_numbers(page_number) {
       numbers.push(number)
@@ -43,7 +43,7 @@ fn PdfDocument::pdf_squeeze_all_page_content_numbers(
 }
 
 ///|
-fn pdf_squeeze_occurrences(values : ArrayView[Int], needle : Int) -> Int {
+fn pdf_squeeze_occurrences(values : ArrayView[Int32], needle : Int32) -> Int32 {
   let mut count = 0
   for value in values {
     if value == needle {
@@ -55,7 +55,7 @@ fn pdf_squeeze_occurrences(values : ArrayView[Int], needle : Int) -> Int {
 
 ///|
 fn pdf_squeeze_content_streams_are_unshared(
-  all_content_numbers : ArrayView[Int],
+  all_content_numbers : ArrayView[Int32],
   contents : ArrayView[@syntax.PdfObject],
 ) -> Bool {
   for content in contents {
@@ -74,7 +74,7 @@ fn pdf_squeeze_content_streams_are_unshared(
 ///|
 fn PdfDocument::pdf_squeeze_replace_page_contents(
   self : PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   page_object : @syntax.PdfObject,
   resources : @syntax.PdfObject,
   contents : ArrayView[@syntax.PdfObject],
@@ -95,8 +95,8 @@ fn PdfDocument::pdf_squeeze_replace_page_contents(
 ///|
 fn PdfDocument::pdf_squeeze_form_xobject(
   self : PdfDocument,
-  object_number : Int,
-  done : @hashmap.HashMap[Int, Bool],
+  object_number : Int32,
+  done : @hashmap.HashMap[Int32, Bool],
 ) -> Unit raise @core.PdfError {
   if !done.contains(object_number) {
     done[object_number] = true
@@ -135,7 +135,7 @@ fn PdfDocument::pdf_squeeze_form_xobject(
 fn PdfDocument::pdf_squeeze_form_xobjects_in_resources(
   self : PdfDocument,
   resources : @syntax.PdfObject,
-  done : @hashmap.HashMap[Int, Bool],
+  done : @hashmap.HashMap[Int32, Bool],
 ) -> Unit raise @core.PdfError {
   match self.lookup_direct(pdf_page_xobject_key(), resources) {
     Some(PdfDictionary(entries)) =>
@@ -164,7 +164,7 @@ fn PdfDocument::pdf_squeeze_page_data(
       _ => false
     }
   })
-  let xobjects_done : @hashmap.HashMap[Int, Bool] = HashMap([])
+  let xobjects_done : @hashmap.HashMap[Int32, Bool] = HashMap([])
   for page_number in page_numbers {
     let page = self.lookup_object_or_null(page_number)
     let resources = match self.lookup_direct(pdf_page_resources_key(), page) {

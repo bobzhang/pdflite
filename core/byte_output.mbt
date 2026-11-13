@@ -4,28 +4,29 @@
 /// `ByteOutput` tracks the current write position separately from the highest
 /// position written, so callers may seek backward to patch bytes and then
 /// obtain only the initialized prefix with `to_bytes`.
+#derive(Debug, Eq, ToJson)
 pub struct ByteOutput {
   data : Array[Byte]
-  mut position : Int
-  mut written_length : Int
-} derive(Debug, Eq, ToJson)
+  mut position : Int32
+  mut written_length : Int32
+}
 
 ///|
 /// Creates an empty output buffer.
 ///
 /// `initial_size` preallocates zero-filled capacity but does not count as
 /// written output. Raises `PdfError::InvalidReadLength` for negative sizes.
-pub fn byte_output_new(initial_size? : Int = 0) -> ByteOutput raise PdfError {
+pub fn byte_output_new(initial_size~ : Int32 = 0) -> ByteOutput raise PdfError {
   if initial_size < 0 {
     raise InvalidReadLength(initial_size)
   }
   let data : Array[Byte] = [ for _ in 0..<initial_size => 0 ]
-  { data, position: 0, written_length: 0 }
+  { data, position: 0, written_length: 0, }
 }
 
 ///|
 /// Returns the current write position.
-pub fn ByteOutput::position(self : ByteOutput) -> Int {
+pub fn ByteOutput::position(self : ByteOutput) -> Int32 {
   self.position
 }
 
@@ -33,7 +34,7 @@ pub fn ByteOutput::position(self : ByteOutput) -> Int {
 /// Returns the highest written byte position.
 ///
 /// This is the length of the byte sequence returned by `to_bytes`.
-pub fn ByteOutput::length(self : ByteOutput) -> Int {
+pub fn ByteOutput::length(self : ByteOutput) -> Int32 {
   self.written_length
 }
 
@@ -45,7 +46,7 @@ pub fn ByteOutput::length(self : ByteOutput) -> Int {
 /// `PdfError::InvalidCursorPosition`.
 pub fn ByteOutput::seek(
   self : ByteOutput,
-  position : Int,
+  position : Int32,
 ) -> Unit raise PdfError {
   if position < 0 {
     raise InvalidCursorPosition(position)
@@ -54,7 +55,7 @@ pub fn ByteOutput::seek(
 }
 
 ///|
-fn ByteOutput::ensure_capacity(self : ByteOutput, length : Int) -> Unit {
+fn ByteOutput::ensure_capacity(self : ByteOutput, length : Int32) -> Unit {
   while self.data.length() < length {
     self.data.push(0)
   }
@@ -67,7 +68,7 @@ fn ByteOutput::ensure_capacity(self : ByteOutput, length : Int) -> Unit {
 /// `0..=255`.
 pub fn ByteOutput::write_byte(
   self : ByteOutput,
-  value : Int,
+  value : Int32,
 ) -> Unit raise PdfError {
   let byte = pdf_byte_of_int(value)
   self.ensure_capacity(self.position + 1)
@@ -84,8 +85,8 @@ pub fn ByteOutput::write_byte(
 /// Raises the same errors as `seek` and `write_byte`.
 pub fn ByteOutput::write_byte_at(
   self : ByteOutput,
-  position : Int,
-  value : Int,
+  position : Int32,
+  value : Int32,
 ) -> Unit raise PdfError {
   self.seek(position)
   self.write_byte(value)
@@ -119,7 +120,7 @@ pub fn ByteOutput::write_view(
 /// Raises the same errors as `seek` and `write_view`.
 pub fn ByteOutput::write_view_at(
   self : ByteOutput,
-  position : Int,
+  position : Int32,
   bytes : BytesView,
 ) -> Unit raise PdfError {
   self.seek(position)
@@ -135,8 +136,8 @@ pub fn ByteOutput::write_view_at(
 pub fn ByteOutput::write_view_slice(
   self : ByteOutput,
   bytes : BytesView,
-  offset : Int,
-  length : Int,
+  offset : Int32,
+  length : Int32,
 ) -> Unit raise PdfError {
   if offset < 0 {
     raise InvalidCursorPosition(offset)
@@ -161,8 +162,8 @@ pub fn ByteOutput::write_view_slice(
 /// lengths and `PdfError::InvalidByte` for values outside `0..=255`.
 pub fn ByteOutput::write_repeated_byte(
   self : ByteOutput,
-  length : Int,
-  value? : Int = 0,
+  length : Int32,
+  value~ : Int32 = 0,
 ) -> Unit raise PdfError {
   if length < 0 {
     raise InvalidReadLength(length)

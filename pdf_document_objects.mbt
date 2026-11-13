@@ -17,7 +17,7 @@ pub fn pdf_objects_empty() -> PdfObjects {
 /// Entries are installed without recording alteration events. The maximum
 /// object number is derived from the supplied numbers.
 pub fn pdf_objects_of_entries(
-  entries : ArrayView[(Int, PdfObjectEntry)],
+  entries : ArrayView[(Int32, PdfObjectEntry)],
 ) -> PdfObjects {
   let objects = pdf_objects_empty()
   for entry in entries {
@@ -28,13 +28,13 @@ pub fn pdf_objects_of_entries(
 
 ///|
 /// Return the number of object entries currently stored.
-pub fn PdfObjects::length(self : PdfObjects) -> Int {
+pub fn PdfObjects::length(self : PdfObjects) -> Int32 {
   self.object_map.length()
 }
 
 ///|
 /// Return stored object numbers in ascending order.
-pub fn PdfObjects::object_numbers(self : PdfObjects) -> Array[Int] {
+pub fn PdfObjects::object_numbers(self : PdfObjects) -> Array[Int32] {
   self.object_map.object_numbers()
 }
 
@@ -55,7 +55,7 @@ pub fn PdfObjects::map_objects_in_place(
         ObjectParsedAlreadyDecrypted(transform(object))
       _ => entry.data
     }
-    self.set_entry(number, { data, generation: entry.generation })
+    self.set_entry(number, { data, generation: entry.generation, })
   }
 }
 
@@ -65,9 +65,9 @@ pub fn PdfObjects::map_objects_in_place(
 /// Results are sorted by object number and exclude deferred entries.
 pub fn PdfObjects::parsed_entries(
   self : PdfObjects,
-) -> Array[(Int, Int, @syntax.PdfObject)] {
+) -> Array[(Int32, Int32, @syntax.PdfObject)] {
   let numbers = self.object_numbers()
-  let entries : Array[(Int, Int, @syntax.PdfObject)] = Array::new(
+  let entries : Array[(Int32, Int32, @syntax.PdfObject)] = Array::new(
     capacity=numbers.length(),
   )
   for number in numbers {
@@ -89,9 +89,9 @@ pub fn PdfObjects::parsed_entries(
 /// entries.
 pub fn PdfObjects::stream_entries(
   self : PdfObjects,
-) -> Array[(Int, Int, @syntax.PdfStream)] {
+) -> Array[(Int32, Int32, @syntax.PdfStream)] {
   let numbers = self.object_numbers()
-  let entries : Array[(Int, Int, @syntax.PdfStream)] = Array::new(
+  let entries : Array[(Int32, Int32, @syntax.PdfStream)] = Array::new(
     capacity=numbers.length(),
   )
   for number in numbers {
@@ -108,7 +108,7 @@ pub fn PdfObjects::stream_entries(
 
 ///|
 fn PdfObjects::copy(self : PdfObjects) -> PdfObjects {
-  let object_stream_ids : @hashmap.HashMap[Int, Int] = HashMap([])
+  let object_stream_ids : @hashmap.HashMap[Int32, Int32] = HashMap([])
   for number in self.object_stream_ids.keys() {
     object_stream_ids[number] = self.object_stream_ids.get(number).unwrap()
   }
@@ -122,13 +122,13 @@ fn PdfObjects::copy(self : PdfObjects) -> PdfObjects {
 
 ///|
 /// Return the highest object number allocated or loaded so far.
-pub fn PdfObjects::max_object_number(self : PdfObjects) -> Int {
+pub fn PdfObjects::max_object_number(self : PdfObjects) -> Int32 {
   self.max_object_number
 }
 
 ///|
 /// Return a copy of the object mutation log.
-pub fn PdfObjects::log(self : PdfObjects) -> Array[(Int, PdfObjectEvent)] {
+pub fn PdfObjects::log(self : PdfObjects) -> Array[(Int32, PdfObjectEvent)] {
   self.log.copy()
 }
 
@@ -136,7 +136,7 @@ pub fn PdfObjects::log(self : PdfObjects) -> Array[(Int, PdfObjectEvent)] {
 /// Return the object-table entry for `number`, if present.
 pub fn PdfObjects::get_entry(
   self : PdfObjects,
-  number : Int,
+  number : Int32,
 ) -> PdfObjectEntry? {
   self.object_map.get_entry(number)
 }
@@ -148,7 +148,7 @@ pub fn PdfObjects::get_entry(
 /// previous maximum.
 pub fn PdfObjects::set_entry(
   self : PdfObjects,
-  number : Int,
+  number : Int32,
   entry : PdfObjectEntry,
 ) -> Unit {
   if number > self.max_object_number {
@@ -164,9 +164,9 @@ pub fn PdfObjects::set_entry(
 /// appends `ObjectAltered` to the mutation log.
 pub fn PdfObjects::add_object_given_number(
   self : PdfObjects,
-  number : Int,
+  number : Int32,
   object : @syntax.PdfObject,
-  generation? : Int = 0,
+  generation~ : Int32 = 0,
 ) -> Unit {
   self.set_entry(number, pdf_object_entry(ObjectParsed(object), generation~))
   self.log.push((number, ObjectAltered))
@@ -175,9 +175,9 @@ pub fn PdfObjects::add_object_given_number(
 ///|
 fn PdfObjects::load_object_given_number(
   self : PdfObjects,
-  number : Int,
+  number : Int32,
   object : @syntax.PdfObject,
-  generation : Int,
+  generation : Int32,
 ) -> Unit {
   self.set_entry(number, pdf_object_entry(ObjectParsed(object), generation~))
 }
@@ -185,7 +185,7 @@ fn PdfObjects::load_object_given_number(
 ///|
 fn PdfObjects::load_object_given_number_already_decrypted(
   self : PdfObjects,
-  number : Int,
+  number : Int32,
   object : @syntax.PdfObject,
 ) -> Unit {
   self.set_entry(number, pdf_object_entry(ObjectParsedAlreadyDecrypted(object)))
@@ -198,8 +198,8 @@ fn PdfObjects::load_object_given_number_already_decrypted(
 pub fn PdfObjects::add_object(
   self : PdfObjects,
   object : @syntax.PdfObject,
-  generation? : Int = 0,
-) -> Int {
+  generation~ : Int32 = 0,
+) -> Int32 {
   let number = self.max_object_number + 1
   self.add_object_given_number(number, object, generation~)
   number
@@ -209,7 +209,7 @@ pub fn PdfObjects::add_object(
 /// Remove an object entry and record a deletion event.
 ///
 /// The deletion is logged even if the object number was not present.
-pub fn PdfObjects::remove_object(self : PdfObjects, number : Int) -> Unit {
+pub fn PdfObjects::remove_object(self : PdfObjects, number : Int32) -> Unit {
   self.object_map.remove(number)
   self.log.push((number, ObjectDeleted))
 }
@@ -218,7 +218,7 @@ pub fn PdfObjects::remove_object(self : PdfObjects, number : Int) -> Unit {
 /// Return a parsed object by number, or `PdfNull` if it is absent or deferred.
 pub fn PdfObjects::lookup_object_or_null(
   self : PdfObjects,
-  number : Int,
+  number : Int32,
 ) -> @syntax.PdfObject {
   self.object_map.lookup_parsed_or_null(number)
 }

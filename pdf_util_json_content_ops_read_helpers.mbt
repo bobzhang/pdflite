@@ -15,7 +15,7 @@ fn pdf_util_json_op_float(json : Json) -> Double raise @core.PdfError {
 }
 
 ///|
-fn pdf_util_json_op_int(json : Json) -> Int raise @core.PdfError {
+fn pdf_util_json_op_int(json : Json) -> Int32 raise @core.PdfError {
   match json {
     Object(entries) =>
       if entries.length() == 1 {

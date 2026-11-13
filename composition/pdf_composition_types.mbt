@@ -1,24 +1,25 @@
 ///|
 /// Size contribution for a named document component in cpdfcomposition-style
 /// reports.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfCompositionEntry {
   label : String
-  bytes : Int
+  bytes : Int32
   percent : Double
-} derive(Debug, Eq, ToJson)
+}
 
 ///|
 /// Build a composition row and compute its percentage of the full file size.
 pub fn pdf_composition_entry(
   label : String,
-  bytes : Int,
-  file_size : Int,
+  bytes : Int32,
+  file_size : Int32,
 ) -> PdfCompositionEntry {
-  { label, bytes, percent: bytes.to_double() / file_size.to_double() * 100.0 }
+  { label, bytes, percent: bytes.to_double() / file_size.to_double() * 100.0, }
 }
 
 ///|
-fn pdf_composition_json_number(value : Int) -> Json {
+fn pdf_composition_json_number(value : Int32) -> Json {
   Json::number(value.to_double(), repr=value.to_string())
 }
 

@@ -65,7 +65,7 @@ fn pdf_cursor_resolve_classic_stream_length(
   object : @syntax.PdfObject,
   xrefs : ArrayView[@reader.PdfClassicXRefEntry],
   xref_index : @reader.PdfClassicXRefIndex?,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match object.lookup_immediate(@reader.pdf_length_name()) {
     Some(PdfInteger(length)) if length >= 0 => length
     Some(PdfIndirect(number)) => {
@@ -114,7 +114,7 @@ fn pdf_cursor_resolve_classic_stream_length(
 fn pdf_cursor_read_first_indirect_object_at_current(
   cursor : @core.ByteCursor,
   xrefs : ArrayView[@reader.PdfClassicXRefEntry],
-  xref_index? : @reader.PdfClassicXRefIndex? = None,
+  xref_index~ : @reader.PdfClassicXRefIndex? = None,
 ) -> @syntax.PdfParsedIndirectObject raise @core.PdfError {
   let (object, _, complete) = @syntax.pdf_parse_indirect_object_segment_at(
     pdf_cursor_lex_first_indirect_object_tokens(cursor),
@@ -125,7 +125,7 @@ fn pdf_cursor_read_first_indirect_object_at_current(
   } else if !pdf_cursor_stopped_at_stream_candidate(cursor) {
     object
   } else {
-    let length_result : Result[Int, Error] = try
+    let length_result : Result[Int32, Error] = try
       pdf_cursor_resolve_classic_stream_length(
         cursor,
         object.object,

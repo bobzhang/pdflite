@@ -25,17 +25,16 @@ jobs:
       fail-fast: false
       matrix:
         moonbit-version:
-          - latest
-          - nightly
+          - pre-release
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
 
       - name: Set up MoonBit
         env:
-          MOONBIT_INSTALL_VERSION: ${{ matrix.moonbit-version }}
+          MOONBIT_INSTALL_VERSION: pre-release
         run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s -- pre-release
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
 
       - name: Update MoonBit dependencies
@@ -53,17 +52,16 @@ jobs:
       fail-fast: false
       matrix:
         moonbit-version:
-          - latest
-          - nightly
+          - pre-release
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
 
       - name: Set up MoonBit
         env:
-          MOONBIT_INSTALL_VERSION: ${{ matrix.moonbit-version }}
+          MOONBIT_INSTALL_VERSION: pre-release
         run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s -- pre-release
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
 
       - name: Update MoonBit dependencies
@@ -81,7 +79,7 @@ jobs:
         run: moon run --target native --release --build-only cmd/main
 
       - name: Test native CLI documentation
-        if: matrix.moonbit-version == 'nightly'
+        if: matrix.moonbit-version == 'pre-release'
         env:
           PDFLITE_CLI: ${{ github.workspace }}/_build/native/release/build/cmd/main/main.exe
           PDFLITE_LOGO_PDF: ${{ github.workspace }}/fixtures/camlpdf/logo.pdf
@@ -98,17 +96,16 @@ jobs:
       fail-fast: false
       matrix:
         moonbit-version:
-          - latest
-          - nightly
+          - pre-release
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
 
       - name: Set up MoonBit
         env:
-          MOONBIT_INSTALL_VERSION: ${{ matrix.moonbit-version }}
+          MOONBIT_INSTALL_VERSION: pre-release
         run: |
-          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
+          curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash -s -- pre-release
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
 
       - name: Update MoonBit dependencies

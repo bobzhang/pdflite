@@ -2,8 +2,8 @@
 /// Compatibility wrapper for `PdfDocument::page_info_json`.
 pub fn pdf_page_info_json(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  unit? : @geometry.PdfUnit = PdfPoint,
+  page_numbers : ArrayView[Int32],
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> Json raise @core.PdfError {
   document.page_info_json(page_numbers, unit~)
 }
@@ -12,7 +12,7 @@ pub fn pdf_page_info_json(
 /// Compatibility wrapper matching cpdfpage's `json_page_info`.
 pub fn pdf_json_page_info(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   unit : @geometry.PdfUnit,
 ) -> Json raise @core.PdfError {
   document.page_info_json(page_numbers, unit~)
@@ -22,8 +22,8 @@ pub fn pdf_json_page_info(
 /// Compatibility wrapper for `PdfDocument::page_info_json_blob`.
 pub fn pdf_output_page_info_json_blob(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  unit? : @geometry.PdfUnit = PdfPoint,
+  page_numbers : ArrayView[Int32],
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.page_info_json_blob(page_numbers, unit~)
 }
@@ -36,10 +36,10 @@ pub fn pdf_output_page_info_json_blob(
 /// `json=true`.
 pub fn PdfDocument::output_page_info(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  unit? : @geometry.PdfUnit = PdfPoint,
-  json? : Bool = false,
-  raisejson? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  unit~ : @geometry.PdfUnit = PdfPoint,
+  json~ : Bool = false,
+  raisejson~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   ignore(raisejson)
   if json {
@@ -54,9 +54,9 @@ pub fn PdfDocument::output_page_info(
 pub fn pdf_output_page_info(
   unit : @geometry.PdfUnit,
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  json? : Bool = false,
-  raisejson? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  json~ : Bool = false,
+  raisejson~ : Bool = false,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.output_page_info(page_numbers, unit~, json~, raisejson~)
 }
@@ -65,8 +65,8 @@ pub fn pdf_output_page_info(
 /// Compatibility wrapper for `PdfDocument::page_info_text`.
 pub fn pdf_output_page_info_text(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  unit? : @geometry.PdfUnit = PdfPoint,
+  page_numbers : ArrayView[Int32],
+  unit~ : @geometry.PdfUnit = PdfPoint,
 ) -> @core.PdfBytes raise @core.PdfError {
   document.page_info_text(page_numbers, unit~)
 }

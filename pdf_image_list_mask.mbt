@@ -3,7 +3,7 @@ fn PdfDocument::pdf_image_indirect_mask_number(
   self : PdfDocument,
   image : @syntax.PdfObject,
   key : @core.PdfName,
-) -> Int? {
+) -> Int32? {
   match self.direct(image) {
     PdfDictionary(entries)
     | PdfStreamObject({ dictionary: PdfDictionary(entries), .. }) =>
@@ -25,12 +25,12 @@ fn PdfDocument::pdf_image_indirect_mask_number(
 fn PdfDocument::pdf_image_list_mask(
   self : PdfDocument,
   resources : @syntax.PdfObject,
-  page_number : Int,
+  page_number : Int32,
   image : @syntax.PdfObject,
   inline : Bool,
   entries : Array[PdfImageListEntry],
-  form_numbers : @hashmap.HashMap[Int, Bool],
-) -> (String, Int?) raise @core.PdfError {
+  form_numbers : @hashmap.HashMap[Int32, Bool],
+) -> (String, Int32?) raise @core.PdfError {
   match
     self.lookup_direct_or_else(
       pdf_image_image_mask_key(),

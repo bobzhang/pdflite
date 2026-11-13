@@ -1,7 +1,7 @@
 ///|
 fn pdf_tweak_replace_array_entry(
   values : ArrayView[@syntax.PdfObject],
-  index : Int,
+  index : Int32,
   value : @syntax.PdfObject,
   source : String,
 ) -> @syntax.PdfObject raise @core.PdfError {
@@ -16,7 +16,7 @@ fn pdf_tweak_replace_array_entry(
 }
 
 ///|
-fn pdf_tweak_chain_array_index(name : @core.PdfName) -> Int? {
+fn pdf_tweak_chain_array_index(name : @core.PdfName) -> Int32? {
   let bytes = name.bytes()
   guard bytes.length() >= 3 &&
     bytes[0].to_int() == 47 &&
@@ -38,7 +38,7 @@ fn PdfDocument::pdf_tweak_replace_existing_chain(
   self : PdfDocument,
   object : @syntax.PdfObject,
   chain : ArrayView[@core.PdfName],
-  chain_index : Int,
+  chain_index : Int32,
   value : @syntax.PdfObject,
   source : String,
 ) -> @syntax.PdfObject raise @core.PdfError {
@@ -117,7 +117,7 @@ fn PdfDocument::pdf_tweak_replace_existing_chain(
 ///|
 fn PdfDocument::pdf_tweak_replace_numbered_object(
   self : PdfDocument,
-  number : Int,
+  number : Int32,
   chain : ArrayView[@core.PdfName],
   value : @syntax.PdfObject,
   source : String,

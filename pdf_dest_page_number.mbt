@@ -1,13 +1,13 @@
 ///|
 priv struct PdfPageNumberLookup {
-  values : @hashmap.HashMap[Int, Int]
+  values : @hashmap.HashMap[Int32, Int32]
 }
 
 ///|
 fn pdf_page_number_lookup(
-  page_reference_numbers : ArrayView[Int],
+  page_reference_numbers : ArrayView[Int32],
 ) -> PdfPageNumberLookup {
-  let values : @hashmap.HashMap[Int, Int] = HashMap([])
+  let values : @hashmap.HashMap[Int32, Int32] = HashMap([])
   for index in 0..<page_reference_numbers.length() {
     let object_number = page_reference_numbers[index]
     if !values.contains(object_number) {
@@ -20,8 +20,8 @@ fn pdf_page_number_lookup(
 ///|
 fn PdfPageNumberLookup::page_number(
   self : PdfPageNumberLookup,
-  object_number : Int,
-) -> Int {
+  object_number : Int32,
+) -> Int32 {
   match self.values.get(object_number) {
     Some(page_number) => page_number
     None => 0
@@ -32,7 +32,7 @@ fn PdfPageNumberLookup::page_number(
 fn pdf_destination_page_number_of_target(
   page_numbers : PdfPageNumberLookup,
   target : @destination.PdfTargetPage,
-) -> Int {
+) -> Int32 {
   match target {
     TargetOtherDocPageNumber(number) => number + 1
     TargetPageObject(object_number) => page_numbers.page_number(object_number)
@@ -44,7 +44,7 @@ fn PdfDocument::pdf_destination_page_number_with_lookup(
   self : PdfDocument,
   destination : @destination.PdfDestination,
   page_numbers : PdfPageNumberLookup,
-) -> Int raise @core.PdfError {
+) -> Int32 raise @core.PdfError {
   match destination {
     DestNamed(_) | DestString(_) => {
       let resolved = self.read_destination(
@@ -87,8 +87,8 @@ fn PdfDocument::pdf_destination_page_number_with_lookup(
 fn PdfDocument::pdf_destination_page_number(
   self : PdfDocument,
   destination : @destination.PdfDestination,
-  page_reference_numbers : ArrayView[Int],
-) -> Int raise @core.PdfError {
+  page_reference_numbers : ArrayView[Int32],
+) -> Int32 raise @core.PdfError {
   self.pdf_destination_page_number_with_lookup(
     destination,
     pdf_page_number_lookup(page_reference_numbers),

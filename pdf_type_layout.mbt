@@ -112,7 +112,7 @@ pub fn pdf_type_layout(
 ///|
 fn pdf_type_push_page_break(
   output : Array[PdfTypeElement],
-  current_tag : (String, Int)?,
+  current_tag : (String, Int32)?,
 ) -> Unit {
   match current_tag {
     Some(_) => output.push(PdfTypeEndTag)
@@ -140,7 +140,7 @@ pub fn pdf_type_paginate(
   let output : Array[PdfTypeElement] = []
   let mut ypos = tmargin
   let mut font_size = 0.0
-  let mut current_tag : (String, Int)? = None
+  let mut current_tag : (String, Int32)? = None
   for element in elements {
     match element {
       PdfTypeVGlue(length) => {

@@ -1,5 +1,5 @@
 ///|
-fn truetype_bytes_for_test(values : Array[Int]) -> @core.PdfBytes {
+fn truetype_bytes_for_test(values : Array[Int32]) -> @core.PdfBytes {
   let output : Array[Byte] = []
   for value in values {
     output.push(value.to_byte())
@@ -8,13 +8,13 @@ fn truetype_bytes_for_test(values : Array[Int]) -> @core.PdfBytes {
 }
 
 ///|
-fn truetype_push_u16_for_test(output : Array[Int], value : Int) -> Unit {
+fn truetype_push_u16_for_test(output : Array[Int32], value : Int32) -> Unit {
   output.push((value >> 8) & 0xFF)
   output.push(value & 0xFF)
 }
 
 ///|
-fn truetype_push_u32_for_test(output : Array[Int], value : Int) -> Unit {
+fn truetype_push_u32_for_test(output : Array[Int32], value : Int32) -> Unit {
   output.push((value >> 24) & 0xFF)
   output.push((value >> 16) & 0xFF)
   output.push((value >> 8) & 0xFF)
@@ -22,7 +22,7 @@ fn truetype_push_u32_for_test(output : Array[Int], value : Int) -> Unit {
 }
 
 ///|
-fn truetype_push_i16_for_test(output : Array[Int], value : Int) -> Unit {
+fn truetype_push_i16_for_test(output : Array[Int32], value : Int32) -> Unit {
   let mut normalized = value % 0x10000
   if normalized < 0 {
     normalized += 0x10000
@@ -31,7 +31,7 @@ fn truetype_push_i16_for_test(output : Array[Int], value : Int) -> Unit {
 }
 
 ///|
-fn truetype_push_tag_for_test(output : Array[Int], tag : String) -> Unit {
+fn truetype_push_tag_for_test(output : Array[Int32], tag : String) -> Unit {
   let bytes = @ascii.encode(tag)
   for index in 0..<4 {
     output.push(if index < bytes.length() { bytes[index].to_int() } else { 32 })
@@ -40,8 +40,8 @@ fn truetype_push_tag_for_test(output : Array[Int], tag : String) -> Unit {
 
 ///|
 fn truetype_append_for_test(
-  output : Array[Int],
-  values : ArrayView[Int],
+  output : Array[Int32],
+  values : ArrayView[Int32],
 ) -> Unit {
   for value in values {
     output.push(value)
@@ -50,10 +50,10 @@ fn truetype_append_for_test(
 
 ///|
 fn truetype_table_font_for_test(
-  tables : ArrayView[(String, Array[Int])],
+  tables : ArrayView[(String, Array[Int32])],
 ) -> @core.PdfBytes {
   let table_data_offset = 12 + tables.length() * 16
-  let output : Array[Int] = []
+  let output : Array[Int32] = []
   truetype_push_u32_for_test(output, 0x00010000)
   truetype_push_u16_for_test(output, tables.length())
   truetype_push_u16_for_test(output, 0)
@@ -77,12 +77,12 @@ fn truetype_table_font_for_test(
 
 ///|
 fn truetype_cmap_font_for_test(
-  subtables : ArrayView[(Int, Int, Array[Int])],
+  subtables : ArrayView[(Int32, Int32, Array[Int32])],
 ) -> @core.PdfBytes {
   let cmap = truetype_cmap_table_for_test(subtables)
   let cmap_offset = 28
 
-  let output : Array[Int] = []
+  let output : Array[Int32] = []
   truetype_push_u32_for_test(output, 0x00010000)
   truetype_push_u16_for_test(output, 1)
   truetype_push_u16_for_test(output, 0)
@@ -98,10 +98,10 @@ fn truetype_cmap_font_for_test(
 
 ///|
 fn truetype_cmap_table_for_test(
-  subtables : ArrayView[(Int, Int, Array[Int])],
-) -> Array[Int] {
+  subtables : ArrayView[(Int32, Int32, Array[Int32])],
+) -> Array[Int32] {
   let cmap_header_length = 4 + subtables.length() * 8
-  let cmap : Array[Int] = []
+  let cmap : Array[Int32] = []
   truetype_push_u16_for_test(cmap, 0)
   truetype_push_u16_for_test(cmap, subtables.length())
   let mut subtable_offset = cmap_header_length
@@ -121,10 +121,10 @@ fn truetype_cmap_table_for_test(
 
 ///|
 fn truetype_format6_subtable_for_test(
-  first_code : Int,
-  glyphs : ArrayView[Int],
-) -> Array[Int] {
-  let output : Array[Int] = []
+  first_code : Int32,
+  glyphs : ArrayView[Int32],
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   truetype_push_u16_for_test(output, 6)
   truetype_push_u16_for_test(output, 10 + glyphs.length() * 2)
   truetype_push_u16_for_test(output, 0)
@@ -138,10 +138,10 @@ fn truetype_format6_subtable_for_test(
 
 ///|
 fn truetype_format0_subtable_for_test(
-  codepoint : Int,
-  glyph : Int,
-) -> Array[Int] {
-  let output : Array[Int] = []
+  codepoint : Int32,
+  glyph : Int32,
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   truetype_push_u16_for_test(output, 0)
   truetype_push_u16_for_test(output, 262)
   truetype_push_u16_for_test(output, 0)
@@ -152,8 +152,8 @@ fn truetype_format0_subtable_for_test(
 }
 
 ///|
-fn truetype_format4_range_offset_subtable_for_test() -> Array[Int] {
-  let output : Array[Int] = []
+fn truetype_format4_range_offset_subtable_for_test() -> Array[Int32] {
+  let output : Array[Int32] = []
   truetype_push_u16_for_test(output, 4)
   truetype_push_u16_for_test(output, 36)
   truetype_push_u16_for_test(output, 0)
@@ -177,14 +177,14 @@ fn truetype_format4_range_offset_subtable_for_test() -> Array[Int] {
 
 ///|
 fn truetype_head_table_for_test(
-  units_per_em : Int,
-  minx : Int,
-  miny : Int,
-  maxx : Int,
-  maxy : Int,
-  index_to_loc_format : Int,
-) -> Array[Int] {
-  let output : Array[Int] = []
+  units_per_em : Int32,
+  minx : Int32,
+  miny : Int32,
+  maxx : Int32,
+  maxy : Int32,
+  index_to_loc_format : Int32,
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   truetype_push_u32_for_test(output, 0x00010000)
   truetype_push_u32_for_test(output, 0)
   truetype_push_u32_for_test(output, 0)
@@ -207,16 +207,18 @@ fn truetype_head_table_for_test(
 }
 
 ///|
-fn truetype_maxp_table_for_test(num_glyphs : Int) -> Array[Int] {
-  let output : Array[Int] = []
+fn truetype_maxp_table_for_test(num_glyphs : Int32) -> Array[Int32] {
+  let output : Array[Int32] = []
   truetype_push_u32_for_test(output, 0x00010000)
   truetype_push_u16_for_test(output, num_glyphs)
   output
 }
 
 ///|
-fn truetype_hhea_table_for_test(num_of_long_hor_metrics : Int) -> Array[Int] {
-  let output : Array[Int] = []
+fn truetype_hhea_table_for_test(
+  num_of_long_hor_metrics : Int32,
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   for _ in 0..<34 {
     output.push(0)
   }
@@ -225,8 +227,8 @@ fn truetype_hhea_table_for_test(num_of_long_hor_metrics : Int) -> Array[Int] {
 }
 
 ///|
-fn truetype_hmtx_table_for_test(widths : ArrayView[Int]) -> Array[Int] {
-  let output : Array[Int] = []
+fn truetype_hmtx_table_for_test(widths : ArrayView[Int32]) -> Array[Int32] {
+  let output : Array[Int32] = []
   for width in widths {
     truetype_push_u16_for_test(output, width)
     truetype_push_i16_for_test(output, 0)
@@ -236,14 +238,14 @@ fn truetype_hmtx_table_for_test(widths : ArrayView[Int]) -> Array[Int] {
 
 ///|
 fn truetype_os2_table_for_test(
-  version : Int,
-  avgwidth : Int,
-  ascent : Int,
-  descent : Int,
-  xheight : Int,
-  capheight : Int,
-) -> Array[Int] {
-  let output : Array[Int] = []
+  version : Int32,
+  avgwidth : Int32,
+  ascent : Int32,
+  descent : Int32,
+  xheight : Int32,
+  capheight : Int32,
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   truetype_push_u16_for_test(output, version)
   truetype_push_i16_for_test(output, avgwidth)
   for _ in 0..<64 {
@@ -263,8 +265,8 @@ fn truetype_os2_table_for_test(
 }
 
 ///|
-fn truetype_post_table_for_test(italic_angle : Int) -> Array[Int] {
-  let output : Array[Int] = []
+fn truetype_post_table_for_test(italic_angle : Int32) -> Array[Int32] {
+  let output : Array[Int32] = []
   truetype_push_u32_for_test(output, 0x00020000)
   truetype_push_i16_for_test(output, italic_angle)
   truetype_push_u16_for_test(output, 0)
@@ -272,8 +274,10 @@ fn truetype_post_table_for_test(italic_angle : Int) -> Array[Int] {
 }
 
 ///|
-fn truetype_loca_short_table_for_test(offsets : ArrayView[Int]) -> Array[Int] {
-  let output : Array[Int] = []
+fn truetype_loca_short_table_for_test(
+  offsets : ArrayView[Int32],
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   for offset in offsets {
     truetype_push_u16_for_test(output, offset / 2)
   }
@@ -281,8 +285,10 @@ fn truetype_loca_short_table_for_test(offsets : ArrayView[Int]) -> Array[Int] {
 }
 
 ///|
-fn truetype_loca_long_table_for_test(offsets : ArrayView[Int]) -> Array[Int] {
-  let output : Array[Int] = []
+fn truetype_loca_long_table_for_test(
+  offsets : ArrayView[Int32],
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   for offset in offsets {
     truetype_push_u32_for_test(output, offset)
   }
@@ -290,8 +296,8 @@ fn truetype_loca_long_table_for_test(offsets : ArrayView[Int]) -> Array[Int] {
 }
 
 ///|
-fn truetype_simple_glyph_for_test() -> Array[Int] {
-  let output : Array[Int] = []
+fn truetype_simple_glyph_for_test() -> Array[Int32] {
+  let output : Array[Int32] = []
   truetype_push_i16_for_test(output, 1)
   for _ in 0..<8 {
     output.push(0)
@@ -301,9 +307,9 @@ fn truetype_simple_glyph_for_test() -> Array[Int] {
 
 ///|
 fn truetype_composite_glyph_for_test(
-  components : ArrayView[(Int, Int, Int)],
-) -> Array[Int] {
-  let output : Array[Int] = []
+  components : ArrayView[(Int32, Int32, Int32)],
+) -> Array[Int32] {
+  let output : Array[Int32] = []
   truetype_push_i16_for_test(output, -1)
   for _ in 0..<8 {
     output.push(0)
@@ -321,10 +327,10 @@ fn truetype_composite_glyph_for_test(
 
 ///|
 fn truetype_glyf_table_for_test(
-  glyphs : ArrayView[Array[Int]],
-) -> (Array[Int], Array[Int]) {
-  let glyf : Array[Int] = []
-  let offsets : Array[Int] = [0]
+  glyphs : ArrayView[Array[Int32]],
+) -> (Array[Int32], Array[Int32]) {
+  let glyf : Array[Int32] = []
+  let offsets : Array[Int32] = [0]
   let mut offset = 0
   for glyph in glyphs {
     truetype_append_for_test(glyf, glyph)
@@ -448,12 +454,12 @@ test "pdf_truetype_tables reads table directory records" {
     ("maxp", [3, 4, 5]),
   ])
   @test.assert_eq(@pdflite.pdf_truetype_tables(font), [
-    { tag: "head", checksum: 0x10000002U, offset: 44, length: 2 },
-    { tag: "maxp", checksum: 0x10000003U, offset: 46, length: 3 },
+    { tag: "head", checksum: 0x10000002U, offset: 44, length: 2, },
+    { tag: "maxp", checksum: 0x10000003U, offset: 46, length: 3, },
   ])
   @test.assert_eq(
     @pdflite.pdf_truetype_table(font, "maxp"),
-    Some({ tag: "maxp", checksum: 0x10000003U, offset: 46, length: 3 }),
+    Some({ tag: "maxp", checksum: 0x10000003U, offset: 46, length: 3, }),
   )
   @test.assert_eq(@pdflite.pdf_truetype_table(font, "hhea"), None)
 }
@@ -533,7 +539,7 @@ test "pdf_truetype_widths maps encoding codes through cmap and hmtx" {
     try! @pdflite.pdf_truetype_widths(font, PdfWinAnsiEncoding, 67, 67, [67]),
     [1000],
   )
-  let reversed : Result[Array[Int], Error] = try
+  let reversed : Result[Array[Int32], Error] = try
     @pdflite.pdf_truetype_widths(font, PdfWinAnsiEncoding, 68, 67, [68])
   catch {
     err => Err(err)
@@ -566,7 +572,7 @@ test "pdf_truetype_partition_subsets mirrors source find_main" {
   @test.assert_eq(partition.main_subset, [65, 66, 67])
   @test.assert_eq(partition.higher_subsets, [[0x20AC, 0x0100]])
 
-  let values : Array[Int] = []
+  let values : Array[Int32] = []
   for index in 0..<225 {
     values.push(300 + index)
   }
@@ -574,7 +580,7 @@ test "pdf_truetype_partition_subsets mirrors source find_main" {
     PdfImplicitInFontFile,
     values,
   )
-  let empty : Array[Int] = []
+  let empty : Array[Int32] = []
   @test.assert_eq(chunked.main_subset, empty)
   @test.assert_eq(chunked.higher_subsets.length(), 2)
   @test.assert_eq(chunked.higher_subsets[0].length(), 224)
@@ -654,8 +660,8 @@ test "pdf_truetype_parse refuses subsets with no main encoding characters" {
   guard parsed
     is Err(
       @core.PdfError::SoftError(
-        "Cpdftruetype: Refusing to create font with no characters"
-      )
+        "Cpdftruetype: Refusing to create font with no characters",
+      ),
     ) else {
     fail("expected empty main TrueType subset to fail")
   }
@@ -735,7 +741,7 @@ test "pdf_truetype_loca_offsets decodes short and long formats" {
 
 ///|
 test "pdf_truetype_loca_offsets reports source errors" {
-  let unknown_format : Result[Array[Int], Error] = try
+  let unknown_format : Result[Array[Int32], Error] = try
     @pdflite.pdf_truetype_loca_offsets(
       truetype_table_font_for_test([
         ("head", truetype_head_table_for_test(1000, 0, 0, 1000, 1000, 2)),
@@ -750,12 +756,12 @@ test "pdf_truetype_loca_offsets reports source errors" {
   }
   guard unknown_format
     is Err(
-      @core.PdfError::SoftError("Unknown indexToLocFormat in read_loca_table")
+      @core.PdfError::SoftError("Unknown indexToLocFormat in read_loca_table"),
     ) else {
     fail("expected unknown indexToLocFormat to fail")
   }
 
-  let missing_loca : Result[Array[Int], Error] = try
+  let missing_loca : Result[Array[Int32], Error] = try
     @pdflite.pdf_truetype_loca_offsets(
       truetype_table_font_for_test([
         ("head", truetype_head_table_for_test(1000, 0, 0, 1000, 1000, 0)),
@@ -798,10 +804,10 @@ test "pdf_truetype_expand_composite_glyphs expands nested components" {
     [0, 1, 2, 3],
   )
   @test.assert_eq(try! @pdflite.pdf_truetype_glyph_byte_ranges(font, [1]), [
-    { glyph_index: 0, start_offset: 0, end_offset: 10 },
-    { glyph_index: 1, start_offset: 10, end_offset: 38 },
-    { glyph_index: 2, start_offset: 38, end_offset: 54 },
-    { glyph_index: 3, start_offset: 54, end_offset: 64 },
+    { glyph_index: 0, start_offset: 0, end_offset: 10, },
+    { glyph_index: 1, start_offset: 10, end_offset: 38, },
+    { glyph_index: 2, start_offset: 38, end_offset: 54, },
+    { glyph_index: 3, start_offset: 54, end_offset: 64, },
   ])
 }
 
@@ -822,7 +828,7 @@ test "pdf_truetype_expand_composite_glyphs sorts and validates glyph indices" {
     try! @pdflite.pdf_truetype_expand_composite_glyphs(font, [2, 0, 2]),
     [0, 2],
   )
-  let invalid : Result[Array[Int], Error] = try
+  let invalid : Result[Array[Int32], Error] = try
     @pdflite.pdf_truetype_expand_composite_glyphs(font, [3])
   catch {
     err => Err(err)
@@ -837,7 +843,7 @@ test "pdf_truetype_expand_composite_glyphs sorts and validates glyph indices" {
 
 ///|
 test "pdf_truetype_expand_composite_glyphs requires glyf table" {
-  let missing_glyf : Result[Array[Int], Error] = try
+  let missing_glyf : Result[Array[Int32], Error] = try
     @pdflite.pdf_truetype_expand_composite_glyphs(
       truetype_table_font_for_test([
         ("head", truetype_head_table_for_test(1000, 0, 0, 1000, 1000, 1)),
@@ -861,7 +867,7 @@ test "pdf_truetype_expand_composite_glyphs requires glyf table" {
 test "pdf_truetype_subset_glyf_table copies notdef subset glyphs and composites" {
   let simple = truetype_simple_glyph_for_test()
   let composite = truetype_composite_glyph_for_test([(0, 2, 2)])
-  let glyph2 : Array[Int] = []
+  let glyph2 : Array[Int32] = []
   truetype_append_for_test(glyph2, truetype_simple_glyph_for_test())
   glyph2.push(0xAB)
   let glyph3 = truetype_simple_glyph_for_test()
@@ -884,7 +890,7 @@ test "pdf_truetype_subset_glyf_table copies notdef subset glyphs and composites"
     0, 1, 2,
   ])
   let table = try! @pdflite.pdf_truetype_subset_glyf_table(font, [65])
-  let expected : Array[Int] = []
+  let expected : Array[Int32] = []
   truetype_append_for_test(expected, simple)
   truetype_append_for_test(expected, composite)
   truetype_append_for_test(expected, glyph2)
@@ -897,7 +903,7 @@ test "pdf_truetype_subset_glyf_table copies notdef subset glyphs and composites"
 test "pdf_truetype_subset_loca_table rewrites gaps and short entries" {
   let simple = truetype_simple_glyph_for_test()
   let composite = truetype_composite_glyph_for_test([(0, 2, 2)])
-  let glyph2 : Array[Int] = []
+  let glyph2 : Array[Int32] = []
   truetype_append_for_test(glyph2, truetype_simple_glyph_for_test())
   glyph2.push(0xAB)
   let (long_glyf, long_offsets) = truetype_glyf_table_for_test([
@@ -998,11 +1004,11 @@ test "pdf_truetype_subset_font assembles source table directory" {
      0, 80, // source rangeShift = numTables * 16
   ])
   @test.assert_eq(@pdflite.pdf_truetype_tables(subset), [
-    { tag: "head", checksum: 0x10000036U, offset: 92, length: 54 },
-    { tag: "maxp", checksum: 0x10000006U, offset: 146, length: 6 },
-    { tag: "cmap", checksum: 0x10000018U, offset: 152, length: 24 },
-    { tag: "loca", checksum: 0x1000000CU, offset: 176, length: 12 },
-    { tag: "glyf", checksum: 0x10000014U, offset: 188, length: 20 },
+    { tag: "head", checksum: 0x10000036U, offset: 92, length: 54, },
+    { tag: "maxp", checksum: 0x10000006U, offset: 146, length: 6, },
+    { tag: "cmap", checksum: 0x10000018U, offset: 152, length: 24, },
+    { tag: "loca", checksum: 0x1000000CU, offset: 176, length: 12, },
+    { tag: "glyf", checksum: 0x10000014U, offset: 188, length: 20, },
   ])
   @test.assert_eq(@pdflite.pdf_truetype_table(subset, "name"), None)
   @test.assert_eq(subset.length(), 208)
@@ -1017,11 +1023,11 @@ test "pdf_truetype_subset_font rewrites implicit cmap and shifts later tables" {
     rewrite_cmap=true,
   )
   @test.assert_eq(@pdflite.pdf_truetype_tables(subset), [
-    { tag: "head", checksum: 0x10000036U, offset: 92, length: 54 },
-    { tag: "maxp", checksum: 0x10000006U, offset: 146, length: 6 },
-    { tag: "cmap", checksum: 0x10000018U, offset: 152, length: 26 },
-    { tag: "loca", checksum: 0x1000000CU, offset: 180, length: 12 },
-    { tag: "glyf", checksum: 0x10000014U, offset: 192, length: 20 },
+    { tag: "head", checksum: 0x10000036U, offset: 92, length: 54, },
+    { tag: "maxp", checksum: 0x10000006U, offset: 146, length: 6, },
+    { tag: "cmap", checksum: 0x10000018U, offset: 152, length: 26, },
+    { tag: "loca", checksum: 0x1000000CU, offset: 180, length: 12, },
+    { tag: "glyf", checksum: 0x10000014U, offset: 192, length: 20, },
   ])
   @test.assert_eq(subset.length(), 212)
   @test.assert_eq(@pdflite.pdf_truetype_cmap_glyph(subset, 33), Some(1))
@@ -1035,9 +1041,9 @@ test "pdf_truetype_cmap_glyphs reads source-supported format 6 tables" {
     (3, 1, truetype_format6_subtable_for_test(30, [7, 8, 9])),
   ])
   @test.assert_eq(@pdflite.pdf_truetype_cmap_glyphs(font), [
-    { codepoint: 30, glyph_index: 7 },
-    { codepoint: 31, glyph_index: 8 },
-    { codepoint: 32, glyph_index: 9 },
+    { codepoint: 30, glyph_index: 7, },
+    { codepoint: 31, glyph_index: 8, },
+    { codepoint: 32, glyph_index: 9, },
   ])
   @test.assert_eq(@pdflite.pdf_truetype_cmap_glyph(font, 31), Some(8))
   @test.assert_eq(@pdflite.pdf_truetype_cmap_glyph(font, 99), None)
@@ -1049,8 +1055,8 @@ test "pdf_truetype_cmap_glyphs reads format 4 range-offset glyph arrays" {
     (3, 1, truetype_format4_range_offset_subtable_for_test()),
   ])
   @test.assert_eq(@pdflite.pdf_truetype_cmap_glyphs(font), [
-    { codepoint: 70, glyph_index: 15 },
-    { codepoint: 71, glyph_index: 16 },
+    { codepoint: 70, glyph_index: 15, },
+    { codepoint: 71, glyph_index: 16, },
   ])
   @test.assert_eq(@pdflite.pdf_truetype_cmap_glyph(font, 70), Some(15))
 }
@@ -1068,8 +1074,8 @@ test "pdf_truetype_cmap_glyphs mirrors source table replacement and no-cmap fall
   ])
   @test.assert_eq(@pdflite.pdf_truetype_cmaps(font), [(3, 10), (3, 1)])
   @test.assert_eq(@pdflite.pdf_truetype_cmap_glyphs(font), [
-    { codepoint: 65, glyph_index: 2 },
-    { codepoint: 66, glyph_index: 3 },
+    { codepoint: 65, glyph_index: 2, },
+    { codepoint: 66, glyph_index: 3, },
   ])
   @test.assert_eq(
     @pdflite.pdf_truetype_cmap_glyphs(

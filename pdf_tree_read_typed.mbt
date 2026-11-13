@@ -44,9 +44,9 @@ pub fn pdf_read_name_tree(
 pub fn PdfDocument::read_number_tree(
   self : PdfDocument,
   tree : @syntax.PdfObject,
-) -> Array[(Int, @syntax.PdfObject)] {
+) -> Array[(Int32, @syntax.PdfObject)] {
   let raw_entries = pdf_tree_raw_entries(self, tree)
-  let parsed : Array[(Int, @syntax.PdfObject)] = Array::new(
+  let parsed : Array[(Int32, @syntax.PdfObject)] = Array::new(
     capacity=raw_entries.length(),
   )
   let mut malformed = false

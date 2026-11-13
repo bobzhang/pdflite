@@ -1,7 +1,7 @@
 ///|
 fn pdf_text_predefined_japan1_direct_codepoint_ranges(
   name : @core.PdfName,
-) -> Array[(Int, Int, Int)]? {
+) -> Array[(Int32, Int32, Int32)]? {
   let text = pdf_text_string_of_name(name)
   if text == "/90ms-RKSJ-H" {
     Some(@cmapdata.pdf_text_japan1_90ms_rksj_codepoint_ranges)
@@ -15,7 +15,7 @@ fn pdf_text_predefined_japan1_direct_codepoint_ranges(
 ///|
 fn pdf_text_predefined_japan1_direct_codepoint_sequence_table(
   name : @core.PdfName,
-) -> Array[(Int, Array[Int])] {
+) -> Array[(Int32, Array[Int32])] {
   let text = pdf_text_string_of_name(name)
   if text == "/90pv-RKSJ-H" {
     @cmapdata.pdf_text_japan1_90pv_rksj_codepoint_sequence_table
@@ -27,7 +27,7 @@ fn pdf_text_predefined_japan1_direct_codepoint_sequence_table(
 ///|
 fn pdf_text_predefined_japan1_direct_charcode_ranges(
   name : @core.PdfName,
-) -> Array[(Int, Int, Int)]? {
+) -> Array[(Int32, Int32, Int32)]? {
   let text = pdf_text_string_of_name(name)
   if text == "/90ms-RKSJ-H" {
     Some(@cmapdata.pdf_text_japan1_90ms_rksj_charcode_ranges)
@@ -41,7 +41,7 @@ fn pdf_text_predefined_japan1_direct_charcode_ranges(
 ///|
 fn pdf_text_predefined_japan1_cid_ranges(
   name : @core.PdfName,
-) -> Array[(Int, Int, Int)]? {
+) -> Array[(Int32, Int32, Int32)]? {
   let text = pdf_text_string_of_name(name)
   guard pdf_text_predefined_cmap_has_text_orientation(text) else { return None }
   if text == "/H" {
@@ -120,7 +120,7 @@ fn pdf_text_predefined_japan1_cid_ranges(
 }
 
 ///|
-fn pdf_text_japan1_codepoints_of_cid(cid : Int) -> Array[Int]? {
+fn pdf_text_japan1_codepoints_of_cid(cid : Int32) -> Array[Int32]? {
   match
     pdf_text_predefined_cid_range_lookup(
       @cmapdata.pdf_text_japan1_codepoint_ranges, cid,
@@ -135,9 +135,9 @@ fn pdf_text_japan1_codepoints_of_cid(cid : Int) -> Array[Int]? {
 
 ///|
 fn pdf_text_predefined_japan1_codepoints(
-  ranges : Array[(Int, Int, Int)],
-  code : Int,
-) -> Array[Int]? {
+  ranges : Array[(Int32, Int32, Int32)],
+  code : Int32,
+) -> Array[Int32]? {
   match pdf_text_predefined_cid_range_lookup(ranges, code) {
     Some(cid) => pdf_text_japan1_codepoints_of_cid(cid)
     None => None
@@ -146,9 +146,9 @@ fn pdf_text_predefined_japan1_codepoints(
 
 ///|
 fn pdf_text_predefined_japan1_charcode(
-  ranges : Array[(Int, Int, Int)],
-  codepoint : Int,
-) -> Int? {
+  ranges : Array[(Int32, Int32, Int32)],
+  codepoint : Int32,
+) -> Int32? {
   let mut found = pdf_text_predefined_codepoint_range_charcode(
     @cmapdata.pdf_text_japan1_codepoint_ranges, ranges, codepoint,
   )
@@ -164,8 +164,8 @@ fn pdf_text_predefined_japan1_charcode(
 ///|
 fn pdf_text_predefined_japan1_builtin_codepoints(
   name : @core.PdfName,
-  code : Int,
-) -> Array[Int]? {
+  code : Int32,
+) -> Array[Int32]? {
   match pdf_text_predefined_japan1_direct_codepoint_ranges(name) {
     Some(ranges) =>
       match pdf_text_predefined_cid_range_lookup(ranges, code) {
@@ -187,8 +187,8 @@ fn pdf_text_predefined_japan1_builtin_codepoints(
 ///|
 fn pdf_text_predefined_japan1_builtin_charcode(
   name : @core.PdfName,
-  codepoint : Int,
-) -> Int? {
+  codepoint : Int32,
+) -> Int32? {
   match pdf_text_predefined_japan1_direct_charcode_ranges(name) {
     Some(ranges) => pdf_text_predefined_cid_range_lookup(ranges, codepoint)
     None =>

@@ -1,6 +1,6 @@
 ///|
 fn pdf_text_push_tounicode_bfchar_entry(
-  entries : Array[(Int, @core.PdfBytes)],
+  entries : Array[(Int32, @core.PdfBytes)],
   source : @core.PdfBytes,
   unicode : @core.PdfBytes,
 ) -> Unit {
@@ -12,7 +12,7 @@ fn pdf_text_push_tounicode_bfchar_entry(
 
 ///|
 fn pdf_text_append_tounicode_bfchar_entries(
-  entries : Array[(Int, @core.PdfBytes)],
+  entries : Array[(Int32, @core.PdfBytes)],
   pending_source : @core.PdfBytes?,
   line : BytesView,
 ) -> @core.PdfBytes? {

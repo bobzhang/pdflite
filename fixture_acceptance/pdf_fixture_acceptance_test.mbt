@@ -30,7 +30,7 @@ async fn fixture_acceptance_optional_bytes_for_test(path : String) -> Bytes? {
 fn fixture_acceptance_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -49,7 +49,7 @@ fn fixture_acceptance_bytes_start_with_at_for_test(
 fn fixture_acceptance_find_last_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     haystack.length()
   } else if haystack.length() < needle.length() {
@@ -73,7 +73,7 @@ fn fixture_acceptance_find_last_bytes_for_test(
 fn fixture_acceptance_find_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     0
   } else if haystack.length() < needle.length() {
@@ -143,7 +143,7 @@ fn fixture_acceptance_corrupt_startxref_pointer_for_test(
 }
 
 ///|
-fn fixture_acceptance_startxref_offset_for_test(bytes : Bytes) -> Int raise {
+fn fixture_acceptance_startxref_offset_for_test(bytes : Bytes) -> Int32 raise {
   let marker = @ascii.encode("startxref")
   let marker_position = fixture_acceptance_find_last_bytes_for_test(
     bytes, marker,
@@ -252,7 +252,7 @@ fn fixture_acceptance_corrupt_first_in_use_xref_marker_for_test(
 ///|
 fn fixture_acceptance_first_in_use_xref_row_start_for_test(
   bytes : Bytes,
-) -> Int raise {
+) -> Int32 raise {
   let free_row = @ascii.encode("0000000000 65535 f")
   let free_row_position = fixture_acceptance_find_bytes_for_test(
     bytes, free_row,
@@ -312,7 +312,7 @@ fn fixture_acceptance_corrupt_first_in_use_xref_generation_for_test(
 ///|
 fn fixture_acceptance_first_xref_subsection_spans_for_test(
   bytes : Bytes,
-) -> (Int, Int, Int, Int) raise {
+) -> (Int32, Int32, Int32, Int32) raise {
   let header = @ascii.encode("xref")
   let header_position = fixture_acceptance_find_bytes_for_test(bytes, header)
   if header_position < 0 {
@@ -422,8 +422,8 @@ fn fixture_acceptance_replace_first_bytes_for_test(
 fn fixture_acceptance_find_bytes_after_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
-) -> Int {
+  start : Int32,
+) -> Int32 {
   if needle.length() == 0 {
     start
   } else if start < 0 ||
@@ -515,7 +515,7 @@ fn fixture_acceptance_replace_bytes_after_with_padded_ascii_for_test(
 ///|
 fn fixture_acceptance_replace_bytes_at_for_test(
   bytes : Bytes,
-  position : Int,
+  position : Int32,
   target : BytesView,
   replacement : BytesView,
   description : String,
@@ -724,8 +724,8 @@ fn fixture_acceptance_corrupt_xref_stream_decodeparms_entry_for_test(
 ///|
 fn fixture_acceptance_skip_pdf_whitespace_for_test(
   bytes : BytesView,
-  position : Int,
-) -> Int {
+  position : Int32,
+) -> Int32 {
   let mut current = position
   while current < bytes.length() {
     let value = bytes[current].to_int()
@@ -746,8 +746,8 @@ fn fixture_acceptance_skip_pdf_whitespace_for_test(
 ///|
 fn fixture_acceptance_stream_data_start_for_test(
   bytes : BytesView,
-  stream_position : Int,
-) -> Int {
+  stream_position : Int32,
+) -> Int32 {
   let mut current = stream_position + @ascii.encode("stream").length()
   while current < bytes.length() {
     let value = bytes[current].to_int()
@@ -771,10 +771,10 @@ fn fixture_acceptance_stream_data_start_for_test(
 ///|
 fn fixture_acceptance_direct_length_before_for_test(
   bytes : BytesView,
-  anchor_position : Int,
-  limit : Int,
+  anchor_position : Int32,
+  limit : Int32,
   description : String,
-) -> Int raise {
+) -> Int32 raise {
   let length_key = @ascii.encode("/Length")
   let length_position = fixture_acceptance_find_bytes_after_for_test(
     bytes, length_key, anchor_position,
@@ -801,7 +801,7 @@ fn fixture_acceptance_direct_length_before_for_test(
 ///|
 fn fixture_acceptance_first_object_stream_stream_position_for_test(
   bytes : BytesView,
-) -> Int raise {
+) -> Int32 raise {
   let anchor = @ascii.encode("/Type /ObjStm")
   let anchor_position = fixture_acceptance_find_bytes_for_test(bytes, anchor)
   if anchor_position < 0 {
@@ -822,7 +822,7 @@ fn fixture_acceptance_first_object_stream_stream_position_for_test(
 ///|
 fn fixture_acceptance_first_object_stream_endstream_position_for_test(
   bytes : BytesView,
-) -> Int raise {
+) -> Int32 raise {
   let anchor = @ascii.encode("/Type /ObjStm")
   let anchor_position = fixture_acceptance_find_bytes_for_test(bytes, anchor)
   if anchor_position < 0 {
@@ -852,7 +852,7 @@ fn fixture_acceptance_first_object_stream_endstream_position_for_test(
 ///|
 fn fixture_acceptance_first_object_stream_endobj_position_for_test(
   bytes : BytesView,
-) -> Int raise {
+) -> Int32 raise {
   let endstream_position = fixture_acceptance_first_object_stream_endstream_position_for_test(
     bytes,
   )
@@ -1094,8 +1094,8 @@ fn fixture_acceptance_reparse_compressed_for_test(
 ///|
 fn fixture_acceptance_all_pages_for_test(
   document : @pdflite.PdfDocument,
-) -> Array[Int] raise {
-  let pages : Array[Int] = []
+) -> Array[Int32] raise {
+  let pages : Array[Int32] = []
   for page in 1..<=document.endpage() {
     pages.push(page)
   }
@@ -1105,7 +1105,7 @@ fn fixture_acceptance_all_pages_for_test(
 ///|
 fn fixture_acceptance_assert_reads_and_rewrites_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let document = @pdflite.pdf_read_document_from_bytes(bytes)
   @test.assert_eq(document.endpage(), expected_pages)
@@ -1116,7 +1116,7 @@ fn fixture_acceptance_assert_reads_and_rewrites_for_test(
 ///|
 fn fixture_acceptance_assert_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_startxref_pointer_for_test(bytes)
   let strict : Result[@pdflite.PdfDocument, Error] = try
@@ -1139,7 +1139,7 @@ fn fixture_acceptance_assert_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_header_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_startxref_xref_header_for_test(
     bytes,
@@ -1164,7 +1164,7 @@ fn fixture_acceptance_assert_xref_header_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_trailer_keyword_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_startxref_trailer_keyword_for_test(
     bytes,
@@ -1193,7 +1193,7 @@ fn fixture_acceptance_assert_trailer_keyword_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_classic_xref_marker_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_in_use_xref_marker_for_test(
     bytes,
@@ -1218,7 +1218,7 @@ fn fixture_acceptance_assert_classic_xref_marker_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_classic_xref_offset_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_in_use_xref_offset_for_test(
     bytes,
@@ -1243,7 +1243,7 @@ fn fixture_acceptance_assert_classic_xref_offset_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_classic_xref_generation_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_in_use_xref_generation_for_test(
     bytes,
@@ -1268,7 +1268,7 @@ fn fixture_acceptance_assert_classic_xref_generation_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_classic_xref_object_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_xref_subsection_object_for_test(
     bytes,
@@ -1295,7 +1295,7 @@ fn fixture_acceptance_assert_classic_xref_object_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_classic_xref_count_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_xref_subsection_count_for_test(
     bytes,
@@ -1320,7 +1320,7 @@ fn fixture_acceptance_assert_classic_xref_count_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_classic_xref_table_variants_reconstruct_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   fixture_acceptance_assert_classic_xref_marker_reconstructs_for_test(
     bytes, expected_pages,
@@ -1342,7 +1342,7 @@ fn fixture_acceptance_assert_classic_xref_table_variants_reconstruct_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_widths_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_xref_stream_widths_for_test(bytes)
   let strict : Result[@pdflite.PdfDocument, Error] = try
@@ -1365,7 +1365,7 @@ fn fixture_acceptance_assert_xref_stream_widths_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_bare_xref_stream_widths_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_bare_xref_stream_widths_for_test(
     bytes,
@@ -1390,7 +1390,7 @@ fn fixture_acceptance_assert_bare_xref_stream_widths_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_index_entry_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
   index_entry : BytesView,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_xref_stream_index_entry_for_test(
@@ -1416,7 +1416,7 @@ fn fixture_acceptance_assert_xref_stream_index_entry_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_index_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   fixture_acceptance_assert_xref_stream_index_entry_reconstructs_for_test(
     bytes,
@@ -1428,7 +1428,7 @@ fn fixture_acceptance_assert_xref_stream_index_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_size_entry_tolerates_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
   size_entry : BytesView,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_xref_stream_size_entry_for_test(
@@ -1447,7 +1447,7 @@ fn fixture_acceptance_assert_xref_stream_size_entry_tolerates_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_index_and_size_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
   index_entry : BytesView,
   size_entry : BytesView,
 ) -> Unit raise {
@@ -1476,7 +1476,7 @@ fn fixture_acceptance_assert_xref_stream_index_and_size_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_type_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_startxref_xref_stream_type_for_test(
     bytes,
@@ -1501,7 +1501,7 @@ fn fixture_acceptance_assert_xref_stream_type_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_marker_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_startxref_xref_stream_marker_for_test(
     bytes,
@@ -1526,7 +1526,7 @@ fn fixture_acceptance_assert_xref_stream_marker_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_endstream_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_startxref_xref_stream_endstream_for_test(
     bytes,
@@ -1551,7 +1551,7 @@ fn fixture_acceptance_assert_xref_stream_endstream_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_endobj_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_startxref_xref_stream_endobj_for_test(
     bytes,
@@ -1576,7 +1576,7 @@ fn fixture_acceptance_assert_xref_stream_endobj_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_root_entry_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
   root_entry : BytesView,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_xref_stream_root_entry_for_test(
@@ -1606,7 +1606,7 @@ fn fixture_acceptance_assert_xref_stream_root_entry_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_object_stream_count_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_object_stream_count_for_test(
     bytes,
@@ -1635,7 +1635,7 @@ fn fixture_acceptance_assert_object_stream_count_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_object_stream_first_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_object_stream_first_for_test(
     bytes,
@@ -1664,7 +1664,7 @@ fn fixture_acceptance_assert_object_stream_first_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_object_stream_length_repairs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_object_stream_length_for_test(
     bytes,
@@ -1679,7 +1679,7 @@ fn fixture_acceptance_assert_object_stream_length_repairs_for_test(
 ///|
 fn fixture_acceptance_assert_object_stream_filter_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_object_stream_filter_for_test(
     bytes,
@@ -1710,7 +1710,7 @@ fn fixture_acceptance_assert_object_stream_filter_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_object_stream_decodeparms_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_object_stream_decodeparms_for_test(
     bytes,
@@ -1741,7 +1741,7 @@ fn fixture_acceptance_assert_object_stream_decodeparms_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_object_stream_decodeparms_predictor_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_object_stream_decodeparms_predictor_for_test(
     bytes,
@@ -1773,7 +1773,7 @@ fn fixture_acceptance_assert_object_stream_decodeparms_predictor_reconstructs_fo
 ///|
 fn fixture_acceptance_assert_object_stream_marker_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_object_stream_marker_for_test(
     bytes,
@@ -1804,7 +1804,7 @@ fn fixture_acceptance_assert_object_stream_marker_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_object_stream_endstream_repairs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_object_stream_endstream_for_test(
     bytes,
@@ -1818,7 +1818,7 @@ fn fixture_acceptance_assert_object_stream_endstream_repairs_for_test(
 ///|
 fn fixture_acceptance_assert_object_stream_endobj_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_first_object_stream_endobj_for_test(
     bytes,
@@ -1849,7 +1849,7 @@ fn fixture_acceptance_assert_object_stream_endobj_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_length_entry_repairs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
   length_entry : BytesView,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_xref_stream_length_entry_for_test(
@@ -1865,7 +1865,7 @@ fn fixture_acceptance_assert_xref_stream_length_entry_repairs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_decodeparms_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   fixture_acceptance_assert_xref_stream_decodeparms_entry_reconstructs_for_test(
     bytes,
@@ -1879,7 +1879,7 @@ fn fixture_acceptance_assert_xref_stream_decodeparms_reconstructs_for_test(
 ///|
 fn fixture_acceptance_assert_xref_stream_decodeparms_entry_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
   metadata_entry : BytesView,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_xref_stream_decodeparms_entry_for_test(
@@ -1905,7 +1905,7 @@ fn fixture_acceptance_assert_xref_stream_decodeparms_entry_reconstructs_for_test
 ///|
 fn fixture_acceptance_assert_xref_stream_decodeparms_predictor_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   fixture_acceptance_assert_xref_stream_decodeparms_predictor_entry_reconstructs_for_test(
     bytes,
@@ -1919,7 +1919,7 @@ fn fixture_acceptance_assert_xref_stream_decodeparms_predictor_reconstructs_for_
 ///|
 fn fixture_acceptance_assert_xref_stream_decodeparms_predictor_entry_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
   metadata_entry : BytesView,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_xref_stream_decodeparms_entry_for_test(
@@ -1946,7 +1946,7 @@ fn fixture_acceptance_assert_xref_stream_decodeparms_predictor_entry_reconstruct
 ///|
 fn fixture_acceptance_assert_xref_stream_filter_reconstructs_for_test(
   bytes : Bytes,
-  expected_pages : Int,
+  expected_pages : Int32,
 ) -> Unit raise {
   let corrupted = fixture_acceptance_corrupt_xref_stream_filter_for_test(bytes)
   let strict : Result[@pdflite.PdfDocument, Error] = try
@@ -2047,7 +2047,7 @@ async test "tracked cpdf source fixture subset is present" {
 ///|
 fn fixture_acceptance_cpdf_manual_image_expected_content_counts_for_test(
   path : String,
-) -> (Int, Int, Int) raise {
+) -> (Int32, Int32, Int32) raise {
   match path {
     "fixtures/cpdf-source/manualimages/bez.pdf" => (0, 0, 1)
     "fixtures/cpdf-source/manualimages/capjoins.pdf" => (0, 0, 1)
@@ -2101,7 +2101,7 @@ fn fixture_acceptance_cpdf_manual_image_expected_text_for_test(
 ///|
 fn fixture_acceptance_cpdf_top_level_expected_pages_for_test(
   path : String,
-) -> Int raise {
+) -> Int32 raise {
   match path {
     "fixtures/cpdf-source/cpdfmanual.pdf" => 175
     "fixtures/cpdf-source/hello.pdf" => 1
@@ -2744,7 +2744,7 @@ fn fixture_acceptance_content_ops_contain_for_test(
 fn fixture_acceptance_content_op_count_for_test(
   ops : ArrayView[@content.PdfContentOp],
   expected : @content.PdfContentOp,
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for op in ops {
     if op == expected {
@@ -2814,7 +2814,7 @@ fn fixture_acceptance_content_ops_contain_scaled_cm_for_test(
 ///|
 fn fixture_acceptance_content_stroke_count_for_test(
   ops : ArrayView[@content.PdfContentOp],
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for op in ops {
     match op {
@@ -2828,7 +2828,7 @@ fn fixture_acceptance_content_stroke_count_for_test(
 ///|
 fn fixture_acceptance_content_save_count_for_test(
   ops : ArrayView[@content.PdfContentOp],
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for op in ops {
     match op {
@@ -2842,7 +2842,7 @@ fn fixture_acceptance_content_save_count_for_test(
 ///|
 fn fixture_acceptance_content_clip_op_count_for_test(
   ops : ArrayView[@content.PdfContentOp],
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for op in ops {
     match op {
@@ -2856,7 +2856,7 @@ fn fixture_acceptance_content_clip_op_count_for_test(
 ///|
 fn fixture_acceptance_content_clip_setup_count_for_test(
   ops : ArrayView[@content.PdfContentOp],
-) -> Int {
+) -> Int32 {
   let mut count = 0
   if ops.length() >= 2 {
     for index in 0..<(ops.length() - 1) {
@@ -2871,7 +2871,7 @@ fn fixture_acceptance_content_clip_setup_count_for_test(
 ///|
 fn fixture_acceptance_content_text_rendering_mode_count_for_test(
   ops : ArrayView[@content.PdfContentOp],
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for op in ops {
     match op {
@@ -2885,7 +2885,7 @@ fn fixture_acceptance_content_text_rendering_mode_count_for_test(
 ///|
 fn fixture_acceptance_stream_count_for_test(
   document : @pdflite.PdfDocument,
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for entry in document.parsed_object_entries() {
     match entry.2 {
@@ -2899,7 +2899,7 @@ fn fixture_acceptance_stream_count_for_test(
 ///|
 fn fixture_acceptance_filtered_stream_count_for_test(
   document : @pdflite.PdfDocument,
-) -> Int {
+) -> Int32 {
   let key_filter = fixture_acceptance_pdf_name_for_test("/Filter")
   let key_short_filter = fixture_acceptance_pdf_name_for_test("/F")
   let mut count = 0
@@ -3001,7 +3001,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
       fixture_acceptance_assert_content_op_for_test(ops, Op_Tr(7))
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 100.0, f: 200.0 }),
+        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 100.0, f: 200.0, }),
       )
       fixture_acceptance_assert_content_op_for_test(ops, Op_TL(55.0))
       fixture_acceptance_assert_content_op_for_test(
@@ -3022,7 +3022,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
       fixture_acceptance_assert_content_op_for_test(ops, Op_q)
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 1.5, b: 0.0, c: 0.0, d: 2.0, e: 0.0, f: 0.0 }),
+        Op_cm({ a: 1.5, b: 0.0, c: 0.0, d: 2.0, e: 0.0, f: 0.0, }),
       )
       fixture_acceptance_assert_content_op_for_test(ops, Op_Q)
       fixture_acceptance_assert_content_op_for_test(ops, Op_S)
@@ -3030,7 +3030,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
     "fixtures/cpdf-source/manualimages/png.pdf" => {
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 400.0, b: 0.0, c: 0.0, d: 294.0, e: 0.0, f: 0.0 }),
+        Op_cm({ a: 400.0, b: 0.0, c: 0.0, d: 294.0, e: 0.0, f: 0.0, }),
       )
       fixture_acceptance_assert_content_op_for_test(
         ops,
@@ -3047,7 +3047,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
     "fixtures/cpdf-source/manualimages/fontparams.pdf" => {
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 10.0, f: 20.0 }),
+        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 10.0, f: 20.0, }),
       )
       fixture_acceptance_assert_content_op_for_test(ops, Op_Tz(75.0))
       fixture_acceptance_assert_content_op_for_test(ops, Op_Tc(5.0))
@@ -3069,7 +3069,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
     "fixtures/cpdf-source/manualimages/fonts.pdf" => {
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 10.0, f: 20.0 }),
+        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 10.0, f: 20.0, }),
       )
       fixture_acceptance_assert_content_op_for_test(ops, Op_BT)
       fixture_acceptance_assert_content_op_for_test(
@@ -3132,7 +3132,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
     "fixtures/cpdf-source/manualimages/lines.pdf" => {
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 100.0, f: 200.0 }),
+        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 100.0, f: 200.0, }),
       )
       fixture_acceptance_assert_content_op_for_test(ops, Op_TL(55.0))
       fixture_acceptance_assert_content_op_for_test(
@@ -3156,7 +3156,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
     "fixtures/cpdf-source/manualimages/stext.pdf" => {
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 50.0, f: 50.0 }),
+        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 50.0, f: 50.0, }),
       )
       fixture_acceptance_assert_content_op_for_test(ops, Op_BT)
       fixture_acceptance_assert_content_op_for_test(
@@ -3172,7 +3172,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
     "fixtures/cpdf-source/manualimages/text.pdf" => {
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 50.0, f: 50.0 }),
+        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 50.0, f: 50.0, }),
       )
       fixture_acceptance_assert_content_op_for_test(ops, Op_BT)
       fixture_acceptance_assert_content_op_for_test(
@@ -3188,7 +3188,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
     "fixtures/cpdf-source/manualimages/para.pdf" => {
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 200.0, f: 400.0 }),
+        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 200.0, f: 400.0, }),
       )
       fixture_acceptance_assert_content_op_for_test(ops, Op_TL(25.0))
       fixture_acceptance_assert_content_op_for_test(
@@ -3204,7 +3204,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
     "fixtures/cpdf-source/manualimages/paras.pdf" => {
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 200.0, f: 500.0 }),
+        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 200.0, f: 500.0, }),
       )
       fixture_acceptance_assert_content_op_for_test(ops, Op_TL(25.0))
       fixture_acceptance_assert_content_op_for_test(ops, Op_Td(0.0, 0.0))
@@ -3239,7 +3239,7 @@ fn fixture_acceptance_assert_cpdf_draw_operator_fixture_for_test(
       fixture_acceptance_assert_content_op_for_test(ops, Op_RG(1.0, 0.0, 0.0))
       fixture_acceptance_assert_content_op_for_test(
         ops,
-        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 20.0, f: 20.0 }),
+        Op_cm({ a: 1.0, b: 0.0, c: 0.0, d: 1.0, e: 20.0, f: 20.0, }),
       )
     }
     _ => fail("unexpected cpdf draw operator fixture path: " + path)
@@ -3328,7 +3328,7 @@ fn fixture_acceptance_assert_cpdf_source_attachments_removed_for_test(
 ///|
 fn fixture_acceptance_cpdf_source_texttopdf_fontpack_for_test() -> @pdflite.PdfFontPack raise {
   @pdflite.pdf_fontpack_of_standard_font(
-    PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding }),
+    PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding, }),
   )
 }
 
@@ -3582,7 +3582,7 @@ fn fixture_acceptance_lookup_immediate_indirect_required_for_test(
   document : @pdflite.PdfDocument,
   key : String,
   object : @syntax.PdfObject,
-) -> (Int, @syntax.PdfObject) raise {
+) -> (Int32, @syntax.PdfObject) raise {
   match fixture_acceptance_lookup_immediate_required_for_test(key, object) {
     PdfIndirect(number) => (number, document.lookup_object_or_null(number))
     _ => fail("expected indirect PDF dictionary key " + key)
@@ -3606,7 +3606,7 @@ fn fixture_acceptance_rect_for_test(
   max_x : Double,
   max_y : Double,
 ) -> @geometry.PdfRectangle {
-  { min_x, min_y, max_x, max_y }
+  { min_x, min_y, max_x, max_y, }
 }
 
 ///|
@@ -3831,7 +3831,7 @@ fn fixture_acceptance_chop_source_hello_for_test(
       PdfInteger(7),
     )
   let decorated = document.change_pages(
-    [{ ..pages[0], rest: decorated_rest }],
+    [{ ..pages[0], rest: decorated_rest, }],
     change_references=true,
   )
   decorated.chop(2, 2, false, false, false, [1])
@@ -4242,7 +4242,7 @@ fn fixture_acceptance_cpdf_source_ocg_content_for_test() -> @ocg.PdfOptionalCont
 ///|
 fn fixture_acceptance_add_cpdf_source_ocg_witness_for_test(
   document : @pdflite.PdfDocument,
-) -> Int {
+) -> Int32 {
   document.add_object(
     PdfDictionary([
       (fixture_acceptance_pdf_name_for_test("/Custom"), PdfIndirect(21)),
@@ -4314,7 +4314,7 @@ fn fixture_acceptance_assert_cpdf_source_ocg_ordered_for_test(
 ///|
 fn fixture_acceptance_assert_cpdf_source_ocg_coalesced_for_test(
   document : @pdflite.PdfDocument,
-  witness_number : Int,
+  witness_number : Int32,
 ) -> Unit raise {
   fixture_acceptance_assert_cpdf_source_hello_text_for_test(document)
   guard (try! document.read_optional_content_groups()) is Some(content) else {
@@ -4403,7 +4403,7 @@ fn fixture_acceptance_page_transform_source_hello_for_test(
       ]),
     )
   let decorated = document.change_pages(
-    [{ ..pages[0], rest: decorated_rest }],
+    [{ ..pages[0], rest: decorated_rest, }],
     change_references=true,
   )
   let rotated = @pdflite.pdf_rotate_pages(decorated, 90, [1])
@@ -4477,7 +4477,7 @@ fn fixture_acceptance_pad_source_hello_for_test(
       PdfInteger(7),
     )
   let decorated = document.change_pages(
-    [{ ..pages[0], rest: decorated_rest }],
+    [{ ..pages[0], rest: decorated_rest, }],
     change_references=true,
   )
   @pdflite.pdf_pad_after(decorated, [1])
@@ -4527,7 +4527,7 @@ fn fixture_acceptance_assert_cpdf_source_pad_for_test(
 ///|
 fn fixture_acceptance_add_cpdf_source_javascript_for_test(
   document : @pdflite.PdfDocument,
-) -> (Int, Int, Int) raise {
+) -> (Int32, Int32, Int32) raise {
   let key_js = fixture_acceptance_pdf_name_for_test("/JS")
   let key_uri = fixture_acceptance_pdf_name_for_test("/URI")
   let action_number = document.add_object(
@@ -4575,9 +4575,9 @@ fn fixture_acceptance_add_cpdf_source_javascript_for_test(
 ///|
 fn fixture_acceptance_assert_cpdf_source_javascript_for_test(
   document : @pdflite.PdfDocument,
-  action_number : Int,
-  uri_number : Int,
-  stream_number : Int,
+  action_number : Int32,
+  uri_number : Int32,
+  stream_number : Int32,
 ) -> Unit raise {
   @test.assert_eq(document.endpage(), 1)
   @test.assert_eq(document.contains_javascript(), true)
@@ -4641,9 +4641,9 @@ fn fixture_acceptance_assert_cpdf_source_javascript_for_test(
 ///|
 fn fixture_acceptance_assert_cpdf_source_javascript_removed_for_test(
   document : @pdflite.PdfDocument,
-  action_number : Int,
-  uri_number : Int,
-  stream_number : Int,
+  action_number : Int32,
+  uri_number : Int32,
+  stream_number : Int32,
 ) -> Unit raise {
   @test.assert_eq(document.endpage(), 1)
   @test.assert_eq(document.contains_javascript(), false)
@@ -5018,7 +5018,7 @@ fn fixture_acceptance_assert_not_contains_for_test(
 }
 
 ///|
-fn fixture_acceptance_replacement_count_for_test(text : String) -> Int {
+fn fixture_acceptance_replacement_count_for_test(text : String) -> Int32 {
   let mut count = 0
   for char in text {
     if char.to_int() == 0xFFFD {
@@ -5029,7 +5029,7 @@ fn fixture_acceptance_replacement_count_for_test(text : String) -> Int {
 }
 
 ///|
-fn fixture_acceptance_raw_control_count_for_test(text : String) -> Int {
+fn fixture_acceptance_raw_control_count_for_test(text : String) -> Int32 {
   let mut count = 0
   for char in text {
     let codepoint = char.to_int()
@@ -5055,7 +5055,7 @@ fn fixture_acceptance_pdf_name_for_test(text : String) -> @core.PdfName {
 fn fixture_acceptance_composition_entry_bytes_for_test(
   entries : ArrayView[@composition.PdfCompositionEntry],
   label : String,
-) -> Int raise {
+) -> Int32 raise {
   for entry in entries {
     if entry.label == label {
       break entry.bytes
@@ -5069,7 +5069,7 @@ fn fixture_acceptance_composition_entry_bytes_for_test(
 ///|
 fn fixture_acceptance_assert_cpdf_manual_reports_for_test(
   document : @pdflite.PdfDocument,
-  file_size : Int,
+  file_size : Int32,
 ) -> Unit raise {
   @test.assert_eq(document.endpage(), 175)
   let info_json = document.info_json().stringify()
@@ -5216,7 +5216,7 @@ fn fixture_acceptance_assert_cpdf_manual_page_labels_for_test(
 fn fixture_acceptance_bookmark_page_for_title_for_test(
   document : @pdflite.PdfDocument,
   title : String,
-) -> Int? raise {
+) -> Int32? raise {
   for bookmark in document.read_bookmarks(preserve_actions=true) {
     if @utf8.decode_lossy(@pdflite.pdf_utf8_of_pdfdocstring(bookmark.text)) ==
       title {
@@ -5348,7 +5348,7 @@ fn fixture_acceptance_assert_cpdf_manual_pdf_of_pages_for_test(
 fn fixture_acceptance_cpdf_manual_addtext_fontpack_for_test() -> @pdflite.PdfFontPack {
   {
     fonts: [
-      PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding }),
+      PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding, }),
     ],
     entries: [],
   }
@@ -5418,7 +5418,7 @@ fn fixture_acceptance_content_ops_contain_tj_fragment_for_test(
 fn fixture_acceptance_tj_fragment_count_for_test(
   ops : ArrayView[@content.PdfContentOp],
   fragment : String,
-) -> Int {
+) -> Int32 {
   let mut count = 0
   for op in ops {
     match op {
@@ -5517,7 +5517,7 @@ fn fixture_acceptance_page_has_addtext_opacity_for_test(
 ///|
 fn fixture_acceptance_assert_cpdf_manual_addtext_page_for_test(
   document : @pdflite.PdfDocument,
-  page_number : Int,
+  page_number : Int32,
   expected_stamp : String,
 ) -> Unit raise {
   let pages = document.pages_of_pagetree()
@@ -5580,7 +5580,7 @@ fn fixture_acceptance_assert_cpdf_manual_addtext_for_test(
 ///|
 fn fixture_acceptance_assert_cpdf_manual_added_text_removed_page_for_test(
   document : @pdflite.PdfDocument,
-  page_number : Int,
+  page_number : Int32,
 ) -> Unit raise {
   let pages = document.pages_of_pagetree()
   let page = pages[page_number - 1]
@@ -5635,7 +5635,7 @@ fn fixture_acceptance_assert_cpdf_manual_text_extraction_for_test(
   document : @pdflite.PdfDocument,
 ) -> Unit raise {
   @test.assert_eq(document.endpage(), 175)
-  let selected_pages : ReadOnlyArray[Int] = [1, 2, 19, 31, 33]
+  let selected_pages : ReadOnlyArray[Int32] = [1, 2, 19, 31, 33]
   let extracted = document.test_extract_text(selected_pages)
   @test.assert_eq(
     @pdflite.pdf_test_extract_text(document, selected_pages),
@@ -5846,7 +5846,7 @@ fn fixture_acceptance_assert_cpdf_manual_title_bookmark_for_test(
 ///|
 fn fixture_acceptance_cpdf_toc_fontpack_for_test() -> @pdflite.PdfFontPack raise {
   @pdflite.pdf_fontpack_of_standard_font(
-    PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding }),
+    PdfFontStandard({ font: PdfHelvetica, encoding: PdfWinAnsiEncoding, }),
   )
 }
 
@@ -6111,7 +6111,7 @@ fn fixture_acceptance_cpdf_source_hello_with_inline_image_for_test(
   let pages = document.pages_of_pagetree()
   @test.assert_eq(pages.length(), 1)
   let image_ops : Array[@content.PdfContentOp] = [
-    Op_cm({ a: 72.0, b: 0.0, c: 0.0, d: 72.0, e: 0.0, f: 0.0 }),
+    Op_cm({ a: 72.0, b: 0.0, c: 0.0, d: 72.0, e: 0.0, f: 0.0, }),
     Op_InlineImage(
       fixture_acceptance_cpdf_source_inline_image_dictionary_for_test(),
       None,
@@ -6239,10 +6239,10 @@ fn fixture_acceptance_cpdf_source_nested_image_for_test() -> @syntax.PdfObject r
 
 ///|
 fn fixture_acceptance_cpdf_source_form_image_form_for_test(
-  image_number : Int,
+  image_number : Int32,
 ) -> @syntax.PdfObject raise {
   @pdflite.pdf_content_stream_of_ops([
-    Op_cm({ a: 72.0, b: 0.0, c: 0.0, d: 72.0, e: 72.0, f: 72.0 }),
+    Op_cm({ a: 72.0, b: 0.0, c: 0.0, d: 72.0, e: 72.0, f: 72.0, }),
     Op_Do(fixture_acceptance_pdf_name_for_test("/SourceNestedImage")),
   ])
   .add_dict_entry(
@@ -6448,7 +6448,7 @@ fn fixture_acceptance_assert_cpdf_source_form_image_for_test(
   @test.assert_eq(
     document.parse_content_ops_with_resources(form_resources, [form]),
     [
-      Op_cm({ a: 72.0, b: 0.0, c: 0.0, d: 72.0, e: 72.0, f: 72.0 }),
+      Op_cm({ a: 72.0, b: 0.0, c: 0.0, d: 72.0, e: 72.0, f: 72.0, }),
       Op_Do(fixture_acceptance_pdf_name_for_test("/SourceNestedImage")),
     ],
   )
@@ -6536,11 +6536,11 @@ fn fixture_acceptance_cpdf_source_type3_resource_ops_for_test() -> Array[
 
 ///|
 fn fixture_acceptance_cpdf_source_type3_font_for_test(
-  glyph_a : Int,
-  glyph_b : Int,
-  glyph_c : Int,
-  glyph_mark : Int,
-  tounicode : Int,
+  glyph_a : Int32,
+  glyph_b : Int32,
+  glyph_c : Int32,
+  glyph_mark : Int32,
+  tounicode : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -6721,7 +6721,7 @@ fn fixture_acceptance_cpdf_source_font_entry_for_test(
 ///|
 fn fixture_acceptance_cpdf_source_font_table_entry_for_test(
   entries : ArrayView[@font.PdfFontTableEntry],
-  code : Int,
+  code : Int32,
 ) -> @font.PdfFontTableEntry raise {
   for entry in entries {
     if entry.code == code {
@@ -6911,7 +6911,7 @@ fn fixture_acceptance_cpdf_source_variation_cmap_for_test() -> @syntax.PdfObject
 
 ///|
 fn fixture_acceptance_cpdf_source_variation_font_for_test(
-  tounicode : Int,
+  tounicode : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -7072,7 +7072,7 @@ fn fixture_acceptance_cpdf_source_parser_corner_cmap_for_test() -> @syntax.PdfOb
 
 ///|
 fn fixture_acceptance_cpdf_source_parser_corner_font_for_test(
-  tounicode : Int,
+  tounicode : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -7218,7 +7218,7 @@ fn fixture_acceptance_assert_cpdf_source_parser_corner_tounicode_for_test(
 ///|
 fn fixture_acceptance_cpdf_source_usecmap_stream_for_test(
   data : @core.PdfBytes,
-  usecmap : Int?,
+  usecmap : Int32?,
   compressed : Bool,
 ) -> @syntax.PdfObject raise {
   let stream_data = if compressed {
@@ -7271,7 +7271,7 @@ fn fixture_acceptance_cpdf_source_usecmap_grandbase_cmap_for_test() -> @syntax.P
 
 ///|
 fn fixture_acceptance_cpdf_source_usecmap_base_cmap_for_test(
-  usecmap : Int,
+  usecmap : Int32,
 ) -> @syntax.PdfObject raise {
   fixture_acceptance_cpdf_source_usecmap_stream_for_test(
     @ascii.encode(
@@ -7284,7 +7284,7 @@ fn fixture_acceptance_cpdf_source_usecmap_base_cmap_for_test(
 
 ///|
 fn fixture_acceptance_cpdf_source_usecmap_child_cmap_for_test(
-  usecmap : Int,
+  usecmap : Int32,
 ) -> @syntax.PdfObject raise {
   fixture_acceptance_cpdf_source_usecmap_stream_for_test(
     @ascii.encode(
@@ -7297,7 +7297,7 @@ fn fixture_acceptance_cpdf_source_usecmap_child_cmap_for_test(
 
 ///|
 fn fixture_acceptance_cpdf_source_usecmap_tounicode_for_test() -> Array[
-  (Int, @core.PdfBytes),
+  (Int32, @core.PdfBytes),
 ] raise {
   [
     (0x42, @core.pdf_bytes_of_int_array([0x00, 0x59])),
@@ -7315,7 +7315,7 @@ fn fixture_acceptance_cpdf_source_usecmap_text_for_test() -> @core.PdfBytes rais
 
 ///|
 fn fixture_acceptance_cpdf_source_usecmap_font_for_test(
-  tounicode : Int,
+  tounicode : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -7471,7 +7471,7 @@ fn fixture_acceptance_cpdf_source_usecmap_variation_grandbase_cmap_for_test() ->
 
 ///|
 fn fixture_acceptance_cpdf_source_usecmap_variation_base_cmap_for_test(
-  usecmap : Int,
+  usecmap : Int32,
 ) -> @syntax.PdfObject raise {
   fixture_acceptance_cpdf_source_usecmap_stream_for_test(
     @ascii.encode(
@@ -7484,7 +7484,7 @@ fn fixture_acceptance_cpdf_source_usecmap_variation_base_cmap_for_test(
 
 ///|
 fn fixture_acceptance_cpdf_source_usecmap_variation_child_cmap_for_test(
-  usecmap : Int,
+  usecmap : Int32,
 ) -> @syntax.PdfObject raise {
   fixture_acceptance_cpdf_source_usecmap_stream_for_test(
     @ascii.encode(
@@ -7497,7 +7497,7 @@ fn fixture_acceptance_cpdf_source_usecmap_variation_child_cmap_for_test(
 
 ///|
 fn fixture_acceptance_cpdf_source_usecmap_variation_tounicode_for_test() -> Array[
-  (Int, @core.PdfBytes),
+  (Int32, @core.PdfBytes),
 ] raise {
   [
     (0x42, @core.pdf_bytes_of_int_array([0x00, 0x59])),
@@ -7515,7 +7515,7 @@ fn fixture_acceptance_cpdf_source_usecmap_variation_text_for_test() -> @core.Pdf
 
 ///|
 fn fixture_acceptance_cpdf_source_usecmap_variation_font_for_test(
-  tounicode : Int,
+  tounicode : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -7715,7 +7715,7 @@ fn fixture_acceptance_cpdf_source_predefined_descendant_font_for_test(
 fn fixture_acceptance_cpdf_source_predefined_type0_font_for_test(
   basefont : String,
   encoding : String,
-  descendant : Int,
+  descendant : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -7813,7 +7813,7 @@ fn fixture_acceptance_assert_cpdf_source_identity_font_for_test(
   basefont : String,
   encoding : String,
   text : @core.PdfBytes,
-  expected_codepoints : Array[Int],
+  expected_codepoints : Array[Int32],
   vertical : Bool,
 ) -> Unit raise {
   let source_font = fixture_acceptance_cpdf_source_font_entry_for_test(
@@ -7898,7 +7898,7 @@ fn fixture_acceptance_assert_cpdf_source_identity_cmaps_for_test(
 
 ///|
 fn fixture_acceptance_cpdf_source_unijis_unicode_cases_for_test() -> Array[
-  (String, String, String, Array[Int], Array[Int], Int, Int, Bool, Bool),
+  (String, String, String, Array[Int32], Array[Int32], Int32, Int32, Bool, Bool),
 ] {
   [
     (
@@ -8033,7 +8033,7 @@ fn fixture_acceptance_cpdf_source_hello_with_unijis_unicode_cmaps_for_test(
 fn fixture_acceptance_cpdf_source_hello_with_unijis_unicode_boundary_text_for_test(
   document : @pdflite.PdfDocument,
   font_name : String,
-  text : Array[Int],
+  text : Array[Int32],
 ) -> @pdflite.PdfDocument raise {
   let output = fixture_acceptance_cpdf_source_hello_with_unijis_unicode_cmaps_for_test(
     document,
@@ -8057,7 +8057,7 @@ fn fixture_acceptance_cpdf_source_hello_with_unijis_unicode_boundary_text_for_te
 fn fixture_acceptance_cpdf_source_postpend_boundary_text_for_test(
   document : @pdflite.PdfDocument,
   font_name : String,
-  text : Array[Int],
+  text : Array[Int32],
 ) -> @pdflite.PdfDocument raise {
   let output = document.copy()
   let pages = output.pages_of_pagetree()
@@ -8081,10 +8081,10 @@ fn fixture_acceptance_assert_cpdf_source_unijis_unicode_font_for_test(
   name : String,
   basefont : String,
   encoding : String,
-  text : Array[Int],
-  expected_codepoints : Array[Int],
-  reverse_codepoint : Int,
-  reverse_charcode : Int,
+  text : Array[Int32],
+  expected_codepoints : Array[Int32],
+  reverse_codepoint : Int32,
+  reverse_charcode : Int32,
   uses_two_byte_codes : Bool,
   vertical : Bool,
 ) -> Unit raise {
@@ -8339,8 +8339,8 @@ fn fixture_acceptance_assert_cpdf_source_uniakr_predefined_font_for_test(
   basefont : String,
   encoding : String,
   text : @core.PdfBytes,
-  first_charcode : Int,
-  second_charcode : Int,
+  first_charcode : Int32,
+  second_charcode : Int32,
   uses_two_byte_codes : Bool,
 ) -> Unit raise {
   let source_font = fixture_acceptance_cpdf_source_font_entry_for_test(
@@ -8420,7 +8420,7 @@ fn fixture_acceptance_assert_cpdf_source_uniakr_predefined_cmaps_for_test(
 fn fixture_acceptance_assert_cpdf_source_uniakr_utf8_cpdfcontent_boundary_for_test(
   document : @pdflite.PdfDocument,
 ) -> Unit raise {
-  let text : ReadOnlyArray[Int] = [0xEA, 0xB0, 0x80, 0xEB, 0x82, 0x98]
+  let text : ReadOnlyArray[Int32] = [0xEA, 0xB0, 0x80, 0xEB, 0x82, 0x98]
   let ops = fixture_acceptance_page_content_ops_for_test(document)
   fixture_acceptance_assert_content_op_for_test(
     ops,
@@ -8464,7 +8464,7 @@ fn fixture_acceptance_assert_cpdf_source_uniakr_utf8_cpdfcontent_boundary_for_te
 fn fixture_acceptance_assert_cpdf_source_uniakr_utf32_cpdfcontent_boundary_for_test(
   document : @pdflite.PdfDocument,
 ) -> Unit raise {
-  let text : ReadOnlyArray[Int] = [
+  let text : ReadOnlyArray[Int32] = [
     0x00, 0x00, 0xAC, 0x00, 0x00, 0x00, 0xB0, 0x98,
   ]
   let ops = fixture_acceptance_page_content_ops_for_test(document)
@@ -9034,9 +9034,9 @@ fn fixture_acceptance_assert_cpdf_source_japan1_predefined_font_for_test(
   basefont : String,
   encoding : String,
   text : @core.PdfBytes,
-  expected_codepoints : Array[Int],
-  reverse_codepoint : Int,
-  reverse_charcode : Int,
+  expected_codepoints : Array[Int32],
+  reverse_codepoint : Int32,
+  reverse_charcode : Int32,
   uses_two_byte_codes : Bool,
 ) -> Unit raise {
   let source_font = fixture_acceptance_cpdf_source_font_entry_for_test(
@@ -9303,7 +9303,17 @@ fn fixture_acceptance_assert_cpdf_source_japan1_base_cmaps_for_test(
 
 ///|
 fn fixture_acceptance_cpdf_source_rare_japan1_cmap_cases_for_test() -> Array[
-  (String, String, String, String, Array[Int], Array[Int], Int, Int, Bool),
+  (
+    String,
+    String,
+    String,
+    String,
+    Array[Int32],
+    Array[Int32],
+    Int32,
+    Int32,
+    Bool,
+  ),
 ] {
   [
     (
@@ -9474,12 +9484,12 @@ fn fixture_acceptance_cpdf_source_supplemental_japan1_cmap_cases_for_test() -> A
     String,
     String,
     String,
-    Array[Int],
-    Array[Int],
-    Array[Int],
-    Array[Int],
-    Int,
-    Int,
+    Array[Int32],
+    Array[Int32],
+    Array[Int32],
+    Array[Int32],
+    Int32,
+    Int32,
     Bool,
   ),
 ] {
@@ -9955,9 +9965,9 @@ fn fixture_acceptance_assert_cpdf_source_gb_cns_predefined_font_for_test(
   encoding : String,
   ordering : String,
   text : @core.PdfBytes,
-  expected_codepoints : Array[Int],
-  reverse_codepoint : Int,
-  reverse_charcode : Int,
+  expected_codepoints : Array[Int32],
+  reverse_codepoint : Int32,
+  reverse_charcode : Int32,
   uses_two_byte_codes : Bool,
 ) -> Unit raise {
   let source_font = fixture_acceptance_cpdf_source_font_entry_for_test(
@@ -10108,7 +10118,7 @@ fn fixture_acceptance_assert_cpdf_source_gb_cns_predefined_cmaps_for_test(
 fn fixture_acceptance_assert_cpdf_source_gb_ucs32_cpdfcontent_boundary_for_test(
   document : @pdflite.PdfDocument,
 ) -> Unit raise {
-  let text : ReadOnlyArray[Int] = [
+  let text : ReadOnlyArray[Int32] = [
     0x00, 0x00, 0x4E, 0x00, 0x00, 0x00, 0x56, 0xFD,
   ]
   let ops = fixture_acceptance_page_content_ops_for_test(document)
@@ -10576,10 +10586,10 @@ fn fixture_acceptance_assert_cpdf_source_cns1_legacy_font_for_test(
   name : String,
   basefont : String,
   encoding : String,
-  text : Array[Int],
-  expected_codepoints : Array[Int],
-  reverse_codepoint : Int,
-  reverse_charcode : Int,
+  text : Array[Int32],
+  expected_codepoints : Array[Int32],
+  reverse_codepoint : Int32,
+  reverse_charcode : Int32,
 ) -> @pdflite.PdfTextExtractor raise {
   fixture_acceptance_assert_cpdf_source_gb_cns_predefined_font_for_test(
     document,
@@ -10762,7 +10772,17 @@ fn fixture_acceptance_assert_cpdf_source_cns1_legacy_cmaps_for_test(
 
 ///|
 fn fixture_acceptance_cpdf_source_vertical_cmap_cases_for_test() -> Array[
-  (String, String, String, String, String, Array[Int], Array[Int], Int, Int),
+  (
+    String,
+    String,
+    String,
+    String,
+    String,
+    Array[Int32],
+    Array[Int32],
+    Int32,
+    Int32,
+  ),
 ] {
   [
     (
@@ -12038,7 +12058,7 @@ fn fixture_acceptance_assert_cpdf_source_bounding_boxes_for_test(
 ///|
 fn fixture_acceptance_assert_cpdf_manual_image_content_corpus_for_test(
   document : @pdflite.PdfDocument,
-) -> (Int, Int, Int) raise {
+) -> (Int32, Int32, Int32) raise {
   @test.assert_eq(document.endpage(), 1)
   let pages = document.pages_of_pagetree()
   let entries = document.content_entries_of_page(pages[0])
@@ -12080,7 +12100,7 @@ fn fixture_acceptance_assert_cpdf_manual_image_text_for_test(
   document : @pdflite.PdfDocument,
 ) -> Unit raise {
   @test.assert_eq(document.endpage(), 1)
-  let pages : ReadOnlyArray[Int] = [1]
+  let pages : ReadOnlyArray[Int32] = [1]
   let extracted = document.test_extract_text(pages)
   @test.assert_eq(@pdflite.pdf_test_extract_text(document, pages), extracted)
   let text = @utf8.decode_lossy(extracted)

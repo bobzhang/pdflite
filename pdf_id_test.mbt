@@ -12,7 +12,7 @@ fn id_restore_env_for_test(previous : String?) -> Unit {
 }
 
 ///|
-fn id_bytes_for_test(values : ArrayView[Int]) -> @core.PdfBytes {
+fn id_bytes_for_test(values : ArrayView[Int32]) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(values)
 }
 
@@ -69,7 +69,7 @@ test "pdf_generate_id hashes path and time or reproducible seed" {
   let inf_id = @pdflite.pdf_generate_id("inf-", fn() { 1.0 / 0.0 })
   let neg_inf_id = @pdflite.pdf_generate_id("neg-", fn() { -1.0 / 0.0 })
   @env.set_env_var("CAMLPDF_REPRODUCIBLE_IDS", "true")
-  let called = Ref::{ val: false }
+  let called = Ref::{ val: false, }
   let reproducible = @pdflite.pdf_generate_id("ignored", fn() {
     called.val = true
     99

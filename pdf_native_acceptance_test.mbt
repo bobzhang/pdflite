@@ -9,7 +9,7 @@ fn acceptance_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn acceptance_push_byte_for_test(output : Array[Byte], value : Int) -> Unit {
+fn acceptance_push_byte_for_test(output : Array[Byte], value : Int32) -> Unit {
   output.push(value.to_byte())
 }
 
@@ -34,7 +34,7 @@ fn acceptance_push_view_for_test(
 fn acceptance_bytes_start_with_at_for_test(
   haystack : BytesView,
   needle : BytesView,
-  start : Int,
+  start : Int32,
 ) -> Bool {
   if start < 0 || start + needle.length() > haystack.length() {
     false
@@ -53,7 +53,7 @@ fn acceptance_bytes_start_with_at_for_test(
 fn acceptance_find_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     0
   } else if haystack.length() < needle.length() {
@@ -74,7 +74,7 @@ fn acceptance_find_bytes_for_test(
 fn acceptance_find_last_bytes_for_test(
   haystack : BytesView,
   needle : BytesView,
-) -> Int {
+) -> Int32 {
   if needle.length() == 0 {
     haystack.length()
   } else if haystack.length() < needle.length() {
@@ -140,7 +140,7 @@ fn acceptance_corrupt_first_in_use_xref_marker_for_test(
 ///|
 fn acceptance_mark_classic_xref_entry_free_for_test(
   bytes : @core.PdfBytes,
-  object_number : Int,
+  object_number : Int32,
 ) -> @core.PdfBytes raise {
   if object_number < 0 {
     fail("expected non-negative classic xref object number")
@@ -170,9 +170,9 @@ fn acceptance_mark_classic_xref_entry_free_for_test(
 ///|
 fn acceptance_parse_positive_decimal_for_test(
   bytes : BytesView,
-  start : Int,
-  end : Int,
-) -> Int raise {
+  start : Int32,
+  end : Int32,
+) -> Int32 raise {
   if start >= end {
     fail("expected decimal digits")
   }
@@ -190,7 +190,7 @@ fn acceptance_parse_positive_decimal_for_test(
 ///|
 fn acceptance_keep_catalog_and_encrypt_xref_entries_for_test(
   bytes : @core.PdfBytes,
-  encrypt_object_number : Int,
+  encrypt_object_number : Int32,
 ) -> @core.PdfBytes raise {
   let header = acceptance_ascii_for_test("xref\n0 ")
   let header_position = acceptance_find_bytes_for_test(bytes, header)
@@ -314,8 +314,8 @@ fn acceptance_insert_ascii_before_last_marker_for_test(
 ///|
 fn acceptance_push_big_endian_for_test(
   output : Array[Byte],
-  value : Int,
-  width : Int,
+  value : Int32,
+  width : Int32,
 ) -> Unit {
   let mut divisor = 1
   if width > 1 {
@@ -333,8 +333,8 @@ fn acceptance_push_big_endian_for_test(
 ///|
 fn acceptance_push_padded_decimal_for_test(
   output : Array[Byte],
-  value : Int,
-  width : Int,
+  value : Int32,
+  width : Int32,
 ) -> Unit {
   let text = value.to_string()
   if text.length() < width {
@@ -348,9 +348,9 @@ fn acceptance_push_padded_decimal_for_test(
 ///|
 fn acceptance_push_xref_stream_entry_for_test(
   output : Array[Byte],
-  kind : Int,
-  field2 : Int,
-  field3 : Int,
+  kind : Int32,
+  field2 : Int32,
+  field3 : Int32,
 ) -> Unit {
   acceptance_push_byte_for_test(output, kind)
   acceptance_push_big_endian_for_test(output, field2, 4)
@@ -360,8 +360,8 @@ fn acceptance_push_xref_stream_entry_for_test(
 ///|
 fn acceptance_push_xref_entry_for_test(
   output : Array[Byte],
-  offset : Int,
-  generation : Int,
+  offset : Int32,
+  generation : Int32,
 ) -> Unit {
   acceptance_push_padded_decimal_for_test(output, offset, 10)
   acceptance_push_byte_for_test(output, 32)
@@ -372,10 +372,10 @@ fn acceptance_push_xref_entry_for_test(
 ///|
 fn acceptance_push_indirect_object_for_test(
   output : Array[Byte],
-  number : Int,
-  generation : Int,
+  number : Int32,
+  generation : Int32,
   body : String,
-) -> Int {
+) -> Int32 {
   let offset = output.length()
   acceptance_push_ascii_for_test(output, number.to_string())
   acceptance_push_byte_for_test(output, 32)
@@ -550,7 +550,7 @@ fn acceptance_font_object_for_test(
 ///|
 fn acceptance_assert_one_page_invariants_for_test(
   doc : @pdflite.PdfDocument,
-  expected_version : (Int, Int),
+  expected_version : (Int32, Int32),
 ) -> Unit raise {
   @test.assert_eq(doc.version(), expected_version)
   @test.assert_eq(doc.root() > 0, true)
@@ -569,7 +569,7 @@ fn acceptance_assert_one_page_invariants_for_test(
   let font_object = acceptance_font_object_for_test(pages[0].resources)
   @test.assert_eq(
     doc.read_font(font_object),
-    PdfFontStandard({ font: PdfTimesItalic, encoding: PdfImplicitInFontFile }),
+    PdfFontStandard({ font: PdfTimesItalic, encoding: PdfImplicitInFontFile, }),
   )
   let extractor = doc.text_extractor_of_font(font_object)
   @test.assert_eq(
@@ -580,7 +580,7 @@ fn acceptance_assert_one_page_invariants_for_test(
 
 ///|
 fn acceptance_text_bytes_for_test(
-  values : ArrayView[Int],
+  values : ArrayView[Int32],
 ) -> @core.PdfBytes raise {
   @core.pdf_bytes_of_int_array(values)
 }
@@ -665,7 +665,7 @@ fn acceptance_tounicode_text_document_for_test() -> @pdflite.PdfDocument raise {
 
 ///|
 fn acceptance_push_text_codepoints_for_test(
-  output : Array[Int],
+  output : Array[Int32],
   extractor : @pdflite.PdfTextExtractor,
   text : @core.PdfBytes,
 ) -> Unit raise {
@@ -677,11 +677,11 @@ fn acceptance_push_text_codepoints_for_test(
 ///|
 fn acceptance_text_codepoints_of_first_page_for_test(
   doc : @pdflite.PdfDocument,
-) -> Array[Int] raise {
+) -> Array[Int32] raise {
   let pages = doc.pages_of_pagetree()
   let font = acceptance_font_object_for_test(pages[0].resources)
   let extractor = doc.text_extractor_of_font(font)
-  let output : Array[Int] = []
+  let output : Array[Int32] = []
   for op in doc.parse_content_ops(pages[0].content) {
     match op {
       Op_Tj(text) =>
@@ -1878,7 +1878,7 @@ fn acceptance_type3_fixture_inline_data_for_test() -> @core.PdfBytes raise {
 fn acceptance_type3_fixture_t_ops_for_test() -> Array[@content.PdfContentOp] raise {
   [
     Op_q,
-    Op_cm({ a: 6.0, b: 0.0, c: 0.0, d: 12.0, e: 1.0, f: 2.0 }),
+    Op_cm({ a: 6.0, b: 0.0, c: 0.0, d: 12.0, e: 1.0, f: 2.0, }),
     Op_InlineImage(
       acceptance_type3_fixture_inline_dictionary_for_test(),
       None,
@@ -2827,11 +2827,11 @@ fn acceptance_vertical_predefined_cmap_cases_for_test() -> Array[
     String,
     String,
     String,
-    Int,
-    Array[Int],
-    Array[Int],
-    Int,
-    Int,
+    Int32,
+    Array[Int32],
+    Array[Int32],
+    Int32,
+    Int32,
   ),
 ] {
   [
@@ -3115,7 +3115,7 @@ fn acceptance_kscpc_euc_text_for_test() -> @core.PdfBytes raise {
 fn acceptance_predefined_cmap_type0_font_for_test(
   basefont : String,
   encoding : String,
-  descendant_object : Int,
+  descendant_object : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -3762,7 +3762,17 @@ fn acceptance_gb1_cmap_text_document_for_test() -> @pdflite.PdfDocument raise {
 
 ///|
 fn acceptance_cns1_variant_cmap_cases_for_test() -> Array[
-  (String, String, String, String, Int, Array[Int], Array[Int], Int, Int),
+  (
+    String,
+    String,
+    String,
+    String,
+    Int32,
+    Array[Int32],
+    Array[Int32],
+    Int32,
+    Int32,
+  ),
 ] {
   [
     (
@@ -3881,13 +3891,13 @@ fn acceptance_japan1_cmap_cases_for_test() -> Array[
     String,
     String,
     String,
-    Int,
-    Array[Int],
-    Array[Int],
-    Int,
-    Int,
+    Int32,
+    Array[Int32],
+    Array[Int32],
+    Int32,
+    Int32,
     Bool,
-    Int,
+    Int32,
   ),
 ] {
   [
@@ -4002,13 +4012,13 @@ fn acceptance_japan1_90msp_cmap_cases_for_test() -> Array[
     String,
     String,
     String,
-    Int,
-    Array[Int],
-    Array[Int],
-    Int,
-    Int,
+    Int32,
+    Array[Int32],
+    Array[Int32],
+    Int32,
+    Int32,
     Bool,
-    Int,
+    Int32,
   ),
 ] {
   [
@@ -4071,13 +4081,13 @@ fn acceptance_japan1_legacy_cmap_cases_for_test() -> Array[
     String,
     String,
     String,
-    Int,
-    Array[Int],
-    Array[Int],
-    Int,
-    Int,
+    Int32,
+    Array[Int32],
+    Array[Int32],
+    Int32,
+    Int32,
     Bool,
-    Int,
+    Int32,
   ),
 ] {
   [
@@ -4257,13 +4267,13 @@ fn acceptance_japan1_supplemental_cmap_cases_for_test() -> Array[
     String,
     String,
     String,
-    Int,
-    Array[Int],
-    Array[Int],
-    Int,
-    Int,
+    Int32,
+    Array[Int32],
+    Array[Int32],
+    Int32,
+    Int32,
     Bool,
-    Int,
+    Int32,
   ),
 ] {
   [
@@ -4520,7 +4530,7 @@ fn acceptance_font_object_by_name_for_test(
 ///|
 fn acceptance_identity_h_codepoints_of_first_page_for_test(
   doc : @pdflite.PdfDocument,
-) -> Array[Int] raise {
+) -> Array[Int32] raise {
   acceptance_font_codepoints_of_first_page_for_test(
     doc,
     acceptance_name_for_test("/Fcid"),
@@ -4531,7 +4541,7 @@ fn acceptance_identity_h_codepoints_of_first_page_for_test(
 fn acceptance_font_codepoints_of_first_page_for_test(
   doc : @pdflite.PdfDocument,
   font_name : @core.PdfName,
-) -> Array[Int] raise {
+) -> Array[Int32] raise {
   let pages = doc.pages_of_pagetree()
   acceptance_font_codepoints_of_page_for_test(doc, pages[0], font_name)
 }
@@ -4541,10 +4551,10 @@ fn acceptance_font_codepoints_of_page_for_test(
   doc : @pdflite.PdfDocument,
   page : @page.PdfPage,
   font_name : @core.PdfName,
-) -> Array[Int] raise {
+) -> Array[Int32] raise {
   let font = acceptance_font_object_by_name_for_test(page.resources, font_name)
   let extractor = doc.text_extractor_of_font(font)
-  let output : Array[Int] = []
+  let output : Array[Int32] = []
   for op in doc.parse_content_ops(page.content) {
     match op {
       Op_Tj(text) =>
@@ -4610,9 +4620,9 @@ fn acceptance_assert_identity_v_text_for_test(
     PdfPredefinedCMap(acceptance_name_for_test("/Identity-V")),
   )
   @test.assert_eq(cid_font.composite.cid_widths2, [
-    (0x43, { width: 1000.0, vx: 20.0, vy: 880.0 }),
-    (0x44, { width: 900.0, vx: 25.0, vy: 870.0 }),
-    (0x4E8C, { width: 1200.0, vx: 30.0, vy: 860.0 }),
+    (0x43, { width: 1000.0, vx: 20.0, vy: 880.0, }),
+    (0x44, { width: 900.0, vx: 25.0, vy: 870.0, }),
+    (0x4E8C, { width: 1200.0, vx: 30.0, vy: 860.0, }),
   ])
   @test.assert_eq(cid_font.composite.cid_default_width2, [880.0, -1000.0])
   @test.assert_eq(
@@ -4969,7 +4979,7 @@ fn acceptance_assert_unicode_predefined_page_for_test(
   encoding : String,
   ordering : String,
   uses_two_byte_codes : Bool,
-  expected_codepoints : Array[Int],
+  expected_codepoints : Array[Int32],
 ) -> @pdflite.PdfTextExtractor raise {
   let font = acceptance_assert_predefined_cmap_font_shape_with_two_byte_for_test(
     doc, page, font_name, encoding, ordering, uses_two_byte_codes,
@@ -5669,7 +5679,7 @@ fn acceptance_truetype_descriptor_for_test() -> @pdflite.PdfFontDescriptor raise
     avgwidth: 501.0,
     maxwidth: 1000.0,
     flags: 32,
-    fontbbox: { min_x: -10.0, min_y: -200.0, max_x: 500.0, max_y: 700.0 },
+    fontbbox: { min_x: -10.0, min_y: -200.0, max_x: 500.0, max_y: 700.0, },
     italicangle: -12.0,
     capheight: 680.0,
     xheight: 450.0,
@@ -7231,7 +7241,7 @@ fn acceptance_composition_source_document_for_test() -> @pdflite.PdfDocument {
 fn acceptance_composition_entry_bytes_for_test(
   entries : ArrayView[@composition.PdfCompositionEntry],
   label : String,
-) -> Int raise {
+) -> Int32 raise {
   for entry in entries {
     if entry.label == label {
       break entry.bytes
@@ -7245,15 +7255,15 @@ fn acceptance_composition_entry_bytes_for_test(
 ///|
 fn acceptance_object_size_for_test(
   doc : @pdflite.PdfDocument,
-  number : Int,
-) -> Int raise {
+  number : Int32,
+) -> Int32 raise {
   @pdflite.pdf_write_object(doc.lookup_object_or_null(number)).length()
 }
 
 ///|
 fn acceptance_assert_composition_source_document_for_test(
   doc : @pdflite.PdfDocument,
-  file_size : Int,
+  file_size : Int32,
 ) -> Unit raise {
   @test.assert_eq(doc.endpage(), 1)
   let entries = doc.composition(file_size)
@@ -7682,7 +7692,7 @@ fn acceptance_assert_decompressed_partial_filter_stream_for_test(
 ///|
 fn acceptance_assert_public_read_write_for_test(
   bytes : @core.PdfBytes,
-  expected_version : (Int, Int),
+  expected_version : (Int32, Int32),
 ) -> Unit raise {
   @test.assert_eq(@pdflite.pdf_revisions_from_bytes(bytes), 1)
   let parsed = @pdflite.pdf_read_document_from_bytes(bytes)
@@ -7697,7 +7707,7 @@ fn acceptance_assert_public_read_write_for_test(
 ///|
 fn acceptance_add_revision_marker_for_test(
   source : @pdflite.PdfDocument,
-  object_number : Int,
+  object_number : Int32,
   text : String,
 ) -> @pdflite.PdfDocument raise {
   let updated = source.copy()
@@ -7717,7 +7727,7 @@ fn acceptance_add_revision_marker_for_test(
 ///|
 fn acceptance_assert_revision_marker_for_test(
   doc : @pdflite.PdfDocument,
-  object_number : Int,
+  object_number : Int32,
   text : String,
 ) -> Unit raise {
   let catalog = doc.catalog()
@@ -7734,7 +7744,7 @@ fn acceptance_assert_revision_marker_for_test(
 ///|
 fn acceptance_assert_no_revision_marker_for_test(
   doc : @pdflite.PdfDocument,
-  object_number : Int,
+  object_number : Int32,
 ) -> Unit raise {
   let catalog = doc.catalog()
   @test.assert_eq(
@@ -7920,7 +7930,7 @@ fn acceptance_metadata_encryption_document_for_test(
 ///|
 fn acceptance_assert_metadata_stream_for_test(
   doc : @pdflite.PdfDocument,
-  number : Int,
+  number : Int32,
   expected : @core.PdfBytes,
 ) -> Unit raise {
   guard doc.lookup_object_or_null(number) is PdfStreamObject(stream) else {
@@ -8197,7 +8207,7 @@ fn acceptance_indirect_filtered_object_stream_payload_for_test() -> @core.PdfByt
 }
 
 ///|
-fn acceptance_indirect_filtered_object_stream_first_for_test() -> Int {
+fn acceptance_indirect_filtered_object_stream_first_for_test() -> Int32 {
   let pages_object = acceptance_indirect_filtered_object_stream_pages_for_test()
   let second_offset = @ascii.encode(pages_object).length() + 1
   @ascii.encode("4 0 5 " + second_offset.to_string() + " ").length()
@@ -8205,7 +8215,7 @@ fn acceptance_indirect_filtered_object_stream_first_for_test() -> Int {
 
 ///|
 fn acceptance_indirect_filtered_object_stream_pdf_for_test(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   acceptance_push_ascii_for_test(output, "%PDF-1.5\n")
@@ -8306,7 +8316,7 @@ fn acceptance_prev_object_stream_payload_for_test() -> @core.PdfBytes {
 }
 
 ///|
-fn acceptance_prev_object_stream_first_for_test() -> Int {
+fn acceptance_prev_object_stream_first_for_test() -> Int32 {
   let catalog_object = acceptance_prev_object_stream_catalog_for_test()
   let pages_object = acceptance_prev_object_stream_pages_for_test()
   let pages_offset = @ascii.encode(catalog_object).length() + 1
@@ -8318,7 +8328,7 @@ fn acceptance_prev_object_stream_first_for_test() -> Int {
 
 ///|
 fn acceptance_prev_object_stream_pdf_for_test(
-  startxref_override : Int?,
+  startxref_override : Int32?,
 ) -> @core.PdfBytes {
   let output : Array[Byte] = []
   acceptance_push_ascii_for_test(output, "%PDF-1.5\n")
@@ -8838,7 +8848,7 @@ fn acceptance_assert_prev_object_stream_page_tree_for_test(
 ///|
 fn acceptance_assert_pages_have_hello_content_for_test(
   doc : @pdflite.PdfDocument,
-  expected_count : Int,
+  expected_count : Int32,
 ) -> Unit raise {
   @test.assert_eq(try! doc.endpage(), expected_count)
   let pages = doc.pages_of_pagetree()
@@ -8896,7 +8906,7 @@ fn acceptance_labelled_bookmarked_document_for_test(
   prefix : String,
   bookmark_text : String,
   style : @label.PdfPageLabelStyle,
-  start_value : Int,
+  start_value : Int32,
 ) -> @pdflite.PdfDocument raise {
   let labelled = acceptance_one_page_document_for_test().write_page_labels([
     {
@@ -9201,10 +9211,10 @@ fn acceptance_reused_annotation_document_for_test() -> @pdflite.PdfDocument rais
 ///|
 fn acceptance_annotation_numbers_for_test(
   page : @page.PdfPage,
-) -> Array[Int] raise {
+) -> Array[Int32] raise {
   match page.rest.lookup_immediate(acceptance_name_for_test("/Annots")) {
     Some(PdfArray(items)) => {
-      let numbers : Array[Int] = []
+      let numbers : Array[Int32] = []
       for item in items {
         match item {
           PdfIndirect(number) => numbers.push(number)
@@ -9220,7 +9230,7 @@ fn acceptance_annotation_numbers_for_test(
 ///|
 fn acceptance_assert_annotation_pair_for_test(
   doc : @pdflite.PdfDocument,
-  numbers : ArrayView[Int],
+  numbers : ArrayView[Int32],
 ) -> Unit raise {
   let key_popup = acceptance_name_for_test("/Popup")
   let key_parent = acceptance_name_for_test("/Parent")
@@ -9314,7 +9324,7 @@ fn acceptance_assert_count_changed_document_for_test(
 fn acceptance_catalog_merge_document_for_test(
   label : String,
   title : String,
-  ocg_number : Int,
+  ocg_number : Int32,
   need_appearances : Bool,
 ) -> @pdflite.PdfDocument raise {
   let key_acroform = acceptance_name_for_test("/AcroForm")
@@ -9417,8 +9427,8 @@ fn acceptance_raw_stream_for_test(text : String) -> @syntax.PdfObject {
 ///|
 fn acceptance_pdfmergeexample_document_for_test(
   text : String,
-  minor_version : Int,
-  detached_number : Int,
+  minor_version : Int32,
+  detached_number : Int32,
 ) -> @pdflite.PdfDocument raise {
   let doc = @pdflite.pdf_document_empty()
   doc.set_version(1, minor_version)
@@ -9645,7 +9655,7 @@ fn acceptance_resource_lifecycle_font_for_test() -> @syntax.PdfObject {
 fn acceptance_resource_lifecycle_resources_for_test(
   font_name : @core.PdfName,
   form_name : @core.PdfName,
-  form_number : Int,
+  form_number : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (
@@ -9921,9 +9931,9 @@ fn acceptance_change_pages_resource_page_for_test(
 
 ///|
 fn acceptance_change_pages_xyz_for_test(
-  page_number : Int,
-  left : Int,
-  top : Int,
+  page_number : Int32,
+  left : Int32,
+  top : Int32,
 ) -> @syntax.PdfObject {
   PdfArray([
     PdfIndirect(page_number),
@@ -10089,8 +10099,8 @@ fn acceptance_assert_resource_heavy_change_pages_for_test(
         [
           PdfIndirect(indirect_annotation),
           PdfDictionary(_) as action_annotation,
-        ]
-      )
+        ],
+      ),
     ) => {
       match
         doc
@@ -10769,9 +10779,9 @@ fn acceptance_assert_drafted_document_for_test(
 
 ///|
 fn acceptance_aes_iv_for_test(
-  object_number : Int,
-  generation : Int,
-  index : Int,
+  object_number : Int32,
+  generation : Int32,
+  index : Int32,
 ) -> @core.PdfBytes {
   try! @core.pdf_bytes_of_int_array(
     [

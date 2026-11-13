@@ -1,5 +1,5 @@
 ///|
-fn pdf_writer_exponent_marker(text : BytesView) -> Int {
+fn pdf_writer_exponent_marker(text : BytesView) -> Int32 {
   for i in 0..<text.length() {
     let value = text[i].to_int()
     if value == 69 || value == 101 {
@@ -13,8 +13,8 @@ fn pdf_writer_exponent_marker(text : BytesView) -> Int {
 ///|
 fn pdf_writer_parse_signed_int(
   text : BytesView,
-  start : Int,
-) -> Int raise @core.PdfError {
+  start : Int32,
+) -> Int32 raise @core.PdfError {
   let mut index = start
   let mut sign = 1
   if index < text.length() {
@@ -46,8 +46,8 @@ fn pdf_writer_parse_signed_int(
 fn pdf_writer_push_digits(
   output : Array[Byte],
   digits : Array[Byte],
-  start : Int,
-  end : Int,
+  start : Int32,
+  end : Int32,
 ) -> Unit {
   for i in start..<end {
     output.push(digits[i])
@@ -58,7 +58,7 @@ fn pdf_writer_push_digits(
 fn pdf_writer_push_rounded_significant_digits(
   output : Array[Byte],
   digits : Array[Byte],
-  decimal_position : Int,
+  decimal_position : Int32,
 ) -> Unit {
   let significant_start = for i in 0..<digits.length() {
     if digits[i].to_int() != 48 {
@@ -127,9 +127,9 @@ fn pdf_writer_push_rounded_significant_digits(
 ///|
 fn pdf_writer_push_int_digits(
   output : Array[Byte],
-  digits : ArrayView[Int],
-  start : Int,
-  end : Int,
+  digits : ArrayView[Int32],
+  start : Int32,
+  end : Int32,
 ) -> Unit {
   for i in start..<end {
     pdf_writer_push_byte(output, 48 + digits[i])
@@ -140,7 +140,7 @@ fn pdf_writer_push_int_digits(
 fn pdf_writer_push_scientific_real(
   output : Array[Byte],
   text : BytesView,
-  exponent_at : Int,
+  exponent_at : Int32,
 ) -> Unit raise @core.PdfError {
   let mut mantissa_start = 0
   if exponent_at > 0 {
@@ -195,7 +195,7 @@ fn pdf_writer_push_plain_significant_real(
       _ => ()
     }
   }
-  let digits : Array[Int] = []
+  let digits : Array[Int32] = []
   let mut decimal_position = -1
   while index < text.length() {
     let value = text[index].to_int()
@@ -230,7 +230,7 @@ fn pdf_writer_push_plain_significant_real(
       } else {
         digits.length()
       }
-      let mut rounded : Array[Int] = []
+      let mut rounded : Array[Int32] = []
       for i in 0..<copy_end {
         rounded.push(digits[i])
       }
@@ -248,7 +248,7 @@ fn pdf_writer_push_plain_significant_real(
           }
         }
         if carry {
-          let with_carry : Array[Int] = [1]
+          let with_carry : Array[Int32] = [1]
           with_carry.append(rounded)
           rounded = with_carry
           decimal_position += 1

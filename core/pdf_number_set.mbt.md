@@ -18,7 +18,7 @@ flowchart LR
 ///|
 test "number set pushes only unseen values" {
   let seen = @core.pdf_number_set([2, 4])
-  let output : Array[Int] = []
+  let output : Array[Int32] = []
   @core.pdf_push_unique_number(output, seen, 2)
   @core.pdf_push_unique_number(output, seen, 5)
   @core.pdf_push_unique_number(output, seen, 5)

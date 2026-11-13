@@ -33,8 +33,8 @@ fn PdfDocument::pdf_ccitt_first_decodeparms_direct(
 fn pdf_ccitt_decodeparms_int(
   dictionary : @syntax.PdfObject,
   key : @core.PdfName,
-  default : Int,
-) -> Int raise @core.PdfError {
+  default : Int32,
+) -> Int32 raise @core.PdfError {
   match dictionary.lookup_immediate(key) {
     None => default
     Some(PdfInteger(value)) => value
@@ -47,8 +47,8 @@ fn PdfDocument::pdf_ccitt_decodeparms_int_direct(
   self : PdfDocument,
   dictionary : @syntax.PdfObject,
   key : @core.PdfName,
-  default : Int,
-) -> Int raise @core.PdfError {
+  default : Int32,
+) -> Int32 raise @core.PdfError {
   match self.lookup_direct(key, dictionary) {
     None => default
     Some(PdfInteger(value)) => value

@@ -2,17 +2,18 @@
 /// Parsed PDF header version.
 ///
 /// The fields correspond to the digits in a `%PDF-major.minor` header.
+#derive(Debug, Eq, ToJson)
 pub(all) struct PdfVersion {
-  major : Int
-  minor : Int
-} derive(Debug, Eq, ToJson)
+  major : Int32
+  minor : Int32
+}
 
 ///|
 /// Fallback version used when a PDF header cannot be found.
-pub let pdf_default_version : PdfVersion = { major: 2, minor: 0 }
+pub let pdf_default_version : PdfVersion = { major: 2, minor: 0, }
 
 ///|
-fn pdf_header_at(cursor : @core.ByteCursor, position : Int) -> PdfVersion? {
+fn pdf_header_at(cursor : @core.ByteCursor, position : Int32) -> PdfVersion? {
   let header : Result[BytesView, Error] = try
     cursor.view_at_absolute(position, 8)
   catch {
@@ -31,7 +32,7 @@ fn pdf_header_at(cursor : @core.ByteCursor, position : Int) -> PdfVersion? {
         let major = header[5].to_int()
         let minor = header[7].to_int()
         if @core.pdf_is_digit_byte(major) && @core.pdf_is_digit_byte(minor) {
-          Some({ major: major - 48, minor: minor - 48 })
+          Some({ major: major - 48, minor: minor - 48, })
         } else {
           None
         }
@@ -43,7 +44,7 @@ fn pdf_header_at(cursor : @core.ByteCursor, position : Int) -> PdfVersion? {
 }
 
 ///|
-fn pdf_header_probe_length(length : Int) -> Int {
+fn pdf_header_probe_length(length : Int32) -> Int32 {
   if length < 1024 {
     length
   } else {
@@ -54,7 +55,7 @@ fn pdf_header_probe_length(length : Int) -> Int {
 ///|
 fn pdf_finish_header_at(
   cursor : @core.ByteCursor,
-  position : Int,
+  position : Int32,
   version : PdfVersion,
 ) -> PdfVersion raise @core.PdfError {
   cursor.set_offset(position)

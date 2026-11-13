@@ -26,8 +26,8 @@ fn artifact_resources_for_test(
 ///|
 fn artifact_page_for_test(
   ops : ArrayView[@content.PdfContentOp],
-  resources? : @syntax.PdfObject = @syntax.pdf_dictionary([]),
-  rest? : @syntax.PdfObject = @syntax.pdf_dictionary([]),
+  resources~ : @syntax.PdfObject = @syntax.pdf_dictionary([]),
+  rest~ : @syntax.PdfObject = @syntax.pdf_dictionary([]),
 ) -> @page.PdfPage raise @core.PdfError {
   {
     ..@page.pdf_page_blank(@geometry.paper_a4),

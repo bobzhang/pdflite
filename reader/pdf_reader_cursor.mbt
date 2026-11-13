@@ -5,7 +5,7 @@
 /// Raises `error` and leaves the cursor unchanged when the sequence is absent.
 pub fn pdf_cursor_consume_ascii(
   cursor : @core.ByteCursor,
-  values : ArrayView[Int],
+  values : ArrayView[Int32],
   error : @core.PdfError,
 ) -> Unit raise @core.PdfError {
   let position = cursor.absolute_position()

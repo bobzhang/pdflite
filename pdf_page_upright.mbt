@@ -22,7 +22,7 @@ fn PdfDocument::pdf_page_upright_is_upright(
 ///|
 fn PdfDocument::pdf_page_upright_all_upright(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   pages : ArrayView[@page.PdfPage],
 ) -> Bool raise @core.PdfError {
   for page_number in page_numbers {
@@ -41,7 +41,7 @@ fn PdfDocument::pdf_page_upright_all_upright(
 /// outside the document are ignored rather than treated as a range error.
 pub fn PdfDocument::all_pages_upright(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Bool raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   for page_number in page_numbers {
@@ -59,7 +59,7 @@ pub fn PdfDocument::all_pages_upright(
 /// Compatibility wrapper for `PdfDocument::all_pages_upright`.
 pub fn pdf_allupright(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Bool raise @core.PdfError {
   document.all_pages_upright(page_numbers)
 }
@@ -67,7 +67,7 @@ pub fn pdf_allupright(
 ///|
 /// Compatibility wrapper matching cpdfpage's `allupright` argument order.
 pub fn pdf_allupright_cpdf_order(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> Bool raise @core.PdfError {
   document.all_pages_upright(page_numbers)
@@ -80,7 +80,7 @@ pub fn pdf_allupright_cpdf_order(
 /// `(0, 0)` media-box origin and ignores out-of-range page numbers.
 pub fn PdfDocument::all_pages_upright_only(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Bool raise @core.PdfError {
   let pages = self.pages_of_pagetree()
   for page_number in page_numbers {
@@ -98,7 +98,7 @@ pub fn PdfDocument::all_pages_upright_only(
 /// Compatibility wrapper for `PdfDocument::all_pages_upright_only`.
 pub fn pdf_alluprightonly(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
 ) -> Bool raise @core.PdfError {
   document.all_pages_upright_only(page_numbers)
 }
@@ -106,7 +106,7 @@ pub fn pdf_alluprightonly(
 ///|
 /// Compatibility wrapper matching cpdfpage's `alluprightonly` argument order.
 pub fn pdf_alluprightonly_cpdf_order(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
 ) -> Bool raise @core.PdfError {
   document.all_pages_upright_only(page_numbers)
@@ -152,7 +152,7 @@ fn PdfDocument::pdf_page_upright_transform_boxes(
       None => ()
     }
   }
-  { ..page, mediabox: self.transform_rect(matrix, page.mediabox), rest }
+  { ..page, mediabox: self.transform_rect(matrix, page.mediabox), rest, }
 }
 
 ///|
@@ -201,7 +201,7 @@ fn PdfDocument::pdf_page_upright_page(
     let rotation_matrix = self.pdf_page_upright_rotation_matrix(page)
     let page = self.pdf_page_upright_transform_boxes(page, rotation_matrix)
     let page = self.pdf_page_upright_transform_content(
-      { ..page, rotate: Rotate0 },
+      { ..page, rotate: Rotate0, },
       rotation_matrix,
       fast,
     )
@@ -221,8 +221,8 @@ fn PdfDocument::pdf_page_upright_page(
 /// back to `(0, 0)` after rotation.
 pub fn PdfDocument::upright_pages(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   pdf_page_box_validate_page_numbers(
     page_numbers,
@@ -235,7 +235,7 @@ pub fn PdfDocument::upright_pages(
   } else {
     let selected_pages = @core.pdf_number_set(page_numbers)
     let rewritten : Array[@page.PdfPage] = Array::new(capacity=pages.length())
-    let matrices : Array[(Int, @geometry.TransformMatrix)] = Array::new(
+    let matrices : Array[(Int32, @geometry.TransformMatrix)] = Array::new(
       capacity=page_numbers.length(),
     )
     for index in 0..<pages.length() {
@@ -256,8 +256,8 @@ pub fn PdfDocument::upright_pages(
 /// Compatibility wrapper for `PdfDocument::upright_pages`.
 pub fn pdf_upright_pages(
   document : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.upright_pages(page_numbers, fast~)
 }
@@ -266,8 +266,8 @@ pub fn pdf_upright_pages(
 /// Compatibility alias for `PdfDocument::upright_pages`.
 pub fn PdfDocument::upright(
   self : PdfDocument,
-  page_numbers : ArrayView[Int],
-  fast? : Bool = false,
+  page_numbers : ArrayView[Int32],
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   self.upright_pages(page_numbers, fast~)
 }
@@ -275,9 +275,9 @@ pub fn PdfDocument::upright(
 ///|
 /// Compatibility wrapper matching cpdfpage's `upright` argument order.
 pub fn pdf_upright(
-  page_numbers : ArrayView[Int],
+  page_numbers : ArrayView[Int32],
   document : PdfDocument,
-  fast? : Bool = false,
+  fast~ : Bool = false,
 ) -> PdfDocument raise @core.PdfError {
   document.upright_pages(page_numbers, fast~)
 }

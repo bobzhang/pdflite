@@ -1,6 +1,6 @@
 ///|
 test "PdfTextExtractor decodes CJK compatibility square AGL glyph names" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/GBsquare", 0x3387),
     ("/HPsquare", 0x33CB),
     ("/Hzsquare", 0x3390),
@@ -126,8 +126,8 @@ test "PdfTextExtractor decodes CJK compatibility square AGL glyph names" {
     ("/yaadosquare", 0x334E),
   ]
   let differences : Array[@pdflite.PdfEncodingDifference] = []
-  let text_codes : Array[Int] = []
-  let expected_codepoints : Array[Int] = []
+  let text_codes : Array[Int32] = []
+  let expected_codepoints : Array[Int32] = []
   for index in 0..<entries.length() {
     let entry = entries[index]
     let code = index + 1

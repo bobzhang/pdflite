@@ -1,19 +1,19 @@
 ///|
 fn reader_reconstruction_xref_entry_for_test(
-  object_number : Int,
-  offset : Int,
+  object_number : Int32,
+  offset : Int32,
 ) -> @reader.PdfClassicXRefEntry {
-  { object_number, offset, generation: 0, in_use: true, object_stream: None }
+  { object_number, offset, generation: 0, in_use: true, object_stream: None, }
 }
 
 ///|
 fn reader_reconstruction_xref_section_for_test(
   entries : Array[@reader.PdfClassicXRefEntry],
-  trailer? : @syntax.PdfObject = PdfDictionary([]),
-  stream_object_number? : Int? = None,
-  stream_object_offset? : Int? = None,
+  trailer~ : @syntax.PdfObject = PdfDictionary([]),
+  stream_object_number~ : Int32? = None,
+  stream_object_offset~ : Int32? = None,
 ) -> @reader.PdfXRefSection {
-  { entries, trailer, stream_object_number, stream_object_offset }
+  { entries, trailer, stream_object_number, stream_object_offset, }
 }
 
 ///|
@@ -29,10 +29,10 @@ fn reader_reconstruction_verify_xref_for_test(
 ///|
 fn reader_reconstruction_object_xref_parser_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
+  position : Int32,
   _xrefs : ArrayView[@reader.PdfClassicXRefEntry],
   _xref_index : @reader.PdfClassicXRefIndex,
-) -> (@reader.PdfClassicXRefEntry?, Int?) raise @core.PdfError {
+) -> (@reader.PdfClassicXRefEntry?, Int32?) raise @core.PdfError {
   cursor.seek_absolute(position)
   (
     Some(reader_reconstruction_xref_entry_for_test(1, position)),
@@ -43,10 +43,10 @@ fn reader_reconstruction_object_xref_parser_for_test(
 ///|
 fn reader_reconstruction_object_xref_skip_parser_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
+  position : Int32,
   _xrefs : ArrayView[@reader.PdfClassicXRefEntry],
   _xref_index : @reader.PdfClassicXRefIndex,
-) -> (@reader.PdfClassicXRefEntry?, Int?) raise @core.PdfError {
+) -> (@reader.PdfClassicXRefEntry?, Int32?) raise @core.PdfError {
   cursor.seek_absolute(position)
   if position == 0 {
     raise XRefExpected
@@ -57,10 +57,10 @@ fn reader_reconstruction_object_xref_skip_parser_for_test(
 ///|
 fn reader_reconstruction_object_xref_none_parser_for_test(
   cursor : @core.ByteCursor,
-  position : Int,
+  position : Int32,
   _xrefs : ArrayView[@reader.PdfClassicXRefEntry],
   _xref_index : @reader.PdfClassicXRefIndex,
-) -> (@reader.PdfClassicXRefEntry?, Int?) raise @core.PdfError {
+) -> (@reader.PdfClassicXRefEntry?, Int32?) raise @core.PdfError {
   cursor.seek_absolute(position)
   (None, Some(position + 18))
 }

@@ -1,6 +1,6 @@
 ///|
 test "private Latin Extended Additional AGL glyph helper covers table" {
-  let entries : Array[(String, Int)] = [
+  let entries : Array[(String, Int32)] = [
     ("/Abreveacute", 0x1EAE),
     ("/Abrevedotbelow", 0x1EB6),
     ("/Abrevegrave", 0x1EB0),

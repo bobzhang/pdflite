@@ -1,5 +1,5 @@
 ///|
-fn pdf_tree_group_count(length : Int) -> Int {
+fn pdf_tree_group_count(length : Int32) -> Int32 {
   if length <= 10 {
     1
   } else if length <= 100 {
@@ -13,8 +13,8 @@ fn pdf_tree_group_count(length : Int) -> Int {
 fn PdfDocument::pdf_tree_build_name_tree_range(
   self : PdfDocument,
   entries : ArrayView[(@core.PdfBytes, @syntax.PdfObject)],
-  start : Int,
-  stop : Int,
+  start : Int32,
+  stop : Int32,
   is_root : Bool,
 ) -> @syntax.PdfObject {
   if stop - start <= 10 {
@@ -98,7 +98,7 @@ pub fn pdf_build_name_tree(
   entries : ArrayView[(@core.PdfBytes, @syntax.PdfObject)],
 ) -> @syntax.PdfObject raise @core.PdfError {
   if is_number {
-    let number_entries : Array[(Int, @syntax.PdfObject)] = Array::new(
+    let number_entries : Array[(Int32, @syntax.PdfObject)] = Array::new(
       capacity=entries.length(),
     )
     for entry in entries {
@@ -113,9 +113,9 @@ pub fn pdf_build_name_tree(
 ///|
 fn PdfDocument::pdf_tree_build_number_tree_range(
   self : PdfDocument,
-  entries : ArrayView[(Int, @syntax.PdfObject)],
-  start : Int,
-  stop : Int,
+  entries : ArrayView[(Int32, @syntax.PdfObject)],
+  start : Int32,
+  stop : Int32,
   is_root : Bool,
 ) -> @syntax.PdfObject {
   if stop - start <= 10 {
@@ -183,7 +183,7 @@ fn PdfDocument::pdf_tree_build_number_tree_range(
 /// entries, allocating child objects in `self` as needed.
 pub fn PdfDocument::build_number_tree(
   self : PdfDocument,
-  entries : ArrayView[(Int, @syntax.PdfObject)],
+  entries : ArrayView[(Int32, @syntax.PdfObject)],
 ) -> @syntax.PdfObject {
   if entries.length() == 0 {
     PdfDictionary([(pdf_tree_nums_key(), PdfArray([]))])

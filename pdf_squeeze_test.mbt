@@ -37,7 +37,7 @@ fn squeeze_direct_stream_for_test(data : @core.PdfBytes) -> @syntax.PdfObject {
 ///|
 fn squeeze_filter_for_test(
   document : @pdflite.PdfDocument,
-  object_number : Int,
+  object_number : Int32,
 ) -> @syntax.PdfObject? {
   let filter = squeeze_name_for_test("/Filter")
   match document.lookup_object_or_null(object_number) {
@@ -59,7 +59,7 @@ fn squeeze_filter_is_flate_for_test(value : @syntax.PdfObject?) -> Bool {
 ///|
 fn squeeze_stream_bytes_for_test(
   document : @pdflite.PdfDocument,
-  object_number : Int,
+  object_number : Int32,
 ) -> @core.PdfBytes? {
   match document.lookup_object_or_null(object_number) {
     PdfStreamObject(stream) =>
@@ -88,7 +88,7 @@ fn squeeze_content_stream_for_test(text : String) -> @syntax.PdfObject {
 ///|
 fn squeeze_page_resource_for_test(
   name : String,
-  object_number : Int,
+  object_number : Int32,
 ) -> @syntax.PdfObject {
   PdfDictionary([
     (

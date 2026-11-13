@@ -1,12 +1,12 @@
 ///|
 /// Return the number of entries in the document object table.
-pub fn PdfDocument::object_count(self : PdfDocument) -> Int {
+pub fn PdfDocument::object_count(self : PdfDocument) -> Int32 {
   self.objects.length()
 }
 
 ///|
 /// Return document object numbers in ascending order.
-pub fn PdfDocument::object_numbers(self : PdfDocument) -> Array[Int] {
+pub fn PdfDocument::object_numbers(self : PdfDocument) -> Array[Int32] {
   self.objects.object_numbers()
 }
 
@@ -18,8 +18,8 @@ pub fn PdfDocument::object_numbers(self : PdfDocument) -> Array[Int] {
 pub fn PdfDocument::select_object_numbers(
   self : PdfDocument,
   predicate : (@syntax.PdfObject) -> Bool,
-) -> Array[Int] {
-  let selected : Array[Int] = Array::new(capacity=self.object_count())
+) -> Array[Int32] {
+  let selected : Array[Int32] = Array::new(capacity=self.object_count())
   for entry in self.parsed_object_entries() {
     if predicate(entry.2) {
       selected.push(entry.0)
@@ -43,7 +43,7 @@ pub fn PdfDocument::map_objects_in_place(
 /// Return parsed document objects as sorted `(number, generation, object)` triples.
 pub fn PdfDocument::parsed_object_entries(
   self : PdfDocument,
-) -> Array[(Int, Int, @syntax.PdfObject)] {
+) -> Array[(Int32, Int32, @syntax.PdfObject)] {
   self.objects.parsed_entries()
 }
 
@@ -54,7 +54,7 @@ pub fn PdfDocument::parsed_object_entries(
 /// propagate to the caller.
 pub fn PdfDocument::iter_objects(
   self : PdfDocument,
-  callback : (Int, @syntax.PdfObject) -> Unit raise,
+  callback : (Int32, @syntax.PdfObject) -> Unit raise,
 ) -> Unit raise {
   self.iter_objects_in_order(callback)
 }
@@ -65,7 +65,7 @@ pub fn PdfDocument::iter_objects(
 /// This is the explicit-order variant used by `iter_objects`.
 pub fn PdfDocument::iter_objects_in_order(
   self : PdfDocument,
-  callback : (Int, @syntax.PdfObject) -> Unit raise,
+  callback : (Int32, @syntax.PdfObject) -> Unit raise,
 ) -> Unit raise {
   for entry in self.parsed_object_entries() {
     callback(entry.0, entry.2)
@@ -79,7 +79,7 @@ pub fn PdfDocument::iter_objects_in_order(
 /// and any callback error is propagated.
 pub fn PdfDocument::iter_objects_with_generation(
   self : PdfDocument,
-  callback : (Int, Int, @syntax.PdfObject) -> Unit raise,
+  callback : (Int32, Int32, @syntax.PdfObject) -> Unit raise,
 ) -> Unit raise {
   for entry in self.parsed_object_entries() {
     callback(entry.0, entry.1, entry.2)
@@ -90,7 +90,7 @@ pub fn PdfDocument::iter_objects_with_generation(
 /// Return parsed stream-object entries in object-number order.
 pub fn PdfDocument::stream_object_entries(
   self : PdfDocument,
-) -> Array[(Int, Int, @syntax.PdfStream)] {
+) -> Array[(Int32, Int32, @syntax.PdfStream)] {
   self.objects.stream_entries()
 }
 

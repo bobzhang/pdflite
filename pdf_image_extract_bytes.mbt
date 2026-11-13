@@ -1,9 +1,9 @@
 ///|
 fn pdf_image_copy_view(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   bytes : BytesView,
-) -> Int {
+) -> Int32 {
   let mut next = position
   for byte in bytes {
     output[next] = byte
@@ -14,8 +14,8 @@ fn pdf_image_copy_view(
 
 ///|
 fn pdf_image_pnm_24bpp_bytes(
-  width : Int,
-  height : Int,
+  width : Int32,
+  height : Int32,
   data : @core.PdfBytes,
 ) -> @core.PdfBytes {
   let width_bytes = @ascii.encode(width.to_string())

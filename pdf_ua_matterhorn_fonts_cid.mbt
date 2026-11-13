@@ -2,7 +2,7 @@
 fn PdfDocument::pdf_ua_matterhorn_type0_indirect_encoding(
   self : PdfDocument,
   object : @syntax.PdfObject,
-) -> Int? {
+) -> Int32? {
   let direct_object = self.direct(object)
   match
     (

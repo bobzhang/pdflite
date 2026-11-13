@@ -7,10 +7,10 @@
 pub fn PdfDocument::decrypt_with_user_password(
   self : PdfDocument,
   password : BytesView,
-  no_encrypt_metadata? : Bool = false,
+  no_encrypt_metadata~ : Bool = false,
 ) -> PdfDecryptionResult? raise @core.PdfError {
   match self.trailer_dict().lookup_immediate(pdf_crypt_encrypt_name) {
-    None => Some({ document: self.copy(), denied_permissions: [] })
+    None => Some({ document: self.copy(), denied_permissions: [], })
     Some(_) => {
       let values = self.encryption_values()
       let file_key = match
@@ -32,10 +32,10 @@ pub fn PdfDocument::decrypt_with_user_password(
 pub fn PdfDocument::decrypt_with_owner_password(
   self : PdfDocument,
   password : BytesView,
-  no_encrypt_metadata? : Bool = false,
+  no_encrypt_metadata~ : Bool = false,
 ) -> PdfDecryptionResult? raise @core.PdfError {
   match self.trailer_dict().lookup_immediate(pdf_crypt_encrypt_name) {
-    None => Some({ document: self.copy(), denied_permissions: [] })
+    None => Some({ document: self.copy(), denied_permissions: [], })
     Some(_) => {
       let values = self.encryption_values()
       let file_key = match

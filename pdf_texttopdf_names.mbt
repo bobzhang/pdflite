@@ -1,5 +1,5 @@
 ///|
-fn pdf_texttopdf_font_id(font_index : Int) -> String {
+fn pdf_texttopdf_font_id(font_index : Int32) -> String {
   font_index.to_string()
 }
 

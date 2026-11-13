@@ -1,7 +1,7 @@
 ///|
 fn pdf_truetype_subset_contains(
-  subset_codepoints : ArrayView[Int],
-  codepoint : Int,
+  subset_codepoints : ArrayView[Int32],
+  codepoint : Int32,
 ) -> Bool {
   for subset_codepoint in subset_codepoints {
     if subset_codepoint == codepoint {
@@ -13,7 +13,7 @@ fn pdf_truetype_subset_contains(
 }
 
 ///|
-fn pdf_truetype_first_glyph_codepoint(name : @core.PdfName) -> Int {
+fn pdf_truetype_first_glyph_codepoint(name : @core.PdfName) -> Int32 {
   match pdf_text_codepoints_of_glyphname(name) {
     Some(codepoints) if codepoints.length() > 0 => codepoints[0]
     _ => 0
@@ -22,9 +22,9 @@ fn pdf_truetype_first_glyph_codepoint(name : @core.PdfName) -> Int {
 
 ///|
 fn pdf_truetype_codepoint_of_pdf_code(
-  encoding_table : ArrayView[(Int, @core.PdfName)],
-  pdf_code : Int,
-) -> Int {
+  encoding_table : ArrayView[(Int32, @core.PdfName)],
+  pdf_code : Int32,
+) -> Int32 {
   for entry in encoding_table {
     if entry.0 == pdf_code {
       break pdf_truetype_first_glyph_codepoint(entry.1)
@@ -36,8 +36,8 @@ fn pdf_truetype_codepoint_of_pdf_code(
 
 ///|
 fn pdf_truetype_encoding_code_defined(
-  encoding_table : ArrayView[(Int, @core.PdfName)],
-  codepoint : Int,
+  encoding_table : ArrayView[(Int32, @core.PdfName)],
+  codepoint : Int32,
 ) -> Bool {
   for entry in encoding_table {
     if entry.0 == codepoint {
@@ -49,7 +49,7 @@ fn pdf_truetype_encoding_code_defined(
 }
 
 ///|
-fn pdf_truetype_first_hmtx_width(widths : ArrayView[Int]) -> Int {
+fn pdf_truetype_first_hmtx_width(widths : ArrayView[Int32]) -> Int32 {
   if widths.length() == 0 {
     0
   } else {
@@ -59,10 +59,10 @@ fn pdf_truetype_first_hmtx_width(widths : ArrayView[Int]) -> Int {
 
 ///|
 fn pdf_truetype_pdf_width_for_glyph(
-  units_per_em : Int,
-  widths : ArrayView[Int],
-  glyph_index : Int,
-) -> Int {
+  units_per_em : Int32,
+  widths : ArrayView[Int32],
+  glyph_index : Int32,
+) -> Int32 {
   if widths.length() == 0 {
     0
   } else {
@@ -79,12 +79,12 @@ fn pdf_truetype_pdf_width_for_glyph(
 
 ///|
 fn pdf_truetype_split_subsets(
-  subset_codepoints : ArrayView[Int],
-  chunk_size : Int,
-) -> Array[Array[Int]] {
-  let chunks : Array[Array[Int]] = []
+  subset_codepoints : ArrayView[Int32],
+  chunk_size : Int32,
+) -> Array[Array[Int32]] {
+  let chunks : Array[Array[Int32]] = []
   if chunk_size > 0 {
-    let mut chunk : Array[Int] = []
+    let mut chunk : Array[Int32] = []
     for codepoint in subset_codepoints {
       chunk.push(codepoint)
       if chunk.length() == chunk_size {
@@ -108,11 +108,11 @@ fn pdf_truetype_split_subsets(
 /// all remaining codepoints are split into chunks of 224 for higher subsets.
 pub fn pdf_truetype_partition_subsets(
   encoding : PdfEncoding,
-  subset_codepoints : ArrayView[Int],
+  subset_codepoints : ArrayView[Int32],
 ) -> @truetype.PdfTrueTypeSubsetPartition {
   let encoding_table = encoding.table()
-  let main_subset : Array[Int] = []
-  let rest : Array[Int] = []
+  let main_subset : Array[Int32] = []
+  let rest : Array[Int32] = []
   for codepoint in subset_codepoints {
     if pdf_truetype_encoding_code_defined(encoding_table, codepoint) {
       main_subset.push(codepoint)
@@ -120,7 +120,7 @@ pub fn pdf_truetype_partition_subsets(
       rest.push(codepoint)
     }
   }
-  { main_subset, higher_subsets: pdf_truetype_split_subsets(rest, 224) }
+  { main_subset, higher_subsets: pdf_truetype_split_subsets(rest, 224), }
 }
 
 ///|
@@ -134,17 +134,17 @@ pub fn pdf_truetype_partition_subsets(
 pub fn pdf_truetype_widths(
   data : BytesView,
   encoding : PdfEncoding,
-  firstchar : Int,
-  lastchar : Int,
-  subset_codepoints : ArrayView[Int],
-) -> Array[Int] raise @core.PdfError {
+  firstchar : Int32,
+  lastchar : Int32,
+  subset_codepoints : ArrayView[Int32],
+) -> Array[Int32] raise @core.PdfError {
   if lastchar < firstchar {
     raise SoftError("lastchar < firstchar")
   }
   let metrics = pdf_truetype_metrics(data)
   let cmap_entries = pdf_truetype_cmap_glyphs(data)
   let encoding_table = encoding.table()
-  let widths : Array[Int] = []
+  let widths : Array[Int32] = []
   for position in 0..<(lastchar - firstchar + 1) {
     let codepoint = pdf_truetype_codepoint_of_pdf_code(
       encoding_table,
@@ -178,16 +178,16 @@ pub fn pdf_truetype_widths(
 /// `Cpdftruetype.calculate_width_higher`.
 pub fn pdf_truetype_widths_higher(
   data : BytesView,
-  firstchar : Int,
-  lastchar : Int,
-  subset_codepoints : ArrayView[Int],
-) -> Array[Int] raise @core.PdfError {
+  firstchar : Int32,
+  lastchar : Int32,
+  subset_codepoints : ArrayView[Int32],
+) -> Array[Int32] raise @core.PdfError {
   if lastchar < firstchar {
     raise SoftError("lastchar < firstchar")
   }
   let metrics = pdf_truetype_metrics(data)
   let cmap_entries = pdf_truetype_cmap_glyphs(data)
-  let widths : Array[Int] = []
+  let widths : Array[Int32] = []
   for position in 0..<(lastchar - firstchar + 1) {
     if position >= subset_codepoints.length() {
       raise SoftError("TrueType higher subset width index out of range")
@@ -213,7 +213,7 @@ pub fn pdf_truetype_widths_higher(
 
 ///|
 fn pdf_truetype_utf16be_without_bom(
-  codepoint : Int,
+  codepoint : Int32,
 ) -> @core.PdfBytes raise @core.PdfError {
   let bytes = pdf_utf16be_of_codepoints([codepoint])
   bytes[2:].to_owned()
@@ -227,12 +227,12 @@ fn pdf_truetype_utf16be_without_bom(
 /// UTF-16BE without the PDF Unicode string BOM, matching
 /// `Cpdftruetype.seconds_tounicodes`.
 pub fn pdf_truetype_higher_tounicode(
-  subset_codepoints : ArrayView[Int],
-) -> Array[(Int, @core.PdfBytes)]? raise @core.PdfError {
+  subset_codepoints : ArrayView[Int32],
+) -> Array[(Int32, @core.PdfBytes)]? raise @core.PdfError {
   if subset_codepoints.length() == 0 {
     None
   } else {
-    let entries : Array[(Int, @core.PdfBytes)] = []
+    let entries : Array[(Int32, @core.PdfBytes)] = []
     for index in 0..<subset_codepoints.length() {
       entries.push(
         (33 + index, pdf_truetype_utf16be_without_bom(subset_codepoints[index])),

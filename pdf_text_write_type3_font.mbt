@@ -29,9 +29,9 @@ fn pdf_text_type3_resources_entries(
 
 ///|
 fn pdf_text_type3_metrics_entries(
-  firstchar : Int,
-  lastchar : Int,
-  widths : ArrayView[Int],
+  firstchar : Int32,
+  lastchar : Int32,
+  widths : ArrayView[Int32],
 ) -> Array[(@core.PdfName, @syntax.PdfObject)] {
   if widths.length() == 0 {
     [
@@ -67,9 +67,9 @@ fn PdfDocument::pdf_text_type3_encoding_entries(
 fn PdfDocument::pdf_text_make_type3_font(
   self : PdfDocument,
   data : PdfType3Glyphs,
-  firstchar : Int,
-  lastchar : Int,
-  widths : ArrayView[Int],
+  firstchar : Int32,
+  lastchar : Int32,
+  widths : ArrayView[Int32],
   encoding : PdfEncoding,
 ) -> @syntax.PdfObject raise @core.PdfError {
   PdfDictionary(

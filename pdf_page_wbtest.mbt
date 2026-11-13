@@ -12,15 +12,15 @@ fn page_wb_document_with_pages(pages : ArrayView[@page.PdfPage]) -> PdfDocument 
 }
 
 ///|
-fn page_wb_fit_destination(page_number : Int) -> @syntax.PdfObject {
+fn page_wb_fit_destination(page_number : Int32) -> @syntax.PdfObject {
   PdfArray([PdfIndirect(page_number), PdfNameObject(pdf_dest_type_fit())])
 }
 
 ///|
 fn page_wb_xyz_destination(
-  page_number : Int,
-  left : Int,
-  top : Int,
+  page_number : Int32,
+  left : Int32,
+  top : Int32,
 ) -> @syntax.PdfObject {
   PdfArray([
     PdfIndirect(page_number),
@@ -47,7 +47,7 @@ fn page_wb_assert_indirect_object_for_test(
 ///|
 fn page_wb_catalog_destination(
   doc : PdfDocument,
-  catalog_number : Int,
+  catalog_number : Int32,
   name : @core.PdfName,
 ) -> @syntax.PdfObject? {
   match
@@ -70,7 +70,7 @@ fn page_wb_catalog_destination(
 ///|
 fn page_wb_name_tree_entries_from_catalog(
   doc : PdfDocument,
-  catalog_number : Int,
+  catalog_number : Int32,
 ) -> Array[(@core.PdfBytes, @syntax.PdfObject)] {
   match
     doc.lookup_chain(doc.lookup_object_or_null(catalog_number), [
@@ -166,7 +166,7 @@ test "private page tree readers cover guard branches" {
       None,
       None,
       Rotate0,
-      { val: pdf_page_default_mediabox() },
+      { val: pdf_page_default_mediabox(), },
       0,
     )
   catch {
@@ -184,7 +184,7 @@ test "private page tree readers cover guard branches" {
       None,
       None,
       Rotate0,
-      { val: pdf_page_default_mediabox() },
+      { val: pdf_page_default_mediabox(), },
       10001,
     )
   catch {
@@ -210,7 +210,7 @@ test "private page tree readers cover guard branches" {
     fail("expected inherited attribute depth guard")
   }
   @test.assert_eq(try! doc.pdf_pages_of_pagetree_quick_node(PdfNull, 0), 0)
-  let quick_too_deep : Result[Int, Error] = try
+  let quick_too_deep : Result[Int32, Error] = try
     doc.pdf_pages_of_pagetree_quick_node(PdfDictionary([]), 10001)
   catch {
     err => Err(err)
@@ -220,7 +220,7 @@ test "private page tree readers cover guard branches" {
   guard quick_too_deep is Err(@core.PdfError::PageTreeExpected) else {
     fail("expected quick page tree depth guard")
   }
-  let quick_missing_kid : Result[Int, Error] = try
+  let quick_missing_kid : Result[Int32, Error] = try
     doc.pdf_pages_of_pagetree_quick_node(
       PdfDictionary([(pdf_page_kids_key(), PdfArray([PdfIndirect(99)]))]),
       0,
@@ -233,7 +233,7 @@ test "private page tree readers cover guard branches" {
   guard quick_missing_kid is Err(@core.PdfError::PageTreeExpected) else {
     fail("expected quick missing kid")
   }
-  let quick_missing_kids : Result[Int, Error] = try
+  let quick_missing_kids : Result[Int32, Error] = try
     doc.pdf_pages_of_pagetree_quick_node(PdfDictionary([]), 0)
   catch {
     err => Err(err)
@@ -347,7 +347,7 @@ test "private page root and content helpers cover filtered shapes" {
   @test.assert_eq(doc.pdf_page_content_list(Some(PdfInteger(1))), [])
 
   let fast_page = try! doc.postpend_operators(
-    { ..@page.pdf_page_blank(@geometry.paper_a4), content: [stream] },
+    { ..@page.pdf_page_blank(@geometry.paper_a4), content: [stream], },
     [Op_g(0.5)],
     fast=true,
   )
@@ -402,7 +402,7 @@ test "PdfDocument change_pages preserves object stream bookkeeping" {
   let page_numbers = try! doc.page_reference_numbers()
   doc.objects.object_stream_ids[page_numbers[0]] = 42
   let changed = try! doc.change_pages(
-    [{ ..@page.pdf_page_blank(@geometry.paper_a4), rotate: Rotate90 }],
+    [{ ..@page.pdf_page_blank(@geometry.paper_a4), rotate: Rotate90, }],
     change_references=true,
   )
   @test.assert_eq(
@@ -750,7 +750,7 @@ test "private page open-action transform uses trailer root catalog" {
 
 ///|
 test "private page selection annotation and destination helpers cover fallbacks" {
-  let empty_numbers : Result[Array[Int], Error] = try
+  let empty_numbers : Result[Array[Int32], Error] = try
     pdf_page_select_numbers([1], [])
   catch {
     err => Err(err)
@@ -760,7 +760,7 @@ test "private page selection annotation and destination helpers cover fallbacks"
   guard empty_numbers is Err(@core.PdfError::PageTreeExpected) else {
     fail("expected empty selection rejection")
   }
-  let bad_number : Result[Array[Int], Error] = try
+  let bad_number : Result[Array[Int32], Error] = try
     pdf_page_select_numbers([1], [2])
   catch {
     err => Err(err)
@@ -770,7 +770,7 @@ test "private page selection annotation and destination helpers cover fallbacks"
   guard bad_number is Err(@core.PdfError::PageTreeExpected) else {
     fail("expected invalid selection rejection")
   }
-  let bad_reference_changes : Result[Array[(Int, Int)], Error] = try
+  let bad_reference_changes : Result[Array[(Int32, Int32)], Error] = try
     pdf_page_reference_changes([1, 2], [3])
   catch {
     err => Err(err)
@@ -1479,7 +1479,7 @@ test "private page resource renumber helpers cover optional misses" {
   let color_space = pdf_page_name("/ColorSpace")
   let properties = pdf_page_name("/Properties")
   let changes : ReadOnlyArray[
-    (@core.PdfName, Int, @core.PdfName, @core.PdfName),
+    (@core.PdfName, Int32, @core.PdfName, @core.PdfName),
   ] = [
     (color_space, 1, pdf_page_name("/CS1"), pdf_page_name("/r1")),
     (properties, 1, pdf_page_name("/Prop1"), pdf_page_name("/r2")),
@@ -1569,7 +1569,7 @@ test "private page resource renumber helpers cover optional misses" {
 ///|
 test "private page reference collection covers malformed nodes" {
   let doc = pdf_document_empty()
-  let too_deep : Result[Array[Int], Error] = try
+  let too_deep : Result[Array[Int32], Error] = try
     pdf_page_reference_numbers_inner(doc, PdfDictionary([]), 1, 10001)
   catch {
     err => Err(err)
@@ -1774,7 +1774,7 @@ test "private page tree parent fixup rewrites stale parent links" {
 test "private page tree repair helpers report malformed roots and depth" {
   let missing_root = pdf_document_empty()
   missing_root.set_root(99)
-  let missing_pages : Result[Int, Error] = try
+  let missing_pages : Result[Int32, Error] = try
     pdf_page_root_pages_number(missing_root)
   catch {
     err => Err(err)
@@ -1791,7 +1791,7 @@ test "private page tree repair helpers report malformed roots and depth" {
     1,
     PdfDictionary([(pdf_page_pages_key(), PdfDictionary([]))]),
   )
-  let bad_pages : Result[Int, Error] = try
+  let bad_pages : Result[Int32, Error] = try
     pdf_page_root_pages_number(direct_pages)
   catch {
     err => Err(err)
@@ -1803,7 +1803,7 @@ test "private page tree repair helpers report malformed roots and depth" {
   }
 
   let doc = page_wb_duplicate_page_tree_doc()
-  let node_depth : Result[Array[Int], Error] = try
+  let node_depth : Result[Array[Int32], Error] = try
     doc.pdf_page_tree_nodes_not_pages_inner(PdfDictionary([]), 2, 10001)
   catch {
     err => Err(err)
@@ -1817,7 +1817,7 @@ test "private page tree repair helpers report malformed roots and depth" {
     try! doc.pdf_page_tree_nodes_not_pages_inner(PdfDictionary([]), 2, 0),
     [],
   )
-  let unordered_depth : Result[Array[Int], Error] = try
+  let unordered_depth : Result[Array[Int32], Error] = try
     doc.pdf_page_reference_numbers_unordered_inner(PdfDictionary([]), 2, 10001)
   catch {
     err => Err(err)

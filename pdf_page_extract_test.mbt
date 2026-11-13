@@ -4,7 +4,7 @@ fn page_extract_name_for_test(text : String) -> @core.PdfName {
 }
 
 ///|
-fn page_extract_index_mediabox_for_test(index : Int) -> @syntax.PdfObject {
+fn page_extract_index_mediabox_for_test(index : Int32) -> @syntax.PdfObject {
   PdfArray([
     PdfInteger(index),
     PdfInteger(0),
@@ -14,7 +14,7 @@ fn page_extract_index_mediabox_for_test(index : Int) -> @syntax.PdfObject {
 }
 
 ///|
-fn page_extract_indexed_blank_for_test(index : Int) -> @page.PdfPage {
+fn page_extract_indexed_blank_for_test(index : Int32) -> @page.PdfPage {
   {
     ..@page.pdf_page_blank(@geometry.paper_a4),
     mediabox: page_extract_index_mediabox_for_test(index),
@@ -24,8 +24,8 @@ fn page_extract_indexed_blank_for_test(index : Int) -> @page.PdfPage {
 ///|
 fn page_extract_annotation_numbers_for_test(
   page_object : @syntax.PdfObject,
-) -> Array[Int] {
-  let numbers : Array[Int] = []
+) -> Array[Int32] {
+  let numbers : Array[Int32] = []
   match page_object.lookup_immediate(page_extract_name_for_test("/Annots")) {
     Some(PdfArray(items)) =>
       for item in items {
@@ -707,7 +707,7 @@ test "PdfDocument pdf_of_pages rejects empty and invalid ranges" {
   let doc = @pdflite.pdf_document_empty()
   let page_root = try! doc.add_pagetree([page_extract_indexed_blank_for_test(0)])
   ignore(try! doc.add_root(page_root, []))
-  let empty_page_numbers : Array[Int] = []
+  let empty_page_numbers : Array[Int32] = []
   let empty_result : Result[@pdflite.PdfDocument, Error] = try
     doc.pdf_of_pages(empty_page_numbers)
   catch {
@@ -858,7 +858,7 @@ test "PdfDocument remove_unreferenced nullifies deleted page references" {
   let doc = @pdflite.pdf_document_empty()
   let page_root = try! doc.add_pagetree([
     @page.pdf_page_blank(@geometry.paper_a4),
-    { ..@page.pdf_page_blank(@geometry.paper_a4), rotate: Rotate90 },
+    { ..@page.pdf_page_blank(@geometry.paper_a4), rotate: Rotate90, },
   ])
   ignore(try! doc.add_root(page_root, []))
   let old_numbers = try! doc.page_reference_numbers()
@@ -888,7 +888,7 @@ test "PdfDocument remove_unreferenced nullifies deleted page references" {
 test "PdfDocument page_reference_numbers reports missing catalog object" {
   let doc = @pdflite.pdf_document_empty()
   doc.set_root(99)
-  let result : Result[Array[Int], Error] = try
+  let result : Result[Array[Int32], Error] = try
     doc.page_reference_numbers()
   catch {
     err => Err(err)

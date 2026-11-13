@@ -1,6 +1,6 @@
 ///|
 /// Return the integer value of one ASCII hex digit, or `None` for non-hex bytes.
-pub fn pdf_hex_value(value : Int) -> Int? {
+pub fn pdf_hex_value(value : Int32) -> Int32? {
   if value >= 48 && value <= 57 {
     Some(value - 48)
   } else if value >= 65 && value <= 70 {
@@ -13,16 +13,16 @@ pub fn pdf_hex_value(value : Int) -> Int? {
 }
 
 ///|
-fn pdf_is_octal_digit_byte(value : Int) -> Bool {
+fn pdf_is_octal_digit_byte(value : Int32) -> Bool {
   value >= 48 && value <= 55
 }
 
 ///|
 fn pdf_lexeme_write_byte_at(
   output : Array[Byte],
-  position : Int,
+  position : Int32,
   value : Byte,
-) -> Int {
+) -> Int32 {
   output[position] = value
   position + 1
 }

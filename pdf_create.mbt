@@ -1,7 +1,7 @@
 ///|
 fn pdf_create_blank_pages(
   paper : @geometry.PaperSize,
-  page_count : Int,
+  page_count : Int32,
 ) -> Array[@page.PdfPage] {
   let pages : Array[@page.PdfPage] = []
   if page_count > 0 {
@@ -15,7 +15,7 @@ fn pdf_create_blank_pages(
 ///|
 fn pdf_create_blank_document_with_id_time(
   paper : @geometry.PaperSize,
-  page_count : Int,
+  page_count : Int32,
   get_time : () -> Double,
 ) -> PdfDocument raise @core.PdfError {
   let document = pdf_document_empty()
@@ -37,7 +37,7 @@ fn pdf_create_now_as_double() -> Double {
 pub fn pdf_blank_document(
   width : Double,
   height : Double,
-  page_count : Int,
+  page_count : Int32,
 ) -> PdfDocument raise @core.PdfError {
   pdf_create_blank_document_with_id_time(
     @geometry.paper_size_make(PdfPoint, width, height),
@@ -50,7 +50,7 @@ pub fn pdf_blank_document(
 /// Create a blank document from a named paper size.
 pub fn pdf_blank_document_paper(
   paper : @geometry.PaperSize,
-  page_count : Int,
+  page_count : Int32,
 ) -> PdfDocument raise @core.PdfError {
   pdf_create_blank_document_with_id_time(
     paper, page_count, pdf_create_now_as_double,

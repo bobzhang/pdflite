@@ -1,10 +1,10 @@
 ///|
 fn pdf_decode_png_current(
   data : BytesView,
-  row_start : Int,
-  available : Int,
-  index : Int,
-) -> Int {
+  row_start : Int32,
+  available : Int32,
+  index : Int32,
+) -> Int32 {
   if index < available {
     data[row_start + index].to_int()
   } else {
@@ -13,7 +13,10 @@ fn pdf_decode_png_current(
 }
 
 ///|
-fn pdf_decode_png_decoded_length(data : BytesView, scanline_width : Int) -> Int {
+fn pdf_decode_png_decoded_length(
+  data : BytesView,
+  scanline_width : Int32,
+) -> Int32 {
   let mut rows = 0
   let mut index = 0
   while index < data.length() {
@@ -32,15 +35,15 @@ fn pdf_decode_png_decoded_length(data : BytesView, scanline_width : Int) -> Int 
 ///|
 fn pdf_decode_png_push_scanline(
   output : Array[Byte],
-  position : Int,
-  predictor : Int,
-  prior_decoded : ArrayView[Int],
-  decoded : Array[Int],
+  position : Int32,
+  predictor : Int32,
+  prior_decoded : ArrayView[Int32],
+  decoded : Array[Int32],
   data : BytesView,
-  row_start : Int,
-  available : Int,
-  bytes_per_pixel : Int,
-) -> Int raise @core.PdfError {
+  row_start : Int32,
+  available : Int32,
+  bytes_per_pixel : Int32,
+) -> Int32 raise @core.PdfError {
   let scanline_width = decoded.length()
   let mut output_position = position
   match predictor {
@@ -99,9 +102,9 @@ fn pdf_decode_png_push_scanline(
 
 ///|
 fn pdf_decode_png_predictor(
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
   data : BytesView,
 ) -> @core.PdfBytes raise @core.PdfError {
   let scanline_width = pdf_predictor_scanline_width(
@@ -115,8 +118,8 @@ fn pdf_decode_png_predictor(
     b'\x00',
   )
   let mut position = 0
-  let mut prior_decoded : Array[Int] = [ for _ in 0..<scanline_width => 0 ]
-  let mut decoded : Array[Int] = [ for _ in 0..<scanline_width => 0 ]
+  let mut prior_decoded : Array[Int32] = [ for _ in 0..<scanline_width => 0 ]
+  let mut decoded : Array[Int32] = [ for _ in 0..<scanline_width => 0 ]
   let mut index = 0
   while index < data.length() {
     let predictor = data[index].to_int()

@@ -1,10 +1,10 @@
 ///|
 fn pdf_markdown_chunks_to_codepoints(
   chunks : ArrayView[PdfMarkdownTextChunk],
-) -> Array[Int] {
+) -> Array[Int32] {
   let sorted = pdf_markdown_sorted_chunks(chunks)
   let lines = pdf_markdown_lines_of_sorted_chunks(sorted)
-  let output : Array[Int] = []
+  let output : Array[Int32] = []
   let mut index = 0
   while index < lines.length() {
     if pdf_markdown_line_is_table_header_candidate(lines[index]) {
@@ -39,9 +39,9 @@ fn pdf_markdown_positioned_text_codepoints_of_page(
   document : @pdflite.PdfDocument,
   page : @page.PdfPage,
   font_cache : PdfMarkdownFontCache,
-) -> Array[Int]? raise {
+) -> Array[Int32]? raise {
   let chunks : Array[PdfMarkdownTextChunk] = []
-  let next_index : Ref[Int] = { val: 0 }
+  let next_index : Ref[Int32] = { val: 0, }
   pdf_markdown_collect_positioned_text_chunks(
     document,
     page.resources,
@@ -64,9 +64,9 @@ fn pdf_markdown_push_text_codepoints_of_streams(
   document : @pdflite.PdfDocument,
   resources : @syntax.PdfObject,
   streams : ArrayView[@syntax.PdfObject],
-  output : Array[Int],
+  output : Array[Int32],
   font_cache : PdfMarkdownFontCache,
-  depth : Int,
+  depth : Int32,
 ) -> Unit raise {
   let mut extractor : @pdflite.PdfTextExtractor? = None
   for op in document.parse_content_ops_with_resources(resources, streams) {
@@ -121,12 +121,12 @@ fn pdf_markdown_text_codepoints_of_page(
   document : @pdflite.PdfDocument,
   page : @page.PdfPage,
   font_cache : PdfMarkdownFontCache,
-) -> Array[Int] raise {
+) -> Array[Int32] raise {
   match
     pdf_markdown_positioned_text_codepoints_of_page(document, page, font_cache) {
     Some(output) => output
     None => {
-      let output : Array[Int] = []
+      let output : Array[Int32] = []
       pdf_markdown_push_text_codepoints_of_streams(
         document,
         page.resources,

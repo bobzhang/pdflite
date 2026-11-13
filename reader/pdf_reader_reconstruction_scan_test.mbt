@@ -38,7 +38,7 @@ test "reconstruction scan skips malformed object candidates" {
   let nested_bad_object = @ascii.encode(
     "1 0 obj\n]\n2 0 obj\n<< /Type /Catalog >>\nendobj\n3 0 obj\n42\nendobj\n",
   )
-  let endobj : ReadOnlyArray[Int] = [101, 110, 100, 111, 98, 106]
+  let endobj : ReadOnlyArray[Int32] = [101, 110, 100, 111, 98, 106]
   let nested_endobj = @core.pdf_find_ascii_from(nested_bad_object, 0, endobj)
   @test.assert_eq(
     @reader.pdf_reader_reconstruction_skip_malformed_object(

@@ -6,8 +6,8 @@
 pub fn pdf_reader_reconstruction_trailers(
   data : BytesView,
   include_xref_streams : Bool,
-  read_trailer_at : (@core.ByteCursor, Int) -> @syntax.PdfObject raise @core.PdfError,
-  read_xref_stream_trailer_at : (@core.ByteCursor, Int) -> @syntax.PdfObject raise @core.PdfError,
+  read_trailer_at : (@core.ByteCursor, Int32) -> @syntax.PdfObject raise @core.PdfError,
+  read_xref_stream_trailer_at : (@core.ByteCursor, Int32) -> @syntax.PdfObject raise @core.PdfError,
 ) -> Array[@syntax.PdfObject] {
   let trailers : Array[@syntax.PdfObject] = Array::new(capacity=1)
   let cursor = @core.byte_cursor_of_view(data)

@@ -131,7 +131,7 @@ pub fn pdf_addtext_diagonal_offsets(
 /// add-text paragraph.
 pub fn pdf_addtext_initial_line_offsets(
   position : @geometry.PdfPosition,
-  line_count : Int,
+  line_count : Int32,
   line_spacing : Double,
   font_size : Double,
 ) -> (Double, Double) {

@@ -29,8 +29,8 @@ fn pdf_add_filter_to_dictionary(
 pub fn pdf_encode_stream_with_filter(
   filter : @core.PdfName,
   object : @syntax.PdfObject,
-  only_if_smaller? : Bool = false,
-  flate_level? : Int? = None,
+  only_if_smaller~ : Bool = false,
+  flate_level~ : Int32? = None,
 ) -> @syntax.PdfObject raise @core.PdfError {
   match object {
     PdfStreamObject(stream) => {
@@ -64,10 +64,10 @@ fn pdf_encoded_stream_is_smaller(
 
 ///|
 fn pdf_predictor_decodeparms(
-  predictor : Int,
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  predictor : Int32,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (pdf_predictor_key(), PdfInteger(predictor)),
@@ -79,9 +79,9 @@ fn pdf_predictor_decodeparms(
 
 ///|
 fn pdf_ccitt_encoding_decodeparms(
-  k : Int,
-  columns : Int,
-  rows : Int,
+  k : Int32,
+  columns : Int32,
+  rows : Int32,
 ) -> @syntax.PdfObject {
   @syntax.pdf_dictionary([
     (pdf_ccitt_k_key(), PdfInteger(k)),
@@ -113,9 +113,9 @@ fn pdf_add_decodeparms_to_dictionary(
 
 ///|
 fn pdf_encode_stream_with_ccitt(
-  columns : Int,
-  rows : Int,
-  k : Int,
+  columns : Int32,
+  rows : Int32,
+  k : Int32,
   object : @syntax.PdfObject,
   only_if_smaller : Bool,
 ) -> @syntax.PdfObject raise @core.PdfError {
@@ -155,13 +155,13 @@ fn pdf_encode_stream_with_ccitt(
 /// original stream data.
 pub fn pdf_encode_stream_with_filter_and_predictor(
   filter : @core.PdfName,
-  predictor : Int,
-  colors : Int,
-  bits_per_component : Int,
-  columns : Int,
+  predictor : Int32,
+  colors : Int32,
+  bits_per_component : Int32,
+  columns : Int32,
   object : @syntax.PdfObject,
-  only_if_smaller? : Bool = false,
-  flate_level? : Int? = None,
+  only_if_smaller~ : Bool = false,
+  flate_level~ : Int32? = None,
 ) -> @syntax.PdfObject raise @core.PdfError {
   match object {
     PdfStreamObject(stream) => {
@@ -204,10 +204,10 @@ pub fn pdf_encode_stream_with_filter_and_predictor(
 pub fn pdf_encode_stream_with_encoding(
   encoding : PdfStreamEncoding,
   object : @syntax.PdfObject,
-  only_if_smaller? : Bool = false,
-  predictor? : PdfStreamPredictor? = None,
-  predictor_columns? : Int = 1,
-  flate_level? : Int? = None,
+  only_if_smaller~ : Bool = false,
+  predictor~ : PdfStreamPredictor? = None,
+  predictor_columns~ : Int32 = 1,
+  flate_level~ : Int32? = None,
 ) -> @syntax.PdfObject raise @core.PdfError {
   let filter = encoding.filter_name()
   match encoding {

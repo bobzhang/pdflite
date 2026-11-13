@@ -1,9 +1,9 @@
 ///|
 fn pdf_space_read_indexed_table(
   data : BytesView,
-  hival : Int,
-  components : Int,
-) -> Array[(Int, Array[Int])] raise @core.PdfError {
+  hival : Int32,
+  components : Int32,
+) -> Array[(Int32, Array[Int32])] raise @core.PdfError {
   if hival < 0 {
     raise InvalidReadLength(hival)
   }
@@ -12,9 +12,9 @@ fn pdf_space_read_indexed_table(
   if data.length() < required {
     raise EndOfInput
   }
-  let table : Array[(Int, Array[Int])] = []
+  let table : Array[(Int32, Array[Int32])] = []
   for index in 0..<count {
-    let values : Array[Int] = []
+    let values : Array[Int32] = []
     let offset = index * components
     for component in 0..<components {
       values.push(data[offset + component].to_int())
@@ -148,7 +148,7 @@ fn PdfDocument::pdf_space_read_device_n(
   names : ArrayView[@syntax.PdfObject],
   alternate : @syntax.PdfObject,
   tint : @syntax.PdfObject,
-  attributes? : @syntax.PdfObject = @syntax.pdf_dictionary([]),
+  attributes~ : @syntax.PdfObject = @syntax.pdf_dictionary([]),
 ) -> PdfColourSpace? raise @core.PdfError {
   match
     (pdf_space_read_names(names), self.read_colour_space(resources, alternate)) {
@@ -248,7 +248,7 @@ pub fn PdfDocument::read_colour_space(
       pdf_space_device_n_name =>
       self.pdf_space_read_device_n(resources, names, alternate, tint)
     PdfArray(
-      [PdfNameObject(kind), PdfArray(names), alternate, tint, attributes]
+      [PdfNameObject(kind), PdfArray(names), alternate, tint, attributes],
     ) if kind == pdf_space_device_n_name =>
       self.pdf_space_read_device_n(
         resources,

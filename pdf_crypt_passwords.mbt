@@ -9,7 +9,7 @@ fn @crypt_core.PdfEncryptionValues::effective_no_encrypt_metadata(
 ///|
 fn @crypt_core.PdfEncryptionValues::password_settings(
   self : @crypt_core.PdfEncryptionValues,
-) -> (Int, Int) raise @core.PdfError {
+) -> (Int32, Int32) raise @core.PdfError {
   match self.crypt_type {
     PdfCryptARC4(key_length_bits, revision) => (revision, key_length_bits)
     PdfCryptAESV2 => (4, 128)
@@ -56,7 +56,7 @@ fn @crypt_core.PdfEncryptionValues::authenticate_user_password(
 fn @crypt_core.PdfEncryptionValues::file_key_for_user_password(
   self : @crypt_core.PdfEncryptionValues,
   password : BytesView,
-  no_encrypt_metadata? : Bool = false,
+  no_encrypt_metadata~ : Bool = false,
 ) -> @core.PdfBytes? raise @core.PdfError {
   let no_encrypt_metadata = self.effective_no_encrypt_metadata(
     no_encrypt_metadata,
@@ -149,7 +149,7 @@ fn @crypt_core.PdfEncryptionValues::authenticate_owner_password(
 fn @crypt_core.PdfEncryptionValues::file_key_for_owner_password(
   self : @crypt_core.PdfEncryptionValues,
   password : BytesView,
-  no_encrypt_metadata? : Bool = false,
+  no_encrypt_metadata~ : Bool = false,
 ) -> @core.PdfBytes? raise @core.PdfError {
   let no_encrypt_metadata = self.effective_no_encrypt_metadata(
     no_encrypt_metadata,
